@@ -1,0 +1,26 @@
+.colorcell-plugin-red,
+.colorcell-plugin-blue,
+.colorcell-plugin-green {
+  width: 110px;
+  display: inline-block;
+  margin-right: 10px;
+  padding: 4px;
+  font-size: 110%;
+}
+
+
+.colorcell-plugin-red {
+  color: #ff0000;
+  background-color: #ffcccc;
+}
+
+.colorcell-plugin-blue {
+  color: #0000ff;
+  background-color: #ccccff;
+}
+
+.colorcell-plugin-green {
+  color: #009900;
+  background-color: #ccffcc;
+}
+

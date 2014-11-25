@@ -1,0 +1,42 @@
+{
+    "manifest_version": 1,
+    "version": 1,
+    "type": "APP",
+    "name": {
+        "ja": "色付きセル",
+        "en": "Color Cell",
+        "zh": "Color Cell"
+    },
+    "description": {
+        "ja": "プラグインのサンプル",
+        "en": "Sample plug-in",
+        "zh": "Sample plug-in"
+    },
+    "icon": "image/icon.png",
+    "homepage_url": {
+        "ja": "https://www.cybozu.com/",
+        "en": "https://www.kintone.com/",
+        "zh": "https://www.cybozu.cn/",
+    },
+    "desktop": {
+        "js": [
+            "https://js.cybozu.com/jquery/2.1.1/jquery.min.js",
+            "js/desktop.js"
+        ],
+        "css": [
+            "css/desktop.css"
+        ]
+    },
+    "config": {
+        "html": "html/config.html",
+        "js": [
+            "https://js.cybozu.com/jquery/2.1.1/jquery.min.js",
+            "js/config.js"
+        ],
+        "css": [
+            "css/51-jp-default.css",
+            "css/config.css"
+        ],
+        "required_params": ["target_field"]
+    }
+}
