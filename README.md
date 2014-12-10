@@ -1,6 +1,8 @@
 kintone Plug-in SDK
 ==========================
 
+This SDK includes kintone plug-in packaging tool.
+
 ## Requirement
 
 * A bash shell
