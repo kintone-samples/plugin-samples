@@ -6,7 +6,7 @@ This SDK includes kintone plug-in packaging tool.
 ## Requirement
 
 * A bash shell
-* zip and openssl libraries are required using Cygwin on Windows
+* zip and openssl libraries are required on Windows using Cygwin.
 
 
 ## How to Use
@@ -40,7 +40,7 @@ Private key file: /tmp/plugin-sdk/keys/colorcell.lnamdpliafiofedbofmbgijdjpgebob
 
 ## Licence
 
-GPL v2
+MIT License
 
 ## Copyright
 
