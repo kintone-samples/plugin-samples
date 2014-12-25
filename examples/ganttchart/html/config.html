@@ -1,0 +1,110 @@
+<div id="ganttchart-plugin">
+
+	<div class="kintoneplugin-row">
+		<div class="kintoneplugin-label">{{:terms.ganttchartTitle_label}}<span class="kintoneplugin-require" id="ganttTitle_require">*</span></div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select">
+				<select id="ganttchart-plugin-title">
+					<option value="">--</option>
+				</select>
+			</div>
+		</div>
+		<div>{{:terms.ganttchartTitle_description}}</div>
+	</div>
+
+	<div class="kintoneplugin-row">
+		<div class="kintoneplugin-label">{{:terms.ganttchartDesc_label}}</div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select">
+				<select id="ganttchart-plugin-desc">
+					<option value="">--</option>
+				</select>
+			</div>
+		</div>
+		<div>{{:terms.ganttchartDesc_description}}</div>
+	</div>
+
+	<div class="kintoneplugin-row">
+		<div class="kintoneplugin-label">{{:terms.ganttchartFrom_label}}<span class="kintoneplugin-require" id="ganttFrom_require">*</span></div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select">
+				<select id="ganttchart-plugin-from">
+					<option value="">--</option>
+				</select>
+			</div>
+		</div>
+		<div>{{:terms.ganttchartFrom_description}}</div>
+	</div>
+
+	<div class="kintoneplugin-row">
+		<div class="kintoneplugin-label">{{:terms.ganttchartTo_label}}<span class="kintoneplugin-require">*</span></div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select">
+				<select id="ganttchart-plugin-to">
+					<option value="">--</option>
+				</select>
+			</div>
+		</div>
+		<div>{{:terms.ganttchartTo_description}}</div>
+	</div>
+
+	<div class="kintoneplugin-row">
+		<div class="kintoneplugin-label">{{:terms.ganttchartColor_label}}<span class="kintoneplugin-require">*</span></div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select">
+				<select id="ganttchart-plugin-color">
+					<option value="">--</option>
+				</select>
+			</div>
+		</div>
+		<div>{{:terms.ganttchartColor_description}}</div>
+		<div>
+			<table>
+				<tbody>
+					<th><label>{{:terms.ganttchartColor_label_name}}</label></th>
+					<th><label class="input-title-cybozu">{{:terms.ganttchartColor_label_setting}}</label></th>
+					<tr>
+						<td><label>{{:terms.ganttchartColor_red_name}}</label></td>
+						<td><input class="kintoneplugin-input-text" type="text" id="ganttchart-plugin-color-red"/></td>
+					</tr>
+					<tr>
+						<td><label>{{:terms.ganttchartColor_orange_name}}</label></td>
+						<td><input class="kintoneplugin-input-text" type="text" id="ganttchart-plugin-color-orange"/></td>
+					</tr>
+					<tr>
+						<td><label>{{:terms.ganttchartColor_green_name}}</label></td>
+						<td><input class="kintoneplugin-input-text" type="text" id="ganttchart-plugin-color-green"/></td>
+					</tr>
+					<tr>
+						<td><label>{{:terms.ganttchartColor_blue_name}}</label></td>
+						<td><input class="kintoneplugin-input-text" type="text" id="ganttchart-plugin-color-blue"/></td>
+					</tr>
+					<tr>
+						<td><label>{{:terms.ganttchartColor_gray_name}}</label></td>
+						<td><input class="kintoneplugin-input-text" type="text" id="ganttchart-plugin-color-gray"/></td>
+					</tr>
+				 </tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="kintoneplugin-row">
+		<div class="kintoneplugin-label">{{:terms.ganttchartScall_label}}<span class="kintoneplugin-require">*</span></div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select">
+				<select id="ganttchart-plugin-scall">
+					<option value="days">days</option>
+					<option value="weeks">weeks</option>
+					<option value="months">months</option>
+				</select>
+			</div>
+		</div>
+		<div id="ganttchart-plugin-scall-description">{{:terms.ganttchartScall_description}}</div>
+	</div>
+
+	<div class="form-submit">
+		<button class="kintoneplugin-button-dialog-ok" id="plugin_submit" type="button">{{:terms.plugin_submit}}</button>
+		<button class="kintoneplugin-button-dialog-cancel" id="plugin_cancel" type="button">{{:terms.plugin_cancel}}</button>
+	</div>
+	
+</div>

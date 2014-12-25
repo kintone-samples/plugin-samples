@@ -1,0 +1,48 @@
+{
+	"manifest_version": 1,
+	"version": 1,
+	"type": "APP",
+	"name": {
+		"ja": "ガントチャートプラグイン",
+		"en": "GanttChart plugin",
+		"zh": "甘特图插件"
+	},
+	"description": {
+		"ja": "これはガントチャートを表示するサンプルのプラグインです。",
+		"en": "This is sample Gantt chart plugin.",
+		"zh": "这是插件的例子"
+	},
+	"icon": "img/icon.png",
+	"homepage_url": {
+		"ja": "https://cybozudev.zendesk.com/hc/ja/articles/203716110",
+		"en": "https://cybozudev.zendesk.com/hc/ja/articles/203716110",
+		"zh": "https://cybozudev.zendesk.com/hc/ja/articles/203716110"
+	},
+	"desktop": {	
+		"js": [
+			"https://js.cybozu.com/jquery/2.1.1/jquery.min.js",
+			"https://js.cybozu.com/jquerygantt/20140623/jquery.fn.gantt.min.js",
+			"js/desktop-ganttchart.js"
+		],
+		"css": [
+			"https://js.cybozu.com/jquerygantt/20140623/css/style.css"
+		]
+	},
+	"mobile": {
+		"js": [
+			"https://js.cybozu.com/jquery/2.1.1/jquery.min.js"
+		]
+	},
+	"config": {
+		"html": "html/config.html",
+		"js": [
+			"https://js.cybozu.com/jquery/2.1.1/jquery.min.js",
+			"https://js.cybozu.com/jsrender/1.0.0-beta/jsrender.min.js",
+			"js/config.js"
+		],
+		"css": [
+			"css/51-jp-default.css"
+		],
+		"required_params": ["ganttchartTitle","ganttchartFrom","ganttchartTo","ganttchartColor","ganttchartScall"]
+	}
+}
