@@ -1,0 +1,19 @@
+@charset "UTF-8";
+/*
+ * Copyright (c) 2014 Cybozu
+ *
+ * Licensed under the MIT License
+*/
+
+.fn-gantt .ganttGray {
+    background-color: #d3d3d3;
+}
+.fn-gantt .ganttGray .fn-label {
+    color: #444 !important;
+}
+.fn-gantt .ganttYellow {
+    background-color: #ffff99;
+}
+.fn-gantt .ganttYellow .fn-label {
+    color: #444 !important;
+}

@@ -32,6 +32,8 @@ jQuery.noConflict();
                 'ganttchartColor_green_name': 'Green',
                 'ganttchartColor_blue': 'Blue',
                 'ganttchartColor_blue_name': 'Blue',
+                'ganttchartColor_yellow': 'Yellow',
+                'ganttchartColor_yellow_name': 'Yellow',
                 'ganttchartColor_gray': 'Gray',
                 'ganttchartColor_gray_name': 'Gray',
                 'ganttchartScall': 'Scall',
@@ -68,6 +70,8 @@ jQuery.noConflict();
                 'ganttchartColor_green_name': '緑',
                 'ganttchartColor_blue': '青',
                 'ganttchartColor_blue_name': '青',
+                'ganttchartColor_yellow': '黄',
+                'ganttchartColor_yellow_name': '黄',
                 'ganttchartColor_gray': 'グレー',
                 'ganttchartColor_gray_name': 'グレー',
                 'ganttchartScall': 'スケール',
@@ -122,6 +126,7 @@ jQuery.noConflict();
             config['ganttchartColor_orange'] && $('#ganttchart-plugin-color-orange').val(config['ganttchartColor_orange']);
             config['ganttchartColor_green'] && $('#ganttchart-plugin-color-green').val(config['ganttchartColor_green']);
             config['ganttchartColor_blue'] && $('#ganttchart-plugin-color-blue').val(config['ganttchartColor_blue']);
+            config['ganttchartColor_yellow'] && $('#ganttchart-plugin-color-yellow').val(config['ganttchartColor_yellow']);
             config['ganttchartColor_gray'] && $('#ganttchart-plugin-color-gray').val(config['ganttchartColor_gray']);
             config['ganttchartScall'] && $('#ganttchart-plugin-scall').val(config['ganttchartScall']);
     
@@ -139,6 +144,7 @@ jQuery.noConflict();
             var ganttchartColor_orange = $('#ganttchart-plugin-color-orange').val();
             var ganttchartColor_green = $('#ganttchart-plugin-color-green').val();
             var ganttchartColor_blue = $('#ganttchart-plugin-color-blue').val();
+            var ganttchartColor_yellow = $('#ganttchart-plugin-color-yellow').val();
             var ganttchartColor_gray = $('#ganttchart-plugin-color-gray').val();
             var ganttchartScall = $('#ganttchart-plugin-scall').val();
     
@@ -160,6 +166,7 @@ jQuery.noConflict();
             config['ganttchartColor_orange'] = ganttchartColor_orange;
             config['ganttchartColor_green'] = ganttchartColor_green;
             config['ganttchartColor_blue'] = ganttchartColor_blue;
+            config['ganttchartColor_yellow'] = ganttchartColor_yellow;
             config['ganttchartColor_gray'] = ganttchartColor_gray;
             config['ganttchartScall'] = ganttchartScall;
             

@@ -15,7 +15,7 @@ jQuery.noConflict();
 
         var conf;
         var GANTT_NAME, GANTT_DESC, GANTT_FROM, GANTT_TO, GANTT_SCALL;
-        var GANTT_TIP, GANTT_LABEL, GANTT_COLOR, GANTT_RED, GANTT_ORANGE, GANTT_GREEN, GANTT_BLUE, GANTT_GRAY;
+        var GANTT_TIP, GANTT_LABEL, GANTT_COLOR, GANTT_RED, GANTT_ORANGE, GANTT_GREEN, GANTT_BLUE, GANTT_YELLOW, GANTT_GRAY;
         var GANTT_MONTHS, GANTT_DOW, GANTT_WAIT = "";
 
         // Use the plug-in.
@@ -35,6 +35,7 @@ jQuery.noConflict();
                 GANTT_ORANGE = conf['ganttchartColor_orange'];
                 GANTT_GREEN = conf['ganttchartColor_green'];
                 GANTT_BLUE = conf['ganttchartColor_blue'];
+                GANTT_YELLOW = conf['ganttchartColor_yellow'];
                 GANTT_GRAY = conf['ganttchartColor_gray'];
             }
         // Set when utilized in JavaScript read without using a plug-in.
@@ -51,6 +52,7 @@ jQuery.noConflict();
             GANTT_ORANGE = "B";
             GANTT_GREEN = "C";
             GANTT_BLUE = "D";
+            GANTT_YELLOW = "E";
             GANTT_GRAY = "";
         }
 
@@ -114,6 +116,7 @@ jQuery.noConflict();
             var arrayOrange = GANTT_ORANGE.split(",");
             var arrayGreen = GANTT_GREEN.split(",");
             var arrayBlue = GANTT_BLUE.split(",");
+            var arrayYellow = GANTT_YELLOW.split(",");
             var arrayGray = GANTT_GRAY.split(",");
 
             var colorValue = records[i][GANTT_COLOR]['value'];
@@ -131,6 +134,9 @@ jQuery.noConflict();
             }
             else if (arrayBlue.indexOf(colorValue) >= 0) {
                 colorGantt = "ganttBlue";
+            }
+            else if (arrayYellow.indexOf(colorValue) >= 0) {
+                colorGantt = "ganttYellow";
             }
             else if (arrayGray.indexOf(colorValue) >= 0) {
                 colorGantt = "ganttGray";

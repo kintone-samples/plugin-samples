@@ -25,7 +25,8 @@
             "js/desktop-ganttchart.js"
         ],
         "css": [
-            "https://js.cybozu.com/jquerygantt/20140623/css/style.css"
+            "https://js.cybozu.com/jquerygantt/20140623/css/style.css",
+            "css/addin-style.css"
         ]
     },
     "mobile": {
