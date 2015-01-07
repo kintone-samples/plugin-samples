@@ -1,0 +1,36 @@
+{
+    "manifest_version": 1,
+    "version": 1,
+    "type": "APP",
+    "name": {
+        "ja": "いいねプラグイン",
+        "en": "Vote Extension",
+        "zh": "Vote Extension"
+    },
+    "description": {
+        "ja": "アプリにいいねを追加します。",
+        "en": "Add the vote extension to application.",
+        "zh": "Add the vote extension to application."
+    },
+    "icon": "image/icon.png",
+    "desktop": {
+        "js": [
+            "https://js.cybozu.com/jquery/jquery-1.11.0.min.js",
+            "js/vote.js"
+        ],
+        "css": [
+            "css/vote.css"
+        ]
+    },
+    "config": {
+        "html": "html/config.html",
+        "js": [
+            "https://js.cybozu.com/jquery/jquery-1.11.0.min.js",
+            "js/config.js"
+        ],
+        "css": [
+            "css/51-jp-default.css"
+        ],
+        "required_params": ["vote_field", "vote_count_field"]
+    }
+}

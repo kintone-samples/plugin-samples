@@ -1,0 +1,36 @@
+.vote-plugin-show {
+    display: inline-block;
+    padding: 2px 4px;
+    position: relative;
+    cursor: pointer;
+}
+
+/* 旧UIでいいねボタンを1行表示するため */
+.recordlist-action-gaia .recordlist-show-gaia {
+    display: inline-block;
+}
+
+.vote-plugin-count {
+    border-radius: 3px;
+    position: absolute;
+    bottom: -2px;
+    right: -6px;
+    padding: 0 3px;
+    border: 1px solid #bbb;
+    background-color: #fff;
+    line-height: 1.2;
+    font-size: 77%;
+}
+
+.vote-plugin-img {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QAAABHAK0k8f9vAAAACXBIWXMAAAINAAACDQF3Tr5wAAAAB3RJTUUH3gsVBgE3UdypvwAAAXNJREFUOMuF079r1EEUBPDPN8YEMYkoVhaCWAiaTi0UFNMsKdbgvyABbW0kjbWFlaZQUlpYiY1stWhlJSIWKigWEgiCILFQD9Gcsbh3PzjuuFc9dt7Mzu7sNiZVKouYwQc1t6RCzT24mUC+jKf4indYVvPO4MjUGGK3W8MGjuISzg+PjhaomVSO4DQeqfkPWjg2WSCV7rHW8UzNL6RyAvNxnL7LVEwPLOyJ3dtSWQu7pwJdwl9sSWUbt/BQzSGQygWsYloqc1jBkpq/h8BrXI1+DrdxAOuNVGbwOEjwHKtq3uxZHYgt1q4j48pURLl3AH6v5s1eEsPkTt3EKzW3R6XQjCX2413Al/ExjqtOvIs4jLfDAq246WaCzCza+NQVaLAfd/AgwFG2u3Uj3se2VDQxsIFr2MUOPuIunoSzf4HN4yXuqfl+/8JSWcBypLGLk7iIs/iFN/iJM/iGc2r+3REYlXNHdBaHcBDHsQ+f41v/6PL+Az+ob1NSddQvAAAAAElFTkSuQmCC");
+}
+
+.vote-plugin-img.vote-plugin-voted {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QAAABHAK0k8f9vAAAACXBIWXMAAAINAAACDQF3Tr5wAAAAB3RJTUUH3gsVBgIpgP7HHwAAARtJREFUOMud0zsvBFEYBuBnxqJh3bLhD4hOrVCRTGMSf0GlpvMDVKIThVYtRDJRTCQaSgWNQiFRkNBtNhR2l2JnY2xiZrNvcpKT7/J+l/Me+kGUjIqS4ez+xxWUJMIYDjCFbWn8lA8JCwnSGGaxgXXs9oaEJdVhLWet9UcQJZ3qUbKIvZznprdAUNBBDfeYy1mX8YF3vEjjdiBKQsxjIiN8yFo9wmrBhvaxE2IaJ7jEFTZxVpLc3U21ku1hEuOZo4qZPtRxh3pocDSkcWtQgjZu8884gkM0StXZwTfeugQBKhjKTiUjLEId512CBi6whEdc4xhfaP5DcCqNW6KkUEgjiLCChewzBXjFljR+1ue8ne/8O9anNG525f4DqxQ/04FLfCIAAAAASUVORK5CYII=");
+}
+
