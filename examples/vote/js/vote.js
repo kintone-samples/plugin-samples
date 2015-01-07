@@ -7,7 +7,6 @@ jQuery.noConflict();
     var config = kintone.plugin.app.getConfig(pluginId);
     var VOTE_FIELD = config['vote_field'];
     var VOTE_COUNT_FIELD = config['vote_count_field'];
-    var VOTE_EL_WIDTH = 26;
 
     kintone.events.on(['app.record.create.show', 'app.record.index.edit.show', 'app.record.edit.show'], function(evt) {
         var record = evt['record'];
@@ -17,30 +16,49 @@ jQuery.noConflict();
     });
 
     kintone.events.on('app.record.index.show', function() {
-        fetchVoteModels().then(function(voteModels) {
-　　　　　　　　　　　　var cellEls = $('.recordlist-show-gaia').parent();
+        var RECORD_FIELD;
+        getRecordField().then(function(code){
+            RECORD_FIELD = code;
+            return fetchVoteModels();
+        }).then(function(voteModels) {
+            var cellEls = $(kintone.app.getFieldElements(RECORD_FIELD));
             cellEls.each(function() {
-                var recordId = Number($(this).children('.recordlist-show-gaia').attr('href').match('record=([0-9]+)')[1]);
+                var recordId = Number($(this).text().split('-').pop());
                 var voteModel = $.grep(voteModels, function(voteModel) {
                     return voteModel.getRecordId() === recordId;
                 })[0];
 
                 if(voteModel !== null) {
-                    new VoteView(voteModel).append($(this));
+                    var $parentEl = $(this).find("*").contents().filter(function() {return this.nodeType === 3;}).parent();
+                    new VoteView(voteModel).append($parentEl);
                 }
             });
-        }).then(function() {
-            resizeTable();
         });
     });
 
     kintone.events.on('app.record.detail.show', function(appId, record, recordId) {
         fetchVoteModel().then(function(voteModel) {
-            var $labelEl = $(kintone.app.record.getFieldElement(VOTE_FIELD)).parent().find('.control-label-gaia');
-            $labelEl.addClass('vote-control-label');
-            new VoteView(voteModel).append($labelEl);
+            var $labelEl = $(kintone.app.record.getFieldElement(VOTE_FIELD));
+            new VoteView(voteModel).prepend($labelEl);
         });
     });
+
+    function getRecordField() {
+         var d = new $.Deferred;
+         kintone.api(kintone.api.url('/k/v1/form', true), 'GET', {'app': APPID}, function(evt) {
+            var found = $.grep(evt.properties, function(field) {
+                return field['type'] === 'RECORD_NUMBER';
+            });
+            if (found.length === 0) {
+                alert('レコード番号フィールドが見つかりません。いいねプラグインを使うためには、フォーム編集画面でレコード番号フィールドを配置する必要があります。');
+                d.reject();
+            } else {
+                var code = found[0]['code'];
+                d.resolve(code);
+            }
+        });
+        return d.promise();
+    }
 
     function fetchVoteModel() {
         var d = new $.Deferred;
@@ -215,25 +233,13 @@ jQuery.noConflict();
             append: function($parentEl) {
                 $parentEl.append($element);
                 renderImgAndCounter();
+            },
+
+            prepend: function($parentEl) {
+                $parentEl.prepend($element);
+                renderImgAndCounter();
             }
         };
-    }
-
-    /**
-     * いいねを表示する列の幅を広げ、一番幅が広い列の幅を狭める
-     */
-    function resizeTable() {
-        var controlTh = $('.recordlist-gaia > thead > th:first-child');
-        controlTh.width(controlTh.width() + VOTE_EL_WIDTH);
-        var largestTh;
-        var width = 0;
-        $('.recordlist-gaia > thead > th').not(':first-child').each(function() {
-            if ($(this).width() > width) {
-                largestTh = $(this);
-                width = $(this).width();
-            }
-        });
-        largestTh && largestTh.width(width - VOTE_EL_WIDTH);
     }
 })(kintone.$PLUGIN_ID, jQuery);
 

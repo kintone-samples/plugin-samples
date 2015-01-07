@@ -5,11 +5,6 @@
     cursor: pointer;
 }
 
-/* 旧UIでいいねボタンを1行表示するため */
-.recordlist-action-gaia .recordlist-show-gaia {
-    display: inline-block;
-}
-
 .vote-plugin-count {
     border-radius: 3px;
     position: absolute;
