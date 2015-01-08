@@ -1,0 +1,12 @@
+.conditionalformat-plugin-fLine {
+	border-collapse: collapse;
+	border-spacing: 0;
+	border-top: 1px solid #f2f2f2;
+	border-left: 1px solid #f2f2f2;
+}
+
+conditionalformat-plugin-fLine td {
+	border-right: 1px solid #f2f2f2;
+	border-bottom: 1px solid #f2f2f2;
+	letter-spacing: 0.1em;
+}

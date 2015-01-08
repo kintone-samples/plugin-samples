@@ -1,0 +1,36 @@
+{
+	"manifest_version": 1,
+	"version": 1,
+	"type": "APP",
+	"name": {
+		"ja": "条件書式プラグイン",
+		"en": "conditional format plug-in",
+		"zh": "条件格式插件"
+	},
+	"description": {
+		"ja": "条件により表示するアイテムの色等を変更するプラグインです。",
+		"en": "It is plug-in which changes the color etc. of the item displayed according to conditions. ",
+		"zh": "是變更根據條件表示的條款的顏色等的插件。"
+	},
+	"icon": "image/icon.png",
+	"desktop": {
+		"js": [
+		    "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+		    "js/desktop.js"
+		],
+		"css": [
+	    ]
+	},
+	"config": {
+		"html": "html/config.html",
+		"js": [
+			"https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+			"js/config.js",
+			"js/cpick.js"
+		],
+		"css": [
+			"css/51-jp-default.css",
+			"css/config.css"
+		]
+	}
+}
