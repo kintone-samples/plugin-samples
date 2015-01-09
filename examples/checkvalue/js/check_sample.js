@@ -5,20 +5,16 @@
     // レコードの保存前に TEL, FAX, 郵便番号, メールアドレスの入力値をチェックします
     function checkValue(event){
         
-        // プラグインIDの設定
-        var KEY = PLUGIN_ID;
-        
         //設定値読み込み用変数
-        var config = kintone.plugin.app.getConfig(KEY);
-        // event よりレコード情報を取得します
-        var rec = event['record'];
+        var config = kintone.plugin.app.getConfig(PLUGIN_ID);
         
         //設定値読み込み
         if (!config) return false;
-        var zip_value = rec[config['zip']]['value'];
-        var tel_value = rec[config['tel']]['value'];
-        var fax_value = rec[config['fax']]['value'];
-        var mail_value = rec[config['mail']]['value'];
+        var record = event.record;
+        var zip_value = record[config['zip']]['value'];
+        var tel_value = record[config['tel']]['value'];
+        var fax_value = record[config['fax']]['value'];
+        var mail_value = record[config['mail']]['value'];
  
         // 郵便番号の定義(7桁の半角数字)
         var zip_pattern = /^\d{7}$/;
@@ -32,7 +28,7 @@
                 // 定義したパターンにマッチするか確認します
                 if (!(zip_value.match(zip_pattern))){
                     // マッチしない場合は、郵便番号フィールドにエラーの内容を表示するようにします
-                    rec[config['zip']]['error'] = '7桁の半角数字で入力して下さい';
+                    record[config['zip']]['error'] = '7桁の半角数字で入力して下さい';
                 }
         }
  
@@ -41,7 +37,7 @@
                 // 定義したパターンにマッチするか確認します
                 if (!(tel_value.match(telfax_pattern))){
                     // マッチしない場合は、TEL に対してエラーの内容を記載します
-                    rec[config['tel']]['error'] = '10桁 または 11桁の半角数字で入力して下さい';
+                    record[config['tel']]['error'] = '10桁 または 11桁の半角数字で入力して下さい';
                 } 
         }
  
@@ -50,7 +46,7 @@
                 // 定義したパターンにマッチするか確認します
                 if (!(fax_value.match(telfax_pattern))){
                     // マッチしない場合は、FAX に対してエラーの内容を記載します
-                    rec[config['fax']]['error'] = '10桁 または 11桁の半角数字で入力して下さい';
+                    record[config['fax']]['error'] = '10桁 または 11桁の半角数字で入力して下さい';
                 }
         }
  
@@ -59,7 +55,7 @@
                 // 定義したパターンにマッチするか確認します
                 if (!(mail_value.match(mail_pattern))){
                     // マッチしない場合は、メールアドレスに対してエラーの内容を記載します
-                    rec[config['mail']]['error'] = 'メールアドレスとして認識されませんでした。値を確認して下さい。';
+                    record[config['mail']]['error'] = 'メールアドレスとして認識されませんでした。値を確認して下さい。';
                 }
         }
  
