@@ -1,0 +1,441 @@
+@charset "UTF-8";
+/*
+ * Copyright (c) 2014 Cybozu
+ * 
+ * Licensed under the MIT License
+*/
+
+*[class|="kintoneplugin"] {
+  color: #333;
+  font: 13px/1.231 "メイリオ", Meiryo, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "ＭＳ Ｐゴシック", "Lucida Grande", "Lucida Sans Unicode", Arial, Verdana, sans-serif;
+  line-height: 1.5;
+}
+
+/* メッセージのスタイル */
+/*
+<div class="kintoneplugin-alert">
+  <p>メッセージのスタイル、<br>メッセージのスタイル</p>
+  <p>メッセージのスタイル</p>
+</div>
+*/
+.kintoneplugin-alert {
+  margin: 10px auto;
+  padding: 8px;
+  border: 2px solid #fc0;
+  border-radius: 4px;
+  background-color: #fff8db;
+  color: gray;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* 設定項目の行 */
+/*
+<div class="kintoneplugin-row">設定項目の行 1</div>
+<div class="kintoneplugin-row">設定項目の行 2</div>
+*/
+.kintoneplugin-row {
+  margin-bottom: 10px;
+}
+
+/* 設定項目の見出し */
+/* ラベル */
+/*
+<div class="kintoneplugin-label">設定項目の見出し</div>
+*/
+.kintoneplugin-label {
+  margin: 1px 0 3px;
+  padding: 2px 6px;
+  border-bottom: 1px solid #d6d1cc;
+  border-left: 4px solid #989898;
+}
+
+/* 必須項目 */
+/*
+<div class="kintoneplugin-label">必須項目の見出し<span class="kintoneplugin-require">*</span></div>
+*/
+.kintoneplugin-require {
+  margin-left: 4px;
+  color: #d80000;
+  vertical-align: inherit;
+}
+
+/* テキストボックス */
+/*
+<div class="kintoneplugin-input-outer">
+  <input class="kintoneplugin-input-text" type="text">
+</div>
+*/
+.kintoneplugin-input-outer {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 0;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+
+.kintoneplugin-input-text {
+  box-sizing: border-box;
+  padding: 1px 2px 1px 0;
+  width: 100%;
+  outline: none;
+  border: 2px solid #dae8f2;
+  background-color: #f2f9ff;
+}
+
+/* チェックボックス */
+/*
+<div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="0" id="checkbox-0" checked=""><label for="checkbox-0">チェックボックスA</label></span></div>
+<div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="1" id="checkbox-1"><label for="checkbox-1">チェックボックスB</label></span></div>
+<div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="2" id="checkbox-2" checked="" disabled=""><label for="checkbox-2">チェックボックスC</label></span></div>
+<div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="3" id="checkbox-3" disabled=""><label for="checkbox-3">チェックボックスD</label></span></div>
+*/
+.kintoneplugin-input-checkbox {
+  clear: both;
+}
+
+.kintoneplugin-input-checkbox-item {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.kintoneplugin-input-checkbox-item input[type="checkbox"] {
+  float: left;
+  box-sizing: border-box;
+  margin: 1px 6px 0 1px;
+  line-height: normal;
+}
+
+.kintoneplugin-input-checkbox-item input[type="checkbox"] + label {
+  margin-right: 6px;
+  padding-right: 10px;
+  vertical-align: top;
+}
+
+/* ドロップダウンリスト */
+/*
+<div class="kintoneplugin-dropdown-outer">
+  <div class="kintoneplugin-dropdown">
+    <div class="kintoneplugin-dropdown-selected"><span class="kintoneplugin-dropdown-selected-name">ドロップダウン</span></div>
+  </div>
+</div>
+<div class="kintoneplugin-dropdown-list">
+  <div class="kintoneplugin-dropdown-list-item kintoneplugin-dropdown-list-item-selected"><span class="kintoneplugin-dropdown-list-item-name">オプションA</span></div>
+  <div class="kintoneplugin-dropdown-list-item"><span class="kintoneplugin-dropdown-list-item-name">オプションB</span></div>
+  <div class="kintoneplugin-dropdown-list-item"><span class="kintoneplugin-dropdown-list-item-name">オプションC</span></div>
+</div>
+*/
+.kintoneplugin-dropdown-outer {
+  position: relative;
+  display: inline-block;
+  padding: 1px;
+  border-radius: 4px;
+  background-color: #727272;
+}
+
+.kintoneplugin-dropdown {
+  padding: 5px 5px 2px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #fff transparent #727272;
+  border-radius: 3px;
+  background-image: linear-gradient(#fff, #fff 20%, #c1c1c1 100%);
+  vertical-align: baseline;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFFFFF', endColorstr='#FFC1C1C1');
+  cursor: pointer;
+}
+
+.kintoneplugin-dropdown:hover {
+  border-color: #9cf #69e #69e #7af;
+}
+
+.kintoneplugin-dropdown-selected {
+  line-height: 1;
+}
+
+.kintoneplugin-dropdown-selected-name {
+  padding-right: 20px;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MDk2RENFMjhGRjUzMTFERjk4QzQ5NThDOTRFRjcwNkQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MDk2RENFMjlGRjUzMTFERjk4QzQ5NThDOTRFRjcwNkQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDowOTZEQ0UyNkZGNTMxMURGOThDNDk1OEM5NEVGNzA2RCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDowOTZEQ0UyN0ZGNTMxMURGOThDNDk1OEM5NEVGNzA2RCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PlmIfskAAACASURBVHjaYvz//z8DNQETA5XBqIEjwUAWfJKMjIwpQMoPi9QmYPqdQ7ILb9y48VRcXPwnshiIDxLHqQmUU/BgjkWLFlWBXATDID5IHJcevAZCLZTPzMycDjIMRIP4+BxC0ECoZjtvb+95IJqQz4gyEGqAHzFBxTha2owAAwECDADAG9KDivbqFgAAAABJRU5ErkJggg==) no-repeat right -1px;
+  line-height: 1;
+}
+
+.kintoneplugin-dropdown-list {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ccc #666 #666 #ccc;
+  background: #fff;
+  cursor: default;
+}
+
+.kintoneplugin-dropdown-list-item {
+  padding: 4px 7em 4px 28px;
+  color: #000;
+  white-space: nowrap;
+  font: normal 13px Arial, sans-serif;
+}
+
+.kintoneplugin-dropdown-list-item:hover {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-width: 1px 0;
+  border-style: dotted;
+  border-color: #d6e9f8;
+  background-color: #d6e9f8;
+}
+
+.kintoneplugin-dropdown-list-item-selected {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjY3OEQ5RjY1NUU2NTExRTQ5NEQ5Q0FEMkEyQTlFNDVDIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjY3OEQ5RjY2NUU2NTExRTQ5NEQ5Q0FEMkEyQTlFNDVDIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6Njc4RDlGNjM1RTY1MTFFNDk0RDlDQUQyQTJBOUU0NUMiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6Njc4RDlGNjQ1RTY1MTFFNDk0RDlDQUQyQTJBOUU0NUMiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4i/TOVAAAALUlEQVR42mJgwA3+M+KSABFMMAa6BEwSWQBZISMjFp1gCTiBrgOnI5ABQIABALZJCQJQiicgAAAAAElFTkSuQmCC) no-repeat 12px 8px;
+}
+
+/* (セレクトボックス) */
+/*
+<div class="kintoneplugin-select-outer">
+  <div class="kintoneplugin-select">
+    <select>
+      <option>ドロップダウンリストA</option>
+      <option>ドロップダウンリストB</option>
+      <option>ドロップダウンリストC</option>
+    </select>
+  </div>
+</div>
+*/
+.kintoneplugin-select-outer {
+  position: relative;
+  display: inline-block;
+  padding: 1px;
+  border-radius: 4px;
+  background-color: #727272;
+}
+
+.kintoneplugin-select {
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-right: 28px;
+  min-width: 40px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #fff transparent #727272;
+  border-radius: 3px;
+  background-image: linear-gradient(#fff, #fff 20%, #c1c1c1 100%);
+  vertical-align: baseline;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFFFFF', endColorstr='#FFC1C1C1');
+  cursor: pointer;
+}
+
+.kintoneplugin-select:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  width: 32px;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MDk2RENFMjhGRjUzMTFERjk4QzQ5NThDOTRFRjcwNkQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MDk2RENFMjlGRjUzMTFERjk4QzQ5NThDOTRFRjcwNkQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDowOTZEQ0UyNkZGNTMxMURGOThDNDk1OEM5NEVGNzA2RCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDowOTZEQ0UyN0ZGNTMxMURGOThDNDk1OEM5NEVGNzA2RCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PlmIfskAAACASURBVHjaYvz//z8DNQETA5XBqIEjwUAWfJKMjIwpQMoPi9QmYPqdQ7ILb9y48VRcXPwnshiIDxLHqQmUU/BgjkWLFlWBXATDID5IHJcevAZCLZTPzMycDjIMRIP4+BxC0ECoZjtvb+95IJqQz4gyEGqAHzFBxTha2owAAwECDADAG9KDivbqFgAAAABJRU5ErkJggg==) no-repeat center 1px transparent;
+  content: "";
+  pointer-events: none;
+}
+
+.kintoneplugin-select:hover {
+  border-color: #9cf #69e #69e #7af;
+}
+
+.kintoneplugin-select select {
+  margin: 0;
+  min-width: 108px;
+  width: 144%;
+  height: 20px;
+  outline: none;
+  border: 0 none;
+  background-color: transparent;
+  font-size: 13px;
+  font-family: "メイリオ", Meiryo, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "ＭＳ Ｐゴシック", "Lucida Grande", "Lucida Sans Unicode", Arial, Verdana, sans-serif;
+  line-height: 1;
+  cursor: pointer;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+}
+
+.kintoneplugin-select option {
+  background-color: #fff;
+  color: #333;
+}
+
+/* ラジオボタン */
+/*
+<div class="kintoneplugin-input-radio"><span class="kintoneplugin-input-radio-item"><input type="radio" name="radio" value="0" id="radio-0" checked=""><label for="radio-0">ラジオボタンA</label></span><span class="kintoneplugin-input-radio-item"><input type="radio" name="radio" value="1" id="radio-1"><label for="radio-1">ラジオボタンB</label></span></div>
+*/
+.kintoneplugin-input-radio {
+  clear: both;
+}
+
+.kintoneplugin-input-radio-item {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.kintoneplugin-input-radio-item input[type="radio"] {
+  float: left;
+  box-sizing: border-box;
+  margin: 1px 6px 0 1px;
+  line-height: normal;
+}
+
+.kintoneplugin-input-radio-item input[type="radio"] + label {
+  margin-right: 6px;
+  padding-right: 10px;
+  vertical-align: top;
+}
+
+/* ボタン */
+/*
+<button class="kintoneplugin-button-normal">通常のボタン</button>
+*/
+.kintoneplugin-button-normal {
+  display: inline-block;
+  padding: 6px 30px;
+  outline: none;
+  border: 1px solid #a2a2a2;
+  border-radius: 4px;
+  background-color: #ececec;
+  background-image: linear-gradient(rgba(236,236,236,0),rgba(212,212,212,.85) 85%,#d4d4d4 100%);
+  box-shadow: inset 0 1px 0 white,0 2px 2px rgba(161,161,161,.35);
+  color: #4d4d4d;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #fff;
+  white-space: nowrap;
+  font-weight: 700;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFECECEC', endColorstr='#FFD4D4D4');
+  cursor: pointer;
+  -webkit-transition: background-color .1s linear;
+  -moz-transition: background-color .1s linear;
+  transition: background-color .1s linear;
+  user-select: none;
+}
+
+.kintoneplugin-button-normal:hover {
+  background-color: #d4d4d4;
+  color: #4d4d4d;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFD4D4D4', endColorstr='#FFD4D4D4');
+}
+
+.kintoneplugin-button-normal:active {
+  border-color: #9d9d9d;
+  background-color: #c7c7c7;
+  box-shadow: inset 0 1px 8px #a1a1a1, 0 1px 0 #eee;
+  color: #7c7c7c;
+  -webkit-transition: background-color 0s linear;
+  -moz-transition: background-color 0s linear;
+  transition: background-color 0s linear;
+}
+
+/* disabledのボタン */
+/*
+<button class="kintoneplugin-button-disabled">disabledのボタン</button>
+*/
+.kintoneplugin-button-disabled {
+  display: inline-block;
+  padding: 6px 30px;
+  outline: none;
+  border: 1px solid #868686;
+  border-radius: 4px;
+  background-color: #a8a8a8;
+  background-image: none;
+  box-shadow: #e8e8e8 0 1px 0,#e8e8e8 0 1px 0 inset;
+  color: #d3d3d3;
+  text-shadow: #717171 0 -1px 0;
+  white-space: nowrap;
+  cursor: default;
+}
+
+/* ダイアログのOKボタン */
+/*
+<button class="kintoneplugin-button-dialog-ok">ダイアログのOKボタン</button>
+*/
+.kintoneplugin-button-dialog-ok {
+  display: inline-block;
+  padding: 6px 30px;
+  outline: none;
+  border: 1px solid #113982;
+  border-radius: 4px;
+  background-color: #298bcf;
+  background-image: linear-gradient(rgba(41,139,207,0),rgba(20,109,173,.85) 85%,#146dad 100%);
+  box-shadow: inset 0 1px 0 #b9daf1,0 2px 2px rgba(9,51,82,.35);
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 -1px 0 #002e72;
+  white-space: nowrap;
+  font: 99% "メイリオ",Meiryo,"Hiragino Kaku Gothic ProN","ヒラギノ角ゴ ProN W3","ＭＳ Ｐゴシック","Lucida Grande","Lucida Sans Unicode",Arial,Verdana,sans-serif;
+  font-weight: 700;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FF298BCF', endColorstr='#FF146DAD');
+  cursor: pointer;
+  -webkit-transition: background-color .1s linear;
+  -moz-transition: background-color .1s linear;
+  -o-transition: background-color .1s linear;
+  transition: background-color .1s linear;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.kintoneplugin-button-dialog-ok:hover {
+  background-color: #146dad;
+  color: #fff;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FF146DAD', endColorstr='#FF146DAD');
+}
+
+.kintoneplugin-button-dialog-ok:active {
+  border-color: #103579;
+  background-color: #115f96;
+  box-shadow: inset 0 1px 8px #093352, 0 1px 0 #eee;
+  color: #accbe2;
+  -webkit-transition: background-color 0s linear;
+  -moz-transition: background-color 0s linear;
+  transition: background-color 0s linear;
+}
+
+
+/* ダイアログのキャンセルボタン */
+/*
+<button class="kintoneplugin-button-dialog-cancel">ダイアログのキャンセルボタン</button>
+*/
+.kintoneplugin-button-dialog-cancel {
+  display: inline-block;
+  padding: 6px 30px;
+  outline: none;
+  border: 1px solid #a2a2a2;
+  border-radius: 4px;
+  background-color: #ececec;
+  background-image: linear-gradient(rgba(236,236,236,0),rgba(212,212,212,.85) 85%,#d4d4d4 100%);
+  box-shadow: inset 0 1px 0 white,0 2px 2px rgba(161,161,161,.35);
+  color: #4d4d4d;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #fff;
+  white-space: nowrap;
+  font: 99% "メイリオ",Meiryo,"Hiragino Kaku Gothic ProN","ヒラギノ角ゴ ProN W3","ＭＳ Ｐゴシック","Lucida Grande","Lucida Sans Unicode",Arial,Verdana,sans-serif;
+  font-weight: 700;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFECECEC', endColorstr='#FFD4D4D4');
+  cursor: pointer;
+  -webkit-transition: background-color .1s linear;
+  -moz-transition: background-color .1s linear;
+  transition: background-color .1s linear;
+  user-select: none;
+}
+
+.kintoneplugin-button-dialog-cancel:hover {
+  background-color: #d4d4d4;
+  color: #4d4d4d;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFD4D4D4', endColorstr='#FFD4D4D4');
+}
+
+.kintoneplugin-button-dialog-cancel:active {
+  border-color: #9d9d9d;
+  background-color: #c7c7c7;
+  box-shadow: inset 0 1px 8px #a1a1a1, 0 1px 0 #eee;
+  color: #7c7c7c;
+  -webkit-transition: background-color 0s linear;
+  -moz-transition: background-color 0s linear;
+  transition: background-color 0s linear;
+}
