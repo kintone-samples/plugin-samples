@@ -38,6 +38,18 @@ Plugin file: /tmp/plugin-sdk/plugins/lnamdpliafiofedbofmbgijdjpgebobo/plugin.zip
 Private key file: /tmp/plugin-sdk/keys/colorcell.lnamdpliafiofedbofmbgijdjpgebobo.ppk
 ```
 
+## Install Plug-in
+
+See the following document.
+
+en
+
+https://help.cybozu.com/en/k/admin/plugin.html
+
+ja
+
+https://help.cybozu.com/ja/k/admin/plugin.html
+
 ## Licence
 
 MIT License
