@@ -1,18 +1,20 @@
 jQuery.noConflict();
 
-(function($, PLUGIN_ID){
+(function($, PLUGIN_ID) {
     "use strict";
 
-    $(document).ready(function(){
-    
+    $(document).ready(function() {
+
         var terms = {
-            'en':{
+            'en': {
                 'ganttchartTitle': 'Title',
                 'ganttchartTitle_label': 'Field of title.',
-                'ganttchartTitle_description': 'Please specify the fields to be displayed in the first classification of the vertical axis of the Gantt chart.',
+                'ganttchartTitle_description': 'Please specify the fields to be displayed' +
+                ' in the first classification of the vertical axis of the Gantt chart.',
                 'ganttchartDesc': 'Subtitle',
                 'ganttchartDesc_label': 'Field of subtitle',
-                'ganttchartDesc_description': 'Please specify the fields to be displayed in the second classification of the vertical axis of the Gantt chart.',
+                'ganttchartDesc_description': 'Please specify the fields to be displayed' +
+                ' in the second classification of the vertical axis of the Gantt chart.',
                 'ganttchartFrom': 'Start date',
                 'ganttchartFrom_label': 'Field of start date',
                 'ganttchartFrom_description': '',
@@ -23,7 +25,9 @@ jQuery.noConflict();
                 'ganttchartColor_label': 'Field of color',
                 'ganttchartColor_label_name': 'Color',
                 'ganttchartColor_label_setting': 'Settings',
-                'ganttchartColor_description': 'Please enter the condition value coloring to. (More certain when example of "A, B, C") if the condition value is duplicated, it will be priority from the top.',
+                'ganttchartColor_description': 'Please enter the condition value coloring to.' +
+                '(More certain when example of "A, B, C") if the condition value is duplicated, ' +
+                'it will be priority from the top.',
                 'ganttchartColor_red': 'Red',
                 'ganttchartColor_red_name': 'Red',
                 'ganttchartColor_orange': 'Orange',
@@ -42,9 +46,9 @@ jQuery.noConflict();
                 'error': 'Error: ',
                 'plugin_submit': '     Save   ',
                 'plugin_cancel': '     Cancel   ',
-                'required_field': 'Required field is empty.',
+                'required_field': 'Required field is empty.'
             },
-            'ja':{
+            'ja': {
                 'ganttchartTitle': 'タイトル',
                 'ganttchartTitle_label': 'タイトルにするフィールド',
                 'ganttchartTitle_description': 'ガントチャートの縦軸の第一分類に表示するフィールドを指定してください。',
@@ -80,61 +84,87 @@ jQuery.noConflict();
                 'error': 'エラー: ',
                 'plugin_submit': '     保存   ',
                 'plugin_cancel': '  キャンセル   ',
-                'required_field': '必須項目が入力されていません。',
+                'required_field': '必須項目が入力されていません。'
             }
         };
-        
+
+        // To HTML escape
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         // To switch the display by the login user's language (English display in the case of Chinese)
         var lang = kintone.getLoginUser().language;
-        var i18n = (lang in terms) ? terms[lang]: terms['en'];
-        
+        var i18n = (lang in terms) ? terms[lang] : terms['en'];
+
         var configHtml = $('#ganttchart-plugin').html();
         var tmpl = $.templates(configHtml);
         $('div#ganttchart-plugin').html(tmpl.render({'terms': i18n}));
-        
+
         // Set in the item selection box retrieves the form information design
-        kintone.api(kintone.api.url('/k/v1/preview/form',true), 'GET', {'app': kintone.app.getId()}, function(resp) {
+        kintone.api(kintone.api.url('/k/v1/preview/form', true), 'GET', {'app': kintone.app.getId()}, function(resp) {
             for (var i = 0; i < resp.properties.length; i++) {
                 var prop = resp.properties[i];
-                
-                switch (prop['type']){
-                case 'SINGLE_LINE_TEXT': 
-                case 'MULTI_LINE_TEXT': 
-                    $('#ganttchart-plugin-title').append($('<option>').text(prop['label']).val(prop['code']));
-                    $('#ganttchart-plugin-desc').append($('<option>').text(prop['label']).val(prop['code']));
+
+                switch (prop['type']) {
+                case 'SINGLE_LINE_TEXT':
+                case 'MULTI_LINE_TEXT':
+                    $('#ganttchart-plugin-title').append($('<option>')
+                        .text(prop['label']).val(escapeHtml(prop['code'])));
+                    $('#ganttchart-plugin-desc').append($('<option>')
+                        .text(prop['label']).val(escapeHtml(prop['code'])));
                     break;
-                case 'DATE': 
-                case 'DATETIME': 
-                    $('#ganttchart-plugin-from').append($('<option>').text(prop['label']).val(prop['code']));
-                    $('#ganttchart-plugin-to').append($('<option>').text(prop['label']).val(prop['code']));
+                case 'DATE':
+                case 'DATETIME':
+                    $('#ganttchart-plugin-from').append($('<option>')
+                        .text(prop['label']).val(escapeHtml(prop['code'])));
+                    $('#ganttchart-plugin-to').append($('<option>')
+                        .text(prop['label']).val(escapeHtml(prop['code'])));
                     break;
-                case 'RADIO_BUTTON': 
-                case 'DROP_DOWN': 
-                    $('#ganttchart-plugin-color').append($('<option>').text(prop['label']).val(prop['code']));
+                case 'RADIO_BUTTON':
+                case 'DROP_DOWN':
+                    $('#ganttchart-plugin-color').append($('<option>')
+                        .text(prop['label']).val(escapeHtml(prop['code'])));
                     break;
                 }
             }
-            
+
             // Get the plug-in information to set the definition data
             var config = kintone.plugin.app.getConfig(PLUGIN_ID);
-            config['ganttchartTitle'] && $('#ganttchart-plugin-title').val(config['ganttchartTitle']);
-            config['ganttchartDesc'] && $('#ganttchart-plugin-desc').val(config['ganttchartDesc']);
-            config['ganttchartFrom'] && $('#ganttchart-plugin-from').val(config['ganttchartFrom']);
-            config['ganttchartTo'] && $('#ganttchart-plugin-to').val(config['ganttchartTo']);
-            config['ganttchartColor'] && $('#ganttchart-plugin-color').val(config['ganttchartColor']);
-            config['ganttchartColor_red'] && $('#ganttchart-plugin-color-red').val(config['ganttchartColor_red']);
-            config['ganttchartColor_orange'] && $('#ganttchart-plugin-color-orange').val(config['ganttchartColor_orange']);
-            config['ganttchartColor_green'] && $('#ganttchart-plugin-color-green').val(config['ganttchartColor_green']);
-            config['ganttchartColor_blue'] && $('#ganttchart-plugin-color-blue').val(config['ganttchartColor_blue']);
-            config['ganttchartColor_yellow'] && $('#ganttchart-plugin-color-yellow').val(config['ganttchartColor_yellow']);
-            config['ganttchartColor_gray'] && $('#ganttchart-plugin-color-gray').val(config['ganttchartColor_gray']);
-            config['ganttchartScall'] && $('#ganttchart-plugin-scall').val(config['ganttchartScall']);
-    
+            config['ganttchartTitle'] =
+                $('#ganttchart-plugin-title').val(escapeHtml(config['ganttchartTitle']));
+            config['ganttchartDesc'] =
+                $('#ganttchart-plugin-desc').val(escapeHtml(config['ganttchartDesc']));
+            config['ganttchartFrom'] =
+                $('#ganttchart-plugin-from').val(escapeHtml(config['ganttchartFrom']));
+            config['ganttchartTo'] =
+                $('#ganttchart-plugin-to').val(escapeHtml(config['ganttchartTo']));
+            config['ganttchartColor'] =
+                $('#ganttchart-plugin-color').val(escapeHtml(config['ganttchartColor']));
+            config['ganttchartColor_red'] =
+                $('#ganttchart-plugin-color-red').val(escapeHtml(config['ganttchartColor_red']));
+            config['ganttchartColor_orange'] =
+                $('#ganttchart-plugin-color-orange').val(escapeHtml(config['ganttchartColor_orange']));
+            config['ganttchartColor_green'] =
+                $('#ganttchart-plugin-color-green').val(escapeHtml(config['ganttchartColor_green']));
+            config['ganttchartColor_blue'] =
+                $('#ganttchart-plugin-color-blue').val(escapeHtml(config['ganttchartColor_blue']));
+            config['ganttchartColor_yellow'] =
+                $('#ganttchart-plugin-color-yellow').val(escapeHtml(config['ganttchartColor_yellow']));
+            config['ganttchartColor_gray'] =
+                $('#ganttchart-plugin-color-gray').val(escapeHtml(config['ganttchartColor_gray']));
+            config['ganttchartScall'] =
+                $('#ganttchart-plugin-scall').val(escapeHtml(config['ganttchartScall']));
         });
-    
+
         // Save the value
         $('#plugin_submit').click(function() {
-    
+
             var ganttchartTitle = $('#ganttchart-plugin-title').val();
             var ganttchartDesc = $('#ganttchart-plugin-desc').val();
             var ganttchartFrom = $('#ganttchart-plugin-from').val();
@@ -147,14 +177,14 @@ jQuery.noConflict();
             var ganttchartColor_yellow = $('#ganttchart-plugin-color-yellow').val();
             var ganttchartColor_gray = $('#ganttchart-plugin-color-gray').val();
             var ganttchartScall = $('#ganttchart-plugin-scall').val();
-    
-            // Check the required fields       
-            if (ganttchartTitle === '') {alert(i18n.required_field);return;}
-            if (ganttchartFrom === '') {alert(i18n.required_field);return;}
-            if (ganttchartTo === '') {alert(i18n.required_field);return;}
-            if (ganttchartColor === '') {alert(i18n.required_field);return;}
-            if (ganttchartScall === '') {alert(i18n.required_field);return;}
-            
+
+            // Check the required fields
+            if (ganttchartTitle === '') {alert(i18n.required_field); return; }
+            if (ganttchartFrom === '') {alert(i18n.required_field); return; }
+            if (ganttchartTo === '') {alert(i18n.required_field); return; }
+            if (ganttchartColor === '') {alert(i18n.required_field); return; }
+            if (ganttchartScall === '') {alert(i18n.required_field); return; }
+
             // Set the definition data
             var config = {};
             config['ganttchartTitle'] = ganttchartTitle;
@@ -169,15 +199,15 @@ jQuery.noConflict();
             config['ganttchartColor_yellow'] = ganttchartColor_yellow;
             config['ganttchartColor_gray'] = ganttchartColor_gray;
             config['ganttchartScall'] = ganttchartScall;
-            
+
             kintone.plugin.app.setConfig(config);
-            
+
         });
-    
+
         // Clear the value
         $('#plugin_cancel').click(function() {
             history.back();
         });
-    
+
     });
 })(jQuery, kintone.$PLUGIN_ID);

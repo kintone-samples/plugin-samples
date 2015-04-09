@@ -1,23 +1,42 @@
 /*
  * Gantt chart display of sample program
- * Copyright (c) 2014 Cybozu
+ * Copyright (c) 2015 Cybozu
  *
  * Licensed under the MIT License
  */
 jQuery.noConflict();
-
 (function($, PLUGIN_ID) {
 
     "use strict";
 
-    // Record list of events.
-    kintone.events.on('app.record.index.show', function(event) {
+    // To HTML escape
+    function escapeHtml(str) {
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
 
+    // Date conversion for Gantt.
+    function convertDateTime(str) {
+        var dt;
+        if (str !== "") {
+            dt = '/Date(' + (new Date(str)).getTime() + ')/';
+        } else {
+            dt = "";
+        }
+        return dt;
+    }
+
+    var GANTT_NAME, GANTT_DESC, GANTT_FROM, GANTT_TO, GANTT_SCALL;
+    var GANTT_LABEL, GANTT_COLOR;
+    var GANTT_RED, GANTT_ORANGE, GANTT_GREEN, GANTT_BLUE, GANTT_YELLOW, GANTT_GRAY;
+
+    // Set plugin
+    function setPlugin() {
         var conf;
-        var GANTT_NAME, GANTT_DESC, GANTT_FROM, GANTT_TO, GANTT_SCALL;
-        var GANTT_TIP, GANTT_LABEL, GANTT_COLOR, GANTT_RED, GANTT_ORANGE, GANTT_GREEN, GANTT_BLUE, GANTT_YELLOW, GANTT_GRAY;
-        var GANTT_MONTHS, GANTT_DOW, GANTT_WAIT = "";
-
         // Use the plug-in.
         if (PLUGIN_ID) {
             conf = kintone.plugin.app.getConfig(PLUGIN_ID);
@@ -28,7 +47,6 @@ jQuery.noConflict();
                 GANTT_TO = conf['ganttchartTo'];
                 GANTT_SCALL = conf['ganttchartScall'];
                 GANTT_COLOR = conf['ganttchartColor'];
-                GANTT_TIP = conf['ganttchartTitle'];
                 GANTT_LABEL = conf['ganttchartTitle'];
                 GANTT_NAME = conf['ganttchartTitle'];
                 GANTT_RED = conf['ganttchartColor_red'];
@@ -38,13 +56,13 @@ jQuery.noConflict();
                 GANTT_YELLOW = conf['ganttchartColor_yellow'];
                 GANTT_GRAY = conf['ganttchartColor_gray'];
             }
+
         // Set when utilized in JavaScript read without using a plug-in.
-        }else{
+        } else {
             GANTT_NAME = "To_Do";
             GANTT_DESC = "Details";
             GANTT_FROM = "From";
             GANTT_TO = "To";
-            GANTT_TIP = "To_Do";
             GANTT_LABEL = "To_Do";
             GANTT_SCALL = "days"; // days,weeks,months
             GANTT_COLOR = "Priority";
@@ -55,9 +73,17 @@ jQuery.noConflict();
             GANTT_YELLOW = "E";
             GANTT_GRAY = "";
         }
+    }
 
+    // Record list of events.
+    kintone.events.on('app.record.index.show', function(event) {
+
+        var GANTT_MONTHS, GANTT_DOW, GANTT_WAIT = "";
         var records = event.records;
         var data = [];
+
+        // Set plugin
+        setPlugin();
 
         // Don't display when there is no record.
         if (records.length === 0) {
@@ -122,26 +148,19 @@ jQuery.noConflict();
             var colorValue = records[i][GANTT_COLOR]['value'];
             if (colorValue === "") {
                 colorGantt = "ganttGray";
-            }
-            else if (arrayRed.indexOf(colorValue) >= 0) {
+            } else if (arrayRed.indexOf(colorValue) >= 0) {
                 colorGantt = "ganttRed";
-            }
-            else if (arrayOrange.indexOf(colorValue) >= 0) {
+            } else if (arrayOrange.indexOf(colorValue) >= 0) {
                 colorGantt = "ganttOrange";
-            }
-            else if (arrayGreen.indexOf(colorValue) >= 0) {
+            } else if (arrayGreen.indexOf(colorValue) >= 0) {
                 colorGantt = "ganttGreen";
-            }
-            else if (arrayBlue.indexOf(colorValue) >= 0) {
+            } else if (arrayBlue.indexOf(colorValue) >= 0) {
                 colorGantt = "ganttBlue";
-            }
-            else if (arrayYellow.indexOf(colorValue) >= 0) {
+            } else if (arrayYellow.indexOf(colorValue) >= 0) {
                 colorGantt = "ganttYellow";
-            }
-            else if (arrayGray.indexOf(colorValue) >= 0) {
+            } else if (arrayGray.indexOf(colorValue) >= 0) {
                 colorGantt = "ganttGray";
-            }
-            else {
+            } else {
                 colorGantt = "ganttGray";
             }
 
@@ -184,32 +203,8 @@ jQuery.noConflict();
             left: "70px",
             itemsPerPage: 100,
             waitText: GANTT_WAIT,
-            scrollToToday: true,
-
-            onItemClick: function(data) {
-                // None
-            }
+            scrollToToday: true
         });
     });
-    
-    // To HTML escape
-    function escapeHtml(str) {
-        str = str.replace(/&/g, '&amp;');
-        str = str.replace(/</g, '&lt;');
-        str = str.replace(/>/g, '&gt;');
-        str = str.replace(/"/g, '&quot;');
-        str = str.replace(/'/g, '&#39;');
-        return str;
-    };
-
-    // Date conversion for Gantt.
-    function convertDateTime(str) {
-        if (str !== "") {
-            return '/Date(' + (new Date(str)).getTime() + ')/';
-        }
-        else {
-            return "";
-        }
-    }
 
 })(jQuery, kintone.$PLUGIN_ID);

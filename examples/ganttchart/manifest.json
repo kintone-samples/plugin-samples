@@ -20,7 +20,7 @@
     },
     "desktop": {    
         "js": [
-            "https://js.cybozu.com/jquery/2.1.1/jquery.min.js",
+            "https://js.cybozu.com/jquery/2.1.3/jquery.min.js",
             "https://js.cybozu.com/jquerygantt/20140623/jquery.fn.gantt.min.js",
             "js/desktop-ganttchart.js"
         ],
@@ -31,13 +31,13 @@
     },
     "mobile": {
         "js": [
-            "https://js.cybozu.com/jquery/2.1.1/jquery.min.js"
+            "https://js.cybozu.com/jquery/2.1.3/jquery.min.js"
         ]
     },
     "config": {
         "html": "html/config.html",
         "js": [
-            "https://js.cybozu.com/jquery/2.1.1/jquery.min.js",
+            "https://js.cybozu.com/jquery/2.1.3/jquery.min.js",
             "https://js.cybozu.com/jsrender/1.0.0-beta/jsrender.min.js",
             "js/config.js"
         ],
