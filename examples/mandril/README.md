@@ -8,7 +8,7 @@ This plug-in enables kintone to send Emails through Mandrill.
 2. Install this plug-in into your environment.
 3. Install this plug-in into kintone apps that you want to use Email.
 4. Set general settings in the Mandrill plug-in settings.
-5. Match up variables in the Mandrill template to kintone field.
+5. Match up variables in the Mandrill template to kintone fields.
 
 ## Requirement
 * Mandrill account.
