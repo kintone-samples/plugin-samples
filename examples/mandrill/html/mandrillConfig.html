@@ -1,0 +1,178 @@
+<div>  
+    <Font size = 5><span id="title">Mandrill Plugin Settings</span></Font>
+    </br>
+    </br>
+<div class="kintoneplugin-label"><B><span id="subTitle1">General settings</span></B></div>
+    <hr>
+    <div class="block">
+        <label class="kintoneplugin-label">
+            <span id ="container_label1">Mandrill API key</span>
+            <span class="kintoneplugin-require">*</span>        
+        </label>
+        <div class="kintoneplugin-row"><span id="helpText1">Enter the API key provided by Mandrill. </span><a href="http://help.mandrill.com/entries/21714881-How-do-I-access-Mandrill-for-sending-email-" target="_blank"><span id ="link1">API Key Help</span></a></div>
+        <div class="kintoneplugin-input-outer">
+            <input id="mandrill_apikey" class="kintoneplugin-input-text"></input>
+        </div>
+    </div>
+    <div class="block">
+        <label class="kintoneplugin-label">
+            <span id ="container_label2">Mail Template</span>
+            <span class="kintoneplugin-require">*</span>        
+        </label>
+        <div class="kintoneplugin-row"><span id="helpText2">Get a list of all the templates and select a template.</span></div>
+        <div class="button-block" style="float:left;">
+             <button type="button" id="get-template" class="kintoneplugin-button-normal"><span id ="getBtn">Get a list of Templates     </span></button>&nbsp;&nbsp;
+        </div>
+        <div class="kintoneplugin-select-outer">
+            <div class="kintoneplugin-select">
+                <select id="template_select">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <br>
+        <div class="kintoneplugin-row"><span id="helpResult">The full HTML code of the template.</span></div>
+        <textarea id="template_result" cols="80" rows="10" disabled = true></textarea>
+    </div>
+    <div class="block">
+        <label class="kintoneplugin-label">
+            <span id ="container_label3">Email recipient field code</span>
+            <span class="kintoneplugin-require">*</span><br>
+        </label>
+        <div class="kintoneplugin-row"><span id="helpText3">Enter the field code of the field containing the email address</span></div>
+        <div class="kintoneplugin-select-outer">
+            <div class="kintoneplugin-select">
+                <select id="email_select">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class ="block">
+        <div class="kintoneplugin-label"><B><span id ="subTitle2">Additional Field matchings between Mandrill and kintone(Optional)</span></B></div>
+        <hr>
+        <div class ="childBlock">
+            <div class="leftblock" style="float:left;">
+                <label class="kintoneplugin-label">
+                    <span id ="container_label4">1 Madrill Variable</span>
+                </label>
+                <br>
+                <div class="kintoneplugin-input-outer"> 
+                    <input id="variable_1" class="kintoneplugin-input-text" disabled="disabled"></input>
+                </div>
+            </div>
+            <div class="rightblock" class="rightblock">
+                <label class="kintoneplugin-label">
+                    <span id ="container_label5">1 kintone Field</span>
+                </label>
+                <br>
+                <div class="kintoneplugin-select-outer" id="code-outer1">
+                    <div class="kintoneplugin-select">
+                        <select id="field_select1">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class ="childBlock">
+            <div class="leftblock" style="float:left;">
+                <label class="kintoneplugin-label">
+                    <span id ="container_label6">2 Madrill Variable</span>
+                </label>
+                <br>
+                <div class="kintoneplugin-input-outer"> 
+                    <input id="variable_2" class="kintoneplugin-input-text" disabled="disabled"></input>
+                </div>
+            </div>
+            <div class="rightblock">
+                <label class="kintoneplugin-label">
+                    <span id ="container_label7">2 kintone Field</span>
+                </label>
+                <br>
+                <div class="kintoneplugin-select-outer">
+                    <div class="kintoneplugin-select">
+                        <select id="field_select2">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class ="childBlock">
+            <div class="leftblock" style="float:left;">
+                <label class="kintoneplugin-label">
+                    <span id ="container_label8">3 Madrill Variable</span>
+                </label>
+                <br>
+                <div class="kintoneplugin-input-outer"> 
+                    <input id="variable_3" class="kintoneplugin-input-text" disabled="disabled"></input>
+                </div>
+            </div>
+            <div class="rightblock">
+                <label class="kintoneplugin-label">
+                    <span id ="container_label9">3 kintone Field</span>
+                </label>
+                <br>
+                <div class="kintoneplugin-select-outer">
+                    <div class="kintoneplugin-select">
+                        <select id="field_select3">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class ="childBlock">
+            <div class="leftblock" style="float:left;">
+                <label class="kintoneplugin-label">
+                    <span id ="container_label10">4 Madrill Variable</span>
+                </label>
+                <br>
+                <div class="kintoneplugin-input-outer"> 
+                    <input id="variable_4" class="kintoneplugin-input-text" disabled="disabled"></input>
+                </div>
+            </div>
+            <div class="rightblock">
+                <label class="kintoneplugin-label">
+                    <span id ="container_label11">4 kintone Field</span>
+                </label>
+                <br>
+                <div class="kintoneplugin-select-outer">
+                    <div class="kintoneplugin-select">
+                        <select id="field_select4">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class ="childBlock">
+            <div class="leftblock" style="float:left;">
+                <label class="kintoneplugin-label">
+                    <span id ="container_label12">5 Madrill Variable</span>
+                </label>
+                <br>
+                <div class="kintoneplugin-input-outer"> 
+                    <input id="variable_5" class="kintoneplugin-input-text" disabled="disabled"></input>
+                </div>
+            </div>
+            <div class="rightblock">
+                <label class="kintoneplugin-label">
+                    <span id ="container_label13">5 kintone Field</span>
+                </label>
+                <br>
+                <div class="kintoneplugin-select-outer">
+                    <div class="kintoneplugin-select">
+                        <select id="field_select5">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block">
+        <button type="button" id="submit" class="kintoneplugin-button-dialog-ok"><span id ="saveBtn">     Save     </span></button>
+        <button type="button" id="cancel" class="kintoneplugin-button-dialog-cancel"><span id = "cancelBtn">     Cancel   </span></button>
+    </div>
+</div> 
