@@ -20,3 +20,7 @@ Overview
 ## Author
 
 [Kyohei Kitagawa](https://www.facebook.com/kyouhei.kitagawa)
+
+## Copyright
+
+Copyright(c) Cybozu, Inc.
