@@ -1,0 +1,47 @@
+{
+    "manifest_version": 1,
+    "version": 1,
+    "type": "APP",
+    "name": {
+        "ja": "Mandril plug-in",
+        "en": "Mandril plug-in",
+        "zh": "Mandril plug-in"
+    },
+    "description": {
+        "ja": "Mandril can send Email.",
+        "en": "Mandril can send Email.",
+        "zh": "Mandril can send Email."
+    },
+    "icon": "image/image.png",
+    "homepage_url": {
+        "ja": "https://mandrill.com/",
+        "en": "https://mandrill.com/",
+        "zh": "https://mandrill.com/"
+    },
+    "desktop": {
+        "js": [
+            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+            "https://js.cybozu.com/sweetalert/v0.5.0/sweet-alert.min.js",
+            "js/mandrillMail.js"
+        ],
+        "css": [
+            "css/51-us-default.css",
+            "https://js.cybozu.com/sweetalert/v0.5.0/sweet-alert.css"
+        ]
+    },
+    "config": {
+        "html": "html/mandrillConfig.html",
+        "js": [
+            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+            "https://js.cybozu.com/sweetalert/v0.5.0/sweet-alert.min.js",
+            "js/mandrilConfig.js"
+        ],
+        "css": [
+            "css/51-us-default.css",
+            "https://js.cybozu.com/sweetalert/v0.5.0/sweet-alert.css",
+            "css/mandrill-design.css"
+                
+        ],
+        "required_params": ["mandrillApiKey","templateName","emailFieldCode"]
+    }
+}
