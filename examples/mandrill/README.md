@@ -19,7 +19,7 @@ This plug-in enables kintone to send Emails through Mandrill.
 
 ## Author
 
-[Kyohei Kitagawa]
+Kyohei Kitagawa
 
 ## Copyright
 
