@@ -20,25 +20,25 @@
     },
     "desktop": {
         "js": [
-            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
-            "https://js.cybozu.com/sweetalert/v0.5.0/sweet-alert.min.js",
+            "https://js.kintone.com/jquery/1.11.1/jquery.min.js",
+            "https://js.kintone.com/sweetalert/v0.5.0/sweet-alert.min.js",
             "js/mandrillMail.js"
         ],
         "css": [
             "css/51-us-default.css",
-            "https://js.cybozu.com/sweetalert/v0.5.0/sweet-alert.css"
+            "https://js.kintone.com/sweetalert/v0.5.0/sweet-alert.css"
         ]
     },
     "config": {
         "html": "html/mandrillConfig.html",
         "js": [
-            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
-            "https://js.cybozu.com/sweetalert/v0.5.0/sweet-alert.min.js",
-            "js/mandrilConfig.js"
+            "https://js.kintone.com/jquery/1.11.1/jquery.min.js",
+            "https://js.kintone.com/sweetalert/v0.5.0/sweet-alert.min.js",
+            "js/mandrillConfig.js"
         ],
         "css": [
             "css/51-us-default.css",
-            "https://js.cybozu.com/sweetalert/v0.5.0/sweet-alert.css",
+            "https://js.kintone.com/sweetalert/v0.5.0/sweet-alert.css",
             "css/mandrill-design.css"
                 
         ],
