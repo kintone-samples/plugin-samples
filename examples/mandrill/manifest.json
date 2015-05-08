@@ -3,14 +3,14 @@
     "version": 1,
     "type": "APP",
     "name": {
-        "ja": "Mandril plug-in",
-        "en": "Mandril plug-in",
-        "zh": "Mandril plug-in"
+        "ja": "Mandrill plug-in",
+        "en": "Mandrill plug-in",
+        "zh": "Mandrill plug-in"
     },
     "description": {
-        "ja": "Mandril can send Email.",
-        "en": "Mandril can send Email.",
-        "zh": "Mandril can send Email."
+        "ja": "Mandrill can send Email.",
+        "en": "Mandrill can send Email.",
+        "zh": "Mandrill can send Email."
     },
     "icon": "image/image.png",
     "homepage_url": {
