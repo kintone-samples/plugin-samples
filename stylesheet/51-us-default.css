@@ -263,14 +263,14 @@
   color: #3498db;
 }
 
-/* Select Box */
+/* Dropdown (Simple) */
 /*
 <div class="kintoneplugin-select-outer">
   <div class="kintoneplugin-select">
     <select>
-      <option>Select List A</option>
-      <option>Select List B</option>
-      <option>Select List C</option>
+      <option>Option A</option>
+      <option>Option B</option>
+      <option>Option C</option>
     </select>
   </div>
 </div>
