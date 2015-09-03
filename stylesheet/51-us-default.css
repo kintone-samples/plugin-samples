@@ -128,7 +128,7 @@
 <div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="3" id="checkbox-3" disabled=""><label for="checkbox-3">チェックボックスD</label></span></div>
 */
 .kintoneplugin-input-checkbox-item {
-/*  display: block;*/
+  display: block;
   margin-right: 16px;
   margin-bottom: 8px;
   padding-left: 1px;
