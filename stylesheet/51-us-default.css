@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /*
  * Copyright (c) 2014 Cybozu
- * 
+ *
  * Licensed under the MIT License
 */
 
@@ -56,6 +56,27 @@
 */
 .kintoneplugin-label {
   margin-bottom: 8px;
+  font-weight: bold;
+}
+
+/* 設定項目の見出し */
+/* 項目 */
+/*
+<div class="kintoneplugin-label">設定項目の見出し</div>
+*/
+.kintoneplugin-title {
+  margin-bottom: 8px;
+}
+
+/* 設定項目の説明 */
+/* 説明 */
+/*
+<div class="kintoneplugin-desc">設定項目の説明</div>
+*/
+.kintoneplugin-desc {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #888;
 }
 
 /* 必須項目 */
@@ -107,11 +128,18 @@
 <div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="3" id="checkbox-3" disabled=""><label for="checkbox-3">チェックボックスD</label></span></div>
 */
 .kintoneplugin-input-checkbox-item {
-  display: block;
+/*  display: block;*/
   margin-right: 16px;
   margin-bottom: 8px;
   padding-left: 1px;
   max-width: 98%;
+}
+
+.kintoneplugin-input-checkbox-item-block  {
+  display: block;
+}
+.kintoneplugin-input-checkbox-item-inline {
+  display: inline-block;
 }
 
 .kintoneplugin-input-checkbox-item:hover + label {
