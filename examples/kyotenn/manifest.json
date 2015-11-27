@@ -1,0 +1,47 @@
+{
+  "manifest_version": 1,
+  "version": 1,
+  "type": "APP",
+  "name": {
+    "ja": "拠点案内サービス プラグイン",
+    "en": "MAP Plugin",
+    "zh": "MAP Plugin"
+  },
+  "description": {
+    "ja": "拠点サービス案内 APIを使ってkintoneに地図を表示します。",
+    "en": "This is an Extension to display japanese map on kintone.",
+    "zh": "This is an Extension to display japanese map on kintone."
+  },
+  "icon": "img/communication(green)_green.jpg",
+  "homepage_url": {
+    "ja": "http://www.zenrin.co.jp/product/gis/foothold/index.html",
+    "en": "http://www.zenrin.co.jp/product/gis/foothold/index.html",
+    "zh": "http://www.zenrin.co.jp/product/gis/foothold/index.html"
+  },
+  "desktop": {
+    "js": [
+      "js/jquery.min.js",
+      "js/map-zenrin_index-show.js",
+      "js/map-zenrin_detail-show.js",
+      "js/ma-zenrin_getLatLon.js"
+    ]
+  },
+  "mobile": {
+    "js": [
+      "js/jquery.min.js",
+      "js/map-zenrin_mobile.js"
+    ]
+  },
+  "config": {
+    "html": "html/config.html",
+    "js": [
+      "js/jquery.min.js",
+      "js/config.js"
+    ],
+    "css": [
+      "css/51-us-default.css",
+      "css/config.css"
+    ],
+    "required_params": []
+  }
+}
