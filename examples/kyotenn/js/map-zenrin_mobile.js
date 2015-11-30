@@ -14,6 +14,7 @@ jQuery.noConflict();
     var mobileMapHeight = config.mobileMapHeight || '200px';
     var dispalyRootAvailable = config.dispalyRootAvailable;
     var apikey = config.apikey;
+    var domain = config.domain;
     var map;
     var rootMethod;
     //-------関数------------------------------//
@@ -225,8 +226,8 @@ jQuery.noConflict();
     function init(event) {
         //詳細画面でのマップ表示のONの場合、マップを表示する
         if (mobileMapAvailable) {
-            //いつもNAVI API(JS)をロード
-            loadJS('https://api.its-mo.com/cgi/loader.cgi?key=' +
+            //API(JS)をロード
+            loadJS('https://'+ domain +'/loader.cgi?key=' +
             apikey + '&ver=2.0&api=zdcmap.js,search.js,shape.js,control.js');
             //waiting ZDC object defined, and loading marker and map
             waitLoaded(event, 200, 4000);

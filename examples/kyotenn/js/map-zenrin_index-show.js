@@ -11,6 +11,7 @@ jQuery.noConflict();
     var lonField = config.lonField;
     var tooltipTitle = config.tooltipTitle;
     var apikey = config.apikey;
+    var domain = config.domain;
     var indexMapAvailable = config.indexMapAvailable;
     var indexMapHeight = config.indexMapHeight || '600px';
     var centerLat = parseFloat(config.indexCenterLat, 10) || undefined;
@@ -110,7 +111,7 @@ jQuery.noConflict();
     function init(event) {
         if (indexMapAvailable) {
             //add js-file by using zenrin API
-            loadJS('https://api.its-mo.com/cgi/loader.cgi?key=' + apikey + '&ver=2.0&api=zdcmap.js,control.js');
+            loadJS('https://'+ domain +'/cgi/loader.cgi?key=' + apikey + '&ver=2.0&api=zdcmap.js,control.js&enc=SJIS');
             //waiting ZDC object defined, and loading marker and map
             waitLoaded(event, 200, 4000);
         }
