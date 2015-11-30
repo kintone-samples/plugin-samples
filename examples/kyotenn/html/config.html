@@ -1,146 +1,132 @@
-<!--
-Copyright (c) 2015 Cybozu
-Licensed under the MIT License
--->
-<!--
-<!DOCTYPE html>
-	<head>
-		<script src="https://js.cybozu.com/jquery/1.11.1/jquery.min.js"></script>
-		<link rel="stylesheet" href="../css/51-jp-default.css" type="text/css">
-	</head>
--->
-	<body>
-		<div id="kintone-itsunavi-plugin">
+<body>
+	<div id="kintone-itsunavi-plugin">
 
-			<div class="kintoneplugin-row">
-				<div class="kintoneplugin-label">住所フィールドを選択してください。<span class="kintoneplugin-require">*</span></div>
-				<div class="kintoneplugin-select-outer">
-					<div class="kintoneplugin-select">
-						<select id="itsunavi-address-feeld">
-							<option value="">--</option>
-						</select>
-					</div>
+		<div class="kintoneplugin-row">
+			<div class="kintoneplugin-label">住所フィールドを選択してください。<span class="kintoneplugin-require">*</span></div>
+			<div class="kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select id="itsunavi-address-feeld">
+						<option value="">--</option>
+					</select>
 				</div>
-			</div>
-
-			<div class="kintoneplugin-row">
-				<div class="kintoneplugin-label">緯度フィールドを選択してください。<span class="kintoneplugin-require">*</span></div>
-				<div class="kintoneplugin-select-outer">
-					<div class="kintoneplugin-select">
-						<select id="itsunavi-lat-feeld">
-							<option value="">--</option>
-						</select>
-					</div>
-				</div>
-			</div>
-
-			<div class="kintoneplugin-row">
-				<div class="kintoneplugin-label">経度フィールドを選択してください。<span class="kintoneplugin-require">*</span></div>
-				<div class="kintoneplugin-select-outer">
-					<div class="kintoneplugin-select">
-						<select id="itsunavi-lon-feeld">
-							<option value="">--</option>
-						</select>
-					</div>
-				</div>
-			</div>
-
-			<div class="kintoneplugin-row">
-				<div class="kintoneplugin-label">地図を表示するスペースフィールドを選択してください。(詳細画面に地図を表示する場合)</div>
-				<div class="kintoneplugin-select-outer">
-					<div class="kintoneplugin-select">
-						<select id="itsunavi-space-feeld">
-							<option value="">--</option>
-						</select>
-					</div>
-				</div>
-			</div>
-
-			<div class="kintoneplugin-row">
-				<div class="kintoneplugin-label">マーカーのツールチップに表示する項目のフィールドを選択してください。</div>
-				<div class="kintoneplugin-select-outer">
-					<div class="kintoneplugin-select">
-						<select id="itsunavi-tooltip-title">
-							<option value="">--</option>
-						</select>
-					</div>
-				</div>
-			</div>
-
-			<div class="kintoneplugin-row">
-				<div class="kintoneplugin-label">使用する機能を選択してください。</div>
-				<div class="kintoneplugin-input-checkbox">
-					<span class="kintoneplugin-input-checkbox-item"><input type="checkbox" value="true" id="itsunavi-index-map-available"><label for="itsunavi-index-map-available">一覧画面のマップ表示</label></span>
-				</div>
-				<div class="kintoneplugin-input-checkbox">
-					<span class="kintoneplugin-input-checkbox-item"><input type="checkbox" value="true" id="itsunavi-detail-map-available"><label for="itsunavi-detail-map-available">詳細画面のマップ表示</label></span>
-				</div>
-				<div class="kintoneplugin-input-checkbox">
-					<span class="kintoneplugin-input-checkbox-item"><input type="checkbox" value="true" id="itsunavi-display-root-available"><label for="itsunavi-display-root-available">現在地から目的地までのルートを表示する(詳細画面のみ)</label></span>
-				</div>
-				<div class="kintoneplugin-input-checkbox">
-					<span class="kintoneplugin-input-checkbox-item"><input type="checkbox" value="true" id="itsunavi-mobile-map-available"><label for="itsunavi-mobile-map-available">モバイル画面でのマップ表示</label></span>
-				</div>
-			</div>
-
-			<div class="kintoneplugin-row">
-				<div class="kintoneplugin-label">マップのサイズを指定してください(単位: px)。未入力の場合デフォルトの値が適用されます。</div>
-				<div>
-					<div class="kintone-box">
-						<div class="kintoneplugin-input-outer">
-							<div>一覧画面のマップの高さ</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-index-map-height" placeholder="600px">
-						</div>
-					</div>
-				</div><br />
-				<div>
-					<div class="kintone-box">
-						<div class="kintoneplugin-input-outer">
-							<div>詳細画面のマップの高さ</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-detail-map-height" placeholder="600px">
-						</div>
-					</div>
-					<div class="kintone-box">
-						<div class="kintoneplugin-input-outer">
-							<div>詳細画面のマップの横幅</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-detail-map-width" placeholder="600px">
-						</div>
-					</div><br /><br />
-				</div>
-
-				<div class="kintoneplugin-input-outer">
-					<div>モバイル画面のマップの高さ</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-mobile-map-height" placeholder="200px">
-				</div>
-			</div>
-
-            <div class="kintoneplugin-row">
-				<div class="kintoneplugin-label">一覧画面に表示する地図の中心緯度・経度、ズームサイズを指定してください。(一覧画面に地図を表示する場合)</div>
-				    <div class="kintoneplugin-input-outer">
-						<div>一覧画面のマップの中心緯度</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-index-map-lat" placeholder="35.681382">
-					</div>
-					<div class="kintoneplugin-input-outer">
-						<div>一覧画面のマップの中心経度</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-index-map-lon" placeholder="139.766084">
-					</div>
-				    <div class="kintoneplugin-input-outer">
-						<div>一覧画面のマップのズームサイズ(5~17)</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-index-map-zoom" placeholder="10">
-					</div>
-				</div>
-			</div>
-			<div class="kintoneplugin-row">
-				<div class="kintoneplugin-label">株式会社ゼンリンより提供された企業IDを入力してください。<span class="kintoneplugin-require">*</span></div>
-				<div class="kintoneplugin-input-outer">
-					<input class="kintoneplugin-input-text" type="text" id="itsunavi-api-key">
-				</div>
-            </div>
-            <div class="kintoneplugin-row">
-				<div class="kintoneplugin-label">開発用 or 本番用のドメインを入力してください。<span class="kintoneplugin-require">*</span>(例 https://***/ → ***の部分です。)</div>
-				<div class="kintoneplugin-input-outer">
-					<input class="kintoneplugin-input-text" type="text" id="itsunavi-api-domain">
-				</div>
-            </div>
-			<div class="form-submit">
-				<button class="kintoneplugin-button-dialog-ok" id="plugin_submit" type="button">保存</button>
-				<button class="kintoneplugin-button-dialog-cancel" id="plugin_cancel" type="button">キャンセル</button>
 			</div>
 		</div>
-	</body>
-<!--
-</html>
--->
+
+		<div class="kintoneplugin-row">
+			<div class="kintoneplugin-label">緯度フィールドを選択してください。<span class="kintoneplugin-require">*</span></div>
+			<div class="kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select id="itsunavi-lat-feeld">
+						<option value="">--</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="kintoneplugin-row">
+			<div class="kintoneplugin-label">経度フィールドを選択してください。<span class="kintoneplugin-require">*</span></div>
+			<div class="kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select id="itsunavi-lon-feeld">
+						<option value="">--</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="kintoneplugin-row">
+			<div class="kintoneplugin-label">地図を表示するスペースフィールドを選択してください。(詳細画面に地図を表示する場合)</div>
+			<div class="kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select id="itsunavi-space-feeld">
+						<option value="">--</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="kintoneplugin-row">
+			<div class="kintoneplugin-label">マーカーのツールチップに表示する項目のフィールドを選択してください。</div>
+			<div class="kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select id="itsunavi-tooltip-title">
+						<option value="">--</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="kintoneplugin-row">
+			<div class="kintoneplugin-label">使用する機能を選択してください。</div>
+			<div class="kintoneplugin-input-checkbox">
+				<span class="kintoneplugin-input-checkbox-item"><input type="checkbox" value="true" id="itsunavi-index-map-available"><label for="itsunavi-index-map-available">一覧画面のマップ表示</label></span>
+			</div>
+			<div class="kintoneplugin-input-checkbox">
+				<span class="kintoneplugin-input-checkbox-item"><input type="checkbox" value="true" id="itsunavi-detail-map-available"><label for="itsunavi-detail-map-available">詳細画面のマップ表示</label></span>
+			</div>
+			<div class="kintoneplugin-input-checkbox">
+				<span class="kintoneplugin-input-checkbox-item"><input type="checkbox" value="true" id="itsunavi-display-root-available"><label for="itsunavi-display-root-available">現在地から目的地までのルートを表示する(詳細画面のみ)</label></span>
+			</div>
+			<div class="kintoneplugin-input-checkbox">
+				<span class="kintoneplugin-input-checkbox-item"><input type="checkbox" value="true" id="itsunavi-mobile-map-available"><label for="itsunavi-mobile-map-available">モバイル画面でのマップ表示</label></span>
+			</div>
+		</div>
+
+		<div class="kintoneplugin-row">
+			<div class="kintoneplugin-label">マップのサイズを指定してください(単位: px)。未入力の場合デフォルトの値が適用されます。</div>
+			<div>
+				<div class="kintone-box">
+					<div class="kintoneplugin-input-outer">
+						<div>一覧画面のマップの高さ</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-index-map-height" placeholder="600px">
+					</div>
+				</div>
+			</div><br />
+			<div>
+				<div class="kintone-box">
+					<div class="kintoneplugin-input-outer">
+						<div>詳細画面のマップの高さ</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-detail-map-height" placeholder="600px">
+					</div>
+				</div>
+				<div class="kintone-box">
+					<div class="kintoneplugin-input-outer">
+						<div>詳細画面のマップの横幅</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-detail-map-width" placeholder="600px">
+					</div>
+				</div><br /><br />
+			</div>
+
+			<div class="kintoneplugin-input-outer">
+				<div>モバイル画面のマップの高さ</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-mobile-map-height" placeholder="200px">
+			</div>
+		</div>
+
+    <div class="kintoneplugin-row">
+			<div class="kintoneplugin-label">一覧画面に表示する地図の中心緯度・経度、ズームサイズを指定してください。(一覧画面に地図を表示する場合)</div>
+			    <div class="kintoneplugin-input-outer">
+					<div>一覧画面のマップの中心緯度</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-index-map-lat" placeholder="35.681382">
+				</div>
+				<div class="kintoneplugin-input-outer">
+					<div>一覧画面のマップの中心経度</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-index-map-lon" placeholder="139.766084">
+				</div>
+			    <div class="kintoneplugin-input-outer">
+					<div>一覧画面のマップのズームサイズ(5~17)</div><input class="kintoneplugin-input-text" type="text" id="itsunavi-index-map-zoom" placeholder="10">
+				</div>
+			</div>
+		</div>
+		<div class="kintoneplugin-row">
+			<div class="kintoneplugin-label">株式会社ゼンリンより提供された企業IDを入力してください。<span class="kintoneplugin-require">*</span></div>
+			<div class="kintoneplugin-input-outer">
+				<input class="kintoneplugin-input-text" type="text" id="itsunavi-api-key">
+			</div>
+    </div>
+    <div class="kintoneplugin-row">
+			<div class="kintoneplugin-label">開発用 or 本番用のドメインを入力してください。<span class="kintoneplugin-require">*</span>(例 https://***/ → ***の部分です。)</div>
+			<div class="kintoneplugin-input-outer">
+				<input class="kintoneplugin-input-text" type="text" id="itsunavi-api-domain">
+			</div>
+    </div>
+		<div class="form-submit">
+			<button class="kintoneplugin-button-dialog-ok" id="plugin_submit" type="button">保存</button>
+			<button class="kintoneplugin-button-dialog-cancel" id="plugin_cancel" type="button">キャンセル</button>
+		</div>
+	</div>
+</body>
