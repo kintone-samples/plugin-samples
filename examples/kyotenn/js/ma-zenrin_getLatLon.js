@@ -11,6 +11,7 @@ jQuery.noConflict();
     var latField = config.latField;
     var lonField = config.lonField;
     var apikey = config.apikey;
+    var domain = config.domain;
     //-------関数------------------------------//
     //外部JSをロードする関数
     function loadJS(src) {
@@ -21,8 +22,8 @@ jQuery.noConflict();
     }
     //--------Main------------------------------//
     kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.index.edit.show'], function(event) {
-        //いつもNAVI SDK(JS)のロード
-        loadJS('https://api.its-mo.com/cgi/loader.cgi?key=' + apikey + '&ver=2.0&api=zdcmap.js,search.js');
+        //SDK(JS)のロード
+        loadJS('http://'+ domain +'/cgi/loader.cgi?key=' + apikey + '&ver=2.0&api=zdccommon.js&enc=SJIS');
         //緯度、経度フィールドのdisabled
         var record = event.record;
         record[latField].disabled = true;

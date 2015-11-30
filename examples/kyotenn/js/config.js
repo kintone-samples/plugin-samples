@@ -84,6 +84,9 @@ jQuery.noConflict();
         if (config.mobileMapHeight) {
             $('#itsunavi-mobile-map-height').val(config.mobileMapHeight);
         }
+        if (config.domain) {
+            $('#itsunavi-api-domain').val(config.domain);
+        }
     }
     //getFieldList and add select option
     function getFieldList() {
@@ -137,8 +140,10 @@ jQuery.noConflict();
         config.detailMapHeight = escapeHtml($('#itsunavi-detail-map-height').val());
         config.detailMapWidth = escapeHtml($('#itsunavi-detail-map-width').val());
         config.mobileMapHeight = escapeHtml($('#itsunavi-mobile-map-height').val());
+        config.domain = escapeHtml($('#itsunavi-api-domain').val());
+
         //checking required
-        if (config.apikey === '' || config.addressField === '' || config.latField === '' || config.lonField === '') {
+        if (config.apikey === '' || config.addressField === '' || config.latField === '' || config.lonField === '' || config.domain == '') {
             alert('未入力項目があります。\n必須項目を入力してください。');
             return false;
         }
