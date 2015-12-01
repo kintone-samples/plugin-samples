@@ -23,7 +23,7 @@ jQuery.noConflict();
     //--------Main------------------------------//
     kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.index.edit.show'], function(event) {
         //SDK(JS)のロード
-        loadJS('http://'+ domain +'/cgi/loader.cgi?key=' + apikey + '&ver=2.0&api=zdcmap.js,serach.js&enc=SJIS');
+        loadJS('http://'+ domain +'/cgi/loader.cgi?key=' + apikey + '&ver=2.0&api=zdcmap.js,search.js&enc=SJIS');
         //緯度、経度フィールドのdisabled
         var record = event.record;
         record[latField].disabled = true;
