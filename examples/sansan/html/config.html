@@ -1,0 +1,194 @@
+<div id="sansan-plugin">
+<!--Sansan API Keyフィールド-->
+	<div class="block">
+		<div class="kintoneplugin-label">{{html:terms.sansan_apikey_title}}<span class="kintoneplugin-require">*</span></div>
+		<div class="kintoneplugin-row">{{html:terms.sansan_apikey_desc}}</div>
+		<div class="kintoneplugin-input-outer">
+			<input class="kintoneplugin-input-text" id="sansan_api_code" type="text">
+		</div>
+	</div>
+
+<!--検索ボタン配置スペース-->
+	<div class="block">
+		<div class="kintoneplugin-label">{{html:terms.sansan_spacefield_title}}<span class="kintoneplugin-require">*</span></div>
+		<div class="kintoneplugin-row">{{html:terms.sansan_spacefield_desc}}</div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select sansan-plugin-select">
+				<select id="sansan_spacefield_code">
+					<option value="null">--</option>
+				</select>
+			</div>
+		</div>
+	</div>
+
+<!--検索キーフィールド-->
+	<div class="block">
+		<div class="kintoneplugin-label">{{html:terms.sansan_keyfield_title}}<span class="kintoneplugin-require">*</span></div>
+		<div class="kintoneplugin-row">{{html:terms.sansan_keyfield_desc}}</div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select sansan-plugin-select">
+				<select class="sansan-copy-text sansan-copy-mail sansan-copy-call" id="sansan_keyfield_code">
+					<option value="null">--</option>
+				</select>
+			</div>
+		</div>
+	</div>
+
+<!--コピー元のSansanフィールド-->
+	<div class="block">
+		<div class="kintoneplugin-label">{{html:terms.sansan_originalfield_title}}<span class="kintoneplugin-require">*</span></div>
+		<div class="kintoneplugin-row">{{html:terms.sansan_originalfield_desc}}</div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select sansan-plugin-select">
+				<select id="sansan_originalfield_code">
+					<option value="null">--</option>
+					<option value="companyName">会社名</option>
+					<option value="name">名前</option>
+					<option value="email">メールアドレス</option>
+					<option value="tel">電話番号</option>
+					<option value="mobile">携帯番号</option>
+				</select>
+			</div>
+		</div>
+	</div>
+
+<!--コピー先フィールド-->
+	<div class="block">
+		<div class="kintoneplugin-label">{{html:terms.sansan_copy_title}}</div>
+		<div class="kintoneplugin-row">{{html:terms.sansan_copy_desc}}</div>
+		<table class="sansan-plugin-copyfield-table">
+			<tbody>
+				<tr class="sansan-plugin-copyfield-line-1">
+					<td>
+						<span>{{html:terms.sansan_copy_owner_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text" id="sansan_copy_owner_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+				</tr>
+				<tr class="sansan-plugin-copyfield-line-2">
+					<td>
+						<span>{{html:terms.sansan_copy_companyname_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text" id="sansan_copy_companyname_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+				</tr>
+				<tr class="sansan-plugin-copyfield-line-3">
+					<td>
+						<span>{{html:terms.sansan_copy_username_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text" id="sansan_copy_username_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+				</tr>
+				<tr class="sansan-plugin-copyfield-line-4">
+					<td>
+						<span>{{html:terms.sansan_copy_departmentname_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text" id="sansan_copy_departmentname_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+				</tr>
+				<tr class="sansan-plugin-copyfield-line-5">
+					<td>
+						<span>{{html:terms.sansan_copy_title_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text" id="sansan_copy_title_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+				</tr>
+				<tr class="sansan-plugin-copyfield-line-6">
+					<td>
+						<span>{{html:terms.sansan_copy_address_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text" id="sansan_copy_address_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+				</tr>
+				<tr class="sansan-plugin-copyfield-line-7">
+					<td>
+						<span>{{html:terms.sansan_copy_email_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text sansan-copy-mail" id="sansan_copy_email_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+				</tr>
+				<tr class="sansan-plugin-copyfield-line-8">
+					<td>
+						<span>{{html:terms.sansan_copy_tel_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text sansan-copy-call" id="sansan_copy_tel_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+				</tr>
+				<tr class="sansan-plugin-copyfield-line-9">
+					<td>
+						<span>{{html:terms.sansan_copy_mobile_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text sansan-copy-call" id="sansan_copy_mobile_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br>
+<!--保存・キャンセル-->
+	<button class="kintoneplugin-button-dialog-ok" id="sansan_plugin_submit">{{html:terms.sansan_plugin_submit_title}}</button>
+	<button class="kintoneplugin-button-normal" id="sansan_plugin_cancel">{{html:terms.sansan_plugin_cancel_title}}</button>
+</div>

@@ -1,0 +1,101 @@
+.lookup-buttons {
+    position: absolute;
+    bottom: 4px;
+    color: #3498db
+}
+
+#lookup_search_button, #lookup_clear_button, #lookup_setting_button {
+    margin-left: 5px;
+    height: 40px;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+    background-color: transparent;
+    font-size: 14px
+}
+
+#lookup_search_button:focus, #lookup_clear_button:focus, #lookup_setting_button:focus {
+    border-color: #3498db;
+    border-style: solid;
+    border-width: 1px
+}
+
+#start_date, #end_date {
+    margin: 8px 0 0 8px;
+}
+
+.input-error-custom, .validator-valid-custom {
+    display: block;
+    position: relative;
+    margin: 8px 0;
+    padding: 4px 18px;
+    color: #f6f6f6
+}
+
+.input-error-custom {
+    background: #e74c3c
+}
+
+.validator-valid-custom {
+    background: #91c36c
+}
+
+.listTable-kintone.lookup-table-kintone {
+    width: 100%;
+    table-layout: fixed;
+    background-color: #fff;
+    font-size: 14px
+}
+
+.listTable-kintone.lookup-table-kintone th {
+    width: auto;
+    border-top: 1px solid #e9ebeb;
+    border-bottom: 1px solid #e3e7e8;
+    text-align: left
+}
+
+.listTable-kintone.lookup-table-kintone th:first-child {
+    width: 128px
+}
+
+.listTable-kintone.lookup-table-kintone td {
+    padding: 0;
+    vertical-align: top
+}
+
+.listTable-kintone.lookup-table-kintone td.lookup-cell-kintone>div {
+    word-wrap: normal
+}
+
+.listTable-kintone.lookup-table-kintone td.lookup-cell-kintone>span {
+    padding: 0
+}
+
+.listTable-kintone.lookup-table-kintone td.lookup-cell-kintone .button-simple-custom {
+    height: 32px;
+    min-width: 80px;
+    line-height: 32px;
+    margin: 8px 0 0 8px;
+    border: 1px solid #e3e7e8;
+    background-color: #f7f9fa;
+    box-shadow: 1px 1px 1px #fff inset;
+    color: #3498db;
+    font-size: 14px
+}
+
+.listTable-kintone.lookup-table-kintone td.lookup-cell-kintone .button-simple-custom:focus {
+    background-color: #c8d6dd;
+    box-shadow: none
+}
+
+.listTable-kintone.lookup-table-kintone td>div,.listTable-kintone.lookup-table-kintone th>div {
+    padding: 16px 24px 8px
+}
+
+.listTable-kintone.lookup-table-kintone tbody tr:nth-child(2n) {
+    background-color: #f7f9fa
+}
+
+.listTable-kintone.lookup-table-kintone tbody tr:focus {
+    background-color: #f5f5f5
+}

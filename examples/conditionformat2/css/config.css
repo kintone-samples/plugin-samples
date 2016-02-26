@@ -1,0 +1,37 @@
+.conditionformat-cvalue, .conditionformat-cvalue-date,
+.conditionformat-color, .conditionformat-clear-buttons {
+    margin-right: 10px;
+    margin-bottom: 8px;
+}
+
+.conditionformat-color {
+    width: 90px;
+}
+
+.conditionformat-size {
+    padding-right: 0px;
+    width: 120px;
+}
+
+.conditionformat-ctype {
+    padding-right: 0px;
+    width: 150px;
+}
+.conditionformat-cvalue {
+    width: 230px;
+}
+
+.conditionformat-cvalue-date {
+    padding-right: 0px;
+    width: 60px;
+}
+
+.conditionformat-today {
+    width: 120px;
+    color: #327fcb;
+}
+
+.conditionformat-day {
+    width: 50px;
+    color: #327fcb;
+}

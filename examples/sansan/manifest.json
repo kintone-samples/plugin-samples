@@ -1,0 +1,46 @@
+{
+	"manifest_version": 1,
+	"version": 1,
+	"type": "APP",
+	"name": {
+		"ja": "Sansan for kintone",
+		"en": "Sansan for kintone",
+		"zh": "Sansan for kintone"
+	},
+	"description": {
+		"ja": "kintoneの顧客管理アプリから、Sansanの顧客データを参照するサンプルです。",
+		"en": "This sample plug-in looks up Sansan's contact data.",
+		"zh": "This sample plug-in looks up Sansan's contact data."
+	},
+	"icon": "img/icon.png",
+	"desktop": {
+		"js": [
+				"lib/js/jquery.min.js",
+				"lib/js/jquery-ui.min.js",
+				"lib/js/moment.min.js",
+				"lib/js/sweetalert.min.js",
+				"lib/js/spin.min.js",
+				"js/desktop.js"
+		],
+		"css": [
+				"https://js.cybozu.com/jqueryui/1.11.4/themes/smoothness/jquery-ui.css",
+				"lib/css/sweetalert.css",
+				"css/51-us-default.css",
+				"css/desktop.css"
+		]
+	},
+	"config": {
+		"html": "html/config.html",
+		"js": [
+				"lib/js/jquery.min.js",
+				"lib/js/jquery-ui.min.js",
+				"lib/js/jsrender.min.js",
+				"js/config.js"
+		],
+		"css": [
+				"css/51-us-default.css",
+				"css/config.css"
+		],
+		"required_params": ["sansanapikey", "spacefield", "keyfield", "originalfield"]
+	}
+}
