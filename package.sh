@@ -84,18 +84,18 @@ if [ "$PPK_FILE_TMP" != "" ]; then
 fi
 
 # Create a package file
-OUTPUT_DIR=$BASE_DIR/plugins/$UUID
-/bin/mkdir $BASE_DIR/plugins >/dev/null 2>&1
-/bin/mkdir $OUTPUT_DIR > /dev/null 2>&1
+OUTPUT_DIR="$BASE_DIR/plugins/$UUID"
+/bin/mkdir "$BASE_DIR"/plugins >/dev/null 2>&1
+/bin/mkdir "$OUTPUT_DIR" > /dev/null 2>&1
 
-OUTPUT_FILE=$OUTPUT_DIR/plugin.zip
-/bin/rm $OUTPUT_FILE >/dev/null 2>&1
+OUTPUT_FILE="$OUTPUT_DIR"/plugin.zip
+/bin/rm "$OUTPUT_FILE" >/dev/null 2>&1
 
 cd "$PACKAGE_DIR"
-/usr/bin/zip -r $OUTPUT_FILE ./ >/dev/null
+/usr/bin/zip -r "$OUTPUT_FILE" ./ >/dev/null
 
 # Cleanup
-cd $BASE_DIR
+cd "$BASE_DIR"
 /bin/rm -rf "$PACKAGE_DIR"
 
 echo "Plugin ID: $UUID"
