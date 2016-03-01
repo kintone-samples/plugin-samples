@@ -29,8 +29,8 @@ fi
 DOT_FILES=`find "$PLUGIN_DIR" -name ".*" | grep -v "/\.$"`
 if [ "$DOT_FILES" != "" ]; then
     echo "PLUGIN_DIR must not contain dot files or directories."
-    for DOT_FILE in $DOT_FILES; do
-        echo $DOT_FILE
+    for DOT_FILE in "$DOT_FILES"; do
+        echo "$DOT_FILE"
     done
     exit 1
 fi
