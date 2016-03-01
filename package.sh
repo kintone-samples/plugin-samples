@@ -12,7 +12,7 @@ else
     PLUGIN_DIR=$(cd "$(dirname $1)"; pwd)/"$(basename "$1")"
 fi
 if [ -f "$2" ]; then
-    PPK_FILE=$(cd $(dirname $2); pwd)/$(basename $2)
+    PPK_FILE=$(cd "$(dirname $2)"; pwd)/"$(basename "$2")"
 fi
 
 # Check directory and files
