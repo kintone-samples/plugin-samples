@@ -53,10 +53,10 @@ fi
 
 # Create secret key
 if [ ! -f "$PPK_FILE" ]; then
-    /bin/mkdir $BASE_DIR/keys >/dev/null 2>&1
-    PPK_FILE=$BASE_DIR/keys/tmp.ppk
-    PPK_FILE_TMP=$PPK_FILE
-    /usr/bin/openssl genrsa -out $PPK_FILE 1024 >/dev/null 2>&1
+    /bin/mkdir "$BASE_DIR"/keys >/dev/null 2>&1
+    PPK_FILE="$BASE_DIR"/keys/tmp.ppk
+    PPK_FILE_TMP="$PPK_FILE"
+    /usr/bin/openssl genrsa -out "$PPK_FILE" 1024 >/dev/null 2>&1
 fi
 
 # Create a temporary directory for the package
