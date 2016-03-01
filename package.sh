@@ -1,5 +1,5 @@
 #!/bin/sh
-BASE_DIR=$(cd $(dirname $0); pwd)
+BASE_DIR=$(cd "$(dirname $0)"; pwd)
 
 if [ $# -lt 1 ]; then
     echo "usage: $0 PLUGIN_DIR [PRIVATE_KEY_FILE]"
