@@ -1,5 +1,5 @@
 #!/bin/sh
-BASE_DIR=$(cd "$(dirname $0)"; pwd)
+BASE_DIR=$(cd "$(dirname "$0")"; pwd)
 
 if [ $# -lt 1 ]; then
     echo "usage: $0 PLUGIN_DIR [PRIVATE_KEY_FILE]"
@@ -7,12 +7,12 @@ if [ $# -lt 1 ]; then
 fi
 
 if [ "$(basename "$1")" = "." ]; then
-    PLUGIN_DIR=$(cd "$(dirname $1)"; pwd)
+    PLUGIN_DIR=$(cd "$(dirname "$1")"; pwd)
 else
-    PLUGIN_DIR=$(cd "$(dirname $1)"; pwd)/"$(basename "$1")"
+    PLUGIN_DIR=$(cd "$(dirname "$1")"; pwd)/"$(basename "$1")"
 fi
 if [ -f "$2" ]; then
-    PPK_FILE=$(cd "$(dirname $2)"; pwd)/"$(basename "$2")"
+    PPK_FILE=$(cd "$(dirname "$2")"; pwd)/"$(basename "$2")"
 fi
 
 # Check directory and files
