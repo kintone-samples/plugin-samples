@@ -16,7 +16,7 @@ if [ -f "$2" ]; then
 fi
 
 # Check directory and files
-if [ ! -d $PLUGIN_DIR ]; then
+if [ ! -d "$PLUGIN_DIR" ]; then
     echo "Plugin directory $PLUGIN_DIR not found."
     exit 1
 fi
@@ -26,7 +26,7 @@ if [ ! -f "$PLUGIN_DIR/manifest.json" ]; then
     exit 1
 fi
 
-DOT_FILES=`find $PLUGIN_DIR -name ".*" | grep -v "/\.$"`
+DOT_FILES=`find "$PLUGIN_DIR" -name ".*" | grep -v "/\.$"`
 if [ "$DOT_FILES" != "" ]; then
     echo "PLUGIN_DIR must not contain dot files or directories."
     for DOT_FILE in $DOT_FILES; do
@@ -35,7 +35,7 @@ if [ "$DOT_FILES" != "" ]; then
     exit 1
 fi
 
-PPK_FILES=`find $PLUGIN_DIR -name "*.ppk"`
+PPK_FILES=`find "$PLUGIN_DIR" -name "*.ppk"`
 if [ "$PPK_FILES" != "" ]; then
     echo "PLUGIN_DIR must not contain *.ppk files."
     exit 1
@@ -66,7 +66,7 @@ PACKAGE_DIR=$BASE_DIR/tmp
 
 # And creating a content file by compressing the plug Directory
 CONTENTS_FILE=$PACKAGE_DIR/contents.zip
-cd $PLUGIN_DIR
+cd "$PLUGIN_DIR"
 /usr/bin/zip -r $CONTENTS_FILE ./ >/dev/null
 
 # Create a signature and public key
@@ -79,7 +79,7 @@ UUID=`/usr/bin/openssl dgst -sha256 < $PUB_FILE | $SED 's/^.* //' | /usr/bin/cut
 
 #  Rename the secret key
 if [ "$PPK_FILE_TMP" != "" ]; then
-    PPK_FILE=$(cd $(dirname $PPK_FILE); pwd)/`basename $PLUGIN_DIR`.$UUID.ppk
+    PPK_FILE=$(cd $(dirname $PPK_FILE); pwd)/`basename "$PLUGIN_DIR"`.$UUID.ppk
     /bin/mv $PPK_FILE_TMP $PPK_FILE
 fi
 
