@@ -67,12 +67,12 @@ PACKAGE_DIR="$BASE_DIR"/tmp
 # And creating a content file by compressing the plug Directory
 CONTENTS_FILE="$PACKAGE_DIR"/contents.zip
 cd "$PLUGIN_DIR"
-/usr/bin/zip -r $CONTENTS_FILE ./ >/dev/null
+/usr/bin/zip -r "$CONTENTS_FILE" ./ >/dev/null
 
 # Create a signature and public key
 PUB_FILE="$PACKAGE_DIR"/PUBKEY
 SIG_FILE="$PACKAGE_DIR"/SIGNATURE
-/usr/bin/openssl sha1 -sha1 -binary -sign $PPK_FILE < $CONTENTS_FILE > $SIG_FILE
+/usr/bin/openssl sha1 -sha1 -binary -sign $PPK_FILE < "$CONTENTS_FILE" > $SIG_FILE
 /usr/bin/openssl rsa -pubout -outform DER < $PPK_FILE > $PUB_FILE 2>/dev/null
 
 UUID=`/usr/bin/openssl dgst -sha256 < $PUB_FILE | $SED 's/^.* //' | /usr/bin/cut -c 1-32 | /usr/bin/tr '0-9a-f' 'a-p'`
