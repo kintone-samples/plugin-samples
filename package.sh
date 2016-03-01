@@ -72,15 +72,15 @@ cd "$PLUGIN_DIR"
 # Create a signature and public key
 PUB_FILE="$PACKAGE_DIR"/PUBKEY
 SIG_FILE="$PACKAGE_DIR"/SIGNATURE
-/usr/bin/openssl sha1 -sha1 -binary -sign $PPK_FILE < "$CONTENTS_FILE" > $SIG_FILE
-/usr/bin/openssl rsa -pubout -outform DER < $PPK_FILE > $PUB_FILE 2>/dev/null
+/usr/bin/openssl sha1 -sha1 -binary -sign "$PPK_FILE" < "$CONTENTS_FILE" > "$SIG_FILE"
+/usr/bin/openssl rsa -pubout -outform DER < "$PPK_FILE" > "$PUB_FILE" 2>/dev/null
 
-UUID=`/usr/bin/openssl dgst -sha256 < $PUB_FILE | $SED 's/^.* //' | /usr/bin/cut -c 1-32 | /usr/bin/tr '0-9a-f' 'a-p'`
+UUID=`/usr/bin/openssl dgst -sha256 < "$PUB_FILE" | $SED 's/^.* //' | /usr/bin/cut -c 1-32 | /usr/bin/tr '0-9a-f' 'a-p'`
 
 #  Rename the secret key
 if [ "$PPK_FILE_TMP" != "" ]; then
-    PPK_FILE=$(cd $(dirname $PPK_FILE); pwd)/`basename "$PLUGIN_DIR"`.$UUID.ppk
-    /bin/mv $PPK_FILE_TMP $PPK_FILE
+    PPK_FILE=$(cd "$(dirname "$PPK_FILE")"; pwd)/`basename "$PLUGIN_DIR"`.$UUID.ppk
+    /bin/mv "$PPK_FILE_TMP" "$PPK_FILE"
 fi
 
 # Create a package file
