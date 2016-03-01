@@ -35,12 +35,6 @@ if [ "$DOT_FILES" != "" ]; then
     exit 1
 fi
 
-PPK_FILES=`find $PLUGIN_DIR -name "*.ppk"`
-if [ "$PPK_FILES" != "" ]; then
-    echo "PLUGIN_DIR must not contain *.ppk files."
-    exit 1
-fi
-
 # Command
 if [ -x /bin/sed ]; then
     SED="/bin/sed"
@@ -67,7 +61,7 @@ PACKAGE_DIR=$BASE_DIR/tmp
 # And creating a content file by compressing the plug Directory
 CONTENTS_FILE=$PACKAGE_DIR/contents.zip
 cd $PLUGIN_DIR
-/usr/bin/zip -r $CONTENTS_FILE ./ >/dev/null
+/usr/bin/zip -x "*.ppk" -r "$CONTENTS_FILE" ./ >/dev/null
 
 # Create a signature and public key
 PUB_FILE=$PACKAGE_DIR/PUBKEY
