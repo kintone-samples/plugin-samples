@@ -60,18 +60,18 @@ if [ ! -f "$PPK_FILE" ]; then
 fi
 
 # Create a temporary directory for the package
-PACKAGE_DIR=$BASE_DIR/tmp
-/bin/rm -rf $PACKAGE_DIR
-/bin/mkdir $PACKAGE_DIR
+PACKAGE_DIR="$BASE_DIR"/tmp
+/bin/rm -rf "$PACKAGE_DIR"
+/bin/mkdir "$PACKAGE_DIR"
 
 # And creating a content file by compressing the plug Directory
-CONTENTS_FILE=$PACKAGE_DIR/contents.zip
+CONTENTS_FILE="$PACKAGE_DIR"/contents.zip
 cd "$PLUGIN_DIR"
 /usr/bin/zip -r $CONTENTS_FILE ./ >/dev/null
 
 # Create a signature and public key
-PUB_FILE=$PACKAGE_DIR/PUBKEY
-SIG_FILE=$PACKAGE_DIR/SIGNATURE
+PUB_FILE="$PACKAGE_DIR"/PUBKEY
+SIG_FILE="$PACKAGE_DIR"/SIGNATURE
 /usr/bin/openssl sha1 -sha1 -binary -sign $PPK_FILE < $CONTENTS_FILE > $SIG_FILE
 /usr/bin/openssl rsa -pubout -outform DER < $PPK_FILE > $PUB_FILE 2>/dev/null
 
@@ -91,12 +91,12 @@ OUTPUT_DIR=$BASE_DIR/plugins/$UUID
 OUTPUT_FILE=$OUTPUT_DIR/plugin.zip
 /bin/rm $OUTPUT_FILE >/dev/null 2>&1
 
-cd $PACKAGE_DIR
+cd "$PACKAGE_DIR"
 /usr/bin/zip -r $OUTPUT_FILE ./ >/dev/null
 
 # Cleanup
 cd $BASE_DIR
-/bin/rm -rf $PACKAGE_DIR
+/bin/rm -rf "$PACKAGE_DIR"
 
 echo "Plugin ID: $UUID"
 echo "Plugin file: $OUTPUT_FILE"
