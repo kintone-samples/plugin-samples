@@ -12,6 +12,10 @@
   line-height: 1.5;
 }
 
+:lang(us) *[class|="kintoneplugin"] {
+  font-family: 'HelveticaNeueW02-45Ligh', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+}
+
 :lang(ja) *[class|="kintoneplugin"] {
   font-family: 'メイリオ', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
 }
@@ -20,15 +24,11 @@
   font-family: '微软雅黑', 'Microsoft YaHei', '新宋体', NSimSun, STHeiti, Hei, 'Heiti SC', sans-serif;
 }
 
-:lang(us) *[class|="kintoneplugin"] {
-  font-family: 'HelveticaNeueW02-45Ligh', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
-}
-
-/* メッセージのスタイル */
+/*Alert message*/
 /*
 <div class="kintoneplugin-alert">
-  <p>メッセージのスタイル、<br>メッセージのスタイル</p>
-  <p>メッセージのスタイル</p>
+  <p>Alert message、<br>Alert message</p>
+  <p>Alert message</p>
 </div>
 */
 .kintoneplugin-alert {
@@ -40,19 +40,19 @@
   color: #f6f6f6;
 }
 
-/* 設定項目の行 */
+/* Row for the settings　*/
 /*
-<div class="kintoneplugin-row">設定項目の行 1</div>
-<div class="kintoneplugin-row">設定項目の行 2</div>
+<div class="kintoneplugin-row">Settings 1</div>
+<div class="kintoneplugin-row">Settings 2</div>
 */
 .kintoneplugin-row {
   margin-bottom: 24px;
 }
 
-/* 設定項目の見出し */
-/* ラベル */
+/* Title for settings*/
+/* Labels */
 /*
-<div class="kintoneplugin-label">設定項目の見出し</div>
+<div class="kintoneplugin-label">Title</div>
 */
 .kintoneplugin-label {
   margin-bottom: 8px;
@@ -79,15 +79,15 @@
   color: #888;
 }
 
-/* 必須項目 */
+/* Required settings*/
 /*
-<div class="kintoneplugin-label">必須項目の見出し<span class="kintoneplugin-require">*</span></div>
+<div class="kintoneplugin-label">Title<span class="kintoneplugin-require">*</span></div>
 */
 .kintoneplugin-require {
   color: #c09853;
 }
 
-/* テキストボックス */
+/* Input (text box) */
 /*
 <div class="kintoneplugin-input-outer">
   <input class="kintoneplugin-input-text" type="text">
@@ -119,13 +119,13 @@
   color: #000;
 }
 
-/* チェックボックス */
-/* IE8では親要素に .lt-ie9 の指定が必要 */
+/* Check box */
+/* For IE8, specify .lt-ie9 for the parent. */
 /*
-<div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="0" id="checkbox-0" checked=""><label for="checkbox-0">チェックボックスA</label></span></div>
-<div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="1" id="checkbox-1"><label for="checkbox-1">チェックボックスB</label></span></div>
-<div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="2" id="checkbox-2" checked="" disabled=""><label for="checkbox-2">チェックボックスC</label></span></div>
-<div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="3" id="checkbox-3" disabled=""><label for="checkbox-3">チェックボックスD</label></span></div>
+<div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="0" id="checkbox-0" checked=""><label for="checkbox-0">Checkbox A</label></span></div>
+<div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="1" id="checkbox-1"><label for="checkbox-1">Checkbox B</label></span></div>
+<div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="2" id="checkbox-2" checked="" disabled=""><label for="checkbox-2">Checkbox C</label></span></div>
+<div class="kintoneplugin-input-checkbox"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="3" id="checkbox-3" disabled=""><label for="checkbox-3">Checkbox D</label></span></div>
 */
 .kintoneplugin-input-checkbox-item {
   display: block;
@@ -212,17 +212,17 @@
   display: none;
 }
 
-/* ドロップダウンリスト */
+/* Dropdown */
 /*
 <div class="kintoneplugin-dropdown-outer">
   <div class="kintoneplugin-dropdown">
-    <div class="kintoneplugin-dropdown-selected"><span class="kintoneplugin-dropdown-selected-name">ドロップダウン</span></div>
+    <div class="kintoneplugin-dropdown-selected"><span class="kintoneplugin-dropdown-selected-name">Dropdown</span></div>
   </div>
 </div>
 <div class="kintoneplugin-dropdown-list">
-  <div class="kintoneplugin-dropdown-list-item kintoneplugin-dropdown-list-item-selected"><span class="kintoneplugin-dropdown-list-item-name">オプションA</span></div>
-  <div class="kintoneplugin-dropdown-list-item"><span class="kintoneplugin-dropdown-list-item-name">オプションB</span></div>
-  <div class="kintoneplugin-dropdown-list-item"><span class="kintoneplugin-dropdown-list-item-name">オプションC</span></div>
+  <div class="kintoneplugin-dropdown-list-item kintoneplugin-dropdown-list-item-selected"><span class="kintoneplugin-dropdown-list-item-name">Option A</span></div>
+  <div class="kintoneplugin-dropdown-list-item"><span class="kintoneplugin-dropdown-list-item-name">Option B</span></div>
+  <div class="kintoneplugin-dropdown-list-item"><span class="kintoneplugin-dropdown-list-item-name">Option C</span></div>
 </div>
 */
 .kintoneplugin-dropdown-outer {
@@ -291,14 +291,14 @@
   color: #3498db;
 }
 
-/* (セレクトボックス) */
+/* Dropdown (Simple) */
 /*
 <div class="kintoneplugin-select-outer">
   <div class="kintoneplugin-select">
     <select>
-      <option>ドロップダウンリストA</option>
-      <option>ドロップダウンリストB</option>
-      <option>ドロップダウンリストC</option>
+      <option>Option A</option>
+      <option>Option B</option>
+      <option>Option C</option>
     </select>
   </div>
 </div>
@@ -366,10 +366,10 @@
   color: #333;
 }
 
-/* ラジオボタン */
-/* IE8では親要素に .lt-ie9 の指定が必要 */
+/* Radio Button */
+/* For IE8, specify .lt-ie9 for the parent. */
 /*
-<div class="kintoneplugin-input-radio"><span class="kintoneplugin-input-radio-item"><input type="radio" name="radio" value="0" id="radio-0" checked=""><label for="radio-0">ラジオボタンA</label></span><span class="kintoneplugin-input-radio-item"><input type="radio" name="radio" value="1" id="radio-1"><label for="radio-1">ラジオボタンB</label></span></div>
+<div class="kintoneplugin-input-radio"><span class="kintoneplugin-input-radio-item"><input type="radio" name="radio" value="0" id="radio-0" checked=""><label for="radio-0">Radio Button A</label></span><span class="kintoneplugin-input-radio-item"><input type="radio" name="radio" value="1" id="radio-1"><label for="radio-1">Radio Button B</label></span></div>
 */
 .kintoneplugin-input-radio-item {
   display: inline-block;
@@ -447,9 +447,9 @@
   display: none;
 }
 
-/* ボタン */
+/* Button */
 /*
-<button class="kintoneplugin-button-normal">通常のボタン</button>
+<button class="kintoneplugin-button-normal"> A button</button>
 */
 .kintoneplugin-button-normal {
   display: inline-block;
@@ -472,9 +472,9 @@
   cursor: pointer;
 }
 
-/* disabledのボタン */
+/* Disabled button */
 /*
-<button class="kintoneplugin-button-disabled">disabledのボタン</button>
+<button class="kintoneplugin-button-disabled">A disabled button</button>
 */
 .kintoneplugin-button-disabled {
   display: inline-block;
@@ -491,9 +491,9 @@
   line-height: 48px;
 }
 
-/* ダイアログのOKボタン */
+/* Dialog OK button */
 /*
-<button class="kintoneplugin-button-dialog-ok">ダイアログのOKボタン</button>
+<button class="kintoneplugin-button-dialog-ok">OK</button>
 */
 .kintoneplugin-button-dialog-ok {
   display: inline-block;
@@ -515,9 +515,9 @@
   cursor: pointer;
 }
 
-/* ダイアログのキャンセルボタン */
+/* Dialog Cancel button */
 /*
-<button class="kintoneplugin-button-dialog-cancel">ダイアログのキャンセルボタン</button>
+<button class="kintoneplugin-button-dialog-cancel">Cancel</button>
 */
 .kintoneplugin-button-dialog-cancel {
   display: inline-block;
