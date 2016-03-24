@@ -1,0 +1,38 @@
+{
+    "manifest_version": 1,
+    "version": 1,
+    "type": "APP",
+    "name": {
+        "ja": "自動採番プラグイン",
+        "en": "Auto-numbering plug-in"
+    },
+    "description": {
+        "ja": "保存時に自動採番するプラグインです。",
+        "en": "Auto-numbering plug-in"
+    },
+    "icon": "img/icon.png",
+    "desktop": {
+        "js": [
+                "lib/jquery.min.js",
+                "lib/moment-with-locales.min.js",
+                "lib/sweetalert.min.js",
+                "js/desktop.js"
+        ],
+        "css": ["css/sweetalert.css"]
+    },
+    "config": {
+        "html": "html/config.html",
+        "js": [
+                "lib/jquery.min.js",
+                "lib/moment-with-locales.min.js",
+                "lib/sweetalert.min.js",
+                "js/config.js"
+        ],
+        "css": [
+                "css/sweetalert.css",
+                "css/51-us-default.css",
+                "css/config.css"
+        ],
+        "required_params": ["autofield", "format", "connective"]
+    }
+}

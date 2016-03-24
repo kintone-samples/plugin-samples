@@ -1,0 +1,102 @@
+<!--採番イメージ-->
+    <div class="block">
+        <div class="kintoneplugin-label">採番プレビュー</div>
+        <div class="kintoneplugin-input-outer">
+            <input class="kintoneplugin-input-text" id="autonum-image" type="text" readonly>
+        </div>
+    </div>
+
+<!--自動採番フィールド-->
+    <div class="block">
+        <div class="kintoneplugin-label">自動採番フィールド選択<span class="kintoneplugin-require">*</span></div>
+        <div class="kintoneplugin-select-outer">
+            <div class="kintoneplugin-select" id="autonum-setfield">
+                <select name="autonum_select" id="autonum-fieldselect">
+                    <option value="null">-----</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+<!--書式フィールド-->
+    <div class="block">
+        <div class="kintoneplugin-label">採番書式選択<span class="kintoneplugin-require">*</span></div>
+        <div class="kintoneplugin-select-outer">
+            <div class="kintoneplugin-select" id="autonum-format">
+                <select name="select" class="formatselect">
+                  <option value="null">-----</option>
+                  <option value="format1">連番</option>
+                  <option value="format2">日付 + 連番</option>
+                  <option value="format3">日付 + テキスト + 連番</option>
+                  <option value="format4">テキスト + 連番</option>
+                  <option value="format5">テキスト + 日付 + 連番</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+<!--日付形式フィールド-->
+    <div class="block">
+        <div class="kintoneplugin-label">日付書式選択（採番書式に日付が含まれる場合のみ）</div>
+        <div class="kintoneplugin-select-outer">
+            <div class="kintoneplugin-select" id="autonum-dateformat">
+                <select name="dateselect">
+                  <option value="null">-----</option>
+                  <option value="YYYYMMDD">年月日(YYYYMMDD)</option>
+                  <option value="YYYYMM">年月(YYYYMM)</option>
+                  <option value="MMDD">月日(MMDD)</option>
+                  <option value="YYYY">年[西暦4桁](YYYY)</option>
+                  <option value="YY">年[西暦2桁](YY)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+<!--テキスト設定フィールド-->
+    <div class="block">
+        <div class="kintoneplugin-label">テキスト入力（採番書式にテキストが含まれる場合のみ）</div>
+        <div class="kintoneplugin-input-outer">
+              <input class="kintoneplugin-input-text" id="autonum-text" type="text">
+        </div>
+    </div>
+
+<!--接続語設定フィールド-->
+    <div class="block">
+        <div class="kintoneplugin-label">接続語設定<span class="kintoneplugin-require">*</span></div>
+        <div class="kintoneplugin-select-outer">
+            <div class="kintoneplugin-select" id="autonum-connective">
+            <select name="connectiveselect">
+                  <option value="null">-----</option>
+                  <option value="-">ハイフン( - )</option>
+                  <option value="_">アンダースコア( _ )</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+<!--採番タイミング-->
+    <div class="block">
+        <div class="kintoneplugin-label">連番リセットタイミング選択</div>
+        <div class="kintoneplugin-input-radio">
+            <span class="kintoneplugin-input-radio-item">
+                <input type="radio" name="radio" value="0" checked="" id="autonum-radio0">
+                <label for="autonum-radio0">なし</label>
+            </span>
+            <span class="kintoneplugin-input-radio-item">
+                <input type="radio" name="radio" value="1" id="autonum-radio1">
+                <label for="autonum-radio1">年毎</label>
+            </span>
+            <span class="kintoneplugin-input-radio-item">
+                <input type="radio" name="radio" value="2" id="autonum-radio2">
+                <label for="autonum-radio2">月毎</label>
+            </span>
+            <span class="kintoneplugin-input-radio-item">
+                <input type="radio" name="radio" value="3" id="autonum-radio3">
+                <label for="autonum-radio3">日毎</label>
+            </span>
+        </div>
+    </div>
+
+<!--保存・キャンセル-->
+    <button class="kintoneplugin-button-dialog-ok" id="autonum-submit">保存</button>
+    <button class="kintoneplugin-button-normal" id="autonum-cancel">キャンセル</button>
