@@ -57,6 +57,9 @@ jQuery.noConflict();
     function displayMap(markList) {
         //マップを表示するスペース
         var mapSpace = kintone.app.getHeaderSpaceElement();
+        if ($("[id^='itsumo-navi-map']")[0]) {
+            return;
+        }
         var $mapElement = $('<div>')
             .attr('id', 'itsumo-navi-map')
             .attr('name', 'itsumo-navi-map')
