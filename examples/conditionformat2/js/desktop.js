@@ -1,5 +1,5 @@
 /*
- * Condition Format plug-in
+ * New Condition Format plug-in
  * Copyright (c) 2016 Cybozu
  *
  * Licensed under the MIT License
