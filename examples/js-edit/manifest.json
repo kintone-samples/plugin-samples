@@ -1,0 +1,35 @@
+{
+  "manifest_version": 1,
+  "version": 1,
+  "type": "APP",
+  "name": {
+    "ja": "JSEdit for kintone",
+    "en": "JSEdit for kintone",
+    "zh": "JSEdit for kintone"
+  },
+  "description": {
+    "ja": "kintoneのJavaScriptカスタマイズをブラウザから行うことができるプラグインです。",
+    "en": "kintoneのJavaScriptカスタマイズをブラウザから行うことができるプラグインです。",
+    "zh": "kintoneのJavaScriptカスタマイズをブラウザから行うことができるプラグインです。"
+  },
+  "icon": "image/image.png",
+  "homepage_url": {
+  },
+  "desktop": {
+  },
+  "config": {
+    "html": "html/config.html",
+    "js": [
+      "https://js.cybozu.com/ace/v1.2.0/ace.js",
+      "https://js.cybozu.com/ace/v1.2.0/ext-language_tools.js",
+      "https://js.cybozu.com/jquery/1.11.3/jquery.min.js",
+      "https://js.cybozu.com/spinjs/2.0.1/spin.min.js",
+      "js/config.js"
+    ],
+    "css": [
+      "css/51-us-default.css",
+      "css/config.css"
+    ],
+    "required_params": []
+  }
+}

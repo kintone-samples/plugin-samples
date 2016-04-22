@@ -1,0 +1,37 @@
+<div id="jsedit-config">
+  <div class="jsedit-plugin-files">
+    <div class="kintoneplugin-select-outer">
+      <div class="kintoneplugin-select">
+        <select id="jsedit-plugin-type">
+          <option value="js_pc">PC用のJavaScriptファイル</option>
+          <option value="js_mb">スマートフォン用のJavaScriptファイル</option>
+          <option value="css_pc">PC用のCSSファイル</option>
+        </select>
+      </div>
+    </div>
+    <div class="kintoneplugin-select-outer">
+      <div class="kintoneplugin-select">
+        <select id="jsedit-plugin-files">
+        </select>
+      </div>
+    </div>
+    <span class="new-file"><a id="jsedit-plugin-new-file" href="#">新規作成</a></span>
+    <div class="jsedit-config-wrapper">
+      <div class="jsedit-editor-wrapper">
+        <div id="jsedit-editor"></div>
+      </div>
+    </div>
+    <div class="form-submit">
+        <button id="jsedit-plugin-submit" class="kintoneplugin-button-dialog-ok" type="button">     保存   </button>
+        <button id="jsedit-plugin-cancel" class="kintoneplugin-button-dialog-cancel" type="button">     破棄   </button>
+        <a href="#" id="jsedit-plugin-back">プラグインへ戻る</a>
+    </div>
+    <div class="jsedit-plugin-libraries-wrapper">
+      <div class="kintoneplugin-label">ライブラリ</div>
+      <select id="jsedit-plugin-libraries" multiple size="7"></select>
+    </div>
+
+    <div class="kintoneplugin-label">オプション</div>
+    <span class="deploy"><span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="1" id="jsedit-plugin-deploy" checked="true"><label for="jsedit-plugin-deploy">運用環境に反映する</label></span></span>
+  </div>
+</div>
