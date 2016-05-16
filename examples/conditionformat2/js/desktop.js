@@ -267,6 +267,14 @@ jQuery.noConflict();
                 d.push(getDateFormatValues(m));
             }
         }
+        //ステータスコードチェック
+        for (var st = 0; st < t.length; st++) {
+            t[st].targetFieldText = changeStatusCode(event.record, t[st].targetFieldText);
+            t[st].fieldText = changeStatusCode(event.record, t[st].fieldText);
+        }
+        for (var sd = 0; sd < d.length; sd++) {
+            d[sd].targetFieldDate = changeStatusCode(event.record, d[sd].targetFieldDate);
+        }
 
         //文字条件書式
         for (var ti = 0; ti < t.length; ti++) {
