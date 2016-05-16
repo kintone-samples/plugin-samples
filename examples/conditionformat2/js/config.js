@@ -8,7 +8,7 @@
 jQuery.noConflict();
 
 (function($, PLUGIN_ID) {
-    "use strict"
+    "use strict";
 
     // 秘密鍵の設定
     var CONF = kintone.plugin.app.getConfig(PLUGIN_ID);
