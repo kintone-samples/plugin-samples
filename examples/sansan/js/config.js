@@ -110,7 +110,7 @@ jQuery.noConflict();
 
         function setDropdown() {
             // キーフィールド選択肢作成
-            kintone.api('/k/v1/preview/form', 'GET', {'app': kintone.app.getId()}, function(resp) {
+            kintone.api(kintone.api.url('/k/v1/preview/form', true), 'GET', {'app': kintone.app.getId()}, function(resp) {
                 for (var i = 0; i < resp.properties.length; i++) {
                     var prop = resp.properties[i];
                     var $appendhtml;
