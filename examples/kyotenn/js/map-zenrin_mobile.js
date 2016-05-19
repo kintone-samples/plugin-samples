@@ -227,7 +227,7 @@ jQuery.noConflict();
         //詳細画面でのマップ表示のONの場合、マップを表示する
         if (mobileMapAvailable) {
             //API(JS)をロード
-            loadJS('https://'+ domain +'/loader.cgi?key=' +
+            loadJS('https://'+ domain +'/cgi/loader.cgi?key=' +
             apikey + '&ver=2.0&api=zdcmap.js,search.js,shape.js,control.js');
             //waiting ZDC object defined, and loading marker and map
             waitLoaded(event, 200, 4000);
