@@ -4,7 +4,7 @@
     color: #3498db
 }
 
-#lookup_search_button, #lookup_clear_button, #lookup_setting_button {
+#lookup_search_button, #lookup_clear_button, #lookup_setting_button, #lookup_tag_button {
     margin-left: 5px;
     height: 40px;
     border-color: transparent;
@@ -14,7 +14,7 @@
     font-size: 14px
 }
 
-#lookup_search_button:focus, #lookup_clear_button:focus, #lookup_setting_button:focus {
+#lookup_search_button:focus, #lookup_clear_button:focus, #lookup_setting_button:focus, #lookup_tag_button:focus {
     border-color: #3498db;
     border-style: solid;
     border-width: 1px

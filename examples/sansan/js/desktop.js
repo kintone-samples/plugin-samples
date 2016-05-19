@@ -22,17 +22,17 @@ jQuery.noConflict();
     var C_SPACEFIELD = CONFIG['spacefield'];//ボタンを配置するスペースフィールド
     var C_KEYFIELD = CONFIG['keyfield'];//kintoneでキーとするフィールド
     var C_ORIGINALFIELD = CONFIG['originalfield'];//コピー元のSansanフィールド
-    var C_COPYFIELD = [
-        CONFIG['copy_owner'],//名刺所有者名 → owner
-        CONFIG['copy_companyname'],//会社名 → companyName
-        CONFIG['copy_username'],//氏名 → lastName + firstName
-        CONFIG['copy_departmentname'],//部署名 → departmentName
-        CONFIG['copy_title'],//役職 → title
-        CONFIG['copy_address'],//住所 → prefecture + city + street + building
-        CONFIG['copy_email'],//E-mail → email
-        CONFIG['copy_tel'],//Tel → tel
-        CONFIG['copy_mobile']//携帯 → mobile
-    ];
+    var C_COPYFIELD = {
+        owner: CONFIG['copy_owner'],//名刺所有者名 → owner
+        companyname: CONFIG['copy_companyname'],//会社名 → companyName
+        username: CONFIG['copy_username'],//氏名 → lastName + firstName
+        departmentname: CONFIG['copy_departmentname'],//部署名 → departmentName
+        title: CONFIG['copy_title'],//役職 → title
+        address: CONFIG['copy_address'],//住所 → prefecture + city + street + building
+        email: CONFIG['copy_email'],//E-mail → email
+        tel: CONFIG['copy_tel'],//Tel → tel
+        mobile: CONFIG['copy_mobile']//携帯 → mobile
+    };
 
     function escapeHtml(htmlstr) {
         return htmlstr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -99,40 +99,6 @@ jQuery.noConflict();
             $("#lookup_input_erea").append($msg);
         },
 
-        copyFieldParams: function(params) {
-
-            var checkEmptyString = function(str) {
-                if (str && str !== "" && str !== "null") {
-                    return str;
-                }
-                return "";
-            };
-
-            var record = kintone.app.record.get();
-            var copyvalue = [];
-            copyvalue.push(checkEmptyString(params.owner));
-            copyvalue.push(checkEmptyString(params.companyname));
-            copyvalue.push(checkEmptyString(params.username));
-            copyvalue.push(checkEmptyString(params.departmentname));
-            copyvalue.push(checkEmptyString(params.title));
-            copyvalue.push(checkEmptyString(params.address));
-            copyvalue.push(checkEmptyString(params.email));
-            copyvalue.push(checkEmptyString(params.tel));
-            copyvalue.push(checkEmptyString(params.mobile));
-
-            for (var i = 0; copyvalue.length > i; i++) {
-                if (C_COPYFIELD[i] !== "null") {
-                    record["record"][C_COPYFIELD[i]]["value"] = copyvalue[i];
-                }
-            }
-
-            kintone.app.record.set(record);
-            var getdata_msg = '<div id="sansan_lookup_validator" class="validator-valid-custom">' +
-                                '参照先からデータが取得されました。</div>';
-            this.lookUpMessage($(getdata_msg));
-            $("#sansan-lookup-dialog").dialog('close');
-        },
-
         getElementParams: function(el) {
             return {
                 owner: el.find(".sansan_lookup_owner").val(),
@@ -162,15 +128,40 @@ jQuery.noConflict();
                 hide: 400,
                 modal: true,
                 buttons: {
+                    "登録": function() {
+                        // 選択されたデータを抽出する
+                        var records = [];
+                        $('.sansan-lookup-select:checked').each(function(i, el){
+                            var params = Sansanlookup.getElementParams($(el).parents(".sansan-lookup-tr"));
+                            var record = kintone.app.record.get();
+                            for (var key in params) {
+                                if(C_COPYFIELD[key] !== "null"){
+                                    record["record"][C_COPYFIELD[key]]["value"] = params[key];  
+                                }
+                            }
+                            records.push(record["record"]);
+                        });
+
+                        // Sansan データ登録
+                        kintone.api('/k/v1/records', 'POST', {app: kintone.app.getId(), records: records}).then(function(resp) {
+                            alert('登録が完了しました。');
+                        }, function(error) {
+                            // エラーの場合はメッセージを表示する
+                            var errmsg = 'レコード取得時にエラーが発生しました。';
+                            // レスポンスにエラーメッセージが含まれる場合はメッセージを表示する
+                            if (error.message !== undefined) {
+                                errmsg += '\n' + error.message;
+                            }
+                            alert(errmsg);
+                        });
+                        $(this).dialog("close");
+                    },
                     Cancel: function() {
                         $(this).dialog('close');
                     }
                 }
             });
             $('#sansan-lookup-dialog').dialog('open');
-            $(".sansan-lookup-select").click(function() {
-                Sansanlookup.copyFieldParams(Sansanlookup.getElementParams($(this).parents(".sansan-lookup-tr")));
-            });
         },
 
         createLookupListView: function(sansan_records) {
@@ -186,8 +177,8 @@ jQuery.noConflict();
                 '<tr id="lookuplist_' + i + '" class="sansan-lookup-tr">' +
                 //1列目：選択ボタン
                 '<td class="lookup-cell-kintone">' +
-                '<span><button class="button-simple-custom sansan-lookup-select" type="button">' +
-                '選択</button></span>' + '</td>' +
+                '<span><input class="button-simple-custom sansan-lookup-select" type="checkbox" />' + 
+                '</span></td>' +
                 //2列目：会社名
                 '<td>' + '<div class="line-cell-kintone"><span>' +
                 escapeHtml(sansan_record['companyName']) + '</span></div>' +
@@ -238,6 +229,102 @@ jQuery.noConflict();
             '</tr>' + '</thead>' + '<tbody>' + companylist + '</tbody>' + '</table>';
 
             return result;
+        },
+        
+        getLookupTagList: function() {
+
+            Sansanlookup.getSansanTag().then(function(sansan_tags) {
+
+                //Sansan取得タグ数(0~5000件)チェック
+                if (sansan_tags.length === 0) {
+                    var nodata_msg = '<div id="sansan_lookup_validator_error" class="input-error-custom">' +
+                    '<span>データがありません。</span></div>';
+                    Sansanlookup.lookUpMessage($(nodata_msg));
+                    Spin.hideSpinner();
+                    return false;
+                } else if (sansan_tags.length >= 5000) {
+                    //5000件以上の場合エラー
+                    var find_msg = '<div id="sansan_lookup_validator_error" class="input-error-custom">' +
+                    '<span>5000件以上のレコードがヒットしました<br>検索条件で絞り込んでください</span></div>';
+                    Sansanlookup.lookUpMessage($(find_msg));
+                    Spin.hideSpinner();
+                    return false;
+                } else {
+                    //2~4999件の場合ルックアップ画面表示
+                    Sansanlookup.showTagDialog(Sansanlookup.createLookupTagListView(sansan_tags));
+                }
+            }).catch(function(error) {
+                Spin.hideSpinner();
+                swal('Error!', 'Sansanタグデータの取得に失敗しました。\n' + error.message, 'error');
+                return false;
+            });
+        },
+        
+        // タグ一覧を表示する
+        createLookupTagListView: function(sansan_tags) {
+            var result;
+            var taglist = "";
+            var count = 0;
+
+            //Sansan検索結果のリストを作成
+            for (var i = 0; sansan_tags.length > i; i++) {
+                var sansan_record = sansan_tags[i];
+
+                taglist +=
+                '<tr id="lookuplist_' + i + '" class="sansan-lookup-tr">' +
+                //1列目：選択ボタン
+                '<td class="lookup-cell-kintone">' +
+                '<span><button class="button-simple-custom sansan-lookup-select" type="button">' +
+                '選択</button></span>' + '</td>' +
+                //2列目：タグ
+                '<td>' + '<div class="line-cell-kintone"><span>' +
+                escapeHtml(sansan_record['name']) + '</span></div>' +
+                //選択ボタンクリック時の取得値
+                '<input class="sansan_lookup_tagid" value="' +
+                escapeHtml(sansan_record['id']) +
+                '" type="hidden">' + '</td>' + '</tr>';
+                count++;
+            }
+            result =
+            '<table class="listTable-kintone lookup-table-kintone">' +
+            '<thead class="lookup-thead-gaia">' + '<tr>' +
+            //1列目見出し
+            '<th>' + '<div><span class="recordlist-header-label-kintone">' + count + '件' + '</span></div>' + '</th>' +
+            //2列目見出し
+            '<th>' + '<div><span class="recordlist-header-label-kintone">タグ名</span></div>' + '</th>' +
+            '</tr>' + '</thead>' + '<tbody>' + taglist + '</tbody>' + '</table>';
+
+            return result;
+        },
+        
+        showTagDialog: function(date_list) {
+
+            //ダイアログの初期設定
+            var $date_dialog = $('<div>');
+            $date_dialog.attr('id', 'sansan-date-dialog');
+            $date_dialog.html(date_list);
+            $date_dialog.dialog({
+                title: 'タグ設定',
+                autoOpen: false,
+                width: 900,
+                maxHeight: 700,
+                show: 400,
+                hide: 400,
+                modal: true,
+                buttons: {
+                    Cancel: function() {
+                        $(this).dialog('close');
+                        $(this).remove();
+                    }
+                }
+            });
+            $('#sansan-date-dialog').dialog('open');
+            $(".sansan-lookup-select").click(function() {
+                var tagId = $(this).parents(".sansan-lookup-tr").find(".sansan_lookup_tagid").val();
+                Sansanlookup.doSearch(null, tagId);
+                $('#sansan-date-dialog').dialog('close');
+                $('#sansan-date-dialog').remove();
+            });
         },
 
         changeRecordsFormat: function(sansan_records) {
@@ -339,21 +426,23 @@ jQuery.noConflict();
             return records;
         },
 
-        searchSansanData: function(dates, opt_offset, opt_records) {
+        searchSansanData: function(dates, tagId, opt_offset, opt_records) {
             //Sansanよりデータ取得
             var record = kintone.app.record.get();
             var offset = opt_offset || 0;
             var value = record['record'][C_KEYFIELD]['value'] || "";
             var allrecords = opt_records || [];
             var url = "https://api.sansan.com/v1/bizCards";
-            if (!dates) {
+            if (dates) {
+                url += "?range=all" + "&registeredFrom" + "=" + encodeURIComponent(dates[0]) +
+                        "&registeredTo" + "=" + encodeURIComponent(dates[1]);
+            } else if(tagId) {
+                url += "/search" + "?range=all&tagId=" + tagId;
+            } else {
                 url += "/search" + "?range=all";
                 if (value !== "") {
                     url += "&" + C_ORIGINALFIELD + "=" + encodeURIComponent(value);
                 }
-            } else {
-                url += "?range=all" + "&registeredFrom" + "=" + encodeURIComponent(dates[0]) +
-                        "&registeredTo" + "=" + encodeURIComponent(dates[1]);
             }
             url += "&offset=" + offset;
             return kintone.plugin.app.proxy(PLUGIN_ID, url, "GET", {}, {}).then(function(body) {
@@ -370,17 +459,45 @@ jQuery.noConflict();
                     return allrecords;
                 }
                 if (JSON.parse(body[0]).data.length === 100) {
-                    return Sansanlookup.searchSansanData(dates, offset + 100, allrecords);
+                    return Sansanlookup.searchSansanData(dates, tagId, offset + 100, allrecords);
                 }
                 return allrecords;
             }, function(error) {
                 return Promise.reject(new Error(error.message));
             });
         },
+        
+        getSansanTag: function(opt_offset, opt_records) {
+            //Sansanよりタグデータ取得
+            var offset = opt_offset || 0;
+            var alltags = opt_records || [];
+            var url = "https://api.sansan.com/v1/tags?range=all";
+            url += "&offset=" + offset;
+            return kintone.plugin.app.proxy(PLUGIN_ID, url, "GET", {}, {}).then(function(body) {
+                alltags = alltags.concat(JSON.parse(body[0]).data);
+                if (JSON.parse(body[1]) !== 200) {
+                    var error_message = JSON.parse(body[0]).error[0].code;
+                    if (JSON.parse(body[1]) === 429) {
+                        error_message = "リクエスト数が制限値を超えています。\n5分以上時間を置いてから再度取得してください。";
+                    }
+                    return Promise.reject(new Error(error_message));
+                }
+                //5000件以上は処理終了
+                if (alltags.length >= 5000) {
+                    return alltags;
+                }
+                if (JSON.parse(body[0]).data.length === 100) {
+                    return Sansanlookup.getSansanTag(offset + 100, alltags);
+                }
+                return alltags;
+            }, function(error) {
+                return Promise.reject(new Error(error.message));
+            });
+        },
 
-        getLookupList: function(dates) {
+        getLookupList: function(dates, tagId) {
 
-            Sansanlookup.searchSansanData(dates).then(function(sansan_data) {
+            Sansanlookup.searchSansanData(dates, tagId).then(function(sansan_data) {
                 //Email値の重複チェック
                 var sansan_records = Sansanlookup.clearOverlappedRecords(sansan_data);
 
@@ -391,18 +508,6 @@ jQuery.noConflict();
                     Sansanlookup.lookUpMessage($(nodata_msg));
                     Spin.hideSpinner();
                     return false;
-
-                } else if (sansan_records.length === 1) {
-                    //ルックアップ表示せずに取得
-                    Sansanlookup.changeRecordsFormat(sansan_records);
-                    Spin.hideSpinner();
-                    if (sansan_records.length === 0) {
-                        var nodata_msg2 = '<div id="sansan_lookup_validator_error" class="input-error-custom">' +
-                        '<span>データがありません。</span></div>';
-                        Sansanlookup.lookUpMessage($(nodata_msg2));
-                        return false;
-                    }
-                    Sansanlookup.copyFieldParams(Sansanlookup.getRecordParams(sansan_records[0]));
 
                 } else if (sansan_records.length >= 5000) {
                     //5000件以上の場合エラー
@@ -531,18 +636,18 @@ jQuery.noConflict();
             }
         },
 
-        doSearch: function(dates) {
+        doSearch: function(dates, tagId) {
             Spin.showSpinner();
             this.init();
-            this.getLookupList(dates);
+            this.getLookupList(dates, tagId);
         },
 
         doClear: function() {
             this.init();
             var record = kintone.app.record.get();
-            for (var i = 0; C_COPYFIELD.length > i; i++) {
-                if (C_COPYFIELD[i] !== "null") {
-                    record["record"][C_COPYFIELD[i]]["value"] = "";
+            for (var key in C_COPYFIELD) {
+                if(C_COPYFIELD[key] !== "null"){
+                    record["record"][C_COPYFIELD[key]]["value"] = "";  
                 }
             }
             kintone.app.record.set(record);
@@ -553,6 +658,7 @@ jQuery.noConflict();
             '<button id="lookup_search_button" type="button">取得</button>' +
             '<button id="lookup_clear_button" type="button">クリア</button>' +
             '<button id="lookup_setting_button" type="button">期間</button>' +
+            '<button id="lookup_tag_button" type="button">タグ</button>' +
             '</div>'
     };
 
@@ -571,6 +677,9 @@ jQuery.noConflict();
         $("#lookup_setting_button").click(function() {
             Sansanlookup.init();
             Sansanlookup.showDateDialog(Sansanlookup.createDateListView());
+        });
+        $("#lookup_tag_button").click(function() {
+            Sansanlookup.getLookupTagList();
         });
         return event;
     });
