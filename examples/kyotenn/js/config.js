@@ -107,6 +107,12 @@ jQuery.noConflict();
                             addSelectOption('#itsunavi-lon-feeld', property.label, property.code);
                             addSelectOption('#itsunavi-tooltip-title', property.label, property.code);
                             break;
+                        case 'NUMBER':
+                            // add option in select Box
+                            addSelectOption('#itsunavi-lat-feeld', property.label, property.code);
+                            addSelectOption('#itsunavi-lon-feeld', property.label, property.code);
+                            addSelectOption('#itsunavi-tooltip-title', property.label, property.code);
+                            break;
                         case 'SPACER':
                             addSelectOption('#itsunavi-space-feeld', property.elementId, property.elementId);
                             break;
