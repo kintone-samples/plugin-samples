@@ -1,0 +1,74 @@
+<body>
+	<div id="kintone-colorful-plugin">
+		<div class="kintoneplugin-row">
+			<div class="kintoneplugin-label">色をつける一覧の名前</div>
+			<div>
+				<div class="kintone-box">
+					<div class="kintoneplugin-input-outer">
+						<input class="kintoneplugin-input-text" type="text" id="view-id">
+                        <button type="button" id="getViewSetting" class="kintoneplugin-button-dialog-ok">一覧設定ボタン</button>
+					</div>
+				</div>
+			</div>
+		</div>
+        <div class="kintoneplugin-row">
+            <div class="kintoneplugin-label">一覧の項目設定(初期設定)<span class="kintoneplugin-require">*</span>
+            </div>
+            <div class="viewSettingTable">
+                <span class="default-noset">初期設定が未完了です。一覧の名前を入力後一覧設定ボタンを押して初期設定を完了してください。</span>
+            </div>
+        </div>
+		<div class="kintoneplugin-row">
+			<div class="kintoneplugin-label">定例MTG開催曜日<span class="kintoneplugin-require">*</span></div>
+			<div class="kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select id="set-day">
+						<option value="indefinite">不定</option>
+                        <option value="monday">毎週月曜日</option>
+                        <option value="tuesday">毎週火曜日</option>
+                        <option value="wednesday">毎週水曜日</option>
+                        <option value="thursday">毎週木曜日</option>
+                        <option value="friday">毎週金曜日</option>
+					</select>
+				</div>
+			</div>
+		</div>
+        <div class="kintoneplugin-row">
+            <div class="kintoneplugin-label">週報のタイトル用フィールドを選んでください<span class="kintoneplugin-require">*</span><br />※文字列(1行)フィールドのみ対象です</div>
+			<div class="kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select id="title-field">
+						<option value="">--</option>
+					</select>
+				</div>
+			</div>
+		</div>
+        <div class="kintoneplugin-row">
+            <div class="kintoneplugin-label">開催日用フィールドを選んでください<span class="kintoneplugin-require">*</span><br />※日付フィールドのみ対象です</div>
+			<div class="kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select id="kaisai-date">
+						<option value="">--</option>
+					</select>
+				</div>
+			</div>
+		</div>
+        <div class="kintoneplugin-row">
+            <div class="kintoneplugin-label">ハイライトする行に含める文字とハイライト色を指定してください</div>
+            <div>
+				<div class="kintone-box">
+					<div class="kintoneplugin-input-outer">
+                        <span>文字列</span>
+						<input class="kintoneplugin-input-text" type="text" id="highlight-st" placeholder="★〇▼">&nbsp;&nbsp;&nbsp;
+                        <span>色</span>
+                        <input class="kintoneplugin-input-text" type="text" id="highlight-co" placeholder="#000000～#FFFFFF">
+					</div>
+				</div>
+			</div>
+        </div>
+        <div class="block">
+            <button type="button" id="submit" class="kintoneplugin-button-dialog-ok">     保存する     </button>
+            <button type="button" id="cancel" class="kintoneplugin-button-dialog-cancel">     キャンセル   </button>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,43 @@
+{
+  "manifest_version": 1,
+  "version": 1,
+  "type": "APP",
+  "name": {
+    "ja": "MTG効率化プラグイン",
+    "en": "Colorful Weekly Report Plugin",
+    "zh": "Colorful Weekly Report Plugin"
+  },
+  "description": {
+    "ja": "週報をカラフルに使いやすくするプラグインです",
+    "en": "This plugin can change your weekly report app colorful.",
+    "zh": "This plugin can change your weekly report app colorful."
+  },
+  "icon": "img/colorful-weekly.png",
+  "homepage_url": {
+    "ja": "https://kintone.cybozu.com/jp/",
+    "en": "https://kintone.cybozu.com/jp/",
+    "zh": "https://kintone.cybozu.com/jp/"
+  },
+  "desktop": {
+    "js": [
+      "https://js.cybozu.com/jquery/1.12.3/jquery.min.js",
+      "js/colorful-weekly-lib.js",
+      "js/colorful-weekly-desktop.js"
+    ]
+  },
+  "mobile": {
+    "js": []
+  },
+  "config": {
+    "html": "html/config.html",
+    "js": [
+      "https://js.cybozu.com/jquery/1.12.3/jquery.min.js",
+      "js/colorful-weekly-config.js"
+    ],
+    "css": [
+      "css/51-us-default.css",
+      "css/colorful-weekly-config.css"
+    ],
+    "required_params": []
+  }
+}
