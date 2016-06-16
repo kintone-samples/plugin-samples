@@ -16,95 +16,26 @@ jQuery.noConflict();
         if (record[titleField]['value']) {
             record[titleField]['value'] = "";
         }
-        //set days.
         var myTbl = ["sun", "mon", "tue", "wed", "thr", "fri", "sat"];
         var myD = new Date();
         var myDay = myD.getDay();
         switch (theDate) {
             case "monday":
-                //config of every monday.
-                if (myTbl[myDay] === "tue") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(6);
-                }else if (myTbl[myDay] === "wed") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(5);
-                }else if (myTbl[myDay] === "thr") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(4);
-                }else if (myTbl[myDay] === "fri") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(3);
-                }else if (myTbl[myDay] === "sat") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(2);
-                }else if (myTbl[myDay] === "sun") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(1);
-                }
+                record[kaisai]['value'] = window.colorfulLib.calcMonday(myTbl, myDay);
                 break;
             case "tuesday":
-                //config of every tuesday.
-                if (myTbl[myDay] === "mon") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(1);
-                }else if (myTbl[myDay] === "wed") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(6);
-                }else if (myTbl[myDay] === "thr") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(5);
-                }else if (myTbl[myDay] === "fri") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(4);
-                }else if (myTbl[myDay] === "sat") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(3);
-                }else if (myTbl[myDay] === "sun") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(2);
-                }
+                record[kaisai]['value'] = window.colorfulLib.calcTuesday(myTbl, myDay);
                 break;
             case "wednesday":
-                //config of every wednesday.
-                if (myTbl[myDay] === "mon") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(2);
-                }else if (myTbl[myDay] === "tue") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(1);
-                }else if (myTbl[myDay] === "thr") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(6);
-                }else if (myTbl[myDay] === "fri") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(5);
-                }else if (myTbl[myDay] === "sat") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(4);
-                }else if (myTbl[myDay] === "sun") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(3);
-                }
+                record[kaisai]['value'] = window.colorfulLib.calcWednesday(myTbl, myDay);
                 break;
-            case "thrsday":
-                //config of every thursday.
-                if (myTbl[myDay] === "mon") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(3);
-                }else if (myTbl[myDay] === "tue") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(2);
-                }else if (myTbl[myDay] === "wed") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(1);
-                }else if (myTbl[myDay] === "fri") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(6);
-                }else if (myTbl[myDay] === "sat") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(5);
-                }else if (myTbl[myDay] === "sun") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(4);
-                }
+            case "thursday":
+                record[kaisai]['value'] = window.colorfulLib.calcThursday(myTbl, myDay);
                 break;
             case "friday":
-                //config of every friday.
-                if (myTbl[myDay] === "mon") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(4);
-                }else if (myTbl[myDay] === "tue") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(3);
-                }else if (myTbl[myDay] === "wed") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(2);
-                }else if (myTbl[myDay] === "thr") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(1);
-                }else if (myTbl[myDay] === "sat") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(6);
-                }else if (myTbl[myDay] === "sun") {
-                    record[kaisai]['value'] = colorfulLib.calcMD(5);
-                }
+                record[kaisai]['value'] = window.colorfulLib.calcFriday(myTbl, myDay);
                 break;
             default:
-                var dt = new Date();
-                var today = dt.getFullYear() + "-" + colorfulLib.zeroformat((dt.getMonth() + 1), 2) + "-" + dt.getDate();
-                record[kaisai]['value'] = today;
                 break;
         }
         record[titleField]['disabled'] = true;
@@ -118,7 +49,8 @@ jQuery.noConflict();
         return event;
     });
 	//title change.
-    var changeEvents = ['app.record.create.submit', 'app.record.edit.change.' + kaisai, 'app.record.create.change.' + kaisai, 'app.record.index.edit.change.' + kaisai];
+    var changeEvents = ['app.record.create.submit', 'app.record.edit.change.' +
+    kaisai, 'app.record.create.change.' + kaisai, 'app.record.index.edit.change.' + kaisai];
     kintone.events.on(changeEvents, function(event) {
         var record = event.record;
         var user = kintone.getLoginUser();
@@ -133,7 +65,8 @@ jQuery.noConflict();
             var elDate = kintone.app.getFieldElements(kaisai);
             if (elDate) {
 				// specify color.
-                var colorType = ['#CCFFFF', '#FFFFCC', '#CCFFCC', '#F5F5DC', '#FFEEFF', '#CCFFFF', '#FFFFCC', '#CCFFCC', '#F5F5DC', '#FFEEFF'];
+                var colorType = ['#CCFFFF', '#FFFFCC', '#CCFFCC', '#F5F5DC', '#FFEEFF',
+                '#CCFFFF', '#FFFFCC', '#CCFFCC', '#F5F5DC', '#FFEEFF'];
                 for (var i = 0; i < elDate.length; i++) {
                     var date2 = records[i][kaisai]['value'].split('-');
                     var today = new Date(date2[0] + "/" + date2[1] + "/" + date2[2]);
@@ -168,10 +101,6 @@ jQuery.noConflict();
         });
     var openEvents = ['app.record.detail.show'];
     kintone.events.on(openEvents, function(event) {
-        for (var j = 0; j < viewNameLength; j++) {
-            var elTemp = kintone.app.record.getFieldElement(config["viewName" + (j + 1)]);
-            updateFocus(elTemp);
-        }
         function updateFocus(el) {
             var elc = el.childNodes;
             var text;
@@ -182,13 +111,17 @@ jQuery.noConflict();
             var hilightCo = config["highlightCo"];
             for (var i = 0; i < elc.length; i++) {
                 text = elc[i].innerHTML;
-                textTrim = text.replace(/ /g, "").replace(/　/g, "");
+                textTrim = text.replace(/ /g, "").replace(/{blank}/g, "");
                 key1 = textTrim.charAt(0);
                 key2 = textTrim.charAt(textTrim.length - 1);
                 if (key1 === hilightSt || key2 === hilightSt) {
                     elc[i].style.backgroundColor = hilightCo;
                 }
             }
+        }
+        for (var j = 0; j < viewNameLength; j++) {
+            var elTemp = kintone.app.record.getFieldElement(config["viewName" + (j + 1)]);
+            updateFocus(elTemp);
         }
     });
 })(jQuery, kintone.$PLUGIN_ID);

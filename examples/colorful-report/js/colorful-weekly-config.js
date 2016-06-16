@@ -14,17 +14,18 @@ jQuery.noConflict();
         var appId = kintone.app.getId();
         var config = kintone.plugin.app.getConfig(KEY);
         kintone.api(kintone.api.url('/k/v1/preview/form', true), 'GET', {app: appId}).then(function(resp) {
+            var $op;
             for (var i = 0; i < resp.properties.length; i++) {
                 //set field for title.
                 if (resp.properties[i]['type'] === 'SINGLE_LINE_TEXT') {
-                    var $op = $("<option>", {
+                    $op = $("<option>", {
                         value: resp.properties[i]['code']
                     }).append(
                         '<span>' + resp.properties[i]['label'] + '(' + resp.properties[i]['code'] + ')</span>'
                     );
                     $('#title-field').append($op);
                 }else if (resp.properties[i]['type'] === 'DATE') {
-                    var $op = $("<option>", {
+                    $op = $("<option>", {
                         value: resp.properties[i]['code']
                     }).append(
                         '<span>' + resp.properties[i]['label'] + '(' + resp.properties[i]['code'] + ')</span>'
@@ -49,8 +50,7 @@ jQuery.noConflict();
                         id: 'viewTable'
                     });
                     for (var i = 0; i < viewNum; i++) {
-                        var tableParts = $('<th>');
-                        $createTable.append(tableParts.text(config['viewName' + (i + 1)]));
+                        $createTable.append($('<th>').text(config['viewName' + (i + 1)]));
                         kFields.push(config['viewName' + (i + 1)]);
                     }
                     $createTable.appendTo($('.viewSettingTable'));
@@ -71,10 +71,9 @@ jQuery.noConflict();
                 var viewName = $('#view-id').val();
                 kintone.api(kintone.api.url('/k/v1/app/views', true), 'GET', {app: appId}).then(function(viewResp) {
                     if (viewResp['views'][viewName]) {
-                        for (var i = 0; i < viewResp['views'][viewName]['fields'].length; i++) {
-                            var tableParts = $('<th>');
-                            kFields.push(viewResp['views'][viewName]['fields'][i]);
-                            $table.append(tableParts.text(viewResp['views'][viewName]['fields'][i]));
+                        for (var j = 0; j < viewResp['views'][viewName]['fields'].length; j++) {
+                            kFields.push(viewResp['views'][viewName]['fields'][j]);
+                            $table.append($('<th>').text(viewResp['views'][viewName]['fields'][j]));
                         }
                         $('.default-noset').remove();
                     }
@@ -85,7 +84,7 @@ jQuery.noConflict();
             });
             //if push the button for submit.
             $('#submit').click(function() {
-                var config = [];
+                var conf = [];
                 var viewId = $('#view-id').val();
                 var theDate = $('#set-day').val();
                 var titleField = $('#title-field').val();
@@ -96,19 +95,19 @@ jQuery.noConflict();
                     alert('必須項目が入力されていません');
                     return;
                 }
-                config['viewId'] = viewId;
-                config['theDate'] = theDate;
-                config['titleField'] = titleField;
-                config['kaisaiDate'] = kaisaiDate;
-                config['highlightSt'] = highlightSt;
-                config['highlightCo'] = highlightCo;
-                viewNum = Object.keys(config).length - 6;
+                conf['viewId'] = viewId;
+                conf['theDate'] = theDate;
+                conf['titleField'] = titleField;
+                conf['kaisaiDate'] = kaisaiDate;
+                conf['highlightSt'] = highlightSt;
+                conf['highlightCo'] = highlightCo;
+                viewNum = Object.keys(conf).length - 6;
                 if (kFields.length > 0) {
-                    for (var i = 0; i < kFields.length; i++) {
-                        config['viewName' + (i + 1)] = kFields[i];
+                    for (var k = 0; k < kFields.length; k++) {
+                        conf['viewName' + (k + 1)] = kFields[k];
                     }
                 }
-                kintone.plugin.app.setConfig(config);
+                kintone.plugin.app.setConfig(conf);
             });
             $('#cancel').click(function() {
                 history.back();
