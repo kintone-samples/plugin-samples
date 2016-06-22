@@ -5,6 +5,7 @@ jQuery.noConflict();
   var editor;
   var jsFiles = null;
   var libs = null;
+  var jsLibs = [], cssLibs = [];
   var spinner;
   var currentIndex = -1;
   var modified = false;
@@ -18,12 +19,12 @@ jQuery.noConflict();
 
   var getCurrentType = function() {
     return $id('type').val();
-  }
+  };
 
   var maxIndex = function() {
     if (!jsFiles) return -1;
     return jsFiles.length - 1;
-  }
+  };
 
   $.fn.spinner = function(){
     var caller = this;
@@ -140,17 +141,17 @@ jQuery.noConflict();
       var lib = libs[i];
       var option = $id('libraries').get(0).options[i];
       if (option.selected) {
-        if ($.isArray(lib[2])) {
-          for (j = 0; j < lib[2].length; j++) {
+        if ($.isArray(lib.url)) {
+          for (j = 0; j < lib.url.length; j++) {
             tmpFiles.push({
               type: 'URL',
-              url: CDN_URL + lib[2][j]
+              url: lib.url[j]
             });
           }
         } else {
           tmpFiles.push({
             type: 'URL',
-            url: CDN_URL + lib[2]
+            url: lib.url
           });
         }
       }
@@ -164,7 +165,7 @@ jQuery.noConflict();
       var libName = m[1];
       for (var i = 0; i < libs.length; i++) {
         var lib = libs[i];
-        if (lib[1] == libName) {
+        if (lib.key == libName) {
           return lib;
         }
       }
@@ -178,8 +179,8 @@ jQuery.noConflict();
     if (js.type != 'FILE') return;
     if (spinner) return;
     spinner = new app.Spinner();
-    uploadFile(js.file.name).done(function(data) {
-      js.file.fileKey = data.fileKey;
+    uploadFile(js.file.name).done(function(f) {
+      js.file.fileKey = f.fileKey;
       // update customize.json
       var tmpFiles = [];
 
@@ -264,9 +265,10 @@ jQuery.noConflict();
         records = resp.desktop.css;
         libs = $.extend(true, [], cssLibs);
       }
+      var i, js;
       //duplicate check
-      for (var i = 0; i < records.length; i++) {
-        var js = records[i];
+      for (i = 0; i < records.length; i++) {
+        js = records[i];
         if (js.type == 'FILE') {
           for (var j = i + 1; j < records.length; j++) {
             var js2 = records[j];
@@ -279,9 +281,8 @@ jQuery.noConflict();
           }
         }
       }
-
-      for (var i = 0; i < records.length; i++) {
-        var js = $.extend(true, {}, records[i]);
+      for (i = 0; i < records.length; i++) {
+        js = $.extend(true, {}, records[i]);
         jsFiles.push(js);
         if (js.type == 'FILE') {
           if (currentIndex < 0) currentIndex = i;
@@ -292,7 +293,14 @@ jQuery.noConflict();
           $files.append($('<OPTION>').text(name).val(i));
         } else if (js.type == 'URL') {
           var lib = getLib(js.url);
-          if (lib) lib[3] = true;
+          if (lib) {
+            lib.selected = true;
+            var re = new RegExp(CDN_URL_REGEX + "(.*?)\\/(.*?)\\/");
+            var m = js.url.match(re);
+            if (m) {
+              lib.currentVersion = m[2];
+            }
+          }
         }
       }
       $files.val(currentIndex);
@@ -318,57 +326,75 @@ jQuery.noConflict();
     $container.empty();
     for (var i = 0; i < libs.length; i++) {
       var lib = libs[i];
-      var $opt = $('<OPTION>').text(lib[0]).val(lib[1]);
-      if (lib[3]) {
+      var text;
+      if (lib.currentVersion && lib.version != lib.currentVersion) {
+        text = lib.name + '(' + lib.currentVersion + ' -> ' + lib.version + ')';
+      } else {
+        text = lib.name + '(' + lib.version + ')';
+      }
+      var $opt = $('<OPTION>').text(text).val(lib.key);
+      if (lib.selected) {
         $opt.prop('selected', true);
       }
       $container.append($opt);
     }
   };
 
-  var jsLibs = [
-    ["Ace", "ace", "ace/v1.2.0/ace.js", false],
-    ["AngularJS", "angularjs", "angularjs/v1.4.5/angular.min.js", false],
-    ["Chart.JS", "chartjs", "chartjs/v1.0.2/Chart.min.js", false],
-    ["DataTables", "datatables", "datatables/v1.10.9/js/jquery.dataTables.min.js", false],
-    ["DomPurify", "dompurify", "dompurify/0.6.5/purify.js", false],
-    ["FullCalendar", "fullcalendar", "fullcalendar/v2.4.0/fullcalendar.min.js", false],
-    ["Handsontable", "handsontable", "handsontable/0.17.0/handsontable.full.min.js", false],
-    ["highlightjs", "highlightjs", "highlightjs/8.7/highlight.pack.js", false],
-    ["jqGrid", "jqgrid", ["jqgrid/v5.0.0/jquery.jqGrid.min.js","jqgrid/v5.0.0/grid.locale-ja.js", "jqgrid/v5.0.0/grid.locale-en.js", "jqgrid/v5.0.0/grid.locale-cn.js"], false],
-    ["jQuery", "jquery", "jquery/2.1.4/jquery.min.js", false],
-    ["jQuery UI", "jqueryui", "jqueryui/1.11.4/jquery-ui.min.js", false],
-    ["jQuery.Gantt", "jquerygantt", "jquerygantt/20140623/jquery.fn.gantt.min.js", false],
-    ["JSRender", "jsrender", "jsrender/1.0.0-beta/jsrender.min.js", false],
-    ["jsTree", "jstree", "jstree/3.2.1/jstree.min.js", false],
-    ["JSZip", "jszip", "jszip/v2.5.0/jszip.min.js", false],
-    ["Marked.js", "markedjs", "markedjs/v0.3.5/marked.min.js", false],
-    ["Moment.js", "momentjs", ["momentjs/2.10.6/moment.min.js", "momentjs/2.10.6/moment-with-locales.min.js"], false],
-    ["OpenLayers", "openlayers", "openlayers/v3.8.2/ol.js", false],
-    ["popModal", "popmodal", "popmodal/1.19/popModal.min.js", false],
-    ["Spin.js", "spinjs", "spinjs/2.3.2/spin.min.js", false],
-    ["SweetAlert", "sweetalert", "sweetalert/v1.1.0/sweetalert.min.js", false],
+  var cdnLibs = [
+    ["Ace", "ace", "v1.2.3", "ace.js"],
+    ["AngularJS", "angularjs", "v1.5.6", "angular.min.js"],
+    ["Chart.JS", "chartjs", "v2.1.4", "Chart.min.js"],
+    ["DataTables", "datatables", "v1.10.12", ["js/jquery.dataTables.min.js", "css/jquery.dataTables.min.css"]],
+    ["DomPurify", "dompurify", "0.8.1", "purify.js"],
+    ["FontAwesome", "font-awesome", "v4.6.3", "css/font-awesome.min.css"],
+    ["FullCalendar", "fullcalendar", "v2.7.3", ["fullcalendar.min.js", "fullcalendar.min.css"]],
+    ["Handsontable", "handsontable", "0.25.0", ["handsontable.full.min.js", "handsontable.full.min.css"]],
+    ["highlightjs", "highlightjs", "9.4.0", ["highlight.pack.js", "styles/default.css"]],
+    ["jqGrid", "jqgrid", "v5.1.0", ["js/jquery.jqGrid.min.js","js/i18n/grid.locale-ja.js", "js/i18n/grid.locale-en.js", "js/i18n/grid.locale-cn.js", "css/ui.jqgrid.css"]],
+    ["jQuery", "jquery", "2.2.4", "jquery.min.js"],
+    ["jQuery UI", "jqueryui", "1.11.4", ["jquery-ui.min.js", "smoothness/jquery-ui.css"]],
+    ["jQuery.Gantt", "jquerygantt", "20140623", ["jquery.fn.gantt.min.js", "css/style.css"]],
+    ["JSRender", "jsrender", "0.9.76", "jsrender.min.js"],
+    ["jsTree", "jstree", "3.3.1", ["jstree.min.js", "themes/default/style.min.css"]],
+    ["JSZip", "jszip", "v3.0.0", "jszip.min.js"],
+    ["Marked.js", "markedjs", "v0.3.5", "marked.min.js"],
+    ["Moment.js", "momentjs", "2.13.0", ["moment.min.js", "moment-with-locales.min.js"]],
+    ["OpenLayers", "openlayers", "v3.16.0", ["ol.js", "ol.css"]],
+    ["popModal", "popmodal", "1.23", ["popModal.min.js", "popModal.min.css"]],
+    ["Spin.js", "spinjs", "2.3.2", "spin.min.js"],
+    ["SweetAlert", "sweetalert", "v1.1.3", ["sweetalert.min.js", "sweetalert.css"]],
+    ["UltraDate.js", "ultradatejs", "v2.2.1", ["UltraDate.min.js", "UltraDate.ja.min.js"]],
+    ["Underscore.js", "underscore", "1.8.3", "underscore-min.js"],
+    ["Vue.js", "vuejs", "v1.0.24", "vue.min.js"]
   ];
-
-  var cssLibs = [
-    ["DataTables", "datatables", "datatables/v1.10.9/css/jquery.dataTables.min.css", false],
-    ["FontAwesome", "font-awesome", "font-awesome/v4.4.0/css/font-awesome.min.css", false],
-    ["FullCalendar", "fullcalendar", ["fullcalendar/v2.4.0/fullcalendar.min.css", "fullcalendar/v2.4.0/fullcalendar.print.css"], false],
-    ["Handsontable", "handsontable", "handsontable/0.17.0/handsontable.full.min.css", false],
-    ["highlightjs", "highlightjs", "highlightjs/8.7/styles/default.css", false],
-    ["jqGrid", "jqgrid", "jqgrid/v5.0.0/ui.jqgrid.css", false],
-    ["jQuery UI", "jqueryui", "jqueryui/1.11.4/themes/smoothness/jquery-ui.css", false],
-    ["jQuery.Gantt", "jquerygantt", "jquerygantt/20140623/css/style.css", false],
-    ["jsTree", "jstree", "jstree/3.2.1/themes/default/style.min.css", false],
-    ["OpenLayers", "openlayers", "openlayers/v3.8.2/ol.css", false],
-    ["popModal", "popmodal", "popmodal/1.19/popModal.min.css", false],
-    ["SweetAlert", "sweetalert", "sweetalert/v1.1.0/sweetalert.css", false],
-  ];
-
-
-  https://js.cybozu.com/font-awesome/v4.4.0/css/font-awesome.min.css
 
   $(function() {
+    cdnLibs.forEach(function(lib) {
+      var tmpLib = {
+        name: lib[0],
+        key: lib[1],
+        version: lib[2],
+        url: [],
+        selected: false
+      };
+      var filenames = lib[3];
+      if (!$.isArray(filenames)) filenames = [filenames];
+      var jsLib, cssLib;
+      for (var j = 0; j < filenames.length; j++) {
+        var filename = filenames[j];
+        var url = CDN_URL + lib[1] + '/' + lib[2] + '/' + filename;
+        if (filename.match(/\.js$/)) {
+          if (!jsLib) jsLib = $.extend({}, tmpLib);
+          jsLib.url.push(url);
+        } else if (filename.match(/\.css$/)) {
+          if (!cssLib) cssLib = $.extend({}, tmpLib);
+          cssLib.url.push(url);
+        }
+      }
+      if (jsLib) jsLibs.push(jsLib);
+      if (cssLib) cssLibs.push(cssLib);
+    });
+
     //get all js files
     var $files = $id('files');
 
@@ -386,7 +412,7 @@ jQuery.noConflict();
       getCompletions: function(editor, session, pos, prefix, callback) {
         callback(null, completions);
       }
-    })
+    });
     /*
     editor.commands.on("afterExec", function(e){
       if (e.command.name == "insertstring"&&/^[\w.]$/.test(e.args)) {
@@ -435,13 +461,13 @@ jQuery.noConflict();
         }
       }
 
-      var js = {
+      var jsFile = {
         type: 'FILE',
         file: {
           name: fileName
         }
-      }
-      jsFiles.push(js);
+      };
+      jsFiles.push(jsFile);
       currentIndex = maxIndex();
       $files.append($('<OPTION>').text(fileName).val(currentIndex));
       $files.val(currentIndex);
@@ -513,7 +539,7 @@ jQuery.noConflict();
       this.scrollTop = scroll;
 
       $(this).focus();
-    }).mousemove(function(e){e.preventDefault()});
+    }).mousemove(function(e){e.preventDefault();});
   });
 
   var kintoneCompletions = function() {
@@ -610,7 +636,6 @@ jQuery.noConflict();
     for (var i = 0; i < keywords.length; i++) {
       ret.push({value: keywords[i], score: 1000, meta: "kintone"});
     }
-    console.dir(ret);
     return ret;
   };
 })(jQuery, kintone.$PLUGIN_ID);
