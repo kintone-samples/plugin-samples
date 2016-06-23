@@ -1,0 +1,51 @@
+@charset "UTF-8";
+
+.spinner-backdrop {
+  position: fixed;
+  opacity: 0.5;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1100;
+  background-color: #fff;
+}
+
+.clearfix:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+#jsedit-editor {
+    height: 500px;
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+.jsedit-config-wrapper {
+  margin-top: 16px;
+}
+
+.form-submit {
+  padding: 0 0 16px 0;
+}
+
+
+.form-submit button {
+  margin-right: 8px;
+}
+
+.new-file {
+  margin-right: 8px;
+}
+
+.jsedit-plugin-libraries-wrapper select {
+  width: 300px;
+  padding-left: 8px;
+}

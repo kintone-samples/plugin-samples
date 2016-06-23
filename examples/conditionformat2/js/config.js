@@ -1,5 +1,5 @@
 /*
- * Condition Format plug-in
+ * New Condition Format plug-in
  * Copyright (c) 2016 Cybozu
  *
  * Licensed under the MIT License
@@ -36,18 +36,24 @@ jQuery.noConflict();
                 $("#conditionformat-cvalue_text_" + bm).val(body_text["cvalue_text_" + bm]["value"]);
                 $("#conditionformat-tfield_text_" + bm).val(body_text["tfield_text_" + bm]["value"]);
                 $("#conditionformat-tcolor_text_" + bm).val(body_text["tcolor_text_" + bm]["value"]);
+                $("#conditionformat-tbgcolor_text_" + bm).val(body_text["tbgcolor_text_" + bm]["value"]);
                 $("#conditionformat-tsize_text_" + bm).val(body_text["tsize_text_" + bm]["value"]);
                 $("#conditionformat-tcolor_text_" + bm)[0].
                 setAttribute("style", "color:" + body_text["tcolor_text_" + bm]["value"]);
+                $("#conditionformat-tbgcolor_text_" + bm)[0].
+                setAttribute("style", "color:" + body_text["tbgcolor_text_" + bm]["value"]);
 
                 $("#conditionformat-cfield_date_" + bm).val(body_date["cfield_date_" + bm]["value"]);
                 $("#conditionformat-ctype_date_" + bm).val(body_date["ctype_date_" + bm]["value"]);
                 $("#conditionformat-cvalue_date_" + bm).val(body_date["cvalue_date_" + bm]["value"]);
                 $("#conditionformat-tfield_date_" + bm).val(body_date["tfield_date_" + bm]["value"]);
                 $("#conditionformat-tcolor_date_" + bm).val(body_date["tcolor_date_" + bm]["value"]);
+                $("#conditionformat-tbgcolor_date_" + bm).val(body_date["tbgcolor_date_" + bm]["value"]);
                 $("#conditionformat-tsize_date_" + bm).val(body_date["tsize_date_" + bm]["value"]);
                 $("#conditionformat-tcolor_date_" + bm)[0].
                 setAttribute("style", "color:" + body_date["tcolor_date_" + bm]["value"]);
+                $("#conditionformat-tbgcolor_date_" + bm)[0].
+                setAttribute("style", "color:" + body_date["tbgcolor_date_" + bm]["value"]);
             }
         }
     }
@@ -122,6 +128,7 @@ jQuery.noConflict();
             body_text["cvalue_text_" + m] = {"value": t.valueText};
             body_text["tfield_text_" + m] = {"value": t.targetFieldText};
             body_text["tcolor_text_" + m] = {"value": t.targetColorText};
+            body_text["tbgcolor_text_" + m] = {"value": t.targetBackgroundColorText};
             body_text["tsize_text_" + m] = {"value": t.targetSizeText};
 
             body_date["cfield_date_" + m] = {"value": d.fieldDate};
@@ -129,6 +136,7 @@ jQuery.noConflict();
             body_date["cvalue_date_" + m] = {"value": d.valueDate};
             body_date["tfield_date_" + m] = {"value": d.targetFieldDate};
             body_date["tcolor_date_" + m] = {"value": d.targetColorDate};
+            body_date["tbgcolor_date_" + m] = {"value": d.targetBackgroundColorDate};
             body_date["tsize_date_" + m] = {"value": d.targetSizeDate};
         }
         config["body_text"] = JSON.stringify(body_text);
@@ -160,7 +168,9 @@ jQuery.noConflict();
 
             //HTML特殊文字(&, <, >, ", ')が含まれるときエラー
             if (t.valueText.match(/\&|<|\>|\"|\'/g) !== null || t.targetColorText.match(/\&|<|\>|\"|\'/g) !== null ||
-                d.valueDate.match(/\&|<|\>|\"|\'/g) !== null || d.targetColorDate.match(/\&|<|\>|\"|\'/g) !== null) {
+                t.targetBackgroundColorText.match(/\&|<|\>|\"|\'/g) !== null ||
+                d.valueDate.match(/\&|<|\>|\"|\'/g) !== null || d.targetColorDate.match(/\&|<|\>|\"|\'/g) !== null ||
+                d.targetBackgroundColorDate.match(/\&|<|\>|\"|\'/g) !== null) {
                 alert("条件値または色にHTML特殊文字(&, <, >, \", \')を\n入力することはできません");
                 return false;
             }
@@ -177,30 +187,58 @@ jQuery.noConflict();
                 return false;
             }
 
-            //文字条件書式の色のはじめの文字が#でなければエラー
+            //文字条件書式の文字色のはじめの文字が#でなければエラー
             if (t.targetColorText.slice(0, 1) !== "#") {
-                alert("文字条件書式の" + (ci + 1) + "行目の色には\n「#000000-#FFFFFF」を入力してください");
+                alert("文字条件書式の" + (ci + 1) + "行目の文字色には\n「#000000-#FFFFFF」を入力してください");
                 return false;
             }
 
-            //日付条件書式の色のはじめの文字が#でなければエラー
+            //日付条件書式の文字色のはじめの文字が#でなければエラー
             if (d.targetColorDate.slice(0, 1) !== "#") {
-                alert("日付条件書式の" + (ci + 1) + "行目の色には\n「#000000-#FFFFFF」を入力してください");
+                alert("日付条件書式の" + (ci + 1) + "行目の文字色には\n「#000000-#FFFFFF」を入力してください");
                 return false;
             }
 
-            //文字条件書式の色に#000000-#FFFFFF以外が入力されているときエラー
+            //文字条件書式の文字色に#000000-#FFFFFF以外が入力されているときエラー
             if (t.targetColorText.slice(1, 7).match(/[0-9A-Fa-f]{6}/) === null) {
                 if (t.targetColorText !== "#000000") {
-                    alert("文字条件書式の" + (ci + 1) + "行目の色には\nカラーコード「#000000-#FFFFFF」を入力してください");
+                    alert("文字条件書式の" + (ci + 1) + "行目の文字色には\nカラーコード「#000000-#FFFFFF」を入力してください");
                     return false;
                 }
             }
 
-            //日付条件書式の色に#000000-#FFFFFF以外が入力されているときエラー
+            //日付条件書式の文字色に#000000-#FFFFFF以外が入力されているときエラー
             if (d.targetColorDate.slice(1, 7).match(/[0-9A-Fa-f]{6}/) === null) {
                 if (d.targetColorDate !== "#000000") {
-                    alert("日付条件書式の" + (ci + 1) + "行目の色には\nカラーコード「#000000-#FFFFFF」を入力してください");
+                    alert("日付条件書式の" + (ci + 1) + "行目の文字色には\nカラーコード「#000000-#FFFFFF」を入力してください");
+                    return false;
+                }
+            }
+
+            //文字条件書式の背景色のはじめの文字が#でなければエラー
+            if (t.targetBackgroundColorText.slice(0, 1) !== "#") {
+                alert("文字条件書式の" + (ci + 1) + "行目の背景色には\n「#000000-#FFFFFF」を入力してください");
+                return false;
+            }
+
+            //日付条件書式の背景色のはじめの文字が#でなければエラー
+            if (d.targetBackgroundColorDate.slice(0, 1) !== "#") {
+                alert("日付条件書式の" + (ci + 1) + "行目の背景色には\n「#000000-#FFFFFF」を入力してください");
+                return false;
+            }
+
+            //文字条件書式の背景色に#000000-#FFFFFF以外が入力されているときエラー
+            if (t.targetBackgroundColorText.slice(1, 7).match(/[0-9A-Fa-f]{6}/) === null) {
+                if (t.targetBackgroundColorText !== "#") {
+                    alert("文字条件書式の" + (ci + 1) + "行目の背景色には\nカラーコード「#000000-#FFFFFF」を入力してください");
+                    return false;
+                }
+            }
+
+            //日付条件書式の背景色に#000000-#FFFFFF以外が入力されているときエラー
+            if (d.targetBackgroundColorDate.slice(1, 7).match(/[0-9A-Fa-f]{6}/) === null) {
+                if (d.targetBackgroundColorDate !== "#") {
+                    alert("日付条件書式の" + (ci + 1) + "行目の背景色には\nカラーコード「#000000-#FFFFFF」を入力してください");
                     return false;
                 }
             }
@@ -217,6 +255,7 @@ jQuery.noConflict();
                 valueText: $("#conditionformat-cvalue_text_" + m).val(),
                 targetFieldText: $("#conditionformat-tfield_text_" + m).val(),
                 targetColorText: $("#conditionformat-tcolor_text_" + m).val(),
+                targetBackgroundColorText: $("#conditionformat-tbgcolor_text_" + m).val(),
                 targetSizeText: $("#conditionformat-tsize_text_" + m).val()
             },
             date: {
@@ -225,18 +264,28 @@ jQuery.noConflict();
                 valueDate: $("#conditionformat-cvalue_date_" + m).val(),
                 targetFieldDate: $("#conditionformat-tfield_date_" + m).val(),
                 targetColorDate: $("#conditionformat-tcolor_date_" + m).val(),
+                targetBackgroundColorDate: $("#conditionformat-tbgcolor_date_" + m).val(),
                 targetSizeDate: $("#conditionformat-tsize_date_" + m).val()
             }
         };
     }
 
-    //色変更。
+    //文字色のカラーコードが変更された際に文字色変更。
     $(".conditionformat-color").change(function() {
         var $el = $(this).parents("tr");
         $($el[0]).find(".conditionformat-color");
         $($el[0]).find(".conditionformat-color")[0].setAttribute("style", "color:" + $(this).val());
         return true;
     });
+
+    //背景色のカラーコードが変更された際に文字色変更。
+    $(".conditionformat-backgroundcolor").change(function() {
+        var $el = $(this).parents("tr");
+        $($el[0]).find(".conditionformat-backgroundcolor");
+        $($el[0]).find(".conditionformat-backgroundcolor")[0].setAttribute("style", "color:" + $(this).val());
+        return true;
+    });
+
 
     //クリアボタン押下時に押下された行を初期値にする。
     $(".conditionformat-clear-buttons").click(function() {
@@ -246,6 +295,8 @@ jQuery.noConflict();
         $($el[0]).find(".conditionformat-cvalue-date").val("0");
         $($el[0]).find(".conditionformat-color").val("#000000");
         $($el[0]).find(".conditionformat-color")[0].setAttribute("style", "color:" + "#000000");
+        $($el[0]).find(".conditionformat-backgroundcolor").val("#");
+        $($el[0]).find(".conditionformat-backgroundcolor")[0].setAttribute("style", "color:" + "#");
     });
 
     //「保存する」ボタン押下時に入力情報を設定する

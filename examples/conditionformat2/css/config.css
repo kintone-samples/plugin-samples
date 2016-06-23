@@ -1,10 +1,10 @@
 .conditionformat-cvalue, .conditionformat-cvalue-date,
-.conditionformat-color, .conditionformat-clear-buttons {
+.conditionformat-color, .conditionformat-backgroundcolor, .conditionformat-clear-buttons {
     margin-right: 10px;
     margin-bottom: 8px;
 }
 
-.conditionformat-color {
+.conditionformat-color, .conditionformat-backgroundcolor{
     width: 90px;
 }
 
