@@ -1,0 +1,35 @@
+{
+    "manifest_version": 1,
+    "version": 1,
+    "type": "APP",
+    "name": {
+        "ja": "文字結合プラグイン",
+        "en": "Text Connect",
+        "zh": "Text Connect"
+    },
+    "description": {
+        "ja": "複数のフィールドの文字を連結して、特定のフィールドに代入するプラグインです。",
+        "en": "This plug-in can combine the text of one field with another field.",
+        "zh": "This plug-in can combine the text of one field with another field."
+    },
+    "icon": "contents/icon.png",
+    "desktop": {
+        "js": [
+            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+            "desktops/desktop.js"
+        ]
+    },
+    "config":{
+        "html": "contents/setting.html",
+        "js": [
+            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+            "config_js/config.js",
+            "https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.min.js"
+
+        ],
+        "css": [
+                "config_css/config.css",
+                "https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.css"
+        ]
+    }
+}
