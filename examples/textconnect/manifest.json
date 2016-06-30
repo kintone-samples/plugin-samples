@@ -23,8 +23,8 @@
         "html": "contents/setting.html",
         "js": [
             "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
-            "config_js/config.js",
-            "https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.min.js"
+            "https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.min.js",
+            "config_js/config.js"
 
         ],
         "css": [

@@ -3,27 +3,27 @@ jQuery.noConflict();
     "use strict";
 
     // プラグインIDの設定
-    var conf = kintone.plugin.app.getConfig(PLUGIN_ID);
-    var MAX_LINE = 5;//行数指定
+    var CONF = kintone.plugin.app.getConfig(PLUGIN_ID);
+    var MAX_SELECT = 5;//行数指定
 
-    function escapeHtml2(htmlstr) {
-        if (conf.copyfield !== undefined) {
+    function decodeSpace(htmlstr) {
+        if (CONF.copyfield !== undefined) {
             return htmlstr.replace(/&nbsp;/g, " ").replace(/&emsp;/g, "　");
         }
     }
 
     function setDefault() {
-        if (conf) {
-            $("#select1").val(conf.select1);
-            $("#select2").val(conf.select2);
-            $("#select3").val(conf.select3);
-            $("#select4").val(conf.select4);
-            $("#select5").val(conf.select5);
-            $("#copyfield").val(conf.copyfield);
-            if (conf.copyfield !== "") {
-                $("#between").val(escapeHtml2(conf.between));
+        if (CONF) {
+            $("#select1").val(CONF.select1);
+            $("#select2").val(CONF.select2);
+            $("#select3").val(CONF.select3);
+            $("#select4").val(CONF.select4);
+            $("#select5").val(CONF.select5);
+            $("#copyfield").val(CONF.copyfield);
+            if (CONF.copyfield !== "") {
+                $("#between").val(decodeSpace(CONF.between));
             } else {
-                $("#between").val(conf.between);
+                $("#between").val(CONF.between);
             }
             return;
         }
@@ -34,7 +34,7 @@ jQuery.noConflict();
         .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
     }
 
-    function escapeHtml1(htmlstr1) {
+    function encodeSpace(htmlstr1) {
         return htmlstr1.replace(/\u0020/g, "&nbsp;").replace(/\u3000/g, "&emsp;");
     }
 
@@ -48,18 +48,10 @@ jQuery.noConflict();
                 var prop = resp.properties[j];
 
                 switch (prop.type) {
-                    //文字列1行の時は保存フィールドにも適用
+                    //文字列1行の時と文字列複数行を結合フィールドと保存フィールドに適用
                     case "SINGLE_LINE_TEXT":
-                        for (var k = 1; k < MAX_LINE + 1; k++) {
-                            $option.attr("value", escapeHtml(prop.code));
-                            $option.text(escapeHtml(prop.label));
-                            $("#select" + k).append($option.clone());
-                        }
-                        $("#copyfield").append($option.clone());
-                        break;
-                    //文字列複数行の時も保存フィールドに適用
                     case "MULTI_LINE_TEXT":
-                        for (var m = 1; m < MAX_LINE + 1; m++) {
+                        for (var m = 1; m < MAX_SELECT + 1; m++) {
                             $option.attr("value", escapeHtml(prop.code));
                             $option.text(escapeHtml(prop.label));
                             $("#select" + m).append($option.clone());
@@ -67,9 +59,9 @@ jQuery.noConflict();
                         $("#copyfield").append($option.clone());
 
                         break;
-                    //リッチエディタの時も保存フィールドに適用
+                    //リッチエディタの時は保存フィールドのみに適用
                     case "RICH_TEXT":
-                        for (var l = 1; l < MAX_LINE + 1; l++) {
+                        for (var l = 1; l < MAX_SELECT + 1; l++) {
                             $option.attr("value", escapeHtml(prop.code));
                             $option.text(escapeHtml(prop.label));
                         }
@@ -89,7 +81,7 @@ jQuery.noConflict();
                     case "USER_SELECT":
                     case "ORGANIZATION_SELECT":
                     case "GROUP_SELECT":
-                        for (var n = 1; n < MAX_LINE + 1; n++) {
+                        for (var n = 1; n < MAX_SELECT + 1; n++) {
                             $option.attr("value", escapeHtml(prop.code));
                             $option.text(escapeHtml(prop.label));
                             $("#select" + n).append($option.clone());
@@ -115,38 +107,33 @@ jQuery.noConflict();
 
     //「保存する」ボタン押下時に入力情報を設定する
     $("#submit").click(function() {
-
-        var o = 5;
-        if ($('#select5').val() === "") {
-            if ($('#select4').val() === "") {
-                if ($('#select3').val() === "") {
-                    if ($('#select2').val() === "") {
-                        if ($('#select1').val() === "") {
-                            o--;
-                        }
-                        o--;
-                    }
-                    o--;
-                }
-                o--;
-            }
-            o--;
-        }
-
-        var count = [];
-        for (var p = 1; p <= o; p++) {
-            count.push($('#select' + p).val());
-        }
-
         var config = [];
         config['select1'] = $('#select1').val();
         config['select2'] = $('#select2').val();
         config['select3'] = $('#select3').val();
         config['select4'] = $('#select4').val();
         config['select5'] = $('#select5').val();
-        config['copyfield'] = $('#copyfield').val();
-        config['between'] = escapeHtml1($('#between').val());
+
+        //右から順番にconfig配列の数を数える
+        var q = 5;
+        for (var o = 4; o >= 0; o--) {
+            if ($('#select' + q).val() === "") {
+                q--;
+            } else {
+                break;
+            }
+        }
+
+        //有効な配列の数を探す
+        var count = [];
+        for (var p = 1; p <= q; p++) {
+            count.push($('#select' + p).val());
+        }
+
+        //有効な配列の数を'line_number'として保存'
         config['line_number'] = String(count.length);
+        config['copyfield'] = $('#copyfield').val();
+        config['between'] = encodeSpace($('#between').val());
         if (checkValues()) {
             kintone.plugin.app.setConfig(config);
         }
