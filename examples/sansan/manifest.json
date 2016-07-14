@@ -1,6 +1,6 @@
 {
 	"manifest_version": 1,
-	"version": 2,
+	"version": 1,
 	"type": "APP",
 	"name": {
 		"ja": "Sansan for kintone",
@@ -8,33 +8,33 @@
 		"zh": "Sansan for kintone"
 	},
 	"description": {
-		"ja": "kintoneの顧客管理アプリから、Sansanの顧客データを参照するサンプルプラグインです。",
+		"ja": "kintoneの顧客管理アプリから、Sansanの顧客データを参照するサンプルです。",
 		"en": "This sample plug-in looks up Sansan's contact data.",
 		"zh": "This sample plug-in looks up Sansan's contact data."
 	},
 	"icon": "img/icon.png",
 	"desktop": {
 		"js": [
-				"https://js.cybozu.com/jquery/2.2.4/jquery.min.js",
-				"https://js.cybozu.com/jqueryui/1.11.4/jquery-ui.min.js",
-				"https://js.cybozu.com/momentjs/2.13.0/moment-with-locales.min.js",
-				"https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.min.js",
-				"https://js.cybozu.com/spinjs/2.3.2/spin.min.js",
-				"js/common.js",
+				"lib/js/jquery.min.js",
+				"lib/js/jquery-ui.min.js",
+				"lib/js/moment.min.js",
+				"lib/js/sweetalert.min.js",
+				"lib/js/spin.min.js",
 				"js/desktop.js"
 		],
 		"css": [
 				"https://js.cybozu.com/jqueryui/1.11.4/themes/smoothness/jquery-ui.css",
-				"https://js.cybozu.com/font-awesome/v4.6.3/css/font-awesome.min.css",
-				"https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.css",
+				"lib/css/sweetalert.css",
+				"css/51-us-default.css",
 				"css/desktop.css"
 		]
 	},
 	"config": {
 		"html": "html/config.html",
 		"js": [
-				"https://js.cybozu.com/jquery/2.2.4/jquery.min.js",
-				"https://js.cybozu.com/jsrender/0.9.78/jsrender.min.js",
+				"lib/js/jquery.min.js",
+				"lib/js/jquery-ui.min.js",
+				"lib/js/jsrender.min.js",
 				"js/config.js"
 		],
 		"css": [

@@ -3,20 +3,6 @@
     bottom: 4px;
     color: #3498db
 }
-.postrecords-buttons {
-    color: #a8a8a8;
-    font-size: 16px;
-    display: inline-block;
-    padding: 0 16px;
-    height: 30px;
-    border: 1px solid #e3e7e8;
-    background-color: #f7f9fa;
-    text-align: center;
-}
-
-.postrecords-buttons:hover {
-    color: #3498db;
-}
 
 #lookup_search_button, #lookup_clear_button, #lookup_setting_button {
     margin-left: 5px;
