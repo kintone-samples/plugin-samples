@@ -122,8 +122,6 @@ jQuery.noConflict();
             var record = kintone.app.record.get();
             var offset = opt_offset || 0;
             var value = record['record'][C_KEYFIELD]['value'] || "";
-
-            //一覧画面ではkeyfield ではなくテキストインプットに入力した値
             var allrecords = opt_records || [];
             var url = "https://api.sansan.com/v1/bizCards";
             if (!dates) {
@@ -733,7 +731,7 @@ jQuery.noConflict();
             });
         },
         getLookupTagList: function() {
-
+            window.sansanLib.Spin.showSpinner();
             SansanPostRecords.getSansanTag().then(function(sansan_tags) {
                 //Sansan取得データ数(0~5000件)チェック
                 if (sansan_tags.length === 0) {
@@ -799,6 +797,7 @@ jQuery.noConflict();
             return result;
         },
         showLookupTagDialog: function(tag_list) {
+            window.sansanLib.Spin.hideSpinner();
             //ダイアログの初期設定
             var $date_dialog = $('<div>');
             $date_dialog.attr('id', 'sansan-tag-dialog');
