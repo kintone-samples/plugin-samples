@@ -1,0 +1,40 @@
+{
+    "manifest_version": 1,
+    "version": 1,
+    "type": "APP",
+    "name": {
+        "ja": "kintone イベントカレンダープラグイン",
+        "en": "kintone Event Calendar plug-in",
+        "zh": "kintone 活动日历插件"
+    },
+    "description": {
+        "ja": "kintoneとFullCalendarを連携するプラグインです。",
+        "en": "This plugin cooperate with FullCalendar",
+        "zh": "这个插件是连接kintone和FullCalendar的"
+    },
+    "icon": "image/icon.png",
+    "desktop": {
+        "js": [
+            "https://js.cybozu.com/jquery/2.2.4/jquery.min.js",
+            "https://js.cybozu.com/momentjs/2.13.0/moment-with-locales.min.js",
+            "https://js.cybozu.com/fullcalendar/v2.7.3/fullcalendar.min.js",
+            "js/customize.js"
+        ],
+        "css": [
+            "https://js.cybozu.com/fullcalendar/v2.7.3/fullcalendar.min.css",
+            "css/customize.css"
+        ]
+    },
+    "config": {
+        "html": "html/config.html",
+        "js": [
+            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+            "js/config.js"
+        ],
+        "css": [
+            "css/config.css",
+            "css/51-us-default.css"
+        ],
+        "required_params": ["name", "start_datetime", "end_datetime"]
+    }
+}

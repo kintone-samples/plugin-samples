@@ -1,0 +1,96 @@
+<div>
+    <div class="block">
+        <label class="kintoneplugin-label">
+        <span id ="container_label">イベント名フィールド</span>
+        <span class="kintoneplugin-require">*</span>
+    </label>
+        <div class="kintoneplugin-row">イベント名として使用する文字列フィールドのフィールド名を選択して下さい。</div>
+        <div class="kintoneplugin-select-outer">
+            <div class="kintoneplugin-select">
+                <select id="name_code">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="block">
+        <label class="kintoneplugin-label">
+        <span id ="container_label">開始日時フィールド</span>
+        <span class="kintoneplugin-require">*</span>
+    </label>
+        <div class="kintoneplugin-row">イベント開始日時として使用する日時フィールドのフィールド名を選択して下さい。</div>
+        <div class="kintoneplugin-select-outer">
+            <div class="kintoneplugin-select">
+                <select id="start_datetime_code">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="block">
+        <label class="kintoneplugin-label">
+        <span id ="container_label">終了日時フィールド</span>
+        <span class="kintoneplugin-require">*</span>
+    </label>
+        <div class="kintoneplugin-row">イベント終了日時として使用する日時フィールドのフィールド名を選択して下さい。</div>
+        <div class="kintoneplugin-select-outer">
+            <div class="kintoneplugin-select">
+                <select id="end_datetime_code">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="block">
+        <label class="kintoneplugin-label">
+        <span id ="container_label">ステータス（任意）</span>
+    </label>
+        <div class="kintoneplugin-row">プロセス管理のステータスと対応する背景色を指定可能です。<br> ※背景色は英語、16進数、RGBのいずれも可。　赤：red, #ff0000, rgb(255,0,0)　緑：green, #008000, rgb(0,128,0)</div>
+        <div class="kintoneplugin-input-outer">
+            <table>
+                <tr style="background:#ccccff">
+                    <th>No.</th>
+                    <th>ステータス</th>
+                    <th>背景色</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><input id="status1" class="kintoneplugin-input-text"></input>
+                    </td>
+                    <td><input id="color1" class="kintoneplugin-input-text"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><input id="status2" class="kintoneplugin-input-text"></input>
+                    </td>
+                    <td><input id="color2" class="kintoneplugin-input-text"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input id="status3" class="kintoneplugin-input-text"></input>
+                    </td>
+                    <td><input id="color3" class="kintoneplugin-input-text"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><input id="status4" class="kintoneplugin-input-text"></input>
+                    </td>
+                    <td><input id="color4" class="kintoneplugin-input-text"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><input id="status5" class="kintoneplugin-input-text"></input>
+                    </td>
+                    <td><input id="color5" class="kintoneplugin-input-text"></input>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    <div class="block">
+        <button type="button" id="submit" class="kintoneplugin-button-dialog-ok">     保存する     </button>
+        <button type="button" id="cancel" class="kintoneplugin-button-dialog-cancel">     キャンセル   </button>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+/* 日曜日 */
+.fc-head .fc-sun {
+    background: rgb(250, 220, 233);
+}
+
+/* 土曜日 */
+.fc-head .fc-sat {
+    background: rgb(211, 237, 251);
+}
+
+/* 今日 */
+.fc-today {
+    background: rgb(255, 255, 204);
+}
+
+.fc-center {
+    margin-right: 1.75em;
+}
