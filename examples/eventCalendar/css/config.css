@@ -1,0 +1,12 @@
+.block {
+    padding: 0 0 20px 0;
+}
+
+th {
+    text-align: center;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 5px;
+}
