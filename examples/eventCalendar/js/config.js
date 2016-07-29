@@ -134,8 +134,17 @@ jQuery.noConflict();
                 var req = $.extend(true, {}, scheResp);
                 req.app = kintone.app.getId();
 
+                // 作成したビューが存在するか
+                var existFlg = false;
+                for (var k in req.views) {
+                    if (req.views[k].id === conf['viewId']) {
+                        existFlg = true;
+                        break;
+                    }
+                }
+
 				// カスタマイズビューが存在しなければ追加
-                if (!req.views[VIEW_NAME]) {
+                if (!existFlg) {
 
 					// 一番上のビュー（デフォルトビュー）に「スケジュール」ビューを作成
                     for (var key in req.views) {
@@ -152,13 +161,19 @@ jQuery.noConflict();
                         "pager": true,
                         "index": 0
                     };
-                }
-                kintone.api(kintone.api.url('/k/v1/preview/app/views', true), 'PUT', req).then(function(putResp) {
-					// 作成したビューIDを保存する
-                    var viewId = putResp.views[VIEW_NAME].id;
-                    config['viewId'] = viewId;
+
+                    kintone.api(kintone.api.url('/k/v1/preview/app/views', true), 'PUT', req).then(function(putResp) {
+                        // 作成したビューIDを保存する
+                        var viewId = putResp.views[VIEW_NAME].id;
+                        config['viewId'] = viewId;
+                        kintone.plugin.app.setConfig(config);
+                    });
+
+                } else {
+                    config['viewId'] = conf['viewId'];
                     kintone.plugin.app.setConfig(config);
-                });
+                }
+
             });
         });
 
