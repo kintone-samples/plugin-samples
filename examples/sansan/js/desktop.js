@@ -438,14 +438,26 @@ jQuery.noConflict();
             this.getLookupList(tagId);
         },
 
+        indexdropdownHtml:
+            '<div class="sansan-dropdown-select">' +
+            '<select id="sansan_dropdown_code">' +
+            '<option value="">--</option>' +
+            '<option value="companyName">会社名</option>' +
+            '<option value="name">氏名</option>' +
+            '<option value="email">メールアドレス</option>' +
+            '<option value="tel">電話番号</option>' +
+            '<option value="mobile">携帯番号</option>' +
+            '</select>' +
+            '</div>',
         indexlookupHtml:
-            '<div id="lookup_input_index_area">' +
+            '<span id="lookup_input_index_area">' +
             '<input type="text" id="sansan_search_textbox">' +
             '<button class="postrecords-buttons" id="lookup_index_search_button" type="button">' +
             '<i class="fa fa-search"></i></button>' +
             '<button class="postrecords-buttons" id="lookup_index_tagsearch_button" type="button">' +
             '<i class="fa fa-tags"></i></button>' +
-            '</div>',
+            '</span>',
+
         getLookupList: function(tagId) {
 
             SansanPostRecords.searchSansanData(tagId).then(function(sansan_data) {
@@ -485,8 +497,8 @@ jQuery.noConflict();
             var url = "https://api.sansan.com/v1/bizCards";
 
             url += "/search" + "?range=all";
-            if (value !== "") {
-                url += "&" + C_ORIGINALFIELD + "=" + encodeURIComponent(value);
+            if (value !== "" && $('#sansan_dropdown_code').val() !== "") {
+                url += "&" + $('#sansan_dropdown_code').val() + "=" + encodeURIComponent(value);
             }
             if (tagId) {
                 url += "&tagId=" + tagId;
@@ -691,12 +703,8 @@ jQuery.noConflict();
                         location.reload(true);
                     });
                 }, function(error) {
-                    var errmsg = 'レコード取得時にエラーが発生しました。';
-                    // レスポンスにエラーメッセージが含まれる場合はメッセージを表示する
-                    if (error.message !== undefined) {
-                        errmsg += '\n' + error.message;
-                    }
-                    swal('Error!', 'Sansanデータの取得に失敗しました。\n' + errmsg, 'error');
+                    console.log(JSON.stringify(error, null, "  "));
+                    swal('Error!', 'Sansanデータのレコード登録時にエラーが発生しました。\nエラーの詳細内容はコンソールログを確認してください。', 'error');
                 });
             }
             $('#sansan-lookup-dialog').dialog('close');
@@ -840,6 +848,7 @@ jQuery.noConflict();
             return;
         }
         var $el = $(kintone.app.getHeaderMenuSpaceElement());
+        $el.append($(SansanPostRecords.indexdropdownHtml));
         $el.append($(SansanPostRecords.indexlookupHtml));
 
         $("#lookup_index_search_button").click(function() {
