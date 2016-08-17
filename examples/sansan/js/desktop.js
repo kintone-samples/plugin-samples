@@ -497,7 +497,7 @@ jQuery.noConflict();
             var url = "https://api.sansan.com/v1/bizCards";
 
             url += "/search" + "?range=all";
-            if (value !== "" && $('#sansan_dropdown_code').val() !== "") {
+            if (value && $('#sansan_dropdown_code').val()) {
                 url += "&" + $('#sansan_dropdown_code').val() + "=" + encodeURIComponent(value);
             }
             if (tagId) {
