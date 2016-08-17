@@ -113,3 +113,69 @@
 .listTable-kintone.lookup-table-kintone tbody tr:focus {
     background-color: #f5f5f5
 }
+
+.sansan-dropdown-select {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  margin-right: 0px;
+  padding: 0 32px 0 0px;
+  min-width: 80px;
+  max-width: 280px;
+  width: 140px;
+  height: 30px;
+  top: 10px;
+  border: 1px solid #e3e7e8;
+  background-color: #f7f9fa;
+  box-shadow: 1px 1px 1px #fff inset;
+  text-overflow: ellipsis;
+}
+
+.sansan-dropdown-select:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  width: 32px;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAICAYAAADN5B7xAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjUwM0JEQzc5RUZENzExRTNBRjRFQ0I1NjlCRDUzOTA5IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjUwM0JEQzdBRUZENzExRTNBRjRFQ0I1NjlCRDUzOTA5Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NTAzQkRDNzdFRkQ3MTFFM0FGNEVDQjU2OUJENTM5MDkiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NTAzQkRDNzhFRkQ3MTFFM0FGNEVDQjU2OUJENTM5MDkiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7KovlSAAAAhElEQVR42mI0mX7LjoGB4RADccCWCUjsB2ILIhSD1BwAadAB4qNAbIxHsTFUjQ5Iw3UgNgTiU1AaHRggyV1nggpegppyBoj1kBTrAvFZIDaBqmFgQZK8AMRmQHwe6kyYmAVUjAFdAwPUNGsgvgLl2wDxaWQFLFjcfAKIHaHs4+iSAAEGABHGF74RDCRaAAAAAElFTkSuQmCC) no-repeat center center transparent;
+  content: "";
+  pointer-events: none;
+}
+
+.sansan-dropdown-select:hover {
+  background-color: #f4f7f8;
+  cursor: pointer;
+}
+
+.lt-ie9 .sansan-dropdown-select:hover {
+  background-color: transparent;
+}
+
+.sansan-dropdown-select select {
+  position: absolute;
+  margin: 0;
+  min-width: 140px;
+  width: 138px;
+  height: 30px;
+  padding-left: 8px;
+  outline: none;
+  border: 0 none;
+  background-color: transparent;
+  color: #3498db;
+  font-size: 13px;
+  cursor: pointer;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+}
+
+.sansan-dropdown-select select::-ms-expand {
+  display: none;
+}
+
+.sansan-dropdown-select option {
+  background-color: #fff;
+  color: #333;
+}

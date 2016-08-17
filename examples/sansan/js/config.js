@@ -32,7 +32,7 @@ jQuery.noConflict();
                 'sansan_copy_userid_desc': '人物ID：',
                 'sansan_copy_username_desc': '氏名：',
                 'sansan_copy_departmentname_desc': '部署名：',
-                'sansan_copy_title_desc': '役職：',
+                'sansan_copy_title_desc': '役職名：',
                 'sansan_copy_address_desc': '住所：',
                 'sansan_copy_email_desc': 'E-mail：',
                 'sansan_copy_tel_desc': 'Tel：',
