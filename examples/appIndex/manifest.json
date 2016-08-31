@@ -1,0 +1,43 @@
+{
+    "manifest_version": 1,
+    "version": 1,
+    "type": "APP",
+    "name": {
+        "ja": "kintone アプリ一覧プラグイン",
+        "en": "app index plugin",
+        "zh": "软件一览插件"
+    },
+    "description": {
+        "ja": "jsTreeライブラリを使用した、アプリのフォルダ分け管理ができるプラグインです。",
+        "en": "This plugin makes app index",
+        "zh": "软件一览的插件"
+    },
+    "icon": "image/icon.png",
+    "desktop": {
+        "js": [
+            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+            "https://js.cybozu.com/jstree/3.3.1/jstree.min.js",
+            "https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.min.js",
+            "js/customize.js"
+        ],
+        "css": [
+            "https://js.cybozu.com/jstree/3.3.1/themes/default/style.min.css",
+            "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css",
+            "https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.css",
+            "css/customize.css"
+        ]
+    },
+    "config": {
+        "html": "html/config.html",
+        "js": [
+            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+            "js/config.js"
+        ],
+        "css": [
+            "css/config.css",
+            "css/51-us-default.css",
+            "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        ],
+        "required_params": ["folderIcon", "appIcon"]
+    }
+}
