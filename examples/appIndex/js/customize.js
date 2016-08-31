@@ -2,6 +2,27 @@
 jQuery.noConflict();
 (function($, PLUGIN_ID) {
     "use strict";
+    var config = kintone.plugin.app.getConfig(PLUGIN_ID);
+    // 各言語対応
+    var recordNumber = "レコード番号";
+    var creator = "作成者";
+    var createTime = "作成日時";
+    var updator = "更新者";
+    var updateTime = "更新日時";
+    if (config.lang === "zh") {
+        recordNumber = "记录编号";
+        creator = "创建人";
+        createTime = "创建时间";
+        updator = "更新人";
+        updateTime = "更新时间";
+    } else if (config.lang === "en") {
+        recordNumber = "Record_number";
+        creator = "Created_by";
+        createTime = "Created_datetime";
+        updator = "Updated_by";
+        updateTime = "Updated_datetime";
+    }
+    
 
     // 全アプリ取得用のDeffered
     var d = new $.Deferred();
@@ -21,7 +42,6 @@ jQuery.noConflict();
     var folderInfo = [];
     var childNodeInfo = [];
 
-    var config = kintone.plugin.app.getConfig(PLUGIN_ID);
     var folderIcon = config['folderIcon'];
     var appIcon = config['appIcon'];
     var vc_type = ['folder', 'file', 'tree', 'leaf', 'home',
@@ -193,7 +213,7 @@ jQuery.noConflict();
 
 
         // すでにログインユーザーに紐づくレコードがあるかどうか（初期状態か否か）
-        fetchRecords(event.appId, '作成者 in ("' + kintone.getLoginUser().code + '") and parentFolderID = ""')
+        fetchRecords(event.appId, creator + ' in ("' + kintone.getLoginUser().code + '") and parentFolderID = ""')
         .then(function(rootRec) {
             if (rootRec.length > 0) {
                 data[0] = {
@@ -203,7 +223,7 @@ jQuery.noConflict();
                     children: [],
                     self: "j1_1"
                 };
-                fetchRecords(event.appId, '作成者 in ("' + kintone.getLoginUser().code +
+                fetchRecords(event.appId, creator + ' in ("' + kintone.getLoginUser().code +
                 '") and parentFolderID != "" order by appSort asc').then(function(selfRecords) {
                     for (var j = 0; j < selfRecords.length; j++) {
                         // フォルダの場合
@@ -294,8 +314,14 @@ jQuery.noConflict();
                             }
                         });
                     }
+                    var appIndex = "アプリ一覧";
+                    if (config.lang === "zh") {
+                        appIndex = "软件连接一览";
+                    } else if (config.lang === "en") {
+                        appIndex = "app index";
+                    }
                     data = [{
-                        text: 'アプリ一覧',
+                        text: appIndex,
                         class: "jstree-open",
                         children: children,
                         type: 'root'
@@ -333,7 +359,7 @@ jQuery.noConflict();
                         var finRecs = [];
                         var rootRecord = {
                             folderName: {
-                                value: "アプリ一覧"
+                                value: appIndex
                             },
                             selfFolderID: {
                                 value: "j1_1"
@@ -387,9 +413,18 @@ jQuery.noConflict();
             },
             "contextmenu": {
                 "items": function() {
+                    var conLabelRename = "表示名変更";
+                    var conLabelDelete = "一覧から削除";
+                    if (config.lang === "zh") {
+                        conLabelRename = "变更表示名";
+                        conLabelDelete = "删除";
+                    } else if (config.lang === "en") {
+                        conLabelRename = "Change name";
+                        conLabelDelete = "Delete Node";
+                    }
                     return {
                         "Rename": {
-                            "label": "表示名変更",
+                            "label": conLabelRename,
                             "action": function(nameData) {
                                 var inst = $.jstree.reference(nameData.reference);
                                 var obj = inst.get_node(nameData.reference);
@@ -397,7 +432,7 @@ jQuery.noConflict();
                             }
                         },
                         "Delete": {
-                            "label": "一覧から削除",
+                            "label": conLabelDelete,
                             "action": function(deleteData) {
                                 var ref = $.jstree.reference(deleteData.reference),
                                     sel = ref.get_selected();
@@ -517,7 +552,7 @@ jQuery.noConflict();
                 if (onceFlg) {
                     setLoading();
                     onceFlg = false;
-                    fetchRecords(event.appId, '作成者 in ("' + kintone.getLoginUser().code + '")' +
+                    fetchRecords(event.appId, creator + ' in ("' + kintone.getLoginUser().code + '")' +
                     ' and selfFolderID != "j1_1" order by appSort asc')
                     .then(function(createRec) {
                         if (createRec.length > 0) {
@@ -539,11 +574,11 @@ jQuery.noConflict();
                                     var recNo = record['$id'].value;
                                     delete record['$id'];
                                     delete record['$revision'];
-                                    delete record['レコード番号'];
-                                    delete record['作成日時'];
-                                    delete record['作成者'];
-                                    delete record['更新日時'];
-                                    delete record['更新者'];
+                                    delete record[recordNumber];
+                                    delete record[createTime];
+                                    delete record[creator];
+                                    delete record[updateTime];
+                                    delete record[updator];
                                     record['appSort'].value = parseInt(record['appSort'].value, 10) + 1;
                                     editRecords.push({
                                         'id': recNo,
@@ -562,9 +597,15 @@ jQuery.noConflict();
                                 }, function(createMoveResp) {
                                     if (finCnt !== -1 && finCnt === createMoveResp.records.length) {
                                     // その後新規フォルダレコード作成
+                                        var newFolder = "新規フォルダ";
+                                        if (config.lang === "zh") {
+                                            newFolder = "新规文件夹";
+                                        } else if (config.lang === "en") {
+                                            newFolder = "New folder";
+                                        }
                                         var postRec = {
                                             folderName: {
-                                                value: "新規フォルダ"
+                                                value: newFolder
                                             },
                                             appSort: {
                                                 value: 0
@@ -586,9 +627,15 @@ jQuery.noConflict();
                                 });
                             }
                         } else {
+                            var newFolder = "新規フォルダ";
+                            if (config.lang === "zh") {
+                                newFolder = "新规文件夹";
+                            } else if (config.lang === "en") {
+                                newFolder = "New folder";
+                            }
                             var postRec = {
                                 folderName: {
-                                    value: "新規フォルダ"
+                                    value: newFolder
                                 },
                                 appSort: {
                                     value: 0
@@ -616,11 +663,11 @@ jQuery.noConflict();
                 var appFlg = true;
                 // フォルダの場合
                 if (r_obj.node.type === config.folderIcon || r_obj.node.type === "root") {
-                    appFolder = '作成者 in ("' + kintone.getLoginUser().code + '") and selfFolderID = "' +
+                    appFolder = creator + ' in ("' + kintone.getLoginUser().code + '") and selfFolderID = "' +
                     r_obj.node.original.self + '"';
                     appFlg = false;
                 } else {
-                    appFolder = '作成者 in ("' + kintone.getLoginUser().code +
+                    appFolder = creator + ' in ("' + kintone.getLoginUser().code +
                     '") and appID = "' + r_obj.node.original.appId + '"';
                 }
                 fetchRecords(event.appId, appFolder).then(function(renamePutRec) {
@@ -628,7 +675,7 @@ jQuery.noConflict();
                     if (appFlg) {
                         body = {
                             "app": kintone.app.getId(),
-                            "id": renamePutRec[0].レコード番号.value,
+                            "id": renamePutRec[0][recordNumber].value,
                             "record": {
                                 "appName": {
                                     "value": r_obj.text
@@ -638,7 +685,7 @@ jQuery.noConflict();
                     } else {
                         body = {
                             "app": kintone.app.getId(),
-                            "id": renamePutRec[0].レコード番号.value,
+                            "id": renamePutRec[0][recordNumber].value,
                             "record": {
                                 "folderName": {
                                     "value": r_obj.text
@@ -663,7 +710,7 @@ jQuery.noConflict();
                         readyTree(event);
                     });
                 } else if (d_obj.node.type === config.folderIcon) { // フォルダの場合
-                    fetchRecords(kintone.app.getId(), '作成者 in ("' + kintone.getLoginUser().code +
+                    fetchRecords(kintone.app.getId(), creator + ' in ("' + kintone.getLoginUser().code +
                     '") and appSort >= "' + d_obj.node.original.appSort + '" order by appSort asc')
                     .then(function(deleteFolder) {
                         var delFolderId = [deleteFolder[0].$id.value];
@@ -693,11 +740,11 @@ jQuery.noConflict();
                                         var recNo = record['$id'].value;
                                         delete record['$id'];
                                         delete record['$revision'];
-                                        delete record['レコード番号'];
-                                        delete record['作成日時'];
-                                        delete record['作成者'];
-                                        delete record['更新日時'];
-                                        delete record['更新者'];
+                                        delete record[recordNumber];
+                                        delete record[createTime];
+                                        delete record[creator];
+                                        delete record[updateTime];
+                                        delete record[updator];
                                         record['appSort'].value = parseInt(record['appSort'].value, 10) -
                                         delFolderId.length;
                                         editRecords.push({
@@ -728,7 +775,7 @@ jQuery.noConflict();
 
                     });
                 } else { // アプリの場合
-                    fetchRecords(kintone.app.getId(), '作成者 in ("' + kintone.getLoginUser().code +
+                    fetchRecords(kintone.app.getId(), creator + ' in ("' + kintone.getLoginUser().code +
                     '") and appSort >= "' + d_obj.node.original.appSort + '" order by appSort asc')
                     .then(function(deleteApp) {
                         var delAppId = [deleteApp[0].$id.value];
@@ -753,11 +800,11 @@ jQuery.noConflict();
                                         var recNo = record['$id'].value;
                                         delete record['$id'];
                                         delete record['$revision'];
-                                        delete record['レコード番号'];
-                                        delete record['作成日時'];
-                                        delete record['作成者'];
-                                        delete record['更新日時'];
-                                        delete record['更新者'];
+                                        delete record[recordNumber];
+                                        delete record[createTime];
+                                        delete record[creator];
+                                        delete record[updateTime];
+                                        delete record[updator];
                                         record['appSort'].value = parseInt(record['appSort'].value, 10) - 1;
                                         editRecords.push({
                                             'id': recNo,
@@ -796,14 +843,14 @@ jQuery.noConflict();
                     var folderWithAppFlg = false;
                     // フォルダの場合
                     if (m_obj.node.type === config.folderIcon) {
-                        fetchQuery = '作成者 in ("' + kintone.getLoginUser().code +
+                        fetchQuery = creator + ' in ("' + kintone.getLoginUser().code +
                         '") and selfFolderID = "' + m_obj.node.original.self + '"';
                         // 移動対象がアプリの紐づくフォルダかどうか
                         if (m_obj.node.children.length > 0) {
                             folderWithAppFlg = true;
                         }
                     } else {
-                        fetchQuery = '作成者 in ("' + kintone.getLoginUser().code +
+                        fetchQuery = creator + ' in ("' + kintone.getLoginUser().code +
                         '") and appID = "' + m_obj.node.original.appId + '"';
                     }
                     fetchRecords(event.appId, fetchQuery).then(function(movePutRec) {
@@ -842,7 +889,7 @@ jQuery.noConflict();
                             }
                         }
 
-                        var movedRecId = movePutRec[0].レコード番号.value;
+                        var movedRecId = movePutRec[0][recordNumber].value;
                         var movedSortValue = parseInt(movePutRec[0].appSort.value, 10) + moveNum;
                         var moveBody = {
                             "app": kintone.app.getId(),
@@ -858,19 +905,19 @@ jQuery.noConflict();
                             if (moveNum < 0) {
                                 var moveQuery;
                                 if (folderWithAppFlg) {
-                                    moveQuery = '作成者 in ("' + kintone.getLoginUser().code +
+                                    moveQuery = creator + ' in ("' + kintone.getLoginUser().code +
                                     '") and appSort >= "' + movedSortValue + '" and appSort <= "' +
                                     (parseInt(movePutRec[0].appSort.value, 10) + m_obj.node.children.length) +
-                                    '" and レコード番号 != "' + movedRecId + '" order by appSort asc';
+                                    '" and ' + recordNumber + ' != "' + movedRecId + '" order by appSort asc';
                                 } else if (positionCount === 0) {
-                                    moveQuery = '作成者 in ("' + kintone.getLoginUser().code +
+                                    moveQuery = creator + ' in ("' + kintone.getLoginUser().code +
                                     '") and appSort >= "' + movedSortValue + '" and appSort < "' +
-                                    movePutRec[0].appSort.value + '" and レコード番号 != "' + movedRecId +
+                                    movePutRec[0].appSort.value + '" and ' + recordNumber + ' != "' + movedRecId +
                                     '" and parentFolderID = "' + m_obj.node.original.parentFolderID + '"';
                                 } else {
-                                    moveQuery = '作成者 in ("' + kintone.getLoginUser().code +
+                                    moveQuery = creator + ' in ("' + kintone.getLoginUser().code +
                                     '") and appSort >= "' + movedSortValue + '" and appSort < "' +
-                                    movePutRec[0].appSort.value + '" and レコード番号 != "' + movedRecId + '"';
+                                    movePutRec[0].appSort.value + '" and ' + recordNumber + ' != "' + movedRecId + '"';
                                 }
                                 fetchRecords(event.appId, moveQuery).then(function(movePutOtherRecs) {
                                     if (folderWithAppFlg) {
@@ -887,67 +934,71 @@ jQuery.noConflict();
                                         }
                                     }
                                     var recCount = movePutOtherRecs.length;
-                                    var putCount = Math.ceil(recCount / 100);
-                                    for (var i = 0; i < putCount; i++) {
-                                        var offset = i * 100;
-                                        var limit = 100;
-                                        if (offset + limit > recCount) {
-                                            limit = recCount - offset;
-                                        }
-                                        var putLimit = limit + offset;
+                                    if (recCount !== 0) {
+                                        var putCount = Math.ceil(recCount / 100);
+                                        for (var i = 0; i < putCount; i++) {
+                                            var offset = i * 100;
+                                            var limit = 100;
+                                            if (offset + limit > recCount) {
+                                                limit = recCount - offset;
+                                            }
+                                            var putLimit = limit + offset;
 
-                                        var editRecords = [];
+                                            var editRecords = [];
 
-                                        // 更新対象レコードに更新後のデータを上書き
-                                        for (offset; offset < putLimit; offset++) {
-                                            var record = $.extend(true, {}, movePutOtherRecs[offset]);
-                                            var recNo = record['$id'].value;
-                                            delete record['$id'];
-                                            delete record['$revision'];
-                                            delete record['レコード番号'];
-                                            delete record['作成日時'];
-                                            delete record['作成者'];
-                                            delete record['更新日時'];
-                                            delete record['更新者'];
-                                            record['appSort'].value = parseInt(record['appSort'].value, 10) + 1;
-                                            editRecords.push({
-                                                'id': recNo,
-                                                'record': record
+                                            // 更新対象レコードに更新後のデータを上書き
+                                            for (offset; offset < putLimit; offset++) {
+                                                var record = $.extend(true, {}, movePutOtherRecs[offset]);
+                                                var recNo = record['$id'].value;
+                                                delete record['$id'];
+                                                delete record['$revision'];
+                                                delete record[recordNumber];
+                                                delete record[createTime];
+                                                delete record[creator];
+                                                delete record[updateTime];
+                                                delete record[updator];
+                                                record['appSort'].value = parseInt(record['appSort'].value, 10) + 1;
+                                                editRecords.push({
+                                                    'id': recNo,
+                                                    'record': record
+                                                });
+                                            }
+
+                                            var finCnt = -1;
+                                            if (recCount === offset) {
+                                                finCnt = limit;
+                                            }
+
+                                            // 最後に更新処理
+                                            kintone.api('/k/v1/records', 'PUT', {
+                                                app: kintone.app.getId(),
+                                                'records': editRecords
+                                            }, function(moveUpResp) {
+                                                if (finCnt !== -1 && finCnt === moveUpResp.records.length) {
+                                                    readyTree(event);
+                                                }
                                             });
                                         }
-
-                                        var finCnt = -1;
-                                        if (recCount === offset) {
-                                            finCnt = limit;
-                                        }
-
-                                        // 最後に更新処理
-                                        kintone.api('/k/v1/records', 'PUT', {
-                                            app: kintone.app.getId(),
-                                            'records': editRecords
-                                        }, function(moveUpResp) {
-                                            if (finCnt !== -1 && finCnt === moveUpResp.records.length) {
-                                                readyTree(event);
-                                            }
-                                        });
+                                    } else {
+                                        readyTree(event);
                                     }
                                 });
                             } else {
                                 var moveQuery2;
                                 if (folderWithAppFlg) {
-                                    moveQuery2 = '作成者 in ("' + kintone.getLoginUser().code +
+                                    moveQuery2 = creator + ' in ("' + kintone.getLoginUser().code +
                                     '") and appSort <= "' + (movedSortValue + m_obj.node.children.length) +
                                     '" and appSort >= "' + m_obj.node.original.appSort +
-                                    '" and レコード番号 != "' + movedRecId + '" order by appSort asc';
+                                    '" and ' + recordNumber + ' != "' + movedRecId + '" order by appSort asc';
                                 } else if (positionCount === 0) {
-                                    moveQuery2 = '作成者 in ("' + kintone.getLoginUser().code +
+                                    moveQuery2 = creator + ' in ("' + kintone.getLoginUser().code +
                                     '") and appSort <= "' + movedSortValue + '" and appSort > "' +
-                                    m_obj.node.original.appSort + '" and レコード番号 != "' +
+                                    m_obj.node.original.appSort + '" and ' + recordNumber + ' != "' +
                                     movedRecId + '" and parentFolderID = "' + m_obj.node.original.parentFolderID + '"';
                                 } else {
-                                    moveQuery2 = '作成者 in ("' + kintone.getLoginUser().code +
+                                    moveQuery2 = creator + ' in ("' + kintone.getLoginUser().code +
                                     '") and appSort <= "' + movedSortValue + '" and appSort > "' +
-                                    m_obj.node.original.appSort + '" and レコード番号 != "' + movedRecId + '"';
+                                    m_obj.node.original.appSort + '" and ' + recordNumber + ' != "' + movedRecId + '"';
                                 }
                                 fetchRecords(event.appId, moveQuery2).then(function(movePutOtherRecs) {
                                     if (movePutOtherRecs.length > 0) {
@@ -983,11 +1034,11 @@ jQuery.noConflict();
                                                 var recNo = record['$id'].value;
                                                 delete record['$id'];
                                                 delete record['$revision'];
-                                                delete record['レコード番号'];
-                                                delete record['作成日時'];
-                                                delete record['作成者'];
-                                                delete record['更新日時'];
-                                                delete record['更新者'];
+                                                delete record[recordNumber];
+                                                delete record[createTime];
+                                                delete record[creator];
+                                                delete record[updateTime];
+                                                delete record[updator];
                                                 record['appSort'].value = parseInt(record['appSort'].value, 10) - 1;
                                                 editRecords.push({
                                                     'id': recNo,
@@ -1025,7 +1076,7 @@ jQuery.noConflict();
                     } else {
                         parentSortNum = parseInt(parentSortNum[1], 10) - 2;
                     }
-                    fetchRecords(event.appId, '作成者 in ("' + kintone.getLoginUser().code +
+                    fetchRecords(event.appId, creator + ' in ("' + kintone.getLoginUser().code +
                     '") and appSort = "' + parentSortNum + '"').then(function(moveOtherFolderParentRec) {
 
 
@@ -1065,7 +1116,7 @@ jQuery.noConflict();
                         } else {
                             upFlg = true;
                         }
-                        var fetchQuery2 = '作成者 in ("' + kintone.getLoginUser().code +
+                        var fetchQuery2 = creator + ' in ("' + kintone.getLoginUser().code +
                         '") and appID = "' + m_obj.node.original.appId + '"';
                         fetchRecords(event.appId, fetchQuery2).then(function(moveOtherFolderSelfRec) {
                             var appSortValue;
@@ -1092,7 +1143,7 @@ jQuery.noConflict();
                             } else {
                                 appSortValue = parseInt(moveOtherFolderParentRec[0].appSort.value, 10) + m_obj.position;
                             }
-                            var movedOtherFolderRecId = moveOtherFolderSelfRec[0].レコード番号.value;
+                            var movedOtherFolderRecId = moveOtherFolderSelfRec[0][recordNumber].value;
                             var moveOtherFolderBody = {
                                 "app": kintone.app.getId(),
                                 "id": movedOtherFolderRecId,
@@ -1109,105 +1160,113 @@ jQuery.noConflict();
                             moveOtherFolderBody, function(moveOtherFolderResp) {
                                 // 上に移動した場合
                                 if (upFlg) {
-                                    fetchRecords(event.appId, '作成者 in ("' + kintone.getLoginUser().code +
+                                    fetchRecords(event.appId, creator + ' in ("' + kintone.getLoginUser().code +
                                     '") and appSort >= "' + appSortValue + '" and appSort < "' +
-                                    m_obj.node.original.appSort + '" and レコード番号 != "' +
+                                    m_obj.node.original.appSort + '" and ' + recordNumber + ' != "' +
                                     movedOtherFolderRecId + '"').then(function(moveOtherFolderRecs) {
                                         var recCount = moveOtherFolderRecs.length;
-                                        var putCount = Math.ceil(recCount / 100);
-                                        for (var i = 0; i < putCount; i++) {
-                                            var offset = i * 100;
-                                            var limit = 100;
-                                            if (offset + limit > recCount) {
-                                                limit = recCount - offset;
-                                            }
-                                            var putLimit = limit + offset;
+                                        if (recCount !== 0) {
+                                            var putCount = Math.ceil(recCount / 100);
+                                            for (var i = 0; i < putCount; i++) {
+                                                var offset = i * 100;
+                                                var limit = 100;
+                                                if (offset + limit > recCount) {
+                                                    limit = recCount - offset;
+                                                }
+                                                var putLimit = limit + offset;
 
-                                            var editRecords = [];
+                                                var editRecords = [];
 
-                                            // 更新対象レコードに更新後のデータを上書き
-                                            for (offset; offset < putLimit; offset++) {
-                                                var record = $.extend(true, {}, moveOtherFolderRecs[offset]);
-                                                var recNo = record['$id'].value;
-                                                delete record['$id'];
-                                                delete record['$revision'];
-                                                delete record['レコード番号'];
-                                                delete record['作成日時'];
-                                                delete record['作成者'];
-                                                delete record['更新日時'];
-                                                delete record['更新者'];
-                                                record['appSort'].value = parseInt(record['appSort'].value, 10) + 1;
-                                                editRecords.push({
-                                                    'id': recNo,
-                                                    'record': record
+                                                // 更新対象レコードに更新後のデータを上書き
+                                                for (offset; offset < putLimit; offset++) {
+                                                    var record = $.extend(true, {}, moveOtherFolderRecs[offset]);
+                                                    var recNo = record['$id'].value;
+                                                    delete record['$id'];
+                                                    delete record['$revision'];
+                                                    delete record[recordNumber];
+                                                    delete record[createTime];
+                                                    delete record[creator];
+                                                    delete record[updateTime];
+                                                    delete record[updator];
+                                                    record['appSort'].value = parseInt(record['appSort'].value, 10) + 1;
+                                                    editRecords.push({
+                                                        'id': recNo,
+                                                        'record': record
+                                                    });
+                                                }
+
+                                                var finCnt = -1;
+                                                if (recCount === offset) {
+                                                    finCnt = limit;
+                                                }
+
+                                                // 最後に更新処理
+                                                kintone.api('/k/v1/records', 'PUT', {
+                                                    app: kintone.app.getId(),
+                                                    'records': editRecords
+                                                }, function(moveUpResp) {
+                                                    if (finCnt !== -1 && finCnt === moveUpResp.records.length) {
+                                                        readyTree(event);
+                                                    }
                                                 });
                                             }
-
-                                            var finCnt = -1;
-                                            if (recCount === offset) {
-                                                finCnt = limit;
-                                            }
-
-                                            // 最後に更新処理
-                                            kintone.api('/k/v1/records', 'PUT', {
-                                                app: kintone.app.getId(),
-                                                'records': editRecords
-                                            }, function(moveUpResp) {
-                                                if (finCnt !== -1 && finCnt === moveUpResp.records.length) {
-                                                    readyTree(event);
-                                                }
-                                            });
+                                        } else {
+                                            readyTree(event);
                                         }
                                     });
                                 } else {
-                                    fetchRecords(event.appId, '作成者 in ("' + kintone.getLoginUser().code +
+                                    fetchRecords(event.appId, creator + ' in ("' + kintone.getLoginUser().code +
                                     '") and appSort <= "' + appSortValue + '" and appSort > "' +
-                                    m_obj.node.original.appSort + '" and レコード番号 != "' +
+                                    m_obj.node.original.appSort + '" and ' + recordNumber + ' != "' +
                                     movedOtherFolderRecId + '"').then(function(movePutOtherFolderRecs) {
                                         var recCount = movePutOtherFolderRecs.length;
+                                        if (recCount !== 0) {
                                         var putCount = Math.ceil(recCount / 100);
-                                        for (var i = 0; i < putCount; i++) {
-                                            var offset = i * 100;
-                                            var limit = 100;
-                                            if (offset + limit > recCount) {
-                                                limit = recCount - offset;
-                                            }
-                                            var putLimit = limit + offset;
+                                            for (var i = 0; i < putCount; i++) {
+                                                var offset = i * 100;
+                                                var limit = 100;
+                                                if (offset + limit > recCount) {
+                                                    limit = recCount - offset;
+                                                }
+                                                var putLimit = limit + offset;
 
-                                            var editRecords = [];
+                                                var editRecords = [];
 
-                                            // 更新対象レコードに更新後のデータを上書き
-                                            for (offset; offset < putLimit; offset++) {
-                                                var record = $.extend(true, {}, movePutOtherFolderRecs[offset]);
-                                                var recNo = record['$id'].value;
-                                                delete record['$id'];
-                                                delete record['$revision'];
-                                                delete record['レコード番号'];
-                                                delete record['作成日時'];
-                                                delete record['作成者'];
-                                                delete record['更新日時'];
-                                                delete record['更新者'];
-                                                record['appSort'].value = parseInt(record['appSort'].value, 10) - 1;
-                                                editRecords.push({
-                                                    'id': recNo,
-                                                    'record': record
+                                                // 更新対象レコードに更新後のデータを上書き
+                                                for (offset; offset < putLimit; offset++) {
+                                                    var record = $.extend(true, {}, movePutOtherFolderRecs[offset]);
+                                                    var recNo = record['$id'].value;
+                                                    delete record['$id'];
+                                                    delete record['$revision'];
+                                                    delete record[recordNumber];
+                                                    delete record[createTime];
+                                                    delete record[creator];
+                                                    delete record[updateTime];
+                                                    delete record[updator];
+                                                    record['appSort'].value = parseInt(record['appSort'].value, 10) - 1;
+                                                    editRecords.push({
+                                                        'id': recNo,
+                                                        'record': record
+                                                    });
+                                                }
+
+                                                var finCnt = -1;
+                                                if (recCount === offset) {
+                                                    finCnt = limit;
+                                                }
+
+                                                // 最後に更新処理
+                                                kintone.api('/k/v1/records', 'PUT', {
+                                                    app: kintone.app.getId(),
+                                                    'records': editRecords
+                                                }, function(moveDownResp) {
+                                                    if (finCnt !== -1 && finCnt === moveDownResp.records.length) {
+                                                        readyTree(event);
+                                                    }
                                                 });
                                             }
-
-                                            var finCnt = -1;
-                                            if (recCount === offset) {
-                                                finCnt = limit;
-                                            }
-
-                                            // 最後に更新処理
-                                            kintone.api('/k/v1/records', 'PUT', {
-                                                app: kintone.app.getId(),
-                                                'records': editRecords
-                                            }, function(moveDownResp) {
-                                                if (finCnt !== -1 && finCnt === moveDownResp.records.length) {
-                                                    readyTree(event);
-                                                }
-                                            });
+                                        } else {
+                                            readyTree(event);
                                         }
                                     });
                                 }
@@ -1226,9 +1285,15 @@ jQuery.noConflict();
             if (!sel.length) {
                 return false;
             }
+            var newFolder = "新規フォルダ";
+            if (config.lang === "zh") {
+                newFolder = "新规文件夹";
+            } else if (config.lang === "en") {
+                newFolder = "New folder";
+            }
             sel = sel[0];
             sel = ref.create_node(sel, {
-                "text": "新規フォルダ",
+                "text": newFolder,
                 class: "jstree-open",
                 "type": folderIcon
             }, "first");
@@ -1237,17 +1302,29 @@ jQuery.noConflict();
             }
         });
         $('#returnDefault').click(function() {
+            var title = "一覧をすべて初期化しますか？";
+            var yes = "はい";
+            var no = "いいえ";
+            if (config.lang === "zh"){
+                title = "回复初期状态一览吗？";
+                yes = "是";
+                no = "不";
+            } else if (config.lang === "en") {
+                title = "Reset index?";
+                yes = "YES";
+                no = "NO";
+            }
             swal({
-                title: '一覧をすべて初期化しますか？',
+                title: title,
                 type: 'warning',
                 showCancelButton: true,
-                cancelButtonText: 'いいえ',
-                confirmButtonText: "はい"
+                cancelButtonText: no,
+                confirmButtonText: yes
 
             }, function(isConfirm) {
                 if (isConfirm) {
                     setLoading();
-                    fetchRecords(kintone.app.getId(), '作成者 in ("' +
+                    fetchRecords(kintone.app.getId(), creator + ' in ("' +
                     kintone.getLoginUser().code + '")').then(function(deleteRecs) {
                         var delIds = [];
                         $.each(deleteRecs, function(key, row) {
