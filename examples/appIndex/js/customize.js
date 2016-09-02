@@ -860,30 +860,34 @@ jQuery.noConflict();
                         var oldPosition = m_obj.old_position;
                         // 上に移動
                         if (moveNum < 0) {
+                            if (m_obj.parent.indexOf("_1") > 0) {
                             // 現在ポジションまでにフォルダがあるか
-                            for (var ikey in folderInfo) {
-                                for (var m = currentPosition; m < oldPosition; m++) {
-                                    if (m === parseInt(ikey, 10)) {
-                                        if (folderWithAppFlg && folderInfo[ikey].length > 0 &&
-                                        folderInfo[ikey][0].parentFolderID !== m_obj.node.original.self) {
-                                            positionCount = folderInfo[ikey].length;
-                                            moveNum -= positionCount;
-                                            break;
-                                        } else if (!folderWithAppFlg) {
-                                            positionCount = folderInfo[ikey].length;
-                                            moveNum -= positionCount;
-                                            break;
+                                for (var ikey in folderInfo) {
+                                    for (var m = currentPosition; m < oldPosition; m++) {
+                                        if (m === parseInt(ikey, 10)) {
+                                            if (folderWithAppFlg && folderInfo[ikey].length > 0 &&
+                                                folderInfo[ikey][0].parentFolderID !== m_obj.node.original.self) {
+                                                positionCount = folderInfo[ikey].length;
+                                                moveNum -= positionCount;
+                                                break;
+                                            } else if (!folderWithAppFlg) {
+                                                positionCount = folderInfo[ikey].length;
+                                                moveNum -= positionCount;
+                                                break;
+                                            }
                                         }
                                     }
                                 }
                             }
                         } else {
-                            for (var ikey2 in folderInfo) {
-                                for (var m2 = oldPosition + 1; m2 < currentPosition + 1; m2++) {
-                                    if (m2 === parseInt(ikey2, 10)) {
-                                        positionCount = folderInfo[ikey2].length;
-                                        moveNum += positionCount;
-                                        break;
+                            if (m_obj.parent.indexOf("_1") > 0) {
+                                for (var ikey2 in folderInfo) {
+                                    for (var m2 = oldPosition + 1; m2 < currentPosition + 1; m2++) {
+                                        if (m2 === parseInt(ikey2, 10)) {
+                                            positionCount = folderInfo[ikey2].length;
+                                            moveNum += positionCount;
+                                            break;
+                                        }
                                     }
                                 }
                             }
