@@ -25,16 +25,7 @@ jQuery.noConflict();
                 sansan_records.splice(i, 1);
                 i += -1;
             }
-
-            //名刺交換日nullチェック&空文字置換
-            if (sansan_record["exchangeDate"] === null) {
-                sansan_record["exchangeDate"] = "";
-            }
-            //郵便番号nullチェック&空文字置換
-            if (sansan_record["postalCode"] === null) {
-                sansan_record["postalCode"] = "";
-            }
-            //住所nullチェック&空文字置換
+            //住所nullチェック
             if (sansan_record["prefecture"] === null) {
                 sansan_record["prefecture"] = "";
             }
@@ -121,7 +112,9 @@ jQuery.noConflict();
             check_records_number = [];
         }
         return sansan_records;
-    }
+    };
+
+
 
     //スピナー表示/非表示
     var Spin = {

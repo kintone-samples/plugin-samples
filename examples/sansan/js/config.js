@@ -27,18 +27,15 @@ jQuery.noConflict();
                 'sansan_originalfield_desc': 'kintone側の検索キーフィールドの値に、この Sansan フィールドが該当した場合、検索結果を返します。',
                 'sansan_copy_title': 'コピー先フィールド',
                 'sansan_copy_desc': '取得先のフィールドを選択してください。',
-                'sansan_copy_exchangedate_desc': '名刺交換日：',
                 'sansan_copy_owner_desc': '名刺所有者：',
                 'sansan_copy_companyname_desc': '会社名：',
                 'sansan_copy_userid_desc': '人物ID：',
                 'sansan_copy_username_desc': '氏名：',
                 'sansan_copy_departmentname_desc': '部署名：',
                 'sansan_copy_title_desc': '役職名：',
-                'sansan_copy_postalcode_desc': '郵便番号：',
                 'sansan_copy_address_desc': '住所：',
                 'sansan_copy_email_desc': 'E-mail：',
                 'sansan_copy_tel_desc': 'Tel：',
-                'sansan_copy_fax_desc': 'Fax：',
                 'sansan_copy_mobile_desc': '携帯：',
                 'sansan_copy_url_desc': 'URL：',
                 'error': 'エラー: ',
@@ -64,18 +61,15 @@ jQuery.noConflict();
                                             ' the kintone Key Field value matches' +
                                             ' the Sansan key field value selected in the options here.',
                 'sansan_copy_title': 'Field Mappings',
-                'sansan_copy_exchangedate_desc': 'ExchangeDate：',
                 'sansan_copy_owner_desc': 'Owner：',
                 'sansan_copy_companyname_desc': 'CompanyName：',
                 'sansan_copy_userid_desc': 'PersonID：',
                 'sansan_copy_username_desc': 'Name：',
                 'sansan_copy_departmentname_desc': 'DepartmentName：',
                 'sansan_copy_title_desc': 'Title：',
-                'sansan_copy_postalcode_desc': 'PostalCode：',
                 'sansan_copy_address_desc': 'Address：',
                 'sansan_copy_email_desc': 'E-mail：',
                 'sansan_copy_tel_desc': 'Tel：',
-                'sansan_copy_fax_desc': 'Fax：',
                 'sansan_copy_mobile_desc': 'Mobile：',
                 'sansan_copy_url_desc': 'URL：',
                 'error': 'Error: ',
@@ -99,15 +93,6 @@ jQuery.noConflict();
             .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
-        function checkUpdateValue(str) {
-            //アップデート互換性対応
-            var value = str;
-            if (value === undefined) {
-                value = "null";
-            }
-            return value;
-        }
-
         function setDefault() {
 
             var conf = kintone.plugin.app.getConfig(PLUGIN_ID);
@@ -120,19 +105,16 @@ jQuery.noConflict();
                 $("#sansan_spacefield_code").val(conf['spacefield']);
                 $("#sansan_keyfield_code").val(conf['keyfield']);
                 $("#sansan_originalfield_code").val(conf['originalfield']);
-                $("#sansan_copy_exchangedate_code").val(checkUpdateValue(conf['copy_exchangedate']));
                 $("#sansan_copy_owner_code").val(conf['copy_owner']);
                 $("#sansan_copy_companyname_code").val(conf['copy_companyname']);
-                $("#sansan_copy_userid_code").val(checkUpdateValue(conf['copy_userid']));
+                $("#sansan_copy_userid_code").val(conf['copy_userid']);
                 $("#sansan_copy_username_code").val(conf['copy_username']);
                 $("#sansan_copy_departmentname_code").val(conf['copy_departmentname']);
                 $("#sansan_copy_title_code").val(conf['copy_title']);
-                $("#sansan_copy_postalcode_code").val(checkUpdateValue(conf['copy_postalcode']));
                 $("#sansan_copy_address_code").val(conf['copy_address']);
                 $("#sansan_copy_email_code").val(conf['copy_email']);
                 $("#sansan_copy_tel_code").val(conf['copy_tel']);
-                $("#sansan_copy_fax_code").val(checkUpdateValue(conf['copy_fax']));
-                $("#sansan_copy_url_code").val(checkUpdateValue(conf['copy_url']));
+                $("#sansan_copy_url_code").val(conf['copy_url']);
                 $("#sansan_copy_mobile_code").val(conf['copy_mobile']);
             }
         }
@@ -149,13 +131,6 @@ jQuery.noConflict();
                             $appendhtml = $('<option value = ' + '\"' +
                             escapeHtml(prop.code) + '\">' + escapeHtml(prop.label) + '</option>');
                             $('.sansan-copy-text').append($appendhtml);
-                            break;
-
-                        case 'DATE':
-                        case 'DATETIME':
-                            $appendhtml = $('<option value = ' + '\"' +
-                            escapeHtml(prop.code) + '\">' + escapeHtml(prop.label) + '</option>');
-                            $('.sansan-copy-date').append($appendhtml);
                             break;
 
                         case 'LINK':
@@ -209,18 +184,15 @@ jQuery.noConflict();
             config['spacefield'] = $("#sansan_spacefield_code").val();
             config['keyfield'] = $("#sansan_keyfield_code").val();
             config['originalfield'] = $("#sansan_originalfield_code").val();
-            config['copy_exchangedate'] = $('#sansan_copy_exchangedate_code').val();
             config['copy_owner'] = $('#sansan_copy_owner_code').val();
             config['copy_companyname'] = $('#sansan_copy_companyname_code').val();
             config['copy_userid'] = $('#sansan_copy_userid_code').val();
             config['copy_username'] = $('#sansan_copy_username_code').val();
             config['copy_departmentname'] = $('#sansan_copy_departmentname_code').val();
             config['copy_title'] = $('#sansan_copy_title_code').val();
-            config['copy_postalcode'] = $('#sansan_copy_postalcode_code').val();
             config['copy_address'] = $('#sansan_copy_address_code').val();
             config['copy_email'] = $('#sansan_copy_email_code').val();
             config['copy_tel'] = $('#sansan_copy_tel_code').val();
-            config['copy_fax'] = $('#sansan_copy_fax_code').val();
             config['copy_url'] = $('#sansan_copy_url_code').val();
             config['copy_mobile'] = $('#sansan_copy_mobile_code').val();
 

@@ -21,18 +21,15 @@ jQuery.noConflict();
     var C_KEYFIELD = CONFIG['keyfield'];                        //kintoneでキーとするフィールド
     var C_ORIGINALFIELD = CONFIG['originalfield'];              //コピー元のSansanフィールド
     var C_COPYFIELD = {
-        exchangedate: CONFIG['copy_exchangedate'],              //名刺交換日 → exchangeDate
         owner: CONFIG['copy_owner'],                            //名刺所有者名 → owner
         companyname: CONFIG['copy_companyname'],                //会社名 → companyName
         userid: CONFIG['copy_userid'],                          //人物ID → presonId
         username: CONFIG['copy_username'],                      //氏名 → lastName + firstName
         departmentname: CONFIG['copy_departmentname'],          //部署名 → departmentName
         title: CONFIG['copy_title'],                            //役職 → title
-        postalcode: CONFIG['copy_postalcode'],                  //郵便番号 → postalCode
         address: CONFIG['copy_address'],                        //住所 → prefecture + city + street + building
         email: CONFIG['copy_email'],                            //E-mail → email
         tel: CONFIG['copy_tel'],                                //Tel → tel
-        fax: CONFIG['copy_fax'],                                //Fax → fax
         mobile: CONFIG['copy_mobile'],                          //携帯 → mobile
         url: CONFIG['copy_url']                                 //URL → url
     };
@@ -167,6 +164,7 @@ jQuery.noConflict();
             //Sansan検索結果のリストを作成
             for (var i = 0; sansan_records.length > i; i++) {
                 var sansan_record = sansan_records[i];
+
                 companylist +=
                 '<tr id="lookuplist_' + i + '" class="sansan-lookup-tr">' +
                 //1列目：選択ボタン
@@ -177,9 +175,6 @@ jQuery.noConflict();
                 '<td>' + '<div class="line-cell-kintone"><span>' +
                 window.sansanLib.escapeHtml(sansan_record['companyName']) + '</span></div>' +
                 //選択ボタンクリック時の取得値
-                '<input class="sansan_lookup_exchangedate" value="' +
-                window.sansanLib.escapeHtml(sansan_record['exchangeDate']) +
-                '" type="hidden">' +
                 '<input class="sansan_lookup_owner" value="' +
                 window.sansanLib.escapeHtml(sansan_record['owner']['name']) +
                 '" type="hidden">' +
@@ -195,16 +190,12 @@ jQuery.noConflict();
                 window.sansanLib.escapeHtml(sansan_record['departmentName']) + '" type="hidden">' +
                 '<input class="sansan_lookup_title" value="' +
                 window.sansanLib.escapeHtml(sansan_record['title']) + '" type="hidden">' +
-                '<input class="sansan_lookup_postalcode" value="' +
-                window.sansanLib.escapeHtml(sansan_record['postalCode']) + '" type="hidden">' +
                 '<input class="sansan_lookup_address" value="' +
                 window.sansanLib.escapeHtml(sansan_record["prefecture"] + sansan_record["city"] +
                             sansan_record["street"] + sansan_record["building"]) + '" type="hidden">' +
                 '<input class="sansan_lookup_email" value="' + window.sansanLib.escapeHtml(sansan_record['email']) +
                 '" type="hidden">' +
                 '<input class="sansan_lookup_tel" value="' + window.sansanLib.escapeHtml(sansan_record['tel']) +
-                '" type="hidden">' +
-                '<input class="sansan_lookup_fax" value="' + window.sansanLib.escapeHtml(sansan_record['fax']) +
                 '" type="hidden">' +
                 '<input class="sansan_lookup_mobile" value="' + window.sansanLib.escapeHtml(sansan_record['mobile']) +
                 '" type="hidden">' +
@@ -263,44 +254,56 @@ jQuery.noConflict();
         //Sansanより取得したデータをフィールドへコピーする処理
         getRecordParams: function(lookup_record) {
             return {
-                exchangedate: lookup_record["exchangeDate"],
                 owner: lookup_record["owner"]["name"],
                 companyname: lookup_record["companyName"],
                 userid: lookup_record["personId"],
                 username: lookup_record["lastName"] + lookup_record["firstName"],
                 departmentname: lookup_record["departmentName"],
                 title: lookup_record["title"],
-                postalcode: lookup_record["postalCode"],
                 address: lookup_record["prefecture"] + lookup_record["city"] +
                         lookup_record["street"] + lookup_record["building"],
                 email: lookup_record["email"],
                 tel: lookup_record["tel"],
-                fax: lookup_record["fax"],
                 mobile: lookup_record["mobile"],
                 url: lookup_record["url"]
             };
         },
         getElementParams: function(el) {
             return {
-                exchangedate: el.find(".sansan_lookup_exchangedate").val(),
                 owner: el.find(".sansan_lookup_owner").val(),
                 companyname: el.find(".sansan_lookup_companyname").val(),
                 userid: el.find(".sansan_lookup_userid").val(),
                 username: el.find(".sansan_lookup_username").val(),
                 departmentname: el.find(".sansan_lookup_departmentname").val(),
                 title: el.find(".sansan_lookup_title").val(),
-                postalcode: el.find(".sansan_lookup_postalcode").val(),
                 address: el.find(".sansan_lookup_address").val(),
                 email: el.find(".sansan_lookup_email").val(),
                 tel: el.find(".sansan_lookup_tel").val(),
-                fax: el.find(".sansan_lookup_fax").val(),
                 mobile: el.find(".sansan_lookup_mobile").val(),
                 url: el.find(".sansan_lookup_url").val()
             };
         },
         copyFieldParams: function(params) {
 
+            var checkEmptyString = function(str) {
+                if (str && str !== "" && str !== "null") {
+                    return str;
+                }
+                return "";
+            };
+
             var record = kintone.app.record.get();
+            var copyvalue = [];
+            copyvalue.push(checkEmptyString(params.owner));
+            copyvalue.push(checkEmptyString(params.companyname));
+            copyvalue.push(checkEmptyString(params.username));
+            copyvalue.push(checkEmptyString(params.departmentname));
+            copyvalue.push(checkEmptyString(params.title));
+            copyvalue.push(checkEmptyString(params.address));
+            copyvalue.push(checkEmptyString(params.email));
+            copyvalue.push(checkEmptyString(params.tel));
+            copyvalue.push(checkEmptyString(params.mobile));
+
             for (var key in params) {
                 if (C_COPYFIELD[key] !== 'null') {
                     record['record'][C_COPYFIELD[key]]['value'] = params[key];
@@ -544,9 +547,6 @@ jQuery.noConflict();
                 '<td>' + '<div class="line-cell-kintone"><span>' +
                 window.sansanLib.escapeHtml(sansan_record['companyName']) + '</span></div>' +
                 //選択ボタンクリック時の取得値
-                '<input class="sansan_lookup_exchangedate" value="' +
-                window.sansanLib.escapeHtml(sansan_record['exchangeDate']) +
-                '" type="hidden">' +
                 '<input class="sansan_lookup_owner" value="' +
                 window.sansanLib.escapeHtml(sansan_record['owner']['name']) +
                 '" type="hidden">' +
@@ -564,17 +564,12 @@ jQuery.noConflict();
                 '<input class="sansan_lookup_title" value="' +
                 window.sansanLib.escapeHtml(sansan_record['title']) +
                 '" type="hidden">' +
-                '<input class="sansan_lookup_postalcode" value="' +
-                window.sansanLib.escapeHtml(sansan_record['postalCode']) +
-                '" type="hidden">' +
                 '<input class="sansan_lookup_address" value="' +
                 window.sansanLib.escapeHtml(sansan_record["prefecture"] + sansan_record["city"] +
                             sansan_record["street"] + sansan_record["building"]) + '" type="hidden">' +
                 '<input class="sansan_lookup_email" value="' + window.sansanLib.escapeHtml(sansan_record['email']) +
                 '" type="hidden">' +
                 '<input class="sansan_lookup_tel" value="' + window.sansanLib.escapeHtml(sansan_record['tel']) +
-                '" type="hidden">' +
-                '<input class="sansan_lookup_fax" value="' + window.sansanLib.escapeHtml(sansan_record['fax']) +
                 '" type="hidden">' +
                 '<input class="sansan_lookup_mobile" value="' + window.sansanLib.escapeHtml(sansan_record['mobile']) +
                 '" type="hidden">' +
@@ -633,18 +628,15 @@ jQuery.noConflict();
         //Sansanより取得したデータをフィールドへコピーする処理
         getElementParams: function(el) {
             return {
-                exchangedate: el.find(".sansan_lookup_exchangedate").val(),
                 owner: el.find(".sansan_lookup_owner").val(),
                 companyname: el.find(".sansan_lookup_companyname").val(),
                 userid: el.find(".sansan_lookup_userid").val(),
                 username: el.find(".sansan_lookup_username").val(),
                 departmentname: el.find(".sansan_lookup_departmentname").val(),
                 title: el.find(".sansan_lookup_title").val(),
-                postalcode: el.find(".sansan_lookup_postalcode").val(),
                 address: el.find(".sansan_lookup_address").val(),
                 email: el.find(".sansan_lookup_email").val(),
                 tel: el.find(".sansan_lookup_tel").val(),
-                fax: el.find(".sansan_lookup_fax").val(),
                 mobile: el.find(".sansan_lookup_mobile").val(),
                 url: el.find(".sansan_lookup_url").val()
             };
@@ -653,7 +645,26 @@ jQuery.noConflict();
             var records = [];
             $('.sansan-lookup-select:checked').each(function(i, el) {
                 var params = SansanPostRecords.getElementParams($(el).parents(".sansan-lookup-tr"));
+
+                var checkEmptyString = function(str) {
+                    if (str && str !== "" && str !== "null") {
+                        return str;
+                    }
+                    return "";
+                };
+
+                var copyvalue = [];
                 var record = {};
+                copyvalue.push(checkEmptyString(params.owner));
+                copyvalue.push(checkEmptyString(params.companyname));
+                copyvalue.push(checkEmptyString(params.username));
+                copyvalue.push(checkEmptyString(params.departmentname));
+                copyvalue.push(checkEmptyString(params.title));
+                copyvalue.push(checkEmptyString(params.address));
+                copyvalue.push(checkEmptyString(params.email));
+                copyvalue.push(checkEmptyString(params.tel));
+                copyvalue.push(checkEmptyString(params.mobile));
+
                 for (var key in params) {
                     if (C_COPYFIELD[key] !== 'null') {
                         record[C_COPYFIELD[key]] = {"value": params[key]};
