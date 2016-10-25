@@ -135,12 +135,22 @@ jQuery.noConflict();
     return d.promise();
   };
 
-  var addLibs = function(tmpFiles) {
+  var addNewLibs = function(tmpFiles) {
     var i, j;
     for (i = 0; i < libs.length; i++) {
       var lib = libs[i];
       var option = $id('libraries').get(0).options[i];
       if (option.selected) {
+        var isNewLib = true;
+        for (j = 0; j < jsFiles.length; j++) {
+          var jsFile = jsFiles[j];
+          if (jsFile.url) {
+            if (getLib(jsFile.url) === lib) {
+              isNewLib = false;
+            }
+          }
+        }
+        if (!isNewLib) continue;
         if ($.isArray(lib.url)) {
           for (j = 0; j < lib.url.length; j++) {
             tmpFiles.push({
@@ -173,70 +183,93 @@ jQuery.noConflict();
     return null;
   };
 
+  var isSelected = function(lib) {
+    for (var i = 0; i < libs.length; i++) {
+      if (lib === libs[i]) {
+        var option = $id('libraries').get(0).options[i];
+        return (option.selected);
+      }
+    }
+    return false;
+  };
+
   var save = function() {
-    if (!jsFiles || currentIndex < 0) return;
+    if (spinner) return;
+    if (!jsFiles) return;
+
+    if (currentIndex < 0) {
+      spinner = new app.Spinner();
+      _save();
+      return;
+    }
     var js = jsFiles[currentIndex];
     if (js.type != 'FILE') return;
-    if (spinner) return;
     spinner = new app.Spinner();
     uploadFile(js.file.name).done(function(f) {
       js.file.fileKey = f.fileKey;
       // update customize.json
-      var tmpFiles = [];
+      _save();
+    }).fail(function(f) {
+    });
+  };
 
-      addLibs(tmpFiles);
+  var _save = function() {
+    var tmpFiles = [];
 
-      for (var i = 0; i < jsFiles.length; i++) {
-        var jsFile = jsFiles[i];
-        if (jsFile.url) {
-          if (!getLib(jsFile.url)) {
-            tmpFiles.push(jsFile);
-          }
-        } else if (jsFile.file && jsFile.file.fileKey) {
+    addNewLibs(tmpFiles);
+
+    for (var i = 0; i < jsFiles.length; i++) {
+      var jsFile = jsFiles[i];
+      if (jsFile.url) {
+        var lib = getLib(jsFile.url);
+        if (lib) {
+          if (isSelected(lib)) tmpFiles.push(jsFile);
+        } else {
           tmpFiles.push(jsFile);
         }
+      } else if (jsFile.file && jsFile.file.fileKey) {
+        tmpFiles.push(jsFile);
       }
-      var data = {
-        app: kintone.app.getId()
+    }
+    var data = {
+      app: kintone.app.getId()
+    };
+    if (getCurrentType() == 'js_pc') {
+      data.desktop = {
+        js: tmpFiles
       };
-      if (getCurrentType() == 'js_pc') {
-        data.desktop = {
-          js: tmpFiles
-        };
-      } else if (getCurrentType() == 'js_mb') {
-        data.mobile = {
-          js: tmpFiles
-        };
-      } else if (getCurrentType() == 'css_pc') {
-        data.desktop = {
-          css: tmpFiles
-        };
-      }
-      kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'PUT', data,
-        function(resp) {
-          var finalize = function() {
-            getFiles(true);
-            modified = false;
-            spinner.stop();
-            spinner = null;
-          };
-          if ($id('deploy').prop('checked')) {
-            // deploy
-            kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'POST', {apps:[{app: kintone.app.getId()}]}, function() {
-              finalize();
-            });
-          } else {
-            finalize();
-          }
-        },
-        function() {
-          alert('更新に失敗しました。');
+    } else if (getCurrentType() == 'js_mb') {
+      data.mobile = {
+        js: tmpFiles
+      };
+    } else if (getCurrentType() == 'css_pc') {
+      data.desktop = {
+        css: tmpFiles
+      };
+    }
+    kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'PUT', data,
+      function(resp) {
+        var finalize = function() {
+          getFiles(true);
+          modified = false;
           spinner.stop();
           spinner = null;
+        };
+        if ($id('deploy').prop('checked')) {
+          // deploy
+          kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'POST', {apps:[{app: kintone.app.getId()}]}, function() {
+            finalize();
+          });
+        } else {
+          finalize();
         }
-      );
-
-    });
+      },
+      function() {
+        alert('更新に失敗しました。');
+        spinner.stop();
+        spinner = null;
+      }
+    );
   };
 
   var getFiles = function(refresh) {
@@ -341,31 +374,31 @@ jQuery.noConflict();
   };
 
   var cdnLibs = [
-    ["Ace", "ace", "v1.2.3", "ace.js"],
-    ["AngularJS", "angularjs", "v1.5.6", "angular.min.js"],
-    ["Chart.JS", "chartjs", "v2.1.4", "Chart.min.js"],
-    ["DataTables", "datatables", "v1.10.12", ["js/jquery.dataTables.min.js", "css/jquery.dataTables.min.css"]],
-    ["DomPurify", "dompurify", "0.8.1", "purify.js"],
-    ["FontAwesome", "font-awesome", "v4.6.3", "css/font-awesome.min.css"],
-    ["FullCalendar", "fullcalendar", "v2.7.3", ["fullcalendar.min.js", "fullcalendar.min.css"]],
-    ["Handsontable", "handsontable", "0.25.0", ["handsontable.full.min.js", "handsontable.full.min.css"]],
-    ["highlightjs", "highlightjs", "9.4.0", ["highlight.pack.js", "styles/default.css"]],
-    ["jqGrid", "jqgrid", "v5.1.0", ["js/jquery.jqGrid.min.js","js/i18n/grid.locale-ja.js", "js/i18n/grid.locale-en.js", "js/i18n/grid.locale-cn.js", "css/ui.jqgrid.css"]],
     ["jQuery", "jquery", "2.2.4", "jquery.min.js"],
-    ["jQuery UI", "jqueryui", "1.11.4", ["jquery-ui.min.js", "smoothness/jquery-ui.css"]],
+    ["jQuery UI", "jqueryui", "1.12.0", ["jquery-ui.min.js", "themes/smoothness/jquery-ui.css"]],
+    ["Moment.js", "momentjs", "2.15.1", ["moment.min.js", "moment-with-locales.min.js"]],
+    ["Ace", "ace", "v1.2.5", "ace.js"],
+    ["AngularJS", "angularjs", "v1.5.8", "angular.min.js"],
+    ["Chart.JS", "chartjs", "v2.2.2", "Chart.min.js"],
+    ["DataTables", "datatables", "v1.10.12", ["js/jquery.dataTables.min.js", "css/jquery.dataTables.min.css"]],
+    ["DomPurify", "dompurify", "0.8.3", "purify.min.js"],
+    ["FontAwesome", "font-awesome", "v4.6.3", "css/font-awesome.min.css"],
+    ["FullCalendar", "fullcalendar", "v3.0.1", ["fullcalendar.min.js", "fullcalendar.min.css", "fullcalendar.print.css"]],
+    ["Handsontable", "handsontable", "0.28.3", ["handsontable.full.min.js", "handsontable.full.min.css"]],
+    ["highlightjs", "highlightjs", "9.7.0", ["highlight.js", "styles/default.css"]],
+    ["jqGrid", "jqgrid", "v5.1.1", ["js/jquery.jqGrid.min.js","js/i18n/grid.locale-ja.js", "js/i18n/grid.locale-en.js", "js/i18n/grid.locale-cn.js", "css/ui.jqgrid.css"]],
     ["jQuery.Gantt", "jquerygantt", "20140623", ["jquery.fn.gantt.min.js", "css/style.css"]],
-    ["JSRender", "jsrender", "0.9.76", "jsrender.min.js"],
-    ["jsTree", "jstree", "3.3.1", ["jstree.min.js", "themes/default/style.min.css"]],
-    ["JSZip", "jszip", "v3.0.0", "jszip.min.js"],
-    ["Marked.js", "markedjs", "v0.3.5", "marked.min.js"],
-    ["Moment.js", "momentjs", "2.13.0", ["moment.min.js", "moment-with-locales.min.js"]],
-    ["OpenLayers", "openlayers", "v3.16.0", ["ol.js", "ol.css"]],
+    ["JSRender", "jsrender", "0.9.80", "jsrender.min.js"],
+    ["jsTree", "jstree", "3.3.2", ["jstree.min.js", "themes/default/style.min.css"]],
+    ["JSZip", "jszip", "v3.1.2", "jszip.min.js"],
+    ["Marked.js", "markedjs", "v0.3.6", "marked.min.js"],
+    ["OpenLayers", "openlayers", "v3.18.2", ["ol.js", "ol.css"]],
     ["popModal", "popmodal", "1.23", ["popModal.min.js", "popModal.min.css"]],
     ["Spin.js", "spinjs", "2.3.2", "spin.min.js"],
     ["SweetAlert", "sweetalert", "v1.1.3", ["sweetalert.min.js", "sweetalert.css"]],
     ["UltraDate.js", "ultradatejs", "v2.2.1", ["UltraDate.min.js", "UltraDate.ja.min.js"]],
     ["Underscore.js", "underscore", "1.8.3", "underscore-min.js"],
-    ["Vue.js", "vuejs", "v1.0.24", "vue.min.js"]
+    ["Vue.js", "vuejs", "v1.0.28", "vue.min.js"]
   ];
 
   $(function() {
@@ -384,10 +417,10 @@ jQuery.noConflict();
         var filename = filenames[j];
         var url = CDN_URL + lib[1] + '/' + lib[2] + '/' + filename;
         if (filename.match(/\.js$/)) {
-          if (!jsLib) jsLib = $.extend({}, tmpLib);
+          if (!jsLib) jsLib = $.extend(true, {}, tmpLib);
           jsLib.url.push(url);
         } else if (filename.match(/\.css$/)) {
-          if (!cssLib) cssLib = $.extend({}, tmpLib);
+          if (!cssLib) cssLib = $.extend(true, {}, tmpLib);
           cssLib.url.push(url);
         }
       }
@@ -532,13 +565,14 @@ jQuery.noConflict();
     $id("libraries").mousedown(function(e){
       e.preventDefault();
 
-      var scroll = this.scrollTop;
+      var select = this;
+      var scroll = select.scrollTop;
 
       e.target.selected = !e.target.selected;
 
-      this.scrollTop = scroll;
+      setTimeout(function(){select.scrollTop = scroll;}, 0);
 
-      $(this).focus();
+      $(select ).focus();
     }).mousemove(function(e){e.preventDefault();});
   });
 
