@@ -43,16 +43,24 @@ jQuery.noConflict();
         var value_text = "";
 
         //フィールドの値が数値のとき、数値に変換して比較。
-        if (!isNaN(field)) {
+        if (field.match(/^[-]?[0-9]+(\.[0-9]+)?$/) !== null) {
             if (type === "match" || type === "unmatch") {
                 field_text = field;
-                value_text = value;
             } else {
                 field_text = Number(field);
-                value_text = Number(value);
             }
         } else {
             field_text = field;
+        }
+
+        //条件値が数値のとき、数値に変換して比較。
+        if (value.match(/^[-]?[0-9]+(\.[0-9]+)?$/) !== null) {
+            if (type === "match" || type === "unmatch") {
+                value_text = value;
+            } else {
+                value_text = Number(value);
+            }
+        } else {
             value_text = value;
         }
 
