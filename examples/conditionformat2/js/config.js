@@ -152,14 +152,13 @@ jQuery.noConflict();
             var d = val[ci].date;
 
             //文字条件書式必須入力項目チェック
-            if ((t.fieldText === "" || t.typeText === "" || t.valueText === "" || t.targetFieldText === "") &&
+            if ((t.fieldText === "" || t.typeText === "" || t.targetFieldText === "") &&
                 !(t.fieldText === "" && t.typeText === "" && t.valueText === "" && t.targetFieldText === "")) {
                 alert("文字条件書式の" + (ci + 1) + "行目の必須入力項目を\n入力してください");
                 return false;
             }
 
             //日付条件書式必須入力項目チェック
-
             if ((d.fieldDate === "" || d.typeDate === "" || d.targetFieldDate === "") &&
                 !(d.fieldDate === "" && d.typeDate === "" && d.targetFieldDate === "")) {
                 alert("日付条件書式の" + (ci + 1) + "行目の必須入力項目を\n入力してください");
