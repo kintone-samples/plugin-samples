@@ -3,6 +3,8 @@
  *
  * Licensed under the MIT License
 */
+
+/* global ZDC */
 jQuery.noConflict();
 (function($, PLUGIN_ID) {
     'use strict';
@@ -41,7 +43,9 @@ jQuery.noConflict();
             var recNo = records[i].$id.value;
             var tooltipText = records[i][tooltipTitle].value;
             var latlon = new ZDC.LatLon(lat, lon);
-            latlons.push(latlon);
+            if (lat && lon) {
+                latlons.push(latlon);
+            }
             var mark = new ZDC.Marker(latlon, {
                 color: ZDC.MARKER_COLOR_ID_BLUE_S,
                 number: ZDC.MARKER_NUMBER_ID_STAR_S
@@ -86,8 +90,13 @@ jQuery.noConflict();
         map.addWidget(control);
         if (centerLat === undefined || centerLon === undefined) {
             var adjust = map.getAdjustZoom(latlons);
-            map.moveLatLon(adjust.latlon);
-            map.setZoom(adjust.zoom);
+            if (adjust) {
+                map.setZoom(adjust.zoom);
+                map.moveLatLon(adjust.latlon);
+                map.setZoom(adjust.zoom);
+            }else {
+                alert('取得住所が広域なためマップのサイズ調整が必要です。');
+            }
         }
         //ピンをプロット
         for (var i = 0; i < markList.length; i++) {
@@ -102,7 +111,17 @@ jQuery.noConflict();
             if (typeof ZDC === 'object') {
                 var records = event.records;
                 var markList = makeMarkList(records);
-                displayMap(markList);
+                if (event.records.length > 0) {
+                    displayMap(markList);
+                }else {
+                    var $myMsg = $('<p></p>', {
+                        text: 'レコードを登録してください。CSVでの登録時は、緯度・経度は自動で登録されません。'
+                    }).css({
+                        textAlign: 'center',
+                        backgroundColor: '#e1f2f7'
+                    });
+                    $(kintone.app.getHeaderSpaceElement()).append($myMsg);
+                }
             } else if (timeout > 0) {
                 waitLoaded(event, interval, remainingTime);
             } else {
@@ -114,7 +133,8 @@ jQuery.noConflict();
     function init(event) {
         if (indexMapAvailable) {
             //add js-file by using zenrin API
-            loadJS('https://'+ domain +'/cgi/loader.cgi?key=' + apikey + '&ver=2.0&api=zdcmap.js,control.js&enc=SJIS');
+            loadJS('https://' + domain + '/cgi/loader.cgi?key=' +
+            apikey + '&ver=2.0&api=zdcmap.js,control.js&enc=SJIS');
             //waiting ZDC object defined, and loading marker and map
             waitLoaded(event, 200, 4000);
         }
