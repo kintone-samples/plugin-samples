@@ -61,7 +61,11 @@ jQuery.noConflict();
     var indexEvents = ['app.record.index.show'];
     var viewNameLength = Object.keys(config).length - 6;
     kintone.events.on(indexEvents, function(event) {
+        // Check viewId
             var records = event.records;
+            if (event.viewName !== config['viewId']) {
+                return;
+            }
             var elDate = kintone.app.getFieldElements(kaisai);
             if (elDate) {
 				// specify color.
@@ -82,7 +86,7 @@ jQuery.noConflict();
                     elDate[i].style.borderTop = "solid 1px #D8D8D8";
                     elDate[i].style.borderRight = "solid 1px #D8D8D8";
                     for (var j = 0; j < viewNameLength - 1; j++) {
-                        var tempFiled = kintone.app.getFieldElements(config["viewName" + (j + 1)]);
+                        var tempFiled = kintone.app.getFieldElements(config['viewName' + (j + 1)]);
                         tempFiled[i].nextSibling.style.backgroundColor = colorType[iWeek];
                         tempFiled[i].nextSibling.style.borderTop = "solid 1px #D8D8D8";
                         tempFiled[i].nextSibling.style.borderRight = "solid 1px #D8D8D8";
@@ -120,7 +124,7 @@ jQuery.noConflict();
             }
         }
         for (var j = 0; j < viewNameLength; j++) {
-            var elTemp = kintone.app.record.getFieldElement(config["viewName" + (j + 1)]);
+            var elTemp = kintone.app.record.getFieldElement(config['viewName' + (j + 1)]);
             updateFocus(elTemp);
         }
     });
