@@ -10,12 +10,214 @@ jQuery.noConflict();
   var currentIndex = -1;
   var modified = false;
   var PREFIX = 'jsedit-plugin-';
-  var CDN_URL = 'https://js.cybozu.com/';
-  var CDN_URL_REGEX = '^https:\\/\\/js\\.cybozu\\.com\\/';
+
+  var terms = {
+    en:{
+      js_for_pc: 'JavaScript Files for PC',
+      js_for_mobile: 'JavaScript Files for Mobile',
+      css_for_pc: 'CSS Files for PC',
+      new_file: 'New File',
+      discard: '   Discard   ',
+      back: 'Back to Plug-ins',
+      libraries: 'Libraries',
+      save_options: 'Save Options',
+      apply_to_production: 'Update app when saving the code',
+      links: 'Links',
+      plugin_submit: '     Save   ',
+      plugin_cancel: '     Cancel   ',
+      required_field: 'Required field is empty.',
+      msg_discard: 'Your changes will be discarded. Are you sure you want to continue?',
+      msg_failed_to_get_file: 'Failed to retrieve files!',
+      msg_failed_to_update: 'Failed to update!',
+      msg_file_name_is_duplicated: 'This file name is duplicated. Please set a unique file name.',
+      msg_input_file_name: 'Input file name',
+      cdn_url: 'https://js.kintone.com/',
+      cdn_url_regex: '^https:\\/\\/js\\.kintone\\.com\\/'
+    },
+    ja:{
+      js_for_pc: 'PC用のJavaScriptファイル',
+      js_for_mobile: 'スマートフォン用のJavaScriptファイル',
+      css_for_pc: 'PC用のCSSファイル',
+      new_file: '新規作成',
+      discard: '     破棄   ',
+      back: 'プラグインへ戻る',
+      libraries: 'ライブラリ',
+      save_options: 'オプション',
+      apply_to_production: '運用環境に反映する',
+      links: 'リンク',
+      plugin_submit: '     保存   ',
+      plugin_cancel: '  キャンセル   ',
+      required_field: '必須項目を入力してください。',
+      msg_discard: '変更は破棄されます。よろしいですか？',
+      msg_failed_to_get_file: 'ファイルの取得に失敗しました。',
+      msg_failed_to_update: '更新に失敗しました。',
+      msg_file_name_is_duplicated: 'ファイル名が重複しています。重複のないように設定してください。',
+      msg_input_file_name: 'ファイル名を入力してください。',
+      cdn_url: 'https://js.cybozu.com/',
+      cdn_url_regex: '^https:\\/\\/js\\.cybozu\\.com\\/'
+    },
+    zh:{
+      js_for_pc: 'JavaScript Files for PC',
+      js_for_mobile: 'JavaScript Files for Mobile',
+      css_for_pc: 'CSS Files for PC',
+      new_file: 'New File',
+      discard: '   Discard   ',
+      back: 'Back to Plug-ins',
+      libraries: 'Libraries',
+      save_options: 'Save Options',
+      apply_to_production: 'Update app when saving the code',
+      links: 'Links',
+      plugin_submit: '     Save   ',
+      plugin_cancel: '     Cancel   ',
+      required_field: 'Required field is empty.',
+      msg_discard: 'Your changes will be discarded. Are you sure you want to continue?',
+      msg_failed_to_get_file: 'Failed to retrieve files!',
+      msg_failed_to_update: 'Failed to update!',
+      msg_file_name_is_duplicated: 'This file name is duplicated. Please set a unique file name.',
+      msg_input_file_name: 'Input file name',
+      cdn_url: 'https://js.cybozu.cn/',
+      cdn_url_regex: '^https:\\/\\/js\\.cybozu\\.cn\\/'
+    }
+  };
+
+  var links = {
+    en: [
+      {url: "https://developer.kintone.io/hc/en-us", label: "kintone developer network"},
+      {url: "https://developer.kintone.io/hc/en-us/articles/213149177/", label: "kintone CDN"},
+      {url: "https://developer.kintone.io/hc/en-us/articles/212495178", label: "API Docs"}
+    ],
+    ja: [
+      {url: "https://cybozudev.zendesk.com/hc/ja", label: "cybozu.com developer network"},
+      {url: "https://cybozudev.zendesk.com/hc/ja/articles/202960194", label: "Cybozu CDN"},
+      {url: "https://cybozudev.zendesk.com/hc/ja/articles/202738940", label: "kintone API 一覧"}
+    ],
+    zh: [
+      {url: "https://cybozudev.kf5.com/hc/", label: "cybozu developer network"},
+      {url: "https://cybozudev.kf5.com/hc/kb/article/206405/", label: "Cybozu CDN"}
+    ]
+  };
+
+  var cdnLibs = {
+    en: [
+      "jQuery",
+      "jQuery UI",
+      "Moment.js",
+      "Ace",
+      "AngularJS",
+      "Chart.JS",
+      "DataTables",
+      "DomPurify",
+      "FontAwesome",
+      "FullCalendar",
+      "Handsontable",
+      "highlightjs",
+      "jqGrid",
+      "jQuery.Gantt",
+      "JSRender",
+      "jsTree",
+      "JSZip",
+      "Marked.js",
+      "OpenLayers",
+      "popModal",
+      "Spin.js",
+      "SweetAlert",
+      "Underscore.js",
+      "Vue.js"
+    ],
+    ja: [
+      "jQuery",
+      "jQuery UI",
+      "Moment.js",
+      "Ace",
+      "AngularJS",
+      "Chart.JS",
+      "DataTables",
+      "DomPurify",
+      "FontAwesome",
+      "FullCalendar",
+      "Handsontable",
+      "highlightjs",
+      "jqGrid",
+      "jQuery.Gantt",
+      "JSRender",
+      "jsTree",
+      "JSZip",
+      "Marked.js",
+      "OpenLayers",
+      "popModal",
+      "Spin.js",
+      "SweetAlert",
+      "UltraDate.js",
+      "Underscore.js",
+      "Vue.js"
+    ],
+    zh: [
+      "jQuery",
+      "jQuery UI",
+      "Moment.js",
+      "Ace",
+      "AngularJS",
+      "Chart.JS",
+      "DataTables",
+      "DomPurify",
+      "FontAwesome",
+      "FullCalendar",
+      "Handsontable",
+      "highlightjs",
+      "jqGrid",
+      "jQuery.Gantt",
+      "JSRender",
+      "jsTree",
+      "JSZip",
+      "Marked.js",
+      "OpenLayers",
+      "popModal",
+      "Spin.js",
+      "SweetAlert",
+      "UltraDate.js",
+      "Underscore.js",
+      "Vue.js"
+    ]
+  };
+
+  var _cdnLibs = {
+    "jQuery": ["jquery", "2.2.4", "jquery.min.js"],
+    "jQuery UI": ["jqueryui", "1.12.0", ["jquery-ui.min.js", "themes/smoothness/jquery-ui.css"]],
+    "Moment.js": ["momentjs", "2.15.1", ["moment.min.js", "moment-with-locales.min.js"]],
+    "Ace": ["ace", "v1.2.5", "ace.js"],
+    "AngularJS": ["angularjs", "v1.5.8", "angular.min.js"],
+    "Chart.JS": ["chartjs", "v2.2.2", "Chart.min.js"],
+    "DataTables": ["datatables", "v1.10.12", ["js/jquery.dataTables.min.js", "css/jquery.dataTables.min.css"]],
+    "DomPurify": ["dompurify", "0.8.3", "purify.min.js"],
+    "FontAwesome": ["font-awesome", "v4.6.3", "css/font-awesome.min.css"],
+    "FullCalendar": ["fullcalendar", "v3.0.1", ["fullcalendar.min.js", "fullcalendar.min.css", "fullcalendar.print.css"]],
+    "Handsontable": ["handsontable", "0.28.3", ["handsontable.full.min.js", "handsontable.full.min.css"]],
+    "highlightjs": ["highlightjs", "9.7.0", ["highlight.js", "styles/default.css"]],
+    "jqGrid": ["jqgrid", "v5.1.1", ["js/jquery.jqGrid.min.js","js/i18n/grid.locale-ja.js", "js/i18n/grid.locale-en.js", "js/i18n/grid.locale-cn.js", "css/ui.jqgrid.css"]],
+    "jQuery.Gantt": ["jquerygantt", "20140623", ["jquery.fn.gantt.min.js", "css/style.css"]],
+    "JSRender": ["jsrender", "0.9.80", "jsrender.min.js"],
+    "jsTree": ["jstree", "3.3.2", ["jstree.min.js", "themes/default/style.min.css"]],
+    "JSZip": ["jszip", "v3.1.2", "jszip.min.js"],
+    "Marked.js": ["markedjs", "v0.3.6", "marked.min.js"],
+    "OpenLayers": ["openlayers", "v3.18.2", ["ol.js", "ol.css"]],
+    "popModal": ["popmodal", "1.23", ["popModal.min.js", "popModal.min.css"]],
+    "Spin.js": ["spinjs", "2.3.2", "spin.min.js"],
+    "SweetAlert": ["sweetalert", "v1.1.3", ["sweetalert.min.js", "sweetalert.css"]],
+    "UltraDate.js": ["ultradatejs", "v2.2.1", ["UltraDate.min.js", "UltraDate.ja.min.js"]],
+    "Underscore.js": ["underscore", "1.8.3", "underscore-min.js"],
+    "Vue.js": ["vuejs", "v1.0.28", "vue.min.js"]
+  };
 
   var $id = function(name) {
       return $('#' + PREFIX + name);
   };
+
+  var lang = kintone.getLoginUser().language;
+  if (!terms[lang]) lang = 'en';
+  var i18n = terms[lang];
+
+  var CDN_URL = i18n.cdn_url;
+  var CDN_URL_REGEX = i18n.cdn_url_regex;
 
   var getCurrentType = function() {
     return $id('type').val();
@@ -74,7 +276,7 @@ jQuery.noConflict();
   };
 
   var confirmDiscard = function() {
-    return (window.confirm('変更は破棄されます。よろしいですか？'));
+    return (window.confirm(i18n.msg_discard));
   };
 
   var setValue = function(data) {
@@ -108,7 +310,7 @@ jQuery.noConflict();
       }).fail(function(xhr, status, error){
         spinner.stop();
         spinner = null;
-        alert('ファイルの取得に失敗しました。');
+        alert(i18n.msg_failed_to_get_file);
       });
 
     }
@@ -265,7 +467,7 @@ jQuery.noConflict();
         }
       },
       function() {
-        alert('更新に失敗しました。');
+        alert(i18n.msg_failed_to_update);
         spinner.stop();
         spinner = null;
       }
@@ -307,7 +509,7 @@ jQuery.noConflict();
             var js2 = records[j];
             if (js2.type == 'FILE') {
               if (js.file.name == js2.file.name) {
-                alert('ファイル名が重複しています。重複のないように設定してください。');
+                alert(i18n.msg_file_name_is_duplicated);
                 return;
               }
             }
@@ -373,49 +575,31 @@ jQuery.noConflict();
     }
   };
 
-  var cdnLibs = [
-    ["jQuery", "jquery", "2.2.4", "jquery.min.js"],
-    ["jQuery UI", "jqueryui", "1.12.0", ["jquery-ui.min.js", "themes/smoothness/jquery-ui.css"]],
-    ["Moment.js", "momentjs", "2.15.1", ["moment.min.js", "moment-with-locales.min.js"]],
-    ["Ace", "ace", "v1.2.5", "ace.js"],
-    ["AngularJS", "angularjs", "v1.5.8", "angular.min.js"],
-    ["Chart.JS", "chartjs", "v2.2.2", "Chart.min.js"],
-    ["DataTables", "datatables", "v1.10.12", ["js/jquery.dataTables.min.js", "css/jquery.dataTables.min.css"]],
-    ["DomPurify", "dompurify", "0.8.3", "purify.min.js"],
-    ["FontAwesome", "font-awesome", "v4.6.3", "css/font-awesome.min.css"],
-    ["FullCalendar", "fullcalendar", "v3.0.1", ["fullcalendar.min.js", "fullcalendar.min.css", "fullcalendar.print.css"]],
-    ["Handsontable", "handsontable", "0.28.3", ["handsontable.full.min.js", "handsontable.full.min.css"]],
-    ["highlightjs", "highlightjs", "9.7.0", ["highlight.js", "styles/default.css"]],
-    ["jqGrid", "jqgrid", "v5.1.1", ["js/jquery.jqGrid.min.js","js/i18n/grid.locale-ja.js", "js/i18n/grid.locale-en.js", "js/i18n/grid.locale-cn.js", "css/ui.jqgrid.css"]],
-    ["jQuery.Gantt", "jquerygantt", "20140623", ["jquery.fn.gantt.min.js", "css/style.css"]],
-    ["JSRender", "jsrender", "0.9.80", "jsrender.min.js"],
-    ["jsTree", "jstree", "3.3.2", ["jstree.min.js", "themes/default/style.min.css"]],
-    ["JSZip", "jszip", "v3.1.2", "jszip.min.js"],
-    ["Marked.js", "markedjs", "v0.3.6", "marked.min.js"],
-    ["OpenLayers", "openlayers", "v3.18.2", ["ol.js", "ol.css"]],
-    ["popModal", "popmodal", "1.23", ["popModal.min.js", "popModal.min.css"]],
-    ["Spin.js", "spinjs", "2.3.2", "spin.min.js"],
-    ["SweetAlert", "sweetalert", "v1.1.3", ["sweetalert.min.js", "sweetalert.css"]],
-    ["UltraDate.js", "ultradatejs", "v2.2.1", ["UltraDate.min.js", "UltraDate.ja.min.js"]],
-    ["Underscore.js", "underscore", "1.8.3", "underscore-min.js"],
-    ["Vue.js", "vuejs", "v1.0.28", "vue.min.js"]
-  ];
-
   $(function() {
-    cdnLibs.forEach(function(lib) {
+    $('[data-i18n]').each(function(elm) {
+      var $elm = $(this);
+      var name = $elm.attr('data-i18n');
+      $elm.text(i18n[name]);
+    });
+    links[lang].forEach(function(li) {
+      $id('links').append($('<p><a target="_blank" href="' + li.url + '">' + li.label + '</a></p>'));
+    });
+
+    cdnLibs[lang].forEach(function(libName) {
+      var lib = _cdnLibs[libName];
       var tmpLib = {
-        name: lib[0],
-        key: lib[1],
-        version: lib[2],
+        name: libName,
+        key: lib[0],
+        version: lib[1],
         url: [],
         selected: false
       };
-      var filenames = lib[3];
+      var filenames = lib[2];
       if (!$.isArray(filenames)) filenames = [filenames];
       var jsLib, cssLib;
       for (var j = 0; j < filenames.length; j++) {
         var filename = filenames[j];
-        var url = CDN_URL + lib[1] + '/' + lib[2] + '/' + filename;
+        var url = CDN_URL + lib[0] + '/' + lib[1] + '/' + filename;
         if (filename.match(/\.js$/)) {
           if (!jsLib) jsLib = $.extend(true, {}, tmpLib);
           jsLib.url.push(url);
@@ -467,7 +651,7 @@ jQuery.noConflict();
       if (modified) {
         if (!confirmDiscard()) return;
       }
-      var fileName = window.prompt( 'ファイル名を入力してください。' );
+      var fileName = window.prompt(i18n.msg_input_file_name);
       if (!fileName) return;
 
       switch (getCurrentType()) {
@@ -488,7 +672,7 @@ jQuery.noConflict();
         var js = jsFiles[i];
         if (js.type == 'FILE') {
           if (js.file.name == fileName) {
-            alert('ファイル名が重複しています');
+            alert(i18n.msg_file_name_is_duplicated);
             return;
           }
         }
