@@ -158,13 +158,12 @@ jQuery.noConflict();
     }
 
     function changeStatusCode(record, string) {
-        if (string !== "status") {
-            return string;
-        }
-        var fieldcode = Object.keys(record);
-        for (var n in fieldcode) {
-            if (record[fieldcode[n]]["type"] === "STATUS") {
-                return fieldcode[n];
+        if (string === "status") {
+            var fieldcode = Object.keys(record);
+            for (var n in fieldcode) {
+                if (record[fieldcode[n]]["type"] === "STATUS") {
+                    return fieldcode[n];
+                }
             }
         }
         return string;
@@ -322,7 +321,7 @@ jQuery.noConflict();
 
     //レコード一覧表示イベント
     kintone.events.on("app.record.index.show", function(event) {
-        if (event.records.length !== 0) {
+        if (event.records.length > 0) {
             setIndexFormat(event);
         }
         return event;
