@@ -167,6 +167,7 @@ jQuery.noConflict();
                 return fieldcode[n];
             }
         }
+        return string;
     }
 
     //条件書式値取得
@@ -321,7 +322,9 @@ jQuery.noConflict();
 
     //レコード一覧表示イベント
     kintone.events.on("app.record.index.show", function(event) {
-        setIndexFormat(event);
+        if (event.records.length !== 0) {
+            setIndexFormat(event);
+        }
         return event;
     });
     //レコード詳細表示イベント
