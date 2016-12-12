@@ -76,7 +76,7 @@ jQuery.noConflict();
             $('#itsunavi-index-map-zoom').val(config.indexZoomSize);
         }
         if (config.detailMapHeight) {
-            $('#itsunavi-api-key').val(config.detailMapHeight);
+            $('#itsunavi-detail-map-height').val(config.detailMapHeight);
         }
         if (config.detailMapWidth) {
             $('#itsunavi-detail-map-width').val(config.detailMapWidth);
