@@ -107,30 +107,32 @@ jQuery.noConflict();
         $('div#ganttchart-plugin').html(tmpl.render({'terms': i18n}));
 
         // Set in the item selection box retrieves the form information design
-        kintone.api(kintone.api.url('/k/v1/preview/form', true), 'GET', {'app': kintone.app.getId()}, function(resp) {
-            for (var i = 0; i < resp.properties.length; i++) {
-                var prop = resp.properties[i];
+        var appId = kintone.app.getId();
+        kintone.api(kintone.api.url('/k/v1/app/form/fields', true), 'GET', {'app': appId}, function(resp) {
+            for( var key in resp.properties) {
 
+                if (!resp.properties.hasOwnProperty(key)) { continue; };
+                var prop = resp.properties[key];
                 switch (prop['type']) {
-                case 'SINGLE_LINE_TEXT':
-                case 'MULTI_LINE_TEXT':
-                    $('#ganttchart-plugin-title').append($('<option>')
-                        .text(prop['label']).val(escapeHtml(prop['code'])));
-                    $('#ganttchart-plugin-desc').append($('<option>')
-                        .text(prop['label']).val(escapeHtml(prop['code'])));
-                    break;
-                case 'DATE':
-                case 'DATETIME':
-                    $('#ganttchart-plugin-from').append($('<option>')
-                        .text(prop['label']).val(escapeHtml(prop['code'])));
-                    $('#ganttchart-plugin-to').append($('<option>')
-                        .text(prop['label']).val(escapeHtml(prop['code'])));
-                    break;
-                case 'RADIO_BUTTON':
-                case 'DROP_DOWN':
-                    $('#ganttchart-plugin-color').append($('<option>')
-                        .text(prop['label']).val(escapeHtml(prop['code'])));
-                    break;
+                    case 'SINGLE_LINE_TEXT':
+                    case 'MULTI_LINE_TEXT':
+                        $('#ganttchart-plugin-title').append($('<option>')
+                            .text(prop['label']).val(escapeHtml(prop['code'])));
+                        $('#ganttchart-plugin-desc').append($('<option>')
+                            .text(prop['label']).val(escapeHtml(prop['code'])));
+                        break;
+                    case 'DATE':
+                    case 'DATETIME':
+                        $('#ganttchart-plugin-from').append($('<option>')
+                            .text(prop['label']).val(escapeHtml(prop['code'])));
+                        $('#ganttchart-plugin-to').append($('<option>')
+                            .text(prop['label']).val(escapeHtml(prop['code'])));
+                        break;
+                    case 'RADIO_BUTTON':
+                    case 'DROP_DOWN':
+                        $('#ganttchart-plugin-color').append($('<option>')
+                            .text(prop['label']).val(escapeHtml(prop['code'])));
+                        break;
                 }
             }
 

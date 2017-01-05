@@ -11,6 +11,9 @@ if [ "$(basename $1)" = "." ]; then
 else
     PLUGIN_DIR=$(cd $(dirname $1); pwd)/$(basename $1)
 fi
+# Plugin name to cases
+PLUGIN_NAME=${PLUGIN_DIR##*/}
+
 if [ -f "$2" ]; then
     PPK_FILE=$(cd $(dirname $2); pwd)/$(basename $2)
 fi
@@ -53,8 +56,9 @@ fi
 
 # Create secret key
 if [ ! -f "$PPK_FILE" ]; then
-    /bin/mkdir $BASE_DIR/keys >/dev/null 2>&1
-    PPK_FILE=$BASE_DIR/keys/tmp.ppk
+    /bin/mkdir $BASE_DIR/vault >/dev/null 2>&1
+    /bin/mkdir $BASE_DIR/vault/keys >/dev/null 2>&1
+    PPK_FILE=$BASE_DIR/vault/keys/tmp.ppk
     PPK_FILE_TMP=$PPK_FILE
     /usr/bin/openssl genrsa -out $PPK_FILE 1024 >/dev/null 2>&1
 fi
@@ -84,11 +88,11 @@ if [ "$PPK_FILE_TMP" != "" ]; then
 fi
 
 # Create a package file
-OUTPUT_DIR=$BASE_DIR/plugins/$UUID
-/bin/mkdir $BASE_DIR/plugins >/dev/null 2>&1
+OUTPUT_DIR=$BASE_DIR/vault/plugins/$PLUGIN_NAME.$UUID
+/bin/mkdir $BASE_DIR/vault/plugins >/dev/null 2>&1
 /bin/mkdir $OUTPUT_DIR > /dev/null 2>&1
 
-OUTPUT_FILE=$OUTPUT_DIR/plugin.zip
+OUTPUT_FILE=$OUTPUT_DIR/$PLUGIN_NAME.plugin.zip
 /bin/rm $OUTPUT_FILE >/dev/null 2>&1
 
 cd $PACKAGE_DIR
