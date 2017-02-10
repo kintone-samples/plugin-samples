@@ -30,6 +30,7 @@
         "css": [
                 "config_css/config.css",
                 "https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.css"
-        ]
+        ],
+         "required_params": ["copyfield"]
     }
 }
