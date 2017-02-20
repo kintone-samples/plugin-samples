@@ -10,8 +10,16 @@ jQuery.noConflict();
 
     kintone.events.on(['app.record.create.show', 'app.record.index.edit.show', 'app.record.edit.show'], function(evt) {
         var record = evt['record'];
-        record[VOTE_FIELD]['disabled'] = true;
-        record[VOTE_COUNT_FIELD]['disabled'] = true;
+        var users = record[VOTE_FIELD].value;
+        if(evt.reuse){
+          for(var i=0;i<users.length;i++){
+            record[VOTE_FIELD].value =[] ;
+          }
+          record[VOTE_COUNT_FIELD].value = "";
+        }else {
+          record[VOTE_FIELD]['disabled'] = true;
+          record[VOTE_COUNT_FIELD]['disabled'] = true;
+        }
         return evt;
     });
 
@@ -242,4 +250,3 @@ jQuery.noConflict();
         };
     }
 })(kintone.$PLUGIN_ID, jQuery);
-
