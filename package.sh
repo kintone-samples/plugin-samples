@@ -29,21 +29,6 @@ if [ ! -f "$PLUGIN_DIR/manifest.json" ]; then
     exit 1
 fi
 
-DOT_FILES=`find $PLUGIN_DIR -name ".*" | grep -v "/\.$"`
-if [ "$DOT_FILES" != "" ]; then
-    echo "PLUGIN_DIR must not contain dot files or directories."
-    for DOT_FILE in $DOT_FILES; do
-        echo $DOT_FILE
-    done
-    exit 1
-fi
-
-PPK_FILES=`find $PLUGIN_DIR -name "*.ppk"`
-if [ "$PPK_FILES" != "" ]; then
-    echo "PLUGIN_DIR must not contain *.ppk files."
-    exit 1
-fi
-
 # Command
 if [ -x /bin/sed ]; then
     SED="/bin/sed"
@@ -71,7 +56,7 @@ PACKAGE_DIR=$BASE_DIR/tmp
 # And creating a content file by compressing the plug Directory
 CONTENTS_FILE=$PACKAGE_DIR/contents.zip
 cd $PLUGIN_DIR
-/usr/bin/zip -r $CONTENTS_FILE ./ >/dev/null
+/usr/bin/zip -x "*/\.*" -x ".*" -x "*.ppk" -r "$CONTENTS_FILE" ./ >/dev/null
 
 # Create a signature and public key
 PUB_FILE=$PACKAGE_DIR/PUBKEY
