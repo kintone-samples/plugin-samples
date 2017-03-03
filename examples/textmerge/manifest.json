@@ -1,0 +1,35 @@
+{
+    "manifest_version": 1,
+    "version": 1,
+    "type": "APP",
+    "name": {
+        "ja": "フィールド結合プラグイン",
+        "en": "Connected fields plug-in",
+        "zh": "输入值校验插件"
+    },
+    "description": {
+        "ja": "標準機能で出来ないフィールド同士の結合を実現するプラグインです。",
+        "en": "The plugin is connect with fields values expect default functions.",
+        "zh": "邮政编码，它是一个插件，以检查电话号码，传真号码，E-mail地址的输入值"
+    },
+    "icon": "contents/icon.png",
+    "desktop": {
+        "js": [
+            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+            "https://field-merge-plugin-daichitoma.c9users.io/0603/connectTexts/package/contents/desktops/desktop.js"
+        ]
+    },
+    "config":{
+        "html": "contents/setting.html",
+        "js": [
+            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+            "config_js/config.js",
+            "https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.min.js"
+
+        ],
+        "css": [
+                "config_css/config.css",
+                "https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.css"
+        ]
+    }
+}
