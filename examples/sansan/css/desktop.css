@@ -18,7 +18,7 @@
     color: #3498db;
 }
 
-#lookup_search_button, #lookup_clear_button, #lookup_setting_button {
+#lookup_search_button, #lookup_clear_button, #lookup_date_button {
     margin-left: 5px;
     height: 40px;
     border-color: transparent;
@@ -28,7 +28,7 @@
     font-size: 14px
 }
 
-#lookup_search_button:focus, #lookup_clear_button:focus, #lookup_setting_button:focus {
+#lookup_search_button:focus, #lookup_clear_button:focus, #lookup_date_button:focus {
     border-color: #3498db;
     border-style: solid;
     border-width: 1px
@@ -178,4 +178,80 @@
 .sansan-dropdown-select option {
   background-color: #fff;
   color: #333;
+}
+
+.sansan-input-radio-item {
+  display: inline-block;
+  margin-right: 16px;
+  margin-bottom: 8px;
+  padding-left: 1px;
+  max-width: 98%;
+  font-size: 14px;
+}
+
+.sansan-input-radio-item:hover + label {
+  color: #666;
+}
+
+.sansan-input-radio-item input[type="radio"] {
+  display: none;
+  cursor: pointer;
+}
+
+.sansan-input-radio-item input[type="radio"] + label {
+  position: relative;
+  display: inline-block;
+  margin-left: 32px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.sansan-input-radio-item input[type="checkbox"][disabled] + label {
+  color: #bababa;
+  cursor: not-allowed;
+}
+
+.sansan-input-radio-item input[type="radio"] + label:before {
+  position: absolute;
+  top: 50%;
+  left: -30px;
+  box-sizing: border-box;
+  margin-top: -11px;
+  width: 21px;
+  height: 21px;
+  border: 1px solid #e3e7e8;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 1px 1px 3px #f5f5f5 inset, -1px -1px 3px #f5f5f5 inset;
+  content: "";
+  font-size: 14px;
+}
+
+.sansan-input-radio-item input[type="radio"]:checked + label:after {
+  position: absolute;
+  top: 50%;
+  left: -26px;
+  margin-top: -7px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background-color: #3498db;
+  content: "";
+}
+
+.lt-ie9 .sansan-input-radio-item input[type="radio"] {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.lt-ie9 .sansan-input-radio-item input[type="radio"] + label {
+  margin-left: 4px;
+}
+
+.lt-ie9 .sansan-input-radio-item input[type="radio"] + label:before {
+  display: none;
+}
+
+.lt-ie9 .sansan-input-radio-item input[type="radio"]:checked + label:after {
+  display: none;
 }

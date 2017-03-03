@@ -1,5 +1,7 @@
-.sansan-plugin-select, .sansan-plugin-radio, #sansan_api_code, #sansan-checkbox {
-    margin-bottom: 30px;
+.sansan-plugin-block {
+    margin: 10px 0px 10px 0px;
+    border: solid 1px #eee;
+    padding: 20px;
 }
 #sansan_api_code {
     width: 300px;

@@ -1,119 +1,129 @@
 <div id="sansan-plugin">
 <!--Sansan API Keyフィールド-->
-	<div class="block">
+	<div class="block sansan-plugin-block">
 		<div class="kintoneplugin-label">{{html:terms.sansan_apikey_title}}<span class="kintoneplugin-require">*</span></div>
 		<div class="kintoneplugin-row">{{html:terms.sansan_apikey_desc}}</div>
 		<div class="kintoneplugin-input-outer">
 			<input class="kintoneplugin-input-text" id="sansan_api_code" type="text">
 		</div>
 	</div>
-<!--使用する機能-->
-	<div class="block">
-	<div class="kintoneplugin-label">{{html:terms.sansan_function_title}}</div>
+<!--使用機能-->
+	<div class="block sansan-plugin-block">
+		<div class="kintoneplugin-label">{{html:terms.sansan_function_title}}</div>
 		<div class="kintoneplugin-row">{{html:terms.sansan_function_desc}}</div>
 		<div class="kintoneplugin-input-checkbox" id="sansan-checkbox">
 			<span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="lookup_on" id="sansan-checkbox-lookup">
-				<label for="sansan-checkbox-lookup">ルックアップ機能[レコード追加/編集画面]</label>
+				<label for="sansan-checkbox-lookup">{{html:terms.sansan_function_lookup_desc}}</label>
 			</span>
 			<span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="postrecords_on" id="sansan-checkbox-postrecords">
-				<label for="sansan-checkbox-postrecords">レコード一括登録機能[レコード一覧画面]</label>
+				<label for="sansan-checkbox-postrecords">{{html:terms.sansan_function_postrecords_desc}}</label>
+			</span>
+			<span class="kintoneplugin-input-checkbox-item"><input type="checkbox" name="checkbox" value="upsertrecords_on" id="sansan-checkbox-upsertrecords">
+				<label for="sansan-checkbox-upsertrecords">{{html:terms.sansan_function_upsertrecords_desc}}</label>
 			</span>
 		</div>
 	</div>
 
-<!--検索ボタン配置スペース-->
-	<div class="block">
-		<div class="kintoneplugin-label">{{html:terms.sansan_spacefield_title}}<span class="kintoneplugin-require">*</span></div>
-		<div class="kintoneplugin-row">{{html:terms.sansan_spacefield_desc}}</div>
-		<div class="kintoneplugin-select-outer">
-			<div class="kintoneplugin-select sansan-plugin-select">
-				<select id="sansan_spacefield_code">
-					<option value="null">--</option>
-				</select>
-			</div>
+<!--ルックアップ機能設定項目-->
+	<div class="block sansan-plugin-block">
+		<div class="kintoneplugin-label">{{html:terms.sansan_lookup_title}}</div>
+		<div class="kintoneplugin-row">
+			{{html:terms.sansan_spacefield_desc}}<br>
+			{{html:terms.sansan_keyfield_desc}}<br>
+			{{html:terms.sansan_originalfield_desc}}<br>
 		</div>
+		<table class="sansan-plugin-lookup-table">
+			<tbody>
+				<tr>
+					<td>{{html:terms.sansan_spacefield_title}}</td>
+					<td>
+						<div class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select id="sansan_spacefield_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>{{html:terms.sansan_keyfield_title}}</td>
+					<td>
+						<div class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text sansan-copy-mail sansan-copy-call" id="sansan_keyfield_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+				    <td>{{html:terms.sansan_originalfield_title}}</td>
+					<td>
+						<div class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select id="sansan_originalfield_code">
+									<option value="null">--</option>
+									<option value="companyName">{{html:terms.sansan_originalfield_option1}}</option>
+									<option value="name">{{html:terms.sansan_originalfield_option2}}</option>
+									<option value="email">{{html:terms.sansan_originalfield_option3}}</option>
+									<option value="tel">{{html:terms.sansan_originalfield_option4}}</option>
+									<option value="mobile">{{html:terms.sansan_originalfield_option5}}</option>
+								</select>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 
-<!--検索キーフィールド-->
-	<div class="block">
-		<div class="kintoneplugin-label">{{html:terms.sansan_keyfield_title}}<span class="kintoneplugin-require">*</span></div>
-		<div class="kintoneplugin-row">{{html:terms.sansan_keyfield_desc}}</div>
+<!--レコード一括登録時のUpsert機能設定項目-->
+	<div class="block sansan-plugin-block">
+		<div class="kintoneplugin-label">{{html:terms.sansan_upsert_title}}</div>
+		<div class="kintoneplugin-row">{{html:terms.sansan_upsert_desc}}</div>
 		<div class="kintoneplugin-select-outer">
-			<div class="kintoneplugin-select sansan-plugin-select">
-				<select class="sansan-copy-text sansan-copy-mail sansan-copy-call" id="sansan_keyfield_code">
+			<div class="kintoneplugin-select">
+				<select class="sansan-copy-text-unique" id="sansan_upsertkeyfield_code">
 					<option value="null">--</option>
 				</select>
 			</div>
 		</div>
-	</div>
-
-<!--コピー元のSansanフィールド-->
-	<div class="block">
-		<div class="kintoneplugin-label">{{html:terms.sansan_originalfield_title}}<span class="kintoneplugin-require">*</span></div>
-		<div class="kintoneplugin-row">{{html:terms.sansan_originalfield_desc}}</div>
-		<div class="kintoneplugin-select-outer">
-			<div class="kintoneplugin-select sansan-plugin-select">
-				<select id="sansan_originalfield_code">
-					<option value="null">--</option>
-					<option value="companyName">会社名</option>
-					<option value="name">氏名</option>
-					<option value="email">メールアドレス</option>
-					<option value="tel">電話番号</option>
-					<option value="mobile">携帯番号</option>
-				</select>
-			</div>
-		</div>
+	<br>
 	</div>
 
 <!--コピー先フィールド-->
-	<div class="block">
+	<div class="block sansan-plugin-block">
 		<div class="kintoneplugin-label">{{html:terms.sansan_copy_title}}</div>
 		<div class="kintoneplugin-row">{{html:terms.sansan_copy_desc}}</div>
 		<table class="sansan-plugin-copyfield-table">
 			<tbody>
-				<tr class="sansan-plugin-copyfield-line-1">
+			    <tr class="sansan-plugin-copyfield-line-1">
 					<td>
-						<span>{{html:terms.sansan_copy_exchangedate_desc}}</span>
+						<span>{{html:terms.sansan_copy_cardid_desc}}</span>
 					</td>
 					<td>
 						<span class="kintoneplugin-select-outer">
 							<div class="kintoneplugin-select">
-								<select class="sansan-copy-text sansan-copy-date" id="sansan_copy_exchangedate_code">
+								<select class="sansan-copy-text" id="sansan_copy_cardid_code">
 									<option value="null">--</option>
 								</select>
 							</div>
 						</span>
 					</td>
-				</tr>
-				<tr class="sansan-plugin-copyfield-line-2">
 					<td>
-						<span>{{html:terms.sansan_copy_owner_desc}}</span>
+						<span>{{html:terms.sansan_copy_companyid_desc}}</span>
 					</td>
 					<td>
 						<span class="kintoneplugin-select-outer">
 							<div class="kintoneplugin-select">
-								<select class="sansan-copy-text" id="sansan_copy_owner_code">
+								<select class="sansan-copy-text" id="sansan_copy_companyid_code">
 									<option value="null">--</option>
 								</select>
 							</div>
 						</span>
 					</td>
-				</tr>
-				<tr class="sansan-plugin-copyfield-line-3">
-					<td>
-						<span>{{html:terms.sansan_copy_companyname_desc}}</span>
-					</td>
-					<td>
-						<span class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select class="sansan-copy-text" id="sansan_copy_companyname_code">
-									<option value="null">--</option>
-								</select>
-							</div>
-						</span>
-					</td>
-				</tr>
-				<tr class="sansan-plugin-copyfield-line-4">
 					<td>
 						<span>{{html:terms.sansan_copy_userid_desc}}</span>
 					</td>
@@ -126,8 +136,57 @@
 							</div>
 						</span>
 					</td>
+				<tr class="sansan-plugin-copyfield-line-2">
+					<td>
+						<span>{{html:terms.sansan_copy_exchangedate_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text sansan-copy-date" id="sansan_copy_exchangedate_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+					<td>
+						<span>{{html:terms.sansan_copy_registeredtime_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text sansan-copy-date" id="sansan_copy_registeredtime_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+					<td>
+						<span>{{html:terms.sansan_copy_ownerid_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text" id="sansan_copy_ownerid_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
 				</tr>
-				<tr class="sansan-plugin-copyfield-line-5">
+				<tr class="sansan-plugin-copyfield-line-3">
+					<td>
+						<span>{{html:terms.sansan_copy_ownername_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text" id="sansan_copy_ownername_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
 					<td>
 						<span>{{html:terms.sansan_copy_username_desc}}</span>
 					</td>
@@ -140,8 +199,20 @@
 							</div>
 						</span>
 					</td>
+					<td>
+						<span>{{html:terms.sansan_copy_usernamereading_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text" id="sansan_copy_usernamereading_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
 				</tr>
-				<tr class="sansan-plugin-copyfield-line-6">
+				<tr class="sansan-plugin-copyfield-line-4">
 					<td>
 						<span>{{html:terms.sansan_copy_departmentname_desc}}</span>
 					</td>
@@ -154,8 +225,6 @@
 							</div>
 						</span>
 					</td>
-				</tr>
-				<tr class="sansan-plugin-copyfield-line-7">
 					<td>
 						<span>{{html:terms.sansan_copy_title_desc}}</span>
 					</td>
@@ -168,36 +237,6 @@
 							</div>
 						</span>
 					</td>
-				</tr>
-				<tr class="sansan-plugin-copyfield-line-8">
-					<td>
-						<span>{{html:terms.sansan_copy_postalcode_desc}}</span>
-					</td>
-					<td>
-						<span class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select class="sansan-copy-text" id="sansan_copy_postalcode_code">
-									<option value="null">--</option>
-								</select>
-							</div>
-						</span>
-					</td>
-				</tr>
-				<tr class="sansan-plugin-copyfield-line-9">
-					<td>
-						<span>{{html:terms.sansan_copy_address_desc}}</span>
-					</td>
-					<td>
-						<span class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select class="sansan-copy-text" id="sansan_copy_address_code">
-									<option value="null">--</option>
-								</select>
-							</div>
-						</span>
-					</td>
-				</tr>
-				<tr class="sansan-plugin-copyfield-line-10">
 					<td>
 						<span>{{html:terms.sansan_copy_email_desc}}</span>
 					</td>
@@ -211,35 +250,7 @@
 						</span>
 					</td>
 				</tr>
-				<tr class="sansan-plugin-copyfield-line-11">
-					<td>
-						<span>{{html:terms.sansan_copy_tel_desc}}</span>
-					</td>
-					<td>
-						<span class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select class="sansan-copy-text sansan-copy-call" id="sansan_copy_tel_code">
-									<option value="null">--</option>
-								</select>
-							</div>
-						</span>
-					</td>
-				</tr>
-				<tr class="sansan-plugin-copyfield-line-12">
-					<td>
-						<span>{{html:terms.sansan_copy_fax_desc}}</span>
-					</td>
-					<td>
-						<span class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select class="sansan-copy-text sansan-copy-call" id="sansan_copy_fax_code">
-									<option value="null">--</option>
-								</select>
-							</div>
-						</span>
-					</td>
-				</tr>
-				<tr class="sansan-plugin-copyfield-line-13">
+				<tr class="sansan-plugin-copyfield-line-5">
 					<td>
 						<span>{{html:terms.sansan_copy_mobile_desc}}</span>
 					</td>
@@ -252,8 +263,82 @@
 							</div>
 						</span>
 					</td>
+					<td>
+						<span>{{html:terms.sansan_copy_companyname_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text" id="sansan_copy_companyname_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+					<td>
+						<span>{{html:terms.sansan_copy_postalcode_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text" id="sansan_copy_postalcode_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
 				</tr>
-				<tr class="sansan-plugin-copyfield-line-14">
+				<tr class="sansan-plugin-copyfield-line-6">
+					<td>
+						<span>{{html:terms.sansan_copy_address_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text" id="sansan_copy_address_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+					<td>
+						<span>{{html:terms.sansan_copy_tel_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text sansan-copy-call" id="sansan_copy_tel_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+					<td>
+						<span>{{html:terms.sansan_copy_secondtel_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text sansan-copy-call" id="sansan_copy_secondtel_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
+				</tr>
+				<tr class="sansan-plugin-copyfield-line-7">
+					<td>
+						<span>{{html:terms.sansan_copy_fax_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text sansan-copy-call" id="sansan_copy_fax_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
 					<td>
 						<span>{{html:terms.sansan_copy_url_desc}}</span>
 					</td>
@@ -266,11 +351,22 @@
 							</div>
 						</span>
 					</td>
+					<td>
+						<span>{{html:terms.sansan_copy_memo_desc}}</span>
+					</td>
+					<td>
+						<span class="kintoneplugin-select-outer">
+							<div class="kintoneplugin-select">
+								<select class="sansan-copy-text sansan-copy-textbox" id="sansan_copy_memo_code">
+									<option value="null">--</option>
+								</select>
+							</div>
+						</span>
+					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-	<br>
 <!--保存・キャンセル-->
 	<button class="kintoneplugin-button-dialog-ok" id="sansan_plugin_submit">{{html:terms.sansan_plugin_submit_title}}</button>
 	<button class="kintoneplugin-button-normal" id="sansan_plugin_cancel">{{html:terms.sansan_plugin_cancel_title}}</button>
