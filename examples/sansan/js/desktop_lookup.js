@@ -105,7 +105,7 @@ jQuery.noConflict();
                     if (JSON.parse(body[1]) === 429) {
                         error_message = "リクエスト数が制限値を超えています。\n5分以上時間を置いてから再度取得してください。";
                     }
-                    return Promise.reject(new Error(error_message));
+                    return kintone.Promise.reject(new Error(error_message));
                 }
 
                 //5000件以上は処理終了
@@ -117,7 +117,7 @@ jQuery.noConflict();
                 }
                 return allrecords;
             }, function(error) {
-                return Promise.reject(new Error(error.message));
+                return kintone.Promise.reject(new Error(error.message));
             });
         },
         showLookupDialog: function(lookup_list) {
@@ -127,15 +127,15 @@ jQuery.noConflict();
             $date_dialog.attr('id', 'sansan-lookup-dialog');
             $date_dialog.html(lookup_list);
             $date_dialog.dialog({
-                title: 'Sansan検索結果',
-                autoOpen: false,
-                width: 900,
-                maxHeight: 700,
-                show: 400,
-                hide: 400,
-                modal: true,
-                buttons: {
-                    キャンセル: function() {
+                "title": 'Sansan検索結果',
+                "autoOpen": false,
+                "width": 900,
+                "maxHeight": 700,
+                "show": 400,
+                "hide": 400,
+                "modal": true,
+                "buttons": {
+                    "キャンセル": function() {
                         $(this).dialog('close');
                     }
                 }
@@ -150,29 +150,29 @@ jQuery.noConflict();
         //Sansanより取得したデータをフィールドへコピーする処理
         getRecordParams: function(lookup_record) {
             return {
-                cardid: window.sansanLib.escapeHtml(lookup_record["id"]),
-                companyid: window.sansanLib.escapeHtml(lookup_record["companyId"]),
-                userid: window.sansanLib.escapeHtml(lookup_record["personId"]),
-                exchangedate: window.sansanLib.escapeHtml(lookup_record["exchangeDate"]),
-                registeredtime: window.sansanLib.escapeHtml(lookup_record["registeredTime"]),
-                ownerid: window.sansanLib.escapeHtml(lookup_record["owner"]["id"]),
-                ownername: window.sansanLib.escapeHtml(lookup_record["owner"]["name"]),
-                username: window.sansanLib.escapeHtml(lookup_record["lastName"]) +
+                "cardid": window.sansanLib.escapeHtml(lookup_record["id"]),
+                "companyid": window.sansanLib.escapeHtml(lookup_record["companyId"]),
+                "userid": window.sansanLib.escapeHtml(lookup_record["personId"]),
+                "exchangedate": window.sansanLib.escapeHtml(lookup_record["exchangeDate"]),
+                "registeredtime": window.sansanLib.escapeHtml(lookup_record["registeredTime"]),
+                "ownerid": window.sansanLib.escapeHtml(lookup_record["owner"]["id"]),
+                "ownername": window.sansanLib.escapeHtml(lookup_record["owner"]["name"]),
+                "username": window.sansanLib.escapeHtml(lookup_record["lastName"]) +
                             window.sansanLib.escapeHtml(lookup_record["firstName"]),
-                usernamereading: window.sansanLib.escapeHtml(lookup_record["lastNameReading"]) +
+                "usernamereading": window.sansanLib.escapeHtml(lookup_record["lastNameReading"]) +
                                 window.sansanLib.escapeHtml(lookup_record["firstNameReading"]),
-                departmentname: window.sansanLib.escapeHtml(lookup_record["departmentName"]),
-                title: window.sansanLib.escapeHtml(lookup_record["title"]),
-                email: window.sansanLib.escapeHtml(lookup_record["email"]),
-                mobile: window.sansanLib.escapeHtml(lookup_record["mobile"]),
-                companyname: window.sansanLib.escapeHtml(lookup_record["companyName"]),
-                postalcode: window.sansanLib.escapeHtml(lookup_record["postalCode"]),
-                address: window.sansanLib.escapeHtml(lookup_record["address"]),
-                tel: window.sansanLib.escapeHtml(lookup_record["tel"]),
-                secondtel: window.sansanLib.escapeHtml(lookup_record["secondTel"]),
-                fax: window.sansanLib.escapeHtml(lookup_record["fax"]),
-                url: window.sansanLib.escapeHtml(lookup_record["url"]),
-                memo: window.sansanLib.escapeHtml(lookup_record["memo"])
+                "departmentname": window.sansanLib.escapeHtml(lookup_record["departmentName"]),
+                "title": window.sansanLib.escapeHtml(lookup_record["title"]),
+                "email": window.sansanLib.escapeHtml(lookup_record["email"]),
+                "mobile": window.sansanLib.escapeHtml(lookup_record["mobile"]),
+                "companyname": window.sansanLib.escapeHtml(lookup_record["companyName"]),
+                "postalcode": window.sansanLib.escapeHtml(lookup_record["postalCode"]),
+                "address": window.sansanLib.escapeHtml(lookup_record["address"]),
+                "tel": window.sansanLib.escapeHtml(lookup_record["tel"]),
+                "secondtel": window.sansanLib.escapeHtml(lookup_record["secondTel"]),
+                "fax": window.sansanLib.escapeHtml(lookup_record["fax"]),
+                "url": window.sansanLib.escapeHtml(lookup_record["url"]),
+                "memo": window.sansanLib.escapeHtml(lookup_record["memo"])
             };
         },
 
@@ -180,8 +180,10 @@ jQuery.noConflict();
 
             var record = kintone.app.record.get();
             for (var key in params) {
-                if (C_COPYFIELDS[key] !== 'null') {
-                    record['record'][C_COPYFIELDS[key]]['value'] = params[key];
+                if (params.hasOwnProperty(key)) {
+                    if (C_COPYFIELDS[key] !== 'null') {
+                        record['record'][C_COPYFIELDS[key]]['value'] = params[key];
+                    }
                 }
             }
             kintone.app.record.set(record);
@@ -215,23 +217,23 @@ jQuery.noConflict();
             $date_dialog.attr('id', 'sansan-date-dialog');
             $date_dialog.html(date_list);
             $date_dialog.dialog({
-                title: '検索期間設定',
-                autoOpen: false,
-                width: 600,
-                maxHeight: 700,
-                show: 400,
-                hide: 400,
-                modal: true,
-                buttons: {
-                    キャンセル: function() {
+                "title": '検索期間設定',
+                "autoOpen": false,
+                "width": 600,
+                "maxHeight": 700,
+                "show": 400,
+                "hide": 400,
+                "modal": true,
+                "buttons": {
+                    "キャンセル": function() {
                         $(this).dialog('close');
                         $(this).remove();
                     }
                 }
             });
             $(function() {
-                $('#start_date').datepicker({dateFormat: 'yy/mm/dd', changeMonth: "true", changeYear: "true" });
-                $('#end_date').datepicker({dateFormat: 'yy/mm/dd', changeMonth: "true", changeYear: "true" });
+                $('#start_date').datepicker({"dateFormat": "yy/mm/dd", "changeMonth": "true", "changeYear": "true" });
+                $('#end_date').datepicker({"dateFormat": "yy/mm/dd", "changeMonth": "true", "changeYear": "true" });
             });
             $('#sansan-date-dialog').dialog('open');
             $('.sansan-date-select').click(function() {

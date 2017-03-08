@@ -92,7 +92,7 @@ jQuery.noConflict();
                     if (JSON.parse(body[1]) === 429) {
                         error_message = "リクエスト数が制限値を超えています。\n5分以上時間を置いてから再度取得してください。";
                     }
-                    return Promise.reject(new Error(error_message));
+                    return kintone.Promise.reject(new Error(error_message));
                 }
                 //5000件以上は処理終了
                 if (allrecords.length >= 5000) {
@@ -102,11 +102,11 @@ jQuery.noConflict();
                     return SansanPostRecords.searchSansanData(type, value, offset + limit, allrecords);
                 }
                 if (JSON.parse(body[0]).hasMore === false && allrecords[0] === null || allrecords.length === 0) {
-                    return Promise.reject(new Error('検索条件に一致する名刺データが見つかりませんでした。\n検索条件を変更してください。'));
+                    return kintone.Promise.reject(new Error('検索条件に一致する名刺データが見つかりませんでした。\n検索条件を変更してください。'));
                 }
                 return allrecords;
             }, function(error) {
-                return Promise.reject(new Error(error));
+                return kintone.Promise.reject(new Error(error));
             });
         },
         showPostRecordsDialog: function(lookup_list) {
@@ -117,19 +117,19 @@ jQuery.noConflict();
             $date_dialog.attr('id', 'sansan-lookup-dialog');
             $date_dialog.html(lookup_list);
             $date_dialog.dialog({
-                title: 'Sansan検索結果',
-                autoOpen: false,
-                width: 900,
-                maxHeight: 700,
-                show: 400,
-                hide: 400,
-                modal: true,
-                buttons: {
-                    登録: function() {
+                "title": 'Sansan検索結果',
+                "autoOpen": false,
+                "width": 900,
+                "maxHeight": 700,
+                "show": 400,
+                "hide": 400,
+                "modal": true,
+                "buttons": {
+                    "登録": function() {
                         window.sansanLib.Spin.showSpinner();
                         SansanPostRecords.postCheckedRecords();
                     },
-                    キャンセル: function() {
+                    "キャンセル": function() {
                         $(this).dialog('close');
                     }
                 }
@@ -173,24 +173,28 @@ jQuery.noConflict();
         },
         getCheckedElementsParams: function() {
             var records = [];
-            $('.sansan-lookup-select:checked').each(function(i, el) {
-                var params = window.sansanLib.getElementParams($(el).parents(".sansan-lookup-tr"));
+            $('.sansan-lookup-select:checked').each(function() {
+                var params = window.sansanLib.getElementParams($(this).parents(".sansan-lookup-tr"));
                 var param = {};
                 if (C_UPSERTRECORDS_FLG === 'upsertrecords_on') {
-                    param = {updateKey: {}, record: {}};
+                    param = {"updateKey": {}, "record": {}};
                     param.updateKey = {
-                        field: C_UPSERTKEYFIELD,
-                        value: params['userid']
+                        "field": C_UPSERTKEYFIELD,
+                        "value": params['userid']
                     };
                     for (var key1 in params) {
-                        if (C_COPYFIELDS[key1] !== 'null' && key1 !== 'userid') {
-                            param.record[C_COPYFIELDS[key1]] = {"value": params[key1]};
+                        if (params.hasOwnProperty(key1)) {
+                            if (C_COPYFIELDS[key1] !== 'null' && key1 !== 'userid') {
+                                param.record[C_COPYFIELDS[key1]] = {"value": params[key1]};
+                            }
                         }
                     }
                 } else {
                     for (var key2 in params) {
-                        if (C_COPYFIELDS[key2] !== 'null') {
-                            param[C_COPYFIELDS[key2]] = {"value": params[key2]};
+                        if (params.hasOwnProperty(key2)) {
+                            if (C_COPYFIELDS[key2] !== 'null') {
+                                param[C_COPYFIELDS[key2]] = {"value": params[key2]};
+                            }
                         }
                     }
                 }
@@ -204,8 +208,8 @@ jQuery.noConflict();
             var limit = opt_limit || 100;
             var response_ids = opt_ids || [];
             var params = {
-                app: appId,
-                records: allRecords.slice(offset, offset + limit)
+                "app": appId,
+                "records": allRecords.slice(offset, offset + limit)
             };
             return kintone.api('/k/v1/records', 'POST', params).then(function(resp) {
                 response_ids = response_ids.concat(resp.ids);
@@ -214,7 +218,7 @@ jQuery.noConflict();
                 }
                 return response_ids;
             }, function(error) {
-                return Promise.reject(error.message);
+                return kintone.Promise.reject(error.message);
             });
         },
         //一括登録成功時のレスポンス
@@ -227,9 +231,9 @@ jQuery.noConflict();
         //一括登録時のUpsert処理
         upsertRecords: function(appId, allRecords) {
             var params = {
-                app: appId,
-                records: allRecords,
-                isGuest: false
+                "app": appId,
+                "records": allRecords,
+                "isGuest": false
             };
             return kintoneUtility.rest.upsertRecords(params).then(function(resp) {
                 resp.results.postcount = 0;
@@ -244,7 +248,7 @@ jQuery.noConflict();
                 }
                 return resp.results;
             }, function(error) {
-                return Promise.reject(error);
+                return kintone.Promise.reject(error);
             });
         },
         //一括登録時のUpsert処理成功時のレスポンス
@@ -272,7 +276,7 @@ jQuery.noConflict();
                     if (JSON.parse(body[1]) === 429) {
                         error_message = 'リクエスト数が制限値を超えています。\n5分以上時間を置いてから再度取得してください。';
                     }
-                    return Promise.reject(new Error(error_message));
+                    return kintone.Promise.reject(new Error(error_message));
                 }
                 //3000件以上は処理終了
                 if (alltags.length >= 3000) {
@@ -283,7 +287,7 @@ jQuery.noConflict();
                 }
                 return alltags;
             }, function(error) {
-                return Promise.reject(new Error(error.message));
+                return kintone.Promise.reject(new Error(error.message));
             });
         },
         getTagList: function() {
@@ -356,15 +360,15 @@ jQuery.noConflict();
             $date_dialog.attr('id', 'sansan-tag-dialog');
             $date_dialog.html(tag_list);
             $date_dialog.dialog({
-                title: 'タグ選択',
-                autoOpen: false,
-                width: 900,
-                maxHeight: 700,
-                show: 400,
-                hide: 400,
-                modal: true,
-                buttons: {
-                    キャンセル: function() {
+                "title": 'タグ選択',
+                "autoOpen": false,
+                "width": 900,
+                "maxHeight": 700,
+                "show": 400,
+                "hide": 400,
+                "modal": true,
+                "buttons": {
+                    "キャンセル": function() {
                         $(this).dialog('close');
                         $(this).remove();
                     }
@@ -387,23 +391,23 @@ jQuery.noConflict();
             $date_dialog.attr('id', 'sansan-date-dialog');
             $date_dialog.html(date_list);
             $date_dialog.dialog({
-                title: '検索期間設定',
-                autoOpen: false,
-                width: 600,
-                maxHeight: 700,
-                show: 400,
-                hide: 400,
-                modal: true,
-                buttons: {
-                    キャンセル: function() {
+                "title": '検索期間設定',
+                "autoOpen": false,
+                "width": 600,
+                "maxHeight": 700,
+                "show": 400,
+                "hide": 400,
+                "modal": true,
+                "buttons": {
+                    "キャンセル": function() {
                         $(this).dialog('close');
                         $(this).remove();
                     }
                 }
             });
             $(function() {
-                $('#start_date').datepicker({dateFormat: 'yy/mm/dd', changeMonth: "true", changeYear: "true" });
-                $('#end_date').datepicker({dateFormat: 'yy/mm/dd', changeMonth: "true", changeYear: "true" });
+                $('#start_date').datepicker({"dateFormat": "yy/mm/dd", "changeMonth": "true", changeYear: "true" });
+                $('#end_date').datepicker({"dateFormat": "yy/mm/dd", "changeMonth": "true", changeYear: "true" });
             });
             $('#sansan-date-dialog').dialog('open');
             $('.sansan-date-select').click(function() {
@@ -447,7 +451,7 @@ jQuery.noConflict();
                     break;
 
                 case 'post_success':
-                    swal({title: 'Success', text: msg, type: 'success'}, function() {
+                    swal({"title": 'Success', "text": msg, "type": 'success'}, function() {
                         location.reload(true);
                     });
                     break;

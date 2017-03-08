@@ -34,26 +34,26 @@ jQuery.noConflict();
     //スピナー表示/非表示
     var Spin = {
         spinner: new Spinner({
-            lines: 13,
-            length: 28,
-            width: 14,
-            radius: 42,
-            scale: 1,
-            corners: 1,
-            color: "#FFF",
-            opacity: 0.25,
-            rotate: 0,
-            direction: 1,
-            speed: 1,
-            trail: 60,
-            fps: 20,
-            zIndex: 2e9,
-            className: "spinner",
-            top: "50%",
-            left: "50%",
-            shadow: false,
-            hwaccel: false,
-            position: "fixed"
+            "lines": 13,
+            "length": 28,
+            "width": 14,
+            "radius": 42,
+            "scale": 1,
+            "corners": 1,
+            "color": "#FFF",
+            "opacity": 0.25,
+            "rotate": 0,
+            "direction": 1,
+            "speed": 1,
+            "trail": 60,
+            "fps": 20,
+            "zIndex": 2e9,
+            "className": "spinner",
+            "top": "50%",
+            "left": "50%",
+            "shadow": false,
+            "hwaccel": false,
+            "position": "fixed"
         }),
         showSpinner: function() {
             if ($(".kintone-spinner").length === 0) {
@@ -86,27 +86,27 @@ jQuery.noConflict();
     //設定値からコピー先のフィールドの値を取得
     function getConfigValues(config) {
         return {
-            cardid: config['copy_cardid'],                          //名刺ID → cardId
-            companyid: config['copy_companyid'],                    //会社ID → companyId
-            userid: config['copy_userid'],                          //人物ID → presonId
-            exchangedate: config['copy_exchangedate'],              //名刺交換日 → exchangeDate
-            registeredtime: config['copy_registeredtime'],          //名刺登録日時 → registeredTime
-            ownerid: config['copy_ownerid'],                        //名刺所有者ID → owner.id
-            ownername: config['copy_ownername'],                    //名刺所有者名 → owner.name
-            username: config['copy_username'],                      //氏名 → lastName + firstName
-            usernamereading: config['copy_usernamereading'],        //氏名カナ → lastNameReading + firstNameReading
-            departmentname: config['copy_departmentname'],          //部署名 → departmentName
-            title: config['copy_title'],                            //役職 → title
-            email: config['copy_email'],                            //E-mail → email
-            mobile: config['copy_mobile'],                          //携帯 → mobile
-            companyname: config['copy_companyname'],                //会社名 → companyName
-            postalcode: config['copy_postalcode'],                  //郵便番号 → postalCode
-            address: config['copy_address'],                        //住所 → address
-            tel: config['copy_tel'],                                //Tel → tel
-            secondtel: config['copy_secondtel'],                    //Tel2 → secondtel
-            fax: config['copy_fax'],                                //Fax → fax
-            url: config['copy_url'],                                //URL → url
-            memo: config['copy_memo']                               //メモ → memo
+            "cardid": config['copy_cardid'],                          //名刺ID → cardId
+            "companyid": config['copy_companyid'],                    //会社ID → companyId
+            "userid": config['copy_userid'],                          //人物ID → presonId
+            "exchangedate": config['copy_exchangedate'],              //名刺交換日 → exchangeDate
+            "registeredtime": config['copy_registeredtime'],          //名刺登録日時 → registeredTime
+            "ownerid": config['copy_ownerid'],                        //名刺所有者ID → owner.id
+            "ownername": config['copy_ownername'],                    //名刺所有者名 → owner.name
+            "username": config['copy_username'],                      //氏名 → lastName + firstName
+            "usernamereading": config['copy_usernamereading'],        //氏名カナ → lastNameReading + firstNameReading
+            "departmentname": config['copy_departmentname'],          //部署名 → departmentName
+            "title": config['copy_title'],                            //役職 → title
+            "email": config['copy_email'],                            //E-mail → email
+            "mobile": config['copy_mobile'],                          //携帯 → mobile
+            "companyname": config['copy_companyname'],                //会社名 → companyName
+            "postalcode": config['copy_postalcode'],                  //郵便番号 → postalCode
+            "address": config['copy_address'],                        //住所 → address
+            "tel": config['copy_tel'],                                //Tel → tel
+            "secondtel": config['copy_secondtel'],                    //Tel2 → secondtel
+            "fax": config['copy_fax'],                                //Fax → fax
+            "url": config['copy_url'],                                //URL → url
+            "memo": config['copy_memo']                               //メモ → memo
         };
     }
 
@@ -408,27 +408,27 @@ jQuery.noConflict();
     //ダイアログから値の取得
     function getElementParams(el) {
         return {
-            cardid: el.find(".sansan_lookup_cardid").val(),
-            companyid: el.find(".sansan_lookup_companyid").val(),
-            userid: el.find(".sansan_lookup_userid").val(),
-            exchangedate: el.find(".sansan_lookup_exchangedate").val(),
-            registeredtime: el.find(".sansan_lookup_registeredtime").val(),
-            ownerid: el.find(".sansan_lookup_ownerid").val(),
-            ownername: el.find(".sansan_lookup_ownername").val(),
-            username: el.find(".sansan_lookup_username").val(),
-            usernamereading: el.find(".sansan_lookup_usernamereading").val(),
-            departmentname: el.find(".sansan_lookup_departmentname").val(),
-            title: el.find(".sansan_lookup_title").val(),
-            email: el.find(".sansan_lookup_email").val(),
-            mobile: el.find(".sansan_lookup_mobile").val(),
-            companyname: el.find(".sansan_lookup_companyname").val(),
-            postalcode: el.find(".sansan_lookup_postalcode").val(),
-            address: el.find(".sansan_lookup_address").val(),
-            tel: el.find(".sansan_lookup_tel").val(),
-            secondtel: el.find(".sansan_lookup_secondtel").val(),
-            fax: el.find(".sansan_lookup_fax").val(),
-            url: el.find(".sansan_lookup_url").val(),
-            memo: el.find(".sansan_lookup_memo").val()
+            "cardid": el.find(".sansan_lookup_cardid").val(),
+            "companyid": el.find(".sansan_lookup_companyid").val(),
+            "userid": el.find(".sansan_lookup_userid").val(),
+            "exchangedate": el.find(".sansan_lookup_exchangedate").val(),
+            "registeredtime": el.find(".sansan_lookup_registeredtime").val(),
+            "ownerid": el.find(".sansan_lookup_ownerid").val(),
+            "ownername": el.find(".sansan_lookup_ownername").val(),
+            "username": el.find(".sansan_lookup_username").val(),
+            "usernamereading": el.find(".sansan_lookup_usernamereading").val(),
+            "departmentname": el.find(".sansan_lookup_departmentname").val(),
+            "title": el.find(".sansan_lookup_title").val(),
+            "email": el.find(".sansan_lookup_email").val(),
+            "mobile": el.find(".sansan_lookup_mobile").val(),
+            "companyname": el.find(".sansan_lookup_companyname").val(),
+            "postalcode": el.find(".sansan_lookup_postalcode").val(),
+            "address": el.find(".sansan_lookup_address").val(),
+            "tel": el.find(".sansan_lookup_tel").val(),
+            "secondtel": el.find(".sansan_lookup_secondtel").val(),
+            "fax": el.find(".sansan_lookup_fax").val(),
+            "url": el.find(".sansan_lookup_url").val(),
+            "memo": el.find(".sansan_lookup_memo").val()
         };
     }
 
