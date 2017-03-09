@@ -199,9 +199,8 @@ jQuery.noConflict();
             }
         }
         for (var i in obj) {
-            if (obj.hasOwnProperty(i)) {
-                list.push(obj[i]);
-            }
+            if (!obj.hasOwnProperty(i)) { continue; }
+            list.push(obj[i]);
         }
         list = sortRecords(list, 'desc', 'registeredTime', 'exchangeDate');
         return list;

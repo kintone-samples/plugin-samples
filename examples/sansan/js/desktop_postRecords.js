@@ -183,18 +183,16 @@ jQuery.noConflict();
                         "value": params['userid']
                     };
                     for (var key1 in params) {
-                        if (params.hasOwnProperty(key1)) {
-                            if (C_COPYFIELDS[key1] !== 'null' && key1 !== 'userid') {
-                                param.record[C_COPYFIELDS[key1]] = {"value": params[key1]};
-                            }
+                        if (!params.hasOwnProperty(key1)) { continue; }
+                        if (C_COPYFIELDS[key1] !== 'null' && key1 !== 'userid') {
+                            param.record[C_COPYFIELDS[key1]] = {"value": params[key1]};
                         }
                     }
                 } else {
                     for (var key2 in params) {
-                        if (params.hasOwnProperty(key2)) {
-                            if (C_COPYFIELDS[key2] !== 'null') {
-                                param[C_COPYFIELDS[key2]] = {"value": params[key2]};
-                            }
+                        if (!params.hasOwnProperty(key2)) { continue; }
+                        if (C_COPYFIELDS[key2] !== 'null') {
+                            param[C_COPYFIELDS[key2]] = {"value": params[key2]};
                         }
                     }
                 }

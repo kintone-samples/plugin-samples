@@ -180,10 +180,9 @@ jQuery.noConflict();
 
             var record = kintone.app.record.get();
             for (var key in params) {
-                if (params.hasOwnProperty(key)) {
-                    if (C_COPYFIELDS[key] !== 'null') {
-                        record['record'][C_COPYFIELDS[key]]['value'] = params[key];
-                    }
+                if (!params.hasOwnProperty(key)) { continue; }
+                if (C_COPYFIELDS[key] !== 'null') {
+                    record['record'][C_COPYFIELDS[key]]['value'] = params[key];
                 }
             }
             kintone.app.record.set(record);
