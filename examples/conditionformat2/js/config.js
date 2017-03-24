@@ -400,8 +400,10 @@ jQuery.noConflict();
                 'en': {
                     'text': {
                         "1": "Required fields for Text Format Conditions row " + row_num + " are empty.",
-                        "2": "Input \"#000000 ~ #FFFFFF\" for Font Color in Text Format Conditions row " + row_num + ".",
-                        "3": "Input \"#000000 ~ #FFFFFF\" for Background Color in Text Format Conditions row " + row_num + ".",
+                        "2": "Input \"#000000 ~ #FFFFFF\" for Font Color in Text Format Conditions row " +
+                                row_num + ".",
+                        "3": "Input \"#000000 ~ #FFFFFF\" for Background Color in Text Format Conditions row " +
+                                row_num + ".",
                         "4": "Text Format Conditions row " + row_num + " includes HTML Characters.",
                         "5": "Text Format Conditions row " + row_num + " includes Status(Process Management)." +
                                 " Please enable this app's process management feature to include it in the condition."
@@ -410,8 +412,10 @@ jQuery.noConflict();
                         "1": "Required fields for Date Format Conditions row " + row_num + " are empty.",
                         "2": "Input integers for Value of Date Format Conditions row " + row_num + ".",
                         "3": "Input integers for Value of Date Format Conditions row " + row_num + ".",
-                        "4": "Input \"#000000 ~ #FFFFFF\" for Font Color of Date Format Conditions row " + row_num + ".",
-                        "5": "Input \"#000000 ~ #FFFFFF\" for Background Color of Date Format Conditions row " + row_num + ".",
+                        "4": "Input \"#000000 ~ #FFFFFF\" for Font Color of Date Format Conditions row " +
+                                row_num + ".",
+                        "5": "Input \"#000000 ~ #FFFFFF\" for Background Color of Date Format Conditions row " +
+                                row_num + ".",
                         "6": "Date Format Conditions row " + row_num + " includes HTML Characters.",
                         "7": "Date Format Conditions row " + row_num + " includes Status(Process Management)." +
                                 " Please enable this app's process management feature to include it in the condition."

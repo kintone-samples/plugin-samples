@@ -29,9 +29,12 @@ jQuery.noConflict();
             el.style.color = color;
         }
     }
-    function changeBackgroundColor(el, backgroundcolor) {
+    function changeBackgroundColor(el, backgroundcolor, type) {
         if (backgroundcolor) {
             el.style.backgroundColor = backgroundcolor;
+        }
+        if (type === "index") {
+            el.style.borderBottom = "solid 1px #F5F5F5";
         }
     }
     function changeFontSize(el, size) {
@@ -55,10 +58,10 @@ jQuery.noConflict();
         }
     }
 
-    function changeStyle(el, color, backgroundcolor, size, font) {
+    function changeStyle(el, color, backgroundcolor, size, font, type) {
         if (el) {
             changeColor(el, color);
-            changeBackgroundColor(el, backgroundcolor);
+            changeBackgroundColor(el, backgroundcolor, type);
             changeFontSize(el, size);
             changeFont(el, font);
         }
@@ -236,7 +239,8 @@ jQuery.noConflict();
                                 text_obj.targetcolor,
                                 text_obj.targetbackgroundcolor,
                                 text_obj.targetsize,
-                                text_obj.targetfont
+                                text_obj.targetfont,
+                                "index"
                             );
                             break;
                         }
@@ -247,7 +251,8 @@ jQuery.noConflict();
                         text_obj.targetcolor,
                         text_obj.targetbackgroundcolor,
                         text_obj.targetsize,
-                        text_obj.targetfont
+                        text_obj.targetfont,
+                        "index"
                     );
                 }
             }
@@ -268,7 +273,8 @@ jQuery.noConflict();
                         date_obj.targetcolor,
                         date_obj.targetbackgroundcolor,
                         date_obj.targetsize,
-                        date_obj.targetfont
+                        date_obj.targetfont,
+                        "index"
                     );
                 }
             }
@@ -308,7 +314,8 @@ jQuery.noConflict();
                             text_obj.targetcolor,
                             text_obj.targetbackgroundcolor,
                             text_obj.targetsize,
-                            text_obj.targetfont
+                            text_obj.targetfont,
+                            "detail"
                         );
                         break;
                     }
@@ -319,7 +326,8 @@ jQuery.noConflict();
                     text_obj.targetcolor,
                     text_obj.targetbackgroundcolor,
                     text_obj.targetsize,
-                    text_obj.targetfont
+                    text_obj.targetfont,
+                    "detail"
                 );
             }
         }
@@ -336,7 +344,8 @@ jQuery.noConflict();
                     date_obj.targetcolor,
                     date_obj.targetbackgroundcolor,
                     date_obj.targetsize,
-                    date_obj.targetfont
+                    date_obj.targetfont,
+                    "detail"
                 );
             }
         }
