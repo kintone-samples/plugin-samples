@@ -12,37 +12,62 @@ jQuery.noConflict();
 
     var CONFIG = kintone.plugin.app.getConfig(PLUGIN_ID);
 
-    //設定値読み込み
     if (!CONFIG) {
         return false;
     }
+    var TEXT_ROW_NUM = Number(CONFIG["text_row_number"]);
+    var DATE_ROW_NUM = Number(CONFIG["date_row_number"]);
+    for (var t = 1; t < TEXT_ROW_NUM + 1; t++) {
+        CONFIG["text_row" + t] = JSON.parse(CONFIG["text_row" + t]);
+    }
+    for (var d = 1; d < DATE_ROW_NUM + 1; d++) {
+        CONFIG["date_row" + d] = JSON.parse(CONFIG["date_row" + d]);
+    }
 
-    var BODY_TEXT = JSON.parse(CONFIG["body_text"]);
-    var BODY_DATE = JSON.parse(CONFIG["body_date"]);
-    var MAX_LINE = Number(CONFIG["line_number"]);
-
-    function changeStyle(el, color, backgroundcolor, size) {
-        if (el) {
-            if (color) {
-                el.style.color = color;
-            }
-            if (backgroundcolor) {
-                el.style.backgroundColor = backgroundcolor;
-            }
-            if (size) {
-                el.style.fontSize = size;
-            } else {
-                el.style.fontSize = "14px";
-            }
+    function changeColor(el, color) {
+        if (color) {
+            el.style.color = color;
+        }
+    }
+    function changeBackgroundColor(el, backgroundcolor) {
+        if (backgroundcolor) {
+            el.style.backgroundColor = backgroundcolor;
+        }
+    }
+    function changeFontSize(el, size) {
+        if (size) {
+            el.style.fontSize = size;
+        } else {
+            el.style.fontSize = "14px";
+        }
+    }
+    function changeFont(el, font) {
+        switch (font) {
+            case "bold":
+                el.style.fontWeight = font;
+                break;
+            case "underline":
+                el.style.textDecoration = font;
+                break;
+            case "line-through":
+                el.style.textDecoration = font;
+                break;
         }
     }
 
-    //条件チェック
+    function changeStyle(el, color, backgroundcolor, size, font) {
+        if (el) {
+            changeColor(el, color);
+            changeBackgroundColor(el, backgroundcolor);
+            changeFontSize(el, size);
+            changeFont(el, font);
+        }
+    }
+
     function checkTextFormat(field, value, type) {
         var field_text = "";
         var value_text = "";
 
-        //フィールドの値が数値のとき、数値に変換して比較。
         if (field.match(/^[-]?[0-9]+(\.[0-9]+)?$/) !== null) {
             if (type === "match" || type === "unmatch") {
                 field_text = field;
@@ -53,7 +78,6 @@ jQuery.noConflict();
             field_text = field;
         }
 
-        //条件値が数値のとき、数値に変換して比較。
         if (value.match(/^[-]?[0-9]+(\.[0-9]+)?$/) !== null) {
             if (type === "match" || type === "unmatch") {
                 value_text = value;
@@ -110,15 +134,18 @@ jQuery.noConflict();
         }
         return false;
     }
-    function checkDateFormat(field, value, type) {
+    function checkDateFormat(field, value, type, type2) {
 
         if (!field) {
             return false;
         }
-        var num = Number(value);//入力日数
-        var field_date = moment(field).format("YYYY-MM-DD 00:00"); //対象フィールドの日付
-        var value_date = moment().add(num, "days").format("YYYY-MM-DD 00:00");//条件値 = 今日の日付 + (入力日数)
-        var diff = moment(field_date).diff(moment(value_date), "days");//(対象フィールドの日付-条件値）
+        var num = Number(value);
+        if (type2 === "before") {
+            num = -num;
+        }
+        var field_date = moment(field).format("YYYY-MM-DD 00:00");
+        var value_date = moment().add(num, "days").format("YYYY-MM-DD 00:00");
+        var diff = moment(field_date).diff(moment(value_date), "days");
 
         switch (type) {
             case "==":
@@ -158,175 +185,169 @@ jQuery.noConflict();
     }
 
     function changeStatusCode(record, string) {
-        if (string === "status") {
-            var fieldcode = Object.keys(record);
-            for (var n in fieldcode) {
-                if (record[fieldcode[n]]["type"] === "STATUS") {
-                    return fieldcode[n];
-                }
+        var status_code = "status_process_management";
+        var fieldcode = Object.keys(record);
+        for (var n in fieldcode) {
+            if (!fieldcode.hasOwnProperty(n)) { continue; }
+
+            if (record[fieldcode[n]]["type"] === "STATUS") {
+                status_code = fieldcode[n];
+                break;
             }
         }
-        return string;
+        return status_code;
     }
 
-    //条件書式値取得
-    function getTextFormatValues(tm) {
-        return {
-            fieldText: BODY_TEXT["cfield_text_" + tm]["value"],//書式条件フィールド
-            typeText: BODY_TEXT["ctype_text_" + tm]["value"],//条件式
-            valueText: BODY_TEXT["cvalue_text_" + tm]["value"],//条件値
-            targetFieldText: BODY_TEXT["tfield_text_" + tm]["value"],//書式編集対象フィールド
-            targetColorText: BODY_TEXT["tcolor_text_" + tm]["value"],//文字色
-            targetBackgroundColorText: BODY_TEXT["tbgcolor_text_" + tm]["value"],//背景色
-            targetSizeText: BODY_TEXT["tsize_text_" + tm]["value"]//サイズ
-        };
-    }
-    function getDateFormatValues(dm) {
-        return {
-            fieldDate: BODY_DATE["cfield_date_" + dm]["value"],//書式条件フィールド
-            typeDate: BODY_DATE["ctype_date_" + dm]["value"],//条件式
-            valueDate: BODY_DATE["cvalue_date_" + dm]["value"],//条件値
-            targetFieldDate: BODY_DATE["tfield_date_" + dm]["value"],//書式編集対象フィールド
-            targetColorDate: BODY_DATE["tcolor_date_" + dm]["value"],//文字色
-            targetBackgroundColorDate: BODY_DATE["tbgcolor_date_" + dm]["value"],//背景色
-            targetSizeDate: BODY_DATE["tsize_date_" + dm]["value"]//サイズ
-        };
-    }
-
-    //レコード一覧画面 条件チェック及び書式変更
     function setIndexFormat(event) {
         var record = [];
-        var t = [];
-        var d = [];
-        for (var m = 1; m < MAX_LINE + 1; m++) {
-            if (BODY_TEXT["cfield_text_" + m]["value"] !== "") {
-                t.push(getTextFormatValues(m));
+
+        //check status code
+        for (var st = 1; st <= TEXT_ROW_NUM; st++) {
+            if (CONFIG["text_row" + st].targetfield === "status_process_management") {
+                CONFIG["text_row" + st].targetfield = changeStatusCode(event.records[0]);
             }
-            if (BODY_DATE["cfield_date_" + m]["value"] !== "") {
-                d.push(getDateFormatValues(m));
+            if (CONFIG["text_row" + st].field === "status_process_management") {
+                CONFIG["text_row" + st].field = changeStatusCode(event.records[0]);
             }
         }
-        //ステータスコードチェック
-        for (var st = 0; st < t.length; st++) {
-            t[st].targetFieldText = changeStatusCode(event.records[0], t[st].targetFieldText);
-            t[st].fieldText = changeStatusCode(event.records[0], t[st].fieldText);
-        }
-        for (var sd = 0; sd < d.length; sd++) {
-            d[sd].targetFieldDate = changeStatusCode(event.records[0], d[sd].targetFieldDate);
+        for (var sd = 1; sd <= DATE_ROW_NUM; sd++) {
+            if (CONFIG["date_row" + sd].targetfield === "status_process_management") {
+                CONFIG["date_row" + sd].targetfield = changeStatusCode(event.records[0]);
+            }
         }
 
-        //文字条件書式
-        for (var ti2 = 0; ti2 < t.length; ti2++) {
-            var el_text2 = kintone.app.getFieldElements(t[ti2].targetFieldText);
-            if (!el_text2) {
-                continue;
-            }
+        //Text condition format
+        for (var ti2 = 1; ti2 <= TEXT_ROW_NUM; ti2++) {
+            var text_obj = CONFIG["text_row" + ti2];
+            var el_text2 = kintone.app.getFieldElements(text_obj.targetfield);
+            if (!el_text2) { continue; }
+
             for (var tn = 0; tn < el_text2.length; tn++) {
                 record = event.records[tn];
-                var text2_value = record[t[ti2].fieldText]["value"];
-                if (t[ti2].fieldText === "status") {
-                    text2_value = record[changeStatusCode(t[ti2].fieldText)]["value"];
+                var text2_value = record[text_obj.field]["value"];
+                if (text_obj.field === "status") {
+                    text2_value = record[changeStatusCode(text_obj.field)]["value"];
                 }
-                //チェックボックス、複数選択の判別
                 if (Array.isArray(text2_value)) {
                     for (var a = 0; a < text2_value.length; a++) {
-                        if (checkTextFormat(text2_value[a], t[ti2].valueText, t[ti2].typeText)) {
-                            //書式変更
-                            changeStyle(el_text2[tn], t[ti2].targetColorText,
-                            t[ti2].targetBackgroundColorText, t[ti2].targetSizeText);
+                        if (checkTextFormat(text2_value[a], text_obj.value, text_obj.type)) {
+                            changeStyle(
+                                el_text2[tn],
+                                text_obj.targetcolor,
+                                text_obj.targetbackgroundcolor,
+                                text_obj.targetsize,
+                                text_obj.targetfont
+                            );
                             break;
                         }
                     }
-                } else if (checkTextFormat(text2_value, t[ti2].valueText, t[ti2].typeText)) {
-                    //書式変更
-                    changeStyle(el_text2[tn], t[ti2].targetColorText,
-                    t[ti2].targetBackgroundColorText, t[ti2].targetSizeText);
+                } else if (checkTextFormat(text2_value, text_obj.value, text_obj.type)) {
+                    changeStyle(
+                        el_text2[tn],
+                        text_obj.targetcolor,
+                        text_obj.targetbackgroundcolor,
+                        text_obj.targetsize,
+                        text_obj.targetfont
+                    );
                 }
             }
         }
 
-        //日付条件書式
-        for (var di2 = 0; di2 < d.length; di2++) {
-            var el_date2 = kintone.app.getFieldElements(d[di2].targetFieldDate);
-            if (!el_date2) {
-                continue;
-            }
+        //Date condition format
+        for (var di2 = 1; di2 <= DATE_ROW_NUM; di2++) {
+            var date_obj = CONFIG["date_row" + di2];
+            var el_date2 = kintone.app.getFieldElements(date_obj.targetfield);
+            if (!el_date2) { continue; }
+
             for (var dn = 0; dn < el_date2.length; dn++) {
                 record = event.records[dn];
-                if (checkDateFormat(record[d[di2].fieldDate]["value"],
-                    d[di2].valueDate, d[di2].typeDate)) {
-                    //書式変更
-                    changeStyle(el_date2[dn], d[di2].targetColorDate,
-                    d[di2].targetBackgroundColorDate, d[di2].targetSizeDate);
+
+                if (checkDateFormat(record[date_obj.field]["value"], date_obj.value, date_obj.type, date_obj.type2)) {
+                    changeStyle(
+                        el_date2[dn],
+                        date_obj.targetcolor,
+                        date_obj.targetbackgroundcolor,
+                        date_obj.targetsize,
+                        date_obj.targetfont
+                    );
                 }
             }
         }
     }
-    //レコード詳細画面 条件チェック及び書式変更
+
     function setDetailFormat(event) {
         var record = event.record;
-        var t = [];
-        var d = [];
-        for (var m = 1; m < MAX_LINE + 1; m++) {
-            if (BODY_TEXT["cfield_text_" + m]["value"] !== "") {
-                t.push(getTextFormatValues(m));
+
+        //check status code
+        for (var st = 1; st <= TEXT_ROW_NUM; st++) {
+            if (CONFIG["text_row" + st].targetfield === "status_process_management") {
+                CONFIG["text_row" + st].targetfield = changeStatusCode(event.record);
             }
-            if (BODY_DATE["cfield_date_" + m]["value"] !== "") {
-                d.push(getDateFormatValues(m));
+            if (CONFIG["text_row" + st].field === "status_process_management") {
+                CONFIG["text_row" + st].field = changeStatusCode(event.record);
             }
         }
-        //ステータスコードチェック
-        for (var st = 0; st < t.length; st++) {
-            t[st].targetFieldText = changeStatusCode(event.record, t[st].targetFieldText);
-            t[st].fieldText = changeStatusCode(event.record, t[st].fieldText);
-        }
-        for (var sd = 0; sd < d.length; sd++) {
-            d[sd].targetFieldDate = changeStatusCode(event.record, d[sd].targetFieldDate);
+        for (var sd = 1; sd <= DATE_ROW_NUM; sd++) {
+            if (CONFIG["date_row" + sd].targetfield === "status_process_management") {
+                CONFIG["date_row" + sd].targetfield = changeStatusCode(event.record);
+            }
         }
 
-        //文字条件書式
-        for (var ti = 0; ti < t.length; ti++) {
-            var el_text = kintone.app.record.getFieldElement(t[ti].targetFieldText);
-            if (!el_text) {
-                continue;
-            }
-            var text_value = record[t[ti].fieldText]["value"];
+        //Text condition format
+        for (var ti = 1; ti <= TEXT_ROW_NUM; ti++) {
+            var text_obj = CONFIG["text_row" + ti];
+            var el_text = kintone.app.record.getFieldElement(text_obj.targetfield);
+            if (!el_text) { continue; }
+
+            var text_value = record[text_obj.field]["value"];
             if (Array.isArray(text_value)) {
                 for (var a = 0; a < text_value.length; a++) {
-                    if (checkTextFormat(text_value[a], t[ti].valueText, t[ti].typeText)) {
-                        //書式変更
-                        changeStyle(el_text, t[ti].targetColorText,
-                        t[ti].targetBackgroundColorText, t[ti].targetSizeText);
+                    if (checkTextFormat(text_value[a], text_obj.value, text_obj.type)) {
+                        changeStyle(
+                            el_text,
+                            text_obj.targetcolor,
+                            text_obj.targetbackgroundcolor,
+                            text_obj.targetsize,
+                            text_obj.targetfont
+                        );
                         break;
                     }
                 }
-            } else if (checkTextFormat(text_value, t[ti].valueText, t[ti].typeText)) {
-                //書式変更
-                changeStyle(el_text, t[ti].targetColorText, t[ti].targetBackgroundColorText, t[ti].targetSizeText);
+            } else if (checkTextFormat(text_value, text_obj.value, text_obj.type)) {
+                changeStyle(
+                    el_text,
+                    text_obj.targetcolor,
+                    text_obj.targetbackgroundcolor,
+                    text_obj.targetsize,
+                    text_obj.targetfont
+                );
             }
         }
 
-        //日付条件書式
-        for (var di = 0; di < d.length; di++) {
-            if (checkDateFormat(record[d[di].fieldDate]["value"], d[di].valueDate, d[di].typeDate)) {
-                //書式変更
-                var el_date = kintone.app.record.getFieldElement(d[di].targetFieldDate);
-                if (!el_date) {
-                    continue;
-                }
-                changeStyle(el_date, d[di].targetColorDate, d[di].targetBackgroundColorDate, d[di].targetSizeDate);
+        //Date condition format
+        for (var di = 1; di <= DATE_ROW_NUM; di++) {
+            var date_obj = CONFIG["date_row" + di];
+            if (checkDateFormat(record[date_obj.field]["value"], date_obj.value, date_obj.type)) {
+                var el_date = kintone.app.record.getFieldElement(date_obj.targetfield);
+                if (!el_date) { continue; }
+
+                changeStyle(
+                    el_date,
+                    date_obj.targetcolor,
+                    date_obj.targetbackgroundcolor,
+                    date_obj.targetsize,
+                    date_obj.targetfont
+                );
             }
         }
     }
 
-    //レコード一覧表示イベント
     kintone.events.on("app.record.index.show", function(event) {
         if (event.records.length > 0) {
             setIndexFormat(event);
         }
         return event;
     });
-    //レコード詳細表示イベント
     kintone.events.on("app.record.detail.show", function(event) {
         setDetailFormat(event);
         return event;
