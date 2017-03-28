@@ -11,12 +11,11 @@ jQuery.noConflict();
     "use strict";
 
     var CONFIG = kintone.plugin.app.getConfig(PLUGIN_ID);
+    if (!CONFIG) { return false; }
 
-    if (!CONFIG) {
-        return false;
-    }
     var TEXT_ROW_NUM = Number(CONFIG["text_row_number"]);
     var DATE_ROW_NUM = Number(CONFIG["date_row_number"]);
+
     for (var t = 1; t < TEXT_ROW_NUM + 1; t++) {
         CONFIG["text_row" + t] = JSON.parse(CONFIG["text_row" + t]);
     }
@@ -24,27 +23,30 @@ jQuery.noConflict();
         CONFIG["date_row" + d] = JSON.parse(CONFIG["date_row" + d]);
     }
 
-    function changeColor(el, color) {
+    function changeFieldColor(el, color) {
         if (color) {
             el.style.color = color;
         }
     }
-    function changeBackgroundColor(el, backgroundcolor, type) {
+
+    function changeFieldBackgroundColor(el, backgroundcolor, event_type) {
         if (backgroundcolor) {
             el.style.backgroundColor = backgroundcolor;
         }
-        if (type === "index") {
+        if (event_type === "index") {
             el.style.borderBottom = "solid 1px #F5F5F5";
         }
     }
-    function changeFontSize(el, size) {
+
+    function changeFieldFontSize(el, size) {
         if (size) {
             el.style.fontSize = size;
         } else {
             el.style.fontSize = "14px";
         }
     }
-    function changeFont(el, font) {
+
+    function changeFieldStyle(el, font) {
         switch (font) {
             case "bold":
                 el.style.fontWeight = font;
@@ -58,77 +60,77 @@ jQuery.noConflict();
         }
     }
 
-    function changeStyle(el, color, backgroundcolor, size, font, type) {
-        if (el) {
-            changeColor(el, color);
-            changeBackgroundColor(el, backgroundcolor, type);
-            changeFontSize(el, size);
-            changeFont(el, font);
-        }
+    function changeFieldElement(el, row_obj, event_type) {
+        changeFieldColor(el, row_obj.targetcolor);
+        changeFieldBackgroundColor(el, row_obj.targetbgcolor, event_type);
+        changeFieldFontSize(el, row_obj.targetsize);
+        changeFieldStyle(el, row_obj.targetfont);
     }
 
-    function checkTextFormat(field, value, type) {
-        var field_text = "";
-        var value_text = "";
+    function checkTextConditionFormat(field, value, type) {
+        var field_value = "";
+        var condition_value = "";
 
+        // Change field value format
         if (field.match(/^[-]?[0-9]+(\.[0-9]+)?$/) !== null) {
             if (type === "match" || type === "unmatch") {
-                field_text = field;
+                field_value = field;
             } else {
-                field_text = Number(field);
+                field_value = Number(field);
             }
         } else {
-            field_text = field;
+            field_value = field;
         }
 
+        // Change condition value format
         if (value.match(/^[-]?[0-9]+(\.[0-9]+)?$/) !== null) {
             if (type === "match" || type === "unmatch") {
-                value_text = value;
+                condition_value = value;
             } else {
-                value_text = Number(value);
+                condition_value = Number(value);
             }
         } else {
-            value_text = value;
+            condition_value = value;
         }
 
         switch (type) {
             case "match":
-                if (field_text.indexOf(value_text) !== -1) {
+                if (field_value.indexOf(condition_value) !== -1) {
                     return true;
                 }
                 break;
             case "unmatch":
-                if (field_text.indexOf(value_text) === -1) {
+                if (field_value.indexOf(condition_value) === -1) {
                     return true;
                 }
                 break;
             case "==":
-                if (field_text === value_text) {
+                if (field_value === condition_value) {
                     return true;
                 }
                 break;
             case "!=":
-                if (field_text !== value_text) {
+                if (field_value !== condition_value) {
                     return true;
                 }
                 break;
             case "<=":
-                if (field_text <= value_text) {
+                if (field_value <= condition_value) {
                     return true;
                 }
                 break;
             case "<":
-                if (field_text < value_text) {
+                if (field_value < condition_value) {
                     return true;
                 }
                 break;
             case ">=":
-                if (field_text >= value_text) {
+                if (field_value >= condition_value) {
                     return true;
                 }
                 break;
             case ">":
-                if (field_text > value_text) {
+                if (field_value > condition_value) {
                     return true;
                 }
                 break;
@@ -137,20 +139,22 @@ jQuery.noConflict();
         }
         return false;
     }
-    function checkDateFormat(field, value, type, type2) {
 
-        if (!field) {
-            return false;
-        }
+    function checkDateConditionFormat(field, value, condition_type, condition_type2) {
+
+        if (!field) { return false; }
+
+        //Change values format
         var num = Number(value);
-        if (type2 === "before") {
+        if (condition_type2 === "before") {
             num = -num;
         }
-        var field_date = moment(field).format("YYYY-MM-DD 00:00");
-        var value_date = moment().add(num, "days").format("YYYY-MM-DD 00:00");
-        var diff = moment(field_date).diff(moment(value_date), "days");
 
-        switch (type) {
+        var field_value = moment(field).format("YYYY-MM-DD 00:00");
+        var condition_value = moment().add(num, "days").format("YYYY-MM-DD 00:00");
+        var diff = moment(field_value).diff(moment(condition_value), "days");
+
+        switch (condition_type) {
             case "==":
                 if (diff === 0) {
                     return true;
@@ -187,178 +191,113 @@ jQuery.noConflict();
         return false;
     }
 
-    function changeStatusCode(record, string) {
+    function checkIndexConditionFormat(records) {
+        var text_obj, date_obj, el_text, el_date, field_obj;
+
+        for (var ti = 1; ti <= TEXT_ROW_NUM; ti++) {
+            text_obj = CONFIG["text_row" + ti];
+            el_text = kintone.app.getFieldElements(text_obj.targetfield);
+            if (!el_text) { continue; }
+            for (var tn = 0; tn < el_text.length; tn++) {
+                field_obj = records[tn][text_obj.field];
+                if (field_obj.type === "CHECK_BOX" || field_obj.type === "MULTI_SELECT") {
+                    for (var i = 0; i < field_obj.value.length; i++) {
+                        if (checkTextConditionFormat(field_obj.value[i], text_obj.value, text_obj.type)) {
+                            changeFieldElement(el_text[tn], text_obj, "index");
+                        }
+                    }
+                    continue;
+                }
+                if (checkTextConditionFormat(field_obj.value, text_obj.value, text_obj.type)) {
+                    changeFieldElement(el_text[tn], text_obj, "index");
+                }
+            }
+        }
+
+        for (var di = 1; di <= DATE_ROW_NUM; di++) {
+            date_obj = CONFIG["date_row" + di];
+            el_date = kintone.app.getFieldElements(date_obj.targetfield);
+            if (!el_date) { continue; }
+
+            for (var dn = 0; dn < el_date.length; dn++) {
+                field_obj = records[dn][date_obj.field];
+                if (checkDateConditionFormat(field_obj.value, date_obj.value, date_obj.type, date_obj.type2)) {
+                    changeFieldElement(el_date[dn], date_obj, "index");
+                }
+            }
+        }
+    }
+
+    function checkDetailConditionFormat(record) {
+        var text_obj, date_obj, el_text, el_date, field_obj;
+
+        for (var ti = 1; ti <= TEXT_ROW_NUM; ti++) {
+            text_obj = CONFIG["text_row" + ti];
+            el_text = kintone.app.record.getFieldElement(text_obj.targetfield);
+            if (!el_text) { continue; }
+            field_obj = record[text_obj.field];
+            if (field_obj.type === "CHECK_BOX" || field_obj.type === "MULTI_SELECT") {
+                for (var i = 0; i < field_obj.value.length; i++) {
+                    if (checkTextConditionFormat(field_obj.value[i], text_obj.value, text_obj.type)) {
+                        changeFieldElement(el_text, text_obj, "detail");
+                    }
+                }
+                continue;
+            }
+            if (checkTextConditionFormat(field_obj.value, text_obj.value, text_obj.type)) {
+                changeFieldElement(el_text, text_obj, "detail");
+            }
+        }
+
+        for (var di = 1; di <= DATE_ROW_NUM; di++) {
+            date_obj = CONFIG["date_row" + di];
+            el_date = kintone.app.record.getFieldElement(date_obj.targetfield);
+            if (!el_date) { continue; }
+            field_obj = record[date_obj.field];
+            if (checkDateConditionFormat(field_obj.value, date_obj.value, date_obj.type, date_obj.type2)) {
+                changeFieldElement(el_date, date_obj, "detail");
+            }
+        }
+    }
+
+    function changeStatusCode(record) {
         var status_code = "status_process_management";
         var fieldcode = Object.keys(record);
+
+        //Check status code
         for (var n in fieldcode) {
             if (!fieldcode.hasOwnProperty(n)) { continue; }
-
             if (record[fieldcode[n]]["type"] === "STATUS") {
                 status_code = fieldcode[n];
                 break;
             }
         }
-        return status_code;
-    }
 
-    function setIndexFormat(event) {
-        var record = [];
-
-        //check status code
-        for (var st = 1; st <= TEXT_ROW_NUM; st++) {
-            if (CONFIG["text_row" + st].targetfield === "status_process_management") {
-                CONFIG["text_row" + st].targetfield = changeStatusCode(event.records[0]);
-            }
-            if (CONFIG["text_row" + st].field === "status_process_management") {
-                CONFIG["text_row" + st].field = changeStatusCode(event.records[0]);
-            }
-        }
-        for (var sd = 1; sd <= DATE_ROW_NUM; sd++) {
-            if (CONFIG["date_row" + sd].targetfield === "status_process_management") {
-                CONFIG["date_row" + sd].targetfield = changeStatusCode(event.records[0]);
-            }
-        }
-
-        //Text condition format
-        for (var ti2 = 1; ti2 <= TEXT_ROW_NUM; ti2++) {
-            var text_obj = CONFIG["text_row" + ti2];
-            var el_text2 = kintone.app.getFieldElements(text_obj.targetfield);
-            if (!el_text2) { continue; }
-
-            for (var tn = 0; tn < el_text2.length; tn++) {
-                record = event.records[tn];
-                var text2_value = record[text_obj.field]["value"];
-                if (text_obj.field === "status") {
-                    text2_value = record[changeStatusCode(text_obj.field)]["value"];
-                }
-                if (Array.isArray(text2_value)) {
-                    for (var a = 0; a < text2_value.length; a++) {
-                        if (checkTextFormat(text2_value[a], text_obj.value, text_obj.type)) {
-                            changeStyle(
-                                el_text2[tn],
-                                text_obj.targetcolor,
-                                text_obj.targetbackgroundcolor,
-                                text_obj.targetsize,
-                                text_obj.targetfont,
-                                "index"
-                            );
-                            break;
-                        }
-                    }
-                } else if (checkTextFormat(text2_value, text_obj.value, text_obj.type)) {
-                    changeStyle(
-                        el_text2[tn],
-                        text_obj.targetcolor,
-                        text_obj.targetbackgroundcolor,
-                        text_obj.targetsize,
-                        text_obj.targetfont,
-                        "index"
-                    );
-                }
-            }
-        }
-
-        //Date condition format
-        for (var di2 = 1; di2 <= DATE_ROW_NUM; di2++) {
-            var date_obj = CONFIG["date_row" + di2];
-            var el_date2 = kintone.app.getFieldElements(date_obj.targetfield);
-            if (!el_date2) { continue; }
-
-            for (var dn = 0; dn < el_date2.length; dn++) {
-                record = event.records[dn];
-
-                if (checkDateFormat(record[date_obj.field]["value"], date_obj.value, date_obj.type, date_obj.type2)) {
-                    changeStyle(
-                        el_date2[dn],
-                        date_obj.targetcolor,
-                        date_obj.targetbackgroundcolor,
-                        date_obj.targetsize,
-                        date_obj.targetfont,
-                        "index"
-                    );
-                }
-            }
-        }
-    }
-
-    function setDetailFormat(event) {
-        var record = event.record;
-
-        //check status code
-        for (var st = 1; st <= TEXT_ROW_NUM; st++) {
-            if (CONFIG["text_row" + st].targetfield === "status_process_management") {
-                CONFIG["text_row" + st].targetfield = changeStatusCode(event.record);
-            }
-            if (CONFIG["text_row" + st].field === "status_process_management") {
-                CONFIG["text_row" + st].field = changeStatusCode(event.record);
-            }
-        }
-        for (var sd = 1; sd <= DATE_ROW_NUM; sd++) {
-            if (CONFIG["date_row" + sd].targetfield === "status_process_management") {
-                CONFIG["date_row" + sd].targetfield = changeStatusCode(event.record);
-            }
-        }
-
-        //Text condition format
         for (var ti = 1; ti <= TEXT_ROW_NUM; ti++) {
-            var text_obj = CONFIG["text_row" + ti];
-            var el_text = kintone.app.record.getFieldElement(text_obj.targetfield);
-            if (!el_text) { continue; }
-
-            var text_value = record[text_obj.field]["value"];
-            if (Array.isArray(text_value)) {
-                for (var a = 0; a < text_value.length; a++) {
-                    if (checkTextFormat(text_value[a], text_obj.value, text_obj.type)) {
-                        changeStyle(
-                            el_text,
-                            text_obj.targetcolor,
-                            text_obj.targetbackgroundcolor,
-                            text_obj.targetsize,
-                            text_obj.targetfont,
-                            "detail"
-                        );
-                        break;
-                    }
-                }
-            } else if (checkTextFormat(text_value, text_obj.value, text_obj.type)) {
-                changeStyle(
-                    el_text,
-                    text_obj.targetcolor,
-                    text_obj.targetbackgroundcolor,
-                    text_obj.targetsize,
-                    text_obj.targetfont,
-                    "detail"
-                );
+            if (CONFIG["text_row" + ti].targetfield === "status_process_management") {
+                CONFIG["text_row" + ti].targetfield = status_code;
+            }
+            if (CONFIG["text_row" + ti].field === "status_process_management") {
+                CONFIG["text_row" + ti].field = status_code;
             }
         }
-
-        //Date condition format
         for (var di = 1; di <= DATE_ROW_NUM; di++) {
-            var date_obj = CONFIG["date_row" + di];
-            if (checkDateFormat(record[date_obj.field]["value"], date_obj.value, date_obj.type)) {
-                var el_date = kintone.app.record.getFieldElement(date_obj.targetfield);
-                if (!el_date) { continue; }
-
-                changeStyle(
-                    el_date,
-                    date_obj.targetcolor,
-                    date_obj.targetbackgroundcolor,
-                    date_obj.targetsize,
-                    date_obj.targetfont,
-                    "detail"
-                );
+            if (CONFIG["date_row" + di].targetfield === "status_process_management") {
+                CONFIG["date_row" + di].targetfield = status_code;
             }
         }
     }
 
     kintone.events.on("app.record.index.show", function(event) {
-        if (event.records.length > 0) {
-            setIndexFormat(event);
-        }
-        return event;
+        if (event.records.length <= 0) { return; }
+        changeStatusCode(event.records[0]);
+        checkIndexConditionFormat(event.records);
+        return;
     });
     kintone.events.on("app.record.detail.show", function(event) {
-        setDetailFormat(event);
-        return event;
+        if (!event.record) { return; }
+        changeStatusCode(event.record);
+        checkDetailConditionFormat(event.record);
+        return;
     });
 })(jQuery, kintone.$PLUGIN_ID);

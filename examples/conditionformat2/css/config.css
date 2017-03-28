@@ -1,15 +1,15 @@
-.conditionformat-plugin-block {
+.cf-plugin-block {
     margin: 10px 0px 10px 0px;
     border: solid 1px #eee;
     padding: 20px;
 }
 
-#conditionformat-plugin-text-tbody tr:first-child,
-#conditionformat-plugin-date-tbody tr:first-child {
+#cf-plugin-text-tbody tr:first-child,
+#cf-plugin-date-tbody tr:first-child {
     display: none;
 }
 
-#conditionformat-plugin-date-tbody .conditionformat-plugin-column3 {
+#cf-plugin-date-tbody .cf-plugin-column3 {
     width: 50px
 }
 
@@ -17,40 +17,40 @@
     min-width: 40px;
 }
 
-.conditionformat-ctype {
+.cf-ctype {
     width: 150px;
 }
 
-.conditionformat-date-type {
+.cf-date-type {
     width: 50px;
 }
 
-.conditionformat-cvalue-date {
+.cf-cvalue-date {
     width: 60px;
 }
 
-.conditionformat-font {
+.cf-font {
     width: 120px;
 }
 
-.conditionformat-plugin-column3-select1{
+.cf-plugin-column3-select1{
     display: inline-block;
     overflow: hidden;
 }
 
-.conditionformat-plugin-date-column3-td {
+.cf-plugin-date-column3-td {
     min-width: 260px;
 }
 
-.conditionformat-plugin-column5-td, .conditionformat-plugin-column6-td {
+.cf-plugin-column5-td, .cf-plugin-column6-td {
     min-width: 128px;
 }
 
-.conditionformat-plugin-column5, .conditionformat-plugin-column6 {
+.cf-plugin-column5, .cf-plugin-column6 {
     width: 90px;
 }
 
-.conditionformat-plugin-column5-color, .conditionformat-plugin-column6-color{
+.cf-plugin-column5-color, .cf-plugin-column6-color{
     display:none;
 }
 
@@ -61,6 +61,6 @@
     -ms-display:none;
 }
 
-.conditionformat-plugin-column9{
+.cf-plugin-column9{
     min-width: 70px;
 }
