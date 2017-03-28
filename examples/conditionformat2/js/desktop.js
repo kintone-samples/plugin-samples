@@ -198,6 +198,7 @@ jQuery.noConflict();
             text_obj = CONFIG["text_row" + ti];
             el_text = kintone.app.getFieldElements(text_obj.targetfield);
             if (!el_text) { continue; }
+
             for (var tn = 0; tn < el_text.length; tn++) {
                 field_obj = records[tn][text_obj.field];
                 if (field_obj.type === "CHECK_BOX" || field_obj.type === "MULTI_SELECT") {
@@ -235,6 +236,7 @@ jQuery.noConflict();
             text_obj = CONFIG["text_row" + ti];
             el_text = kintone.app.record.getFieldElement(text_obj.targetfield);
             if (!el_text) { continue; }
+
             field_obj = record[text_obj.field];
             if (field_obj.type === "CHECK_BOX" || field_obj.type === "MULTI_SELECT") {
                 for (var i = 0; i < field_obj.value.length; i++) {
@@ -253,6 +255,7 @@ jQuery.noConflict();
             date_obj = CONFIG["date_row" + di];
             el_date = kintone.app.record.getFieldElement(date_obj.targetfield);
             if (!el_date) { continue; }
+
             field_obj = record[date_obj.field];
             if (checkDateConditionFormat(field_obj.value, date_obj.value, date_obj.type, date_obj.type2)) {
                 changeFieldElement(el_date, date_obj, "detail");
@@ -260,43 +263,13 @@ jQuery.noConflict();
         }
     }
 
-    function changeStatusCode(record) {
-        var status_code = "status_process_management";
-        var fieldcode = Object.keys(record);
-
-        //Check status code
-        for (var n in fieldcode) {
-            if (!fieldcode.hasOwnProperty(n)) { continue; }
-            if (record[fieldcode[n]]["type"] === "STATUS") {
-                status_code = fieldcode[n];
-                break;
-            }
-        }
-
-        for (var ti = 1; ti <= TEXT_ROW_NUM; ti++) {
-            if (CONFIG["text_row" + ti].targetfield === "status_process_management") {
-                CONFIG["text_row" + ti].targetfield = status_code;
-            }
-            if (CONFIG["text_row" + ti].field === "status_process_management") {
-                CONFIG["text_row" + ti].field = status_code;
-            }
-        }
-        for (var di = 1; di <= DATE_ROW_NUM; di++) {
-            if (CONFIG["date_row" + di].targetfield === "status_process_management") {
-                CONFIG["date_row" + di].targetfield = status_code;
-            }
-        }
-    }
-
     kintone.events.on("app.record.index.show", function(event) {
         if (event.records.length <= 0) { return; }
-        changeStatusCode(event.records[0]);
         checkIndexConditionFormat(event.records);
         return;
     });
     kintone.events.on("app.record.detail.show", function(event) {
         if (!event.record) { return; }
-        changeStatusCode(event.record);
         checkDetailConditionFormat(event.record);
         return;
     });

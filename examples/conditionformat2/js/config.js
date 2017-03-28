@@ -33,7 +33,7 @@ jQuery.noConflict();
                 'cf_text_column6': '背景色',
                 'cf_text_column7': '文字サイズ',
                 'cf_text_column8': '文字装飾',
-                'cf_text_column1_option1': 'ステータス(プロセス管理)',
+                'cf_status_option': 'ステータス(プロセス管理)',
                 'cf_text_column2_option1': '条件値を含む',
                 'cf_text_column2_option2': '条件値を含まない',
                 'cf_text_column2_option3': '=(等しい)',
@@ -42,7 +42,6 @@ jQuery.noConflict();
                 'cf_text_column2_option6': '<(より小さい)',
                 'cf_text_column2_option7': '≧(以上)',
                 'cf_text_column2_option8': '>(より大きい)',
-                'cf_text_column4_option1': 'ステータス(プロセス管理)',
                 'cf_text_column7_option1': '変更なし',
                 'cf_text_column7_option2': '小さい',
                 'cf_text_column7_option3': 'やや小さい',
@@ -70,7 +69,6 @@ jQuery.noConflict();
                 'cf_date_column2_option6': '>(より後)',
                 'cf_date_column3_option1': '前',
                 'cf_date_column3_option2': '後',
-                'cf_date_column4_option1': 'ステータス(プロセス管理)',
                 'cf_date_column7_option1': '変更なし',
                 'cf_date_column7_option2': '小さい',
                 'cf_date_column7_option3': 'やや小さい',
@@ -95,7 +93,7 @@ jQuery.noConflict();
                 'cf_text_column6': 'Background Color',
                 'cf_text_column7': 'Font Size',
                 'cf_text_column8': 'Style',
-                'cf_text_column1_option1': 'Status(Process Management)',
+                'cf_status_option': 'Status(Process Management)',
                 'cf_text_column2_option1': 'includes',
                 'cf_text_column2_option2': 'doesn\'t include',
                 'cf_text_column2_option3': '=',
@@ -104,7 +102,6 @@ jQuery.noConflict();
                 'cf_text_column2_option6': '<',
                 'cf_text_column2_option7': '≧',
                 'cf_text_column2_option8': '>',
-                'cf_text_column4_option1': 'Status(Process Management)',
                 'cf_text_column7_option1': 'Normal',
                 'cf_text_column7_option2': 'Very Small',
                 'cf_text_column7_option3': 'Small',
@@ -132,7 +129,6 @@ jQuery.noConflict();
                 'cf_date_column2_option6': '>',
                 'cf_date_column3_option1': 'before today',
                 'cf_date_column3_option2': 'after today',
-                'cf_date_column4_option1': 'Status(Process Management)',
                 'cf_date_column7_option1': 'Normal',
                 'cf_date_column7_option2': 'Very Small',
                 'cf_date_column7_option3': 'Small',
@@ -157,7 +153,7 @@ jQuery.noConflict();
                 'cf_text_column6': '背景色',
                 'cf_text_column7': '文字大小',
                 'cf_text_column8': '字体装饰',
-                'cf_text_column1_option1': '状态(流程管理)',
+                'cf_status_option': '状态(流程管理)',
                 'cf_text_column2_option1': '包含条件值',
                 'cf_text_column2_option2': '不包含条件值',
                 'cf_text_column2_option3': '=(等于)',
@@ -166,7 +162,6 @@ jQuery.noConflict();
                 'cf_text_column2_option6': '<(小于)',
                 'cf_text_column2_option7': '≧(大于或等于)',
                 'cf_text_column2_option8': '>(大于)',
-                'cf_text_column4_option1': '状态(流程管理)',
                 'cf_text_column7_option1': '不更改',
                 'cf_text_column7_option2': '小',
                 'cf_text_column7_option3': '稍小',
@@ -194,7 +189,6 @@ jQuery.noConflict();
                 'cf_date_column2_option6': '>(晚于)',
                 'cf_date_column3_option1': '前',
                 'cf_date_column3_option2': '后',
-                'cf_date_column4_option1': '状态(流程管理)',
                 'cf_date_column7_option1': '不更改',
                 'cf_date_column7_option2': '小',
                 'cf_date_column7_option3': '稍小',
@@ -375,6 +369,15 @@ jQuery.noConflict();
                             $("#cf-plugin-date-tbody > tr:eq(0) .cf-plugin-column1").append($option.clone());
                             break;
 
+                        case "STATUS":
+                            if (prop.enabled) {
+                                $option.attr("value", escapeHtml(prop.code));
+                                $option.text(terms[lang]["cf_status_option"]);
+                                $("#cf-plugin-text-tbody > tr:eq(0) .cf-plugin-column1").append($option.clone());
+                                $("#cf-plugin-text-tbody > tr:eq(0) .cf-plugin-column4").append($option.clone());
+                                $("#cf-plugin-date-tbody > tr:eq(0) .cf-plugin-column1").append($option.clone());
+                            }
+                            break;
                         default :
                             break;
                     }
@@ -447,8 +450,7 @@ jQuery.noConflict();
                         "1": "文字条件書式の" + row_num + "行目の必須入力項目を入力してください",
                         "2": "文字条件書式の" + row_num + "行目の文字色には\nカラーコード「#000000-#FFFFFF」を入力してください",
                         "3": "文字条件書式の" + row_num + "行目の背景色には\nカラーコード「#000000-#FFFFFF」を入力してください",
-                        "4": "文字条件書式の" + row_num + "行目の条件値または色に\n" + "HTML特殊文字(&, <, >, \", \')を入力することはできません",
-                        "5": "文字条件書式の" + row_num + "行目に「ステータス(プロセス管理)」を追加するには\n" + "プロセス管理の設定を有効にしてください"
+                        "4": "文字条件書式の" + row_num + "行目の条件値または色に\n" + "HTML特殊文字(&, <, >, \", \')を入力することはできません"
                     },
                     'date': {
                         "1": "日付条件書式の" + row_num + "行目の必須入力項目を入力してください",
@@ -456,8 +458,7 @@ jQuery.noConflict();
                         "3": "日付条件書式の" + row_num + "行目の条件値には\n整数を入力してください",
                         "4": "日付条件書式の" + row_num + "行目の文字色には\nカラーコード「#000000-#FFFFFF」を入力してください",
                         "5": "日付条件書式の" + row_num + "行目の背景色には\nカラーコード「#000000-#FFFFFF」を入力してください",
-                        "6": "日付条件書式の" + row_num + "行目の条件値または色に\nHTML特殊文字(&, <, >, \", \')を入力することはできません",
-                        "7": "日付条件書式の" + row_num + "行目に「ステータス(プロセス管理)」を追加するには\nプロセス管理の設定を有効にしてください"
+                        "6": "日付条件書式の" + row_num + "行目の条件値または色に\nHTML特殊文字(&, <, >, \", \')を入力することはできません"
                     }
                 },
                 'en': {
@@ -467,9 +468,7 @@ jQuery.noConflict();
                                 row_num + ".",
                         "3": "Input \"#000000 ~ #FFFFFF\" for Background Color in Text Format Conditions row " +
                                 row_num + ".",
-                        "4": "Text Format Conditions row " + row_num + " includes HTML Characters.",
-                        "5": "Text Format Conditions row " + row_num + " includes Status(Process Management)." +
-                                " Please enable this app's process management feature to include it in the condition."
+                        "4": "Text Format Conditions row " + row_num + " includes HTML Characters."
                     },
                     'date': {
                         "1": "Required fields for Date Format Conditions row " + row_num + " are empty.",
@@ -479,9 +478,7 @@ jQuery.noConflict();
                                 row_num + ".",
                         "5": "Input \"#000000 ~ #FFFFFF\" for Background Color of Date Format Conditions row " +
                                 row_num + ".",
-                        "6": "Date Format Conditions row " + row_num + " includes HTML Characters.",
-                        "7": "Date Format Conditions row " + row_num + " includes Status(Process Management)." +
-                                " Please enable this app's process management feature to include it in the condition."
+                        "6": "Date Format Conditions row " + row_num + " includes HTML Characters."
                     }
                 },
                 'zh': {
@@ -489,8 +486,7 @@ jQuery.noConflict();
                         "1": "文字条件格式的第" + row_num + "行有必填项未填写",
                         "2": "文字条件格式的第" + row_num + "行的字体颜色框中\n请输入颜色代码[#000000-#FFFFFF]",
                         "3": "文字条件格式的第" + row_num + "行的背景色框中\n请输入颜色代码[#000000-#FFFFFF]",
-                        "4": "文字条件格式的第" + row_num + "行的条件值或颜色不可输入\nHTML特殊符号(&, <, >, \", \')",
-                        "5": "文字条件格式的第" + row_num + "行要指定[状态(流程管理)]的话\n请先启用流程管理"
+                        "4": "文字条件格式的第" + row_num + "行的条件值或颜色不可输入\nHTML特殊符号(&, <, >, \", \')"
                     },
                     'date': {
                         "1": "日期条件格式的第" + row_num + "行有必填项未填写",
@@ -498,20 +494,18 @@ jQuery.noConflict();
                         "3": "日期条件格式的第" + row_num + "行的条件值\n仅可输入整数",
                         "4": "日期条件格式的第" + row_num + "行的字体颜色\n请输入颜色代码[#000000-#FFFFFF]",
                         "5": "日期条件格式的第" + row_num + "行的背景色\n请输入颜色代码[#000000-#FFFFFF]",
-                        "6": "日期条件格式的第" + row_num + "行的条件值或颜色不可输入\nHTML特殊符号(&, <, >, \", \')",
-                        "7": "日期条件格式的第" + row_num + "行要指定[状态(流程管理)]的话\n请先启用流程管理"
+                        "6": "日期条件格式的第" + row_num + "行的条件值或颜色不可输入\nHTML特殊符号(&, <, >, \", \')"
                     }
                 }
             };
             return error_messages[user_lang][type][error_num];
         }
 
-        function checkConfigTextValues(config, pm_type) {
+        function checkConfigTextValues(config) {
             var text_row_num = Number(config["text_row_number"]);
             for (var ct = 1; ct <= text_row_num; ct++) {
                 var text = JSON.parse(config["text_row" + ct]);
-                if ((text.field === "" || text.type === "" || text.targetfield === "") &&
-                    !(text.field === "" && text.type === "" && text.targetfield === "")) {
+                if (!text.field || !text.type || !text.targetfield) {
                     throw new Error(createErrorMessage("text", "1", ct));
                 }
 
@@ -539,19 +533,14 @@ jQuery.noConflict();
                     text.targetbgcolor.match(/\&|<|\>|\"|\'/g) !== null) {
                     throw new Error(createErrorMessage("text", "4", ct));
                 }
-                if (!pm_type &&
-                    (text.field === "status_process_management" || text.targetfield === "status_process_management")) {
-                    throw new Error(createErrorMessage("text", "5", ct));
-                }
             }
         }
 
-        function checkConfigDateValues(config, pm_type) {
+        function checkConfigDateValues(config) {
             var date_row_num = Number(config["date_row_number"]);
             for (var cd = 1; cd <= date_row_num; cd++) {
                 var date = JSON.parse(config["date_row" + cd]);
-                if ((date.field === "" || date.type === "" || date.targetfield === "") &&
-                    !(date.field === "" && date.type === "" && date.targetfield === "")) {
+                if (!date.field || !date.type || !date.targetfield) {
                     throw new Error(createErrorMessage("date", "1", cd));
                 }
                 if (isNaN(date.value)) {
@@ -581,15 +570,7 @@ jQuery.noConflict();
                     date.targetbgcolor.match(/\&|<|\>|\"|\'/g) !== null) {
                     throw new Error(createErrorMessage("date", "6", cd));
                 }
-                if (!pm_type && date.targetfield === "status_process_management") {
-                    throw new Error(createErrorMessage("date", "7", cd));
-                }
             }
-        }
-
-        function checkConfigValues(config, pm_type) {
-            checkConfigTextValues(config, pm_type);
-            checkConfigDateValues(config, pm_type);
         }
 
         function getValues(type, num) {
@@ -598,7 +579,7 @@ jQuery.noConflict();
                     return {
                         "field": $("#cf-plugin-text-tbody > tr:eq(" + num + ") .cf-plugin-column1").val(),
                         "type": $("#cf-plugin-text-tbody > tr:eq(" + num + ") .cf-plugin-column2").val(),
-                        "value": $("#cf-plugin-text-tbody > tr:eq(" + num + ") .cf-plugin-column3").val(),
+                        "value": $("#cf-plugin-text-tbody > tr:eq(" + num + ") .cf-plugin-column3").val().toString(),
                         "targetfield": $("#cf-plugin-text-tbody > tr:eq(" + num + ") .cf-plugin-column4").val(),
                         "targetcolor": $("#cf-plugin-text-tbody > tr:eq(" + num + ") .cf-plugin-column5").val(),
                         "targetbgcolor": $("#cf-plugin-text-tbody > tr:eq(" + num + ") .cf-plugin-column6").val(),
@@ -609,7 +590,7 @@ jQuery.noConflict();
                     return {
                         "field": $("#cf-plugin-date-tbody > tr:eq(" + num + ") .cf-plugin-column1").val(),
                         "type": $("#cf-plugin-date-tbody > tr:eq(" + num + ") .cf-plugin-column2").val(),
-                        "value": $("#cf-plugin-date-tbody > tr:eq(" + num + ") .cf-plugin-column3").val(),
+                        "value": $("#cf-plugin-date-tbody > tr:eq(" + num + ") .cf-plugin-column3").val().toString(),
                         "type2": $("#cf-plugin-date-tbody > tr:eq(" + num + ") .cf-plugin-column3-select2").val(),
                         "targetfield": $("#cf-plugin-date-tbody > tr:eq(" + num + ") .cf-plugin-column4").val(),
                         "targetcolor": $("#cf-plugin-date-tbody > tr:eq(" + num + ") .cf-plugin-column5").val(),
@@ -653,22 +634,16 @@ jQuery.noConflict();
             return config;
         }
 
-        function saveConfig(pm_type) {
-            var config = createConfig();
-            checkConfigValues(config, pm_type);
-            kintone.plugin.app.setConfig(config);
-        }
-
         //Save
         $("#cf-submit").click(function() {
-            var param2 = {"app": kintone.app.getId()};
-            kintone.api(kintone.api.url("/k/v1/preview/app/status", true), "GET", param2, function(resp) {
-                try {
-                    saveConfig(resp.enable);
-                } catch(error) {
-                    alert(error.message);
-                }
-            });
+            try {
+                var config = createConfig();
+                checkConfigTextValues(config);
+                checkConfigDateValues(config);
+                kintone.plugin.app.setConfig(config);
+            } catch(error) {
+                alert(error.message);
+            }
         });
 
         //Cancel
