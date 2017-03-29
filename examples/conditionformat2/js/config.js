@@ -6,6 +6,7 @@
  */
 
 jQuery.noConflict();
+
 (function($, PLUGIN_ID) {
     "use strict";
 
@@ -249,21 +250,17 @@ jQuery.noConflict();
                     val(CONF["text_row" + ti]['targetsize']);
                 $("#cf-plugin-text-tbody > tr:eq(" + ti + ") .cf-plugin-column8").
                     val(CONF["text_row" + ti]['targetfont']);
-                $("#cf-plugin-text-tbody > tr:eq(" + ti + ") .cf-plugin-column5")[0].
-                    setAttribute("style", "color:" + CONF["text_row" + ti]['targetcolor']);
-                $("#cf-plugin-text-tbody > tr:eq(" + ti + ") .cf-plugin-column6")[0].
-                    setAttribute("style", "color:" + CONF["text_row" + ti]['targetbgcolor']);
                 $("#cf-plugin-text-tbody > tr:eq(" + ti + ") .cf-plugin-column5").
-                    parent('div').find('i')[0].setAttribute(
-                        "style", "border-bottom-color:" + CONF["text_row" + ti]['targetcolor']
-                );
+                    css("color", CONF["text_row" + ti]['targetcolor']);
                 $("#cf-plugin-text-tbody > tr:eq(" + ti + ") .cf-plugin-column6").
-                    parent('div').find('i')[0].setAttribute(
-                        "style", "border-bottom-color:" + CONF["text_row" + ti]['targetbgcolor']
-                );
+                    css("background-color", CONF["text_row" + ti]['targetbgcolor']);
+                $("#cf-plugin-text-tbody > tr:eq(" + ti + ") .cf-plugin-column5").
+                    parent('div').find('i').css("border-bottom-color", CONF["text_row" + ti]['targetcolor']);
+                $("#cf-plugin-text-tbody > tr:eq(" + ti + ") .cf-plugin-column6").
+                    parent('div').find('i').css("border-bottom-color", CONF["text_row" + ti]['targetbgcolor']);
                 $("#cf-plugin-text-tbody > tr:eq(" + ti + ") .cf-plugin-column5-color").
                     val(CONF["text_row" + ti]['targetcolor']);
-                if (CONF["text_row" + ti]['targetcolor'] !== "#") {
+                if (CONF["text_row" + ti]['targetbgcolor'] !== "#") {
                     $("#cf-plugin-text-tbody > tr:eq(" + ti + ") .cf-plugin-column6-color").
                         val(CONF["text_row" + ti]['targetbgcolor']);
                 } else {
@@ -292,21 +289,17 @@ jQuery.noConflict();
                     val(CONF["date_row" + di]['targetsize']);
                 $("#cf-plugin-date-tbody > tr:eq(" + di + ") .cf-plugin-column8").
                     val(CONF["date_row" + di]['targetfont']);
-                $("#cf-plugin-date-tbody > tr:eq(" + di + ") .cf-plugin-column5")[0].
-                    setAttribute("style", "color:" + CONF["date_row" + di]['targetcolor']);
-                $("#cf-plugin-date-tbody > tr:eq(" + di + ") .cf-plugin-column6")[0].
-                    setAttribute("style", "color:" + CONF["date_row" + di]['targetbgcolor']);
                 $("#cf-plugin-date-tbody > tr:eq(" + di + ") .cf-plugin-column5").
-                    parent('div').find('i')[0].setAttribute(
-                        "style", "border-bottom-color:" + CONF["date_row" + di]['targetcolor']
-                );
+                    css("color", CONF["date_row" + di]['targetcolor']);
                 $("#cf-plugin-date-tbody > tr:eq(" + di + ") .cf-plugin-column6").
-                    parent('div').find('i')[0].setAttribute(
-                        "style", "border-bottom-color:" + CONF["date_row" + di]['targetbgcolor']
-                );
+                    css("background-color", CONF["date_row" + di]['targetbgcolor']);
+                $("#cf-plugin-date-tbody > tr:eq(" + di + ") .cf-plugin-column5").
+                    parent('div').find('i').css("border-bottom-color", CONF["date_row" + di]['targetcolor']);
+                $("#cf-plugin-date-tbody > tr:eq(" + di + ") .cf-plugin-column6").
+                    parent('div').find('i').css("border-bottom-color", CONF["date_row" + di]['targetbgcolor']);
                 $("#cf-plugin-date-tbody > tr:eq(" + di + ") .cf-plugin-column5-color").
                     val(CONF["date_row" + di]['targetcolor']);
-                if (CONF["date_row" + di]['targetcolor'] !== "#") {
+                if (CONF["date_row" + di]['targetbgcolor'] !== "#") {
                     $("#cf-plugin-date-tbody > tr:eq(" + di + ") .cf-plugin-column6-color").
                         val(CONF["date_row" + di]['targetbgcolor']);
                 } else {
@@ -388,15 +381,15 @@ jQuery.noConflict();
 
         //Change color
         $(".cf-plugin-column5").change(function() {
-            $(this)[0].setAttribute("style", "color:" + $(this).val());
-            $(this).parent('div').find('i')[0].setAttribute("style", "border-bottom-color:" + $(this).val());
+            $(this).css("color", $(this).val());
+            $(this).parent('div').find('i').css("border-bottom-color", $(this).val());
             return true;
         });
 
         //Change backgroundcolor
         $(".cf-plugin-column6").change(function() {
-            $(this)[0].setAttribute("style", "background-color:" + $(this).val());
-            $(this).parent('div').find('i')[0].setAttribute("style", "border-bottom-color:" + $(this).val());
+            $(this).css("background-color", $(this).val());
+            $(this).parent('div').find('i').css("border-bottom-color", $(this).val());
             return true;
         });
 
@@ -405,8 +398,8 @@ jQuery.noConflict();
             var color_code = $(this).parent('div').find('input[type="color"]').val();
             var $el = $(this).parent('div').find('input[type="text"]');
             $el.val(color_code);
-            $el[0].setAttribute("style", "color:" + color_code);
-            $(this).parent('div').find('i')[0].setAttribute("style", "border-bottom-color:" + color_code);
+            $el.css("color", color_code);
+            $(this).parent('div').find('i').css("border-bottom-color", $(this).val());
             return true;
         });
 
@@ -415,8 +408,8 @@ jQuery.noConflict();
             var color_code = $(this).parent('div').find('input[type="color"]').val();
             var $el = $(this).parent('div').find('input[type="text"]');
             $el.val(color_code);
-            $el[0].setAttribute("style", "background-color:" + color_code);
-            $(this).parent('div').find('i')[0].setAttribute("style", "border-bottom-color:" + color_code);
+            $el.css('background-color', color_code);
+            $(this).parent('div').find('i').css("border-bottom-color", $(this).val());
             return true;
         });
 
@@ -438,7 +431,7 @@ jQuery.noConflict();
 
         // Remove Row
         $(".removeList").click(function() {
-            $(this).parent().parent().remove();
+            $(this).parent('td').parent('tr').remove();
             checkRowNumber();
         });
 
