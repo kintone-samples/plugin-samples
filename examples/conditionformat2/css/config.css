@@ -1,37 +1,65 @@
-.conditionformat-cvalue, .conditionformat-cvalue-date,
-.conditionformat-color, .conditionformat-backgroundcolor, .conditionformat-clear-buttons {
-    margin-right: 10px;
-    margin-bottom: 8px;
+.cf-plugin-block {
+    margin: 10px 0px 10px 0px;
+    border: solid 1px #eee;
+    padding: 20px;
 }
 
-.conditionformat-color, .conditionformat-backgroundcolor {
-    width: 90px;
+#cf-plugin-text-tbody tr:first-child,
+#cf-plugin-date-tbody tr:first-child {
+    display: none;
 }
 
-.conditionformat-size {
-    padding-right: 0px;
-    width: 120px;
+#cf-plugin-date-tbody .cf-plugin-column3 {
+    width: 50px
 }
 
-.conditionformat-ctype {
-    padding-right: 0px;
+.kintoneplugin-table-th .title {
+    min-width: 40px;
+}
+
+.cf-ctype {
     width: 150px;
 }
-.conditionformat-cvalue {
-    width: 230px;
+
+.cf-date-type {
+    width: 50px;
 }
 
-.conditionformat-cvalue-date {
-    padding-right: 0px;
+.cf-cvalue-date {
     width: 60px;
 }
 
-.conditionformat-today {
+.cf-font {
     width: 120px;
-    color: #327fcb;
 }
 
-.conditionformat-day {
-    width: 50px;
-    color: #327fcb;
+.cf-plugin-column3-select1{
+    display: inline-block;
+    overflow: hidden;
+}
+
+.cf-plugin-date-column3-td {
+    min-width: 260px;
+}
+
+.cf-plugin-column5-td, .cf-plugin-column6-td {
+    min-width: 128px;
+}
+
+.cf-plugin-column5, .cf-plugin-column6 {
+    width: 90px;
+}
+
+.cf-plugin-column5-color, .cf-plugin-column6-color{
+    display:none;
+}
+
+.color-paint-brush {
+    color: #676767;
+    padding-bottom: 2px;
+    border-bottom: 3px solid #000000;
+}
+
+.cf-plugin-column9{
+    min-width: 70px;
 }

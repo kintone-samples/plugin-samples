@@ -1,1622 +1,326 @@
-<div class>
-	<div class="block">
-		<div class="kintoneplugin-label">
-			文字条件書式
-		</div>
-		<div class="kintoneplugin-row">
-			<table class="conditionformat-plugin-text-table">
-				<tr class = "conditionformat-plugin-text-line-name">
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="複数条件を満たす場合は No. の大きいものが優先されます。">No.</a>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="条件を比較するフィールドを選択してください。">書式条件フィールド
-								<span class="kintoneplugin-require">*</span></a>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="比較条件式を選択してください。">条件式
-								<span class="kintoneplugin-require">*</span></a>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="書式条件フィールドの値と比較する値を入力してください。
-								どちらも半角数字の場合、数値データとして条件比較を行います。">条件値
-								</a>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="条件が合致していた場合、書式を変更するフィールドを選択してください。">書式変更フィールド
-								<span class="kintoneplugin-require">*</span></a>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="書式変更フィールドに設定する文字色を「#000000」～「#FFFFFF」で入力してください。設定例）
-								赤：#FF0000 緑：#00FF00
-								青：#0000FF 黄：#FFFF00">文字色</a>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="書式変更フィールドに設定する背景色を「#000000」～「#FFFFFF」で入力してください。
-								変更しない場合は#のみを入力してください。設定例）
-								赤：#FF0000 緑：#00FF00
-								青：#0000FF 黄：#FFFF00">背景色</a>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="書式変更フィールドに設定する文字のサイズを入力してください">サイズ</a>
-							</div>
-						</span>
-					</td>
-				</tr>
-			<!-- 1行目-->
-				<tr class = "conditionformat-plugin-text-line-1">
-					<td>
-						<span>1</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_text_1" id="conditionformat-cfield_text_1">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_text_1" id="conditionformat-ctype_text_1">
-									<option value="">-----</option>
-									<option value="match">条件値を含む</option>
-									<option value="unmatch">条件値を含まない</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以下)</option>
-									<option value="<"><(より小さい)</option>
-									<option value=">=">≧(以上)</option>
-									<option value=">">>(より大きい)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue" id="conditionformat-cvalue_text_1"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_text_1" id="conditionformat-tfield_text_1">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_text_1"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_text_1"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_text_1" id="conditionformat-tsize_text_1">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 2行目-->
-				<tr class = "conditionformat-plugin-text-line-2">
-					<td>
-						<span>2</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_text_2" id="conditionformat-cfield_text_2">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_text_2" id="conditionformat-ctype_text_2">
-									<option value="">-----</option>
-									<option value="match">条件値を含む</option>
-									<option value="unmatch">条件値を含まない</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以下)</option>
-									<option value="<"><(より小さい)</option>
-									<option value=">=">≧(以上)</option>
-									<option value=">">>(より大きい)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue" id="conditionformat-cvalue_text_2"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_text_2" id="conditionformat-tfield_text_2">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_text_2"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_text_2"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_text_2" id="conditionformat-tsize_text_2">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 3行目-->
-				<tr class = "conditionformat-plugin-text-line-3">
-					<td>
-						<span>3</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_text_3" id="conditionformat-cfield_text_3">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_text_3" id="conditionformat-ctype_text_3">
-									<option value="">-----</option>
-									<option value="match">条件値を含む</option>
-									<option value="unmatch">条件値を含まない</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以下)</option>
-									<option value="<"><(より小さい)</option>
-									<option value=">=">≧(以上)</option>
-									<option value=">">>(より大きい)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue" id="conditionformat-cvalue_text_3"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_text_3" id="conditionformat-tfield_text_3">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_text_3"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_text_3"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_text_3" id="conditionformat-tsize_text_3">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 4行目-->
-				<tr class = "conditionformat-plugin-text-line-4">
-					<td>
-						<span>4</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_text_4" id="conditionformat-cfield_text_4">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_text_4" id="conditionformat-ctype_text_4">
-									<option value="">-----</option>
-									<option value="match">条件値を含む</option>
-									<option value="unmatch">条件値を含まない</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以下)</option>
-									<option value="<"><(より小さい)</option>
-									<option value=">=">≧(以上)</option>
-									<option value=">">>(より大きい)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue" id="conditionformat-cvalue_text_4"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_text_4" id="conditionformat-tfield_text_4">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_text_4"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_text_4"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_text_4" id="conditionformat-tsize_text_4">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 5行目-->
-				<tr class = "conditionformat-plugin-text-line-5">
-					<td>
-						<span>5</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_text_5" id="conditionformat-cfield_text_5">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_text_5" id="conditionformat-ctype_text_5">
-									<option value="">-----</option>
-									<option value="match">条件値を含む</option>
-									<option value="unmatch">条件値を含まない</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以下)</option>
-									<option value="<"><(より小さい)</option>
-									<option value=">=">≧(以上)</option>
-									<option value=">">>(より大きい)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue" id="conditionformat-cvalue_text_5"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_text_5" id="conditionformat-tfield_text_5">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_text_5"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_text_5"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_text_5" id="conditionformat-tsize_text_5">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 6行目-->
-				<tr class = "conditionformat-plugin-text-line-6">
-					<td>
-						<span>6</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_text_6" id="conditionformat-cfield_text_6">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_text_6" id="conditionformat-ctype_text_6">
-									<option value="">-----</option>
-									<option value="match">条件値を含む</option>
-									<option value="unmatch">条件値を含まない</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以下)</option>
-									<option value="<"><(より小さい)</option>
-									<option value=">=">≧(以上)</option>
-									<option value=">">>(より大きい)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue" id="conditionformat-cvalue_text_6"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_text_6" id="conditionformat-tfield_text_6">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_text_6"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_text_6"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_text_6" id="conditionformat-tsize_text_6">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 7行目-->
-				<tr class = "conditionformat-plugin-text-line-7">
-					<td>
-						<span>7</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_text_7" id="conditionformat-cfield_text_7">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_text_7" id="conditionformat-ctype_text_7">
-									<option value="">-----</option>
-									<option value="match">条件値を含む</option>
-									<option value="unmatch">条件値を含まない</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以下)</option>
-									<option value="<"><(より小さい)</option>
-									<option value=">=">≧(以上)</option>
-									<option value=">">>(より大きい)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue" id="conditionformat-cvalue_text_7"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_text_7" id="conditionformat-tfield_text_7">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_text_7"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_text_7"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_text_7" id="conditionformat-tsize_text_7">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 8行目-->
-				<tr class = "conditionformat-plugin-text-line-8">
-					<td>
-						<span>8</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_text_8" id="conditionformat-cfield_text_8">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_text_8" id="conditionformat-ctype_text_8">
-									<option value="">-----</option>
-									<option value="match">条件値を含む</option>
-									<option value="unmatch">条件値を含まない</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以下)</option>
-									<option value="<"><(より小さい)</option>
-									<option value=">=">≧(以上)</option>
-									<option value=">">>(より大きい)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue" id="conditionformat-cvalue_text_8"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_text_8" id="conditionformat-tfield_text_8">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_text_8"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_text_8"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_text_8" id="conditionformat-tsize_text_8">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 9行目-->
-				<tr class = "conditionformat-plugin-text-line-9">
-					<td>
-						<span>9</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_text_9" id="conditionformat-cfield_text_9">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_text_9" id="conditionformat-ctype_text_9">
-									<option value="">-----</option>
-									<option value="match">条件値を含む</option>
-									<option value="unmatch">条件値を含まない</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以下)</option>
-									<option value="<"><(より小さい)</option>
-									<option value=">=">≧(以上)</option>
-									<option value=">">>(より大きい)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue" id="conditionformat-cvalue_text_9"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_text_9" id="conditionformat-tfield_text_9">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_text_9"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_text_9"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_text_9" id="conditionformat-tsize_text_9">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 10行目-->
-				<tr class = "conditionformat-plugin-text-line-10">
-					<td>
-						<span>10</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_text_10" id="conditionformat-cfield_text_10">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_text_10" id="conditionformat-ctype_text_10">
-									<option value="">-----</option>
-									<option value="match">条件値を含む</option>
-									<option value="unmatch">条件値を含まない</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以下)</option>
-									<option value="<"><(より小さい)</option>
-									<option value=">=">≧(以上)</option>
-									<option value=">">>(より大きい)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue" id="conditionformat-cvalue_text_10"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_text_10" id="conditionformat-tfield_text_10">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_text_10"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_text_10"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_text_10" id="conditionformat-tsize_text_10">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</div>
-	<div class="block">
-		<div class="kintoneplugin-label">
-			日付条件書式
-		</div>
-		<div class="kintoneplugin-row">
-			<table class="conditionformat-plugin-date-table" id="conditionformat-plugin-date-table-code">
-				<tr class = "conditionformat-plugin-text-line-name">
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="複数条件を満たす場合は No. の大きいものが優先されます。">No.</a>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="条件を比較するフィールドを選択してください。">書式条件フィールド</a>
-								<span class="kintoneplugin-require">*</span>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="比較条件式を選択してください。">条件式</a>
-								<span class="kintoneplugin-require">*</span>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="「条件値＝(今日の日付)＋(入力日数)」で算出されます。
-										半角数字を入力してください。
-										「○日前」を入力する場合は - (マイナス) を、
-										「今日の日付」に設定したい場合は 0 (ゼロ) を入力してください。">条件値
-										<span class="kintoneplugin-require">*</span>
-								</a>
-							</div>
-						</span>
-					</td>
-					<td>
-					</td>
-					<td>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="条件が合致していた場合、書式を変更するフィールドを選択してください。">書式変更フィールド</a>
-								<span class="kintoneplugin-require">*</span>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="書式変更フィールドに設定する文字色を「#000000」～「#FFFFFF」で入力してください
-								設定例）
-								赤：#FF0000 緑：#00FF00
-								青：#0000FF 黄：#FFFF00">文字色</a>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="書式変更フィールドに設定する背景色を「#000000」～「#FFFFFF」で入力してください
-								設定例）
-								赤：#FF0000 緑：#00FF00
-								青：#0000FF 黄：#FFFF00">背景色</a>
-							</div>
-						</span>
-					</td>
-					<td>
-						<span>
-							<div class="conditionformat-plugin-tooltip">
-								<a title="書式変更フィールドに設定する文字のサイズを入力してください">サイズ</a>
-							</div>
-						</span>
-					</td>
-				</tr>
-			<!-- 1行目 -->
-				<tr class="conditionformat-plugin-date-line-1" id="conditionformat-plugin-date-line-code-1">
-					<td>
-						<span>1</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_date_1" id="conditionformat-cfield_date_1">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_date_1" id="conditionformat-ctype_date_1">
-									<option value="">-----</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以前)</option>
-									<option value="<"><(より前)</option>
-									<option value=">=">≧(以後)</option>
-									<option value=">">>(より後)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td class="conditionformat-today" nowrap>今日の日付から</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue-date" id="conditionformat-cvalue_date_1" value="0">
-						</span>
-					</td>
-					<td class="conditionformat-day" nowrap>日後</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_date_1" id="conditionformat-tfield_date_1">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_date_1"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_date_1"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_date_1" id="conditionformat-tsize_date_1">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 2行目 -->
-				<tr class="conditionformat-plugin-date-line-2" id="conditionformat-plugin-date-line-code-2">
-					<td>
-						<span>2</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_date_2" id="conditionformat-cfield_date_2">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_date_2" id="conditionformat-ctype_date_2">
-									<option value="">-----</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以前)</option>
-									<option value="<"><(より前)</option>
-									<option value=">=">≧(以後)</option>
-									<option value=">">>(より後)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td class="conditionformat-today" nowrap>今日の日付から</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue-date" id="conditionformat-cvalue_date_2" value="0">
-						</span>
-					</td>
-					<td class="conditionformat-day" nowrap>日後</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_date_2" id="conditionformat-tfield_date_2">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_date_2"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_date_2"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_date_2" id="conditionformat-tsize_date_2">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 3行目 -->
-				<tr class="conditionformat-plugin-date-line-3" id="conditionformat-plugin-date-line-code-3">
-					<td>
-						<span>3</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_date_3" id="conditionformat-cfield_date_3">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_date_3" id="conditionformat-ctype_date_3">
-									<option value="">-----</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以前)</option>
-									<option value="<"><(より前)</option>
-									<option value=">=">≧(以後)</option>
-									<option value=">">>(より後)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td class="conditionformat-today" nowrap>今日の日付から</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue-date" id="conditionformat-cvalue_date_3" value="0">
-						</span>
-					</td>
-					<td class="conditionformat-day" nowrap>日後</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_date_3" id="conditionformat-tfield_date_3">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_date_3"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_date_3"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_date_3" id="conditionformat-tsize_date_3">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 4行目 -->
-				<tr class="conditionformat-plugin-date-line-4" id="conditionformat-plugin-date-line-code-4">
-					<td>
-						<span>4</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_date_4" id="conditionformat-cfield_date_4">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_date_4" id="conditionformat-ctype_date_4">
-									<option value="">-----</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以前)</option>
-									<option value="<"><(より前)</option>
-									<option value=">=">≧(以後)</option>
-									<option value=">">>(より後)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td class="conditionformat-today" nowrap>今日の日付から</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue-date" id="conditionformat-cvalue_date_4" value="0">
-						</span>
-					</td>
-					<td class="conditionformat-day" nowrap>日後</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_date_4" id="conditionformat-tfield_date_4">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_date_4"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_date_4"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_date_4" id="conditionformat-tsize_date_4">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 5行目 -->
-				<tr class="conditionformat-plugin-date-line-5" id="conditionformat-plugin-date-line-code-5">
-					<td>
-						<span>5</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_date_5" id="conditionformat-cfield_date_5">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_date_5" id="conditionformat-ctype_date_5">
-									<option value="">-----</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以前)</option>
-									<option value="<"><(より前)</option>
-									<option value=">=">≧(以後)</option>
-									<option value=">">>(より後)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td class="conditionformat-today" nowrap>今日の日付から</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue-date" id="conditionformat-cvalue_date_5" value="0">
-						</span>
-					</td>
-					<td class="conditionformat-day" nowrap>日後</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_date_5" id="conditionformat-tfield_date_5">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_date_5"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_date_5"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_date_5" id="conditionformat-tsize_date_5">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-				<!-- ボタン -->
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 6行目 -->
-				<tr class="conditionformat-plugin-date-line-6" id="conditionformat-plugin-date-line-code-6">
-					<td>
-						<span>6</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_date_6" id="conditionformat-cfield_date_6">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_date_6" id="conditionformat-ctype_date_6">
-									<option value="">-----</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以前)</option>
-									<option value="<"><(より前)</option>
-									<option value=">=">≧(以後)</option>
-									<option value=">">>(より後)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td class="conditionformat-today" nowrap>今日の日付から</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue-date" id="conditionformat-cvalue_date_6" value="0">
-						</span>
-					</td>
-					<td class="conditionformat-day" nowrap>日後</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_date_6" id="conditionformat-tfield_date_6">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_date_6"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_date_6"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_date_6" id="conditionformat-tsize_date_6">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 7行目 -->
-				<tr class="conditionformat-plugin-date-line-7" id="conditionformat-plugin-date-line-code-7">
-					<td>
-						<span>7</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_date_7" id="conditionformat-cfield_date_7">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_date_7" id="conditionformat-ctype_date_7">
-									<option value="">-----</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以前)</option>
-									<option value="<"><(より前)</option>
-									<option value=">=">≧(以後)</option>
-									<option value=">">>(より後)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td class="conditionformat-today" nowrap>今日の日付から</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue-date" id="conditionformat-cvalue_date_7" value="0">
-						</span>
-					</td>
-					<td class="conditionformat-day" nowrap>日後</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_date_7" id="conditionformat-tfield_date_7">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_date_7"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_date_7"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_date_7" id="conditionformat-tsize_date_7">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 8行目 -->
-				<tr class="conditionformat-plugin-date-line-8" id="conditionformat-plugin-date-line-code-8">
-					<td>
-						<span>8</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_date_8" id="conditionformat-cfield_date_8">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_date_8" id="conditionformat-ctype_date_8">
-									<option value="">-----</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以前)</option>
-									<option value="<"><(より前)</option>
-									<option value=">=">≧(以後)</option>
-									<option value=">">>(より後)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td class="conditionformat-today" nowrap>今日の日付から</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue-date" id="conditionformat-cvalue_date_8" value="0">
-						</span>
-					</td>
-					<td class="conditionformat-day" nowrap>日後</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_date_8" id="conditionformat-tfield_date_8">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_date_8"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_date_8"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_date_8" id="conditionformat-tsize_date_8">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 9行目 -->
-				<tr class="conditionformat-plugin-date-line-9" id="conditionformat-plugin-date-line-code-9">
-					<td>
-						<span>9</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_date_9" id="conditionformat-cfield_date_9">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_date_9" id="conditionformat-ctype_date_9">
-									<option value="">-----</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以前)</option>
-									<option value="<"><(より前)</option>
-									<option value=">=">≧(以後)</option>
-									<option value=">">>(より後)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td class="conditionformat-today" nowrap>今日の日付から</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue-date" id="conditionformat-cvalue_date_9" value="0">
-						</span>
-					</td>
-					<td class="conditionformat-day" nowrap>日後</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_date_9" id="conditionformat-tfield_date_9">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_date_9"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_date_9"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_date_9" id="conditionformat-tsize_date_9">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			<!-- 10行目 -->
-				<tr class="conditionformat-plugin-date-line-10" id="conditionformat-plugin-date-line-code-10">
-					<td>
-						<span>10</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-cfield_date_10" id="conditionformat-cfield_date_10">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-ctype">
-								<select name="conditionformat-ctype_date_10" id="conditionformat-ctype_date_10">
-									<option value="">-----</option>
-									<option value="==">=(等しい)</option>
-									<option value="!=">≠(等しくない)</option>
-									<option value="<=">≦(以前)</option>
-									<option value="<"><(より前)</option>
-									<option value=">=">≧(以後)</option>
-									<option value=">">>(より後)</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td class="conditionformat-today" nowrap>今日の日付から</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-cvalue-date" id="conditionformat-cvalue_date_10" value="0">
-						</span>
-					</td>
-					<td class="conditionformat-day" nowrap>日後</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select">
-								<select name="conditionformat-tfield_date_10" id="conditionformat-tfield_date_10">
-									<option value="">-----</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-color" maxlength="7" value="#000000" id="conditionformat-tcolor_date_10"/>
-						</span>
-					</td>
-					<td>
-						<span>
-							<input class="kintoneplugin-input-text conditionformat-backgroundcolor" maxlength="7" value="#" id="conditionformat-tbgcolor_date_10"/>
-						</span>
-					</td>
-					<td>
-						<div class="kintoneplugin-select-outer">
-							<div class="kintoneplugin-select conditionformat-size">
-								<select name="conditionformat-tsize_date_10" id="conditionformat-tsize_date_10">
-									<option value="">変更なし</option>
-									<option value="x-small">小さい</option>
-									<option value="small">やや小さい</option>
-									<option value="large">やや大きい</option>
-									<option value="x-large">大きい</option>
-								</select>
-							</div>
-						</div>
-					</td>
-					<td>
-					<button class="conditionformat-clear-buttons fa fa-eraser fa-2x" type="button"></button>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</div>
-	<div class="block">
-		<button class="kintoneplugin-button-dialog-ok" id="conditionformat-submit" type="button">保存する</button>
-		<button class="kintoneplugin-button-dialog-cancel" id="conditionformat-cancel" type="button">キャンセル</button>
-	</div>
+<div id="cf-plugin">
+    <div class="block cf-plugin-block">
+        <div class="kintoneplugin-label">{{html:terms.cf_text_title}}</div>
+        <div class="kintoneplugin-row">
+            <table class="cf-plugin-text-table kintoneplugin-table">
+                <thead>
+                    <tr>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_text_column1}}<span class="kintoneplugin-require">*</span></a></span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_text_column2}}
+                                <span class="kintoneplugin-require">*</span>
+                            </span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_text_column3}}</span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_text_column4}}<span class="kintoneplugin-require">*</span></a></span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_text_column5}}</span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_text_column6}}</span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_text_column7}}</span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_text_column8}}</span>
+                        </th>
+                        <th class="kintoneplugin-table-th-blankspace"></th>
+                        <th class="kintoneplugin-table-th-blankspace"></th>
+                    </tr>
+                </thead>
+                <tbody id="cf-plugin-text-tbody">
+                    <tr class="cf-plugin-text-line">
+                        <td>
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <div class="kintoneplugin-select-outer">
+                                        <div class="kintoneplugin-select">
+                                            <select class="cf-plugin-column1">
+                                                <option value="">-----</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <div class="kintoneplugin-select-outer">
+                                        <div class="kintoneplugin-select cf-ctype">
+                                            <select class="cf-plugin-column2">
+                                                <option value="">-----</option>
+                                                <option value="match">{{html:terms.cf_text_column2_option1}}</option>
+                                                <option value="unmatch">{{html:terms.cf_text_column2_option2}}</option>
+                                                <option value="==">{{html:terms.cf_text_column2_option3}}</option>
+                                                <option value="!=">{{html:terms.cf_text_column2_option4}}</option>
+                                                <option value="<=">{{html:terms.cf_text_column2_option5}}</option>
+                                                <option value="<">{{html:terms.cf_text_column2_option6}}</option>
+                                                <option value=">=">{{html:terms.cf_text_column2_option7}}</option>
+                                                <option value=">">{{html:terms.cf_text_column2_option8}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <span>
+                                        <input class="kintoneplugin-input-text cf-plugin-column3"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <div class="kintoneplugin-select-outer">
+                                        <div class="kintoneplugin-select">
+                                            <select class="cf-plugin-column4">
+                                                <option value="">-----</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="cf-plugin-column5-td">
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <div>
+                                        <input type="text" class="kintoneplugin-input-text cf-plugin-column5" maxlength="7" value="#000000"/>
+                                        <i class="fa fa-paint-brush color-paint-brush"></i>
+                                        <input type="color" class="cf-plugin-column5-color"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="cf-plugin-column6-td">
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <div>
+                                        <input type="text" class="kintoneplugin-input-text cf-plugin-column6" maxlength="7" value="#">
+                                        <i class="fa fa-paint-brush color-paint-brush"></i>
+                                        <input type="color" class="cf-plugin-column6-color"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <div class="kintoneplugin-select-outer">
+                                        <div class="kintoneplugin-select cf-font">
+                                            <select class="cf-plugin-column7">
+                                                <option value="">{{html:terms.cf_text_column7_option1}}</option>
+                                                <option value="x-small">{{html:terms.cf_text_column7_option2}}</option>
+                                                <option value="small">{{html:terms.cf_text_column7_option3}}</option>
+                                                <option value="large">{{html:terms.cf_text_column7_option4}}</option>
+                                                <option value="x-large">{{html:terms.cf_text_column7_option5}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <div class="kintoneplugin-select-outer">
+                                        <div class="kintoneplugin-select cf-font">
+                                            <select class="cf-plugin-column8">
+                                                <option value="">{{html:terms.cf_text_column8_option1}}</option>
+                                                <option value="bold">{{html:terms.cf_text_column8_option2}}</option>
+                                                <option value="underline">{{html:terms.cf_text_column8_option3}}</option>
+                                                <option value="line-through">{{html:terms.cf_text_column8_option4}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="kintoneplugin-table-td-operation cf-plugin-column9">
+                            <button type="button" class="kintoneplugin-button-add-row-image addList" title="Add row"></button>
+                            <button type="button" class="kintoneplugin-button-remove-row-image removeList" title="Delete this row"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="block cf-plugin-block">
+        <div class="kintoneplugin-label">{{html:terms.cf_date_title}}</div>
+        <div class="kintoneplugin-row">
+            <table class="cf-plugin-date-table kintoneplugin-table">
+                <thead>
+                    <tr>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_date_column1}}<span class="kintoneplugin-require">*</span></span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_date_column2}}<span class="kintoneplugin-require">*</span></span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_date_column3}}</span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_date_column4}}<span class="kintoneplugin-require">*</span></span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_date_column5}}</span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_date_column6}}</span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_date_column7}}</span>
+                        </th>
+                        <th class="kintoneplugin-table-th">
+                            <span class="title">{{html:terms.cf_date_column8}}</span>
+                        </th>
+                        <th class="kintoneplugin-table-th-blankspace"></th>
+                        <th class="kintoneplugin-table-th-blankspace"></th>
+                    </tr>
+                </thead>
+                <tbody id="cf-plugin-date-tbody">
+                    <tr class="cf-plugin-date-line">
+                        <td>
+                            <div class="kintoneplugin-table-td-control">
+                              <div class="kintoneplugin-table-td-control-value">
+                                <div class="kintoneplugin-select-outer">
+                                    <div class="kintoneplugin-select">
+                                        <select class="cf-plugin-column1">
+                                            <option value="">-----</option>
+                                        </select>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <div class="kintoneplugin-select-outer">
+                                        <div class="kintoneplugin-select cf-ctype">
+                                            <select class="cf-plugin-column2">
+                                                <option value="">-----</option>
+                                                <option value="==">{{html:terms.cf_date_column2_option1}}</option>
+                                                <option value="!=">{{html:terms.cf_date_column2_option2}}</option>
+                                                <option value="<=">{{html:terms.cf_date_column2_option3}}</option>
+                                                <option value="<">{{html:terms.cf_date_column2_option4}}</option>
+                                                <option value=">=">{{html:terms.cf_date_column2_option5}}</option>
+                                                <option value=">">{{html:terms.cf_date_column2_option6}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="cf-plugin-date-column3-td">
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <span class="cf-plugin-column3-select1">
+                                        {{html:terms.cf_date_column2_desc1}}
+                                        <input class="kintoneplugin-input-text cf-plugin-column3" value="0"/>
+                                        {{html:terms.cf_date_column2_desc2}}
+                                    </span>
+                                    <span class="kintoneplugin-select cf-date-type">
+                                        <select class="cf-plugin-column3-select2">
+                                            <option value="before">{{html:terms.cf_date_column3_option1}}</option>
+                                            <option value="after">{{html:terms.cf_date_column3_option2}}</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <div class="kintoneplugin-select-outer">
+                                        <div class="kintoneplugin-select">
+                                            <select class="cf-plugin-column4">
+                                                <option value="">-----</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="cf-plugin-column5-td">
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <div>
+                                        <input type="text" class="kintoneplugin-input-text cf-plugin-column5" maxlength="7" value="#000000"/>
+                                        <i class="fa fa-paint-brush color-paint-brush"></i>
+                                        <input type="color" class="cf-plugin-column5-color"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="cf-plugin-column6-td">
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <div>
+                                    	<input type="text" class="kintoneplugin-input-text cf-plugin-column6" maxlength="7" value="#"/>
+                                        <i class="fa fa-paint-brush color-paint-brush"></i>
+                                        <input type="color" class="cf-plugin-column6-color"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                        <div class="kintoneplugin-select-outer">
+                                        <div class="kintoneplugin-select cf-font">
+                                            <select class="cf-plugin-column7">
+                                                <option value="">{{html:terms.cf_date_column7_option1}}</option>
+                                                <option value="x-small">{{html:terms.cf_date_column7_option2}}</option>
+                                                <option value="small">{{html:terms.cf_date_column7_option3}}</option>
+                                                <option value="large">{{html:terms.cf_date_column7_option4}}</option>
+                                                <option value="x-large">{{html:terms.cf_date_column7_option5}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="kintoneplugin-table-td-control">
+                                <div class="kintoneplugin-table-td-control-value">
+                                    <div class="kintoneplugin-select-outer">
+                                        <div class="kintoneplugin-select cf-font">
+                                            <select class="cf-plugin-column8">
+                                                <option value="">{{html:terms.cf_date_column8_option1}}</option>
+                                                <option value="bold">{{html:terms.cf_date_column8_option2}}</option>
+                                                <option value="underline">{{html:terms.cf_date_column8_option3}}</option>
+                                                <option value="line-through">{{html:terms.cf_date_column8_option4}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="kintoneplugin-table-td-operation cf-plugin-column9">
+                            <button type="button" class="kintoneplugin-button-add-row-image addList" title="Add row"></button>
+                            <button type="button" class="kintoneplugin-button-remove-row-image removeList" title="Delete this row"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="block">
+        <button class="kintoneplugin-button-dialog-ok" id="cf-submit" type="button">{{html:terms.cf_plugin_submit}}</button>
+        <button class="kintoneplugin-button-dialog-cancel" id="cf-cancel" type="button">{{html:terms.cf_plugin_cancel}}</button>
+    </div>
 </div>
