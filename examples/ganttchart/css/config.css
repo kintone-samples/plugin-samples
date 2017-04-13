@@ -1,0 +1,152 @@
+/*!
+ * Copyright (c) 2016 Cybozu
+ *
+ * Licensed under the MIT License
+*/
+
+#ganttchart-plugin {
+  min-height: 200px;
+}
+
+#ganttchart-plugin.loading {
+  position: relative;
+}
+
+#ganttchart-plugin.loading:before {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAFfklEQVRoQ+2YW2wUZRTH/+fb2XbZLheF0BaCiEAwgVhkOy0EjSFoYow8YuDFC6E73Sq8GvSlb0QfjFxqu0VINBqIMSGRRB8kIRGq7e6WS4IJhJtGEUs0WtjeZ75jvrWD0+12ndnOLoR03mbmO5ffnPP/LkN4SC56SDgwA/KgVXKmIjMVKdEX8LW1Wn/kioUZNGoaHoNEpSlx5XYEPa2radTO/0iSl4wwVmoa+ofm4OLulTTiB5uvIB1J3iwIS52JkcCVpiidVs8UxBhh+733hGE5gmPxjXR7ujC+gnSmeMekhARGYlH6XD1PpNgAMDdnTL+hU+K+gCROcNiqwRKNoXEfbhhbaFAlkg9EMkabG+izSdVwZG7o9H7ZQdqSvCRIeNoReGzYQtfu9XSnUGsl0jyXJV4nQuWE1pO4Emuk4/azj1L8RItO172CeWotVQmqwXMAghMCMW7FGiilxF4zgGcB1ApChdLHzdB/Ym9P8RoBvGTbMmOEx3BUaeRgkldrGl4mxqPqvQC+aIpSr1sgTyAHe3h+hcDGfM5jOn3lJqiqjGSs0QQqJaPXqKd+VYWAgNLPvUsCQxzEvpan6C83fj2BjOvgeQDhHOeDMZ1OugmYb0xHil8gAeV3YqElTjbr9K0bv55B2pJcEyQ05NOIm4D5xiTS/AwIW8oKooKpFgsI1DIwGCD8YtTTWLEQyu6D73lWVSXeBjDL4WfI8rO12k5xhGZhlSYQkYy/rUFce3MTZaaTeD7bA2d5UVBiKxEWSYnrZgAndq2j39zGKdharadYqw6hMRCAZju0LJh9w+ht3UTDboOUY1xBkPbzvDgwihW5iQgNP+1cRz+XKsFEmsOSsU2I7HoVlhJdgnDMqP934c13FQT5+CwvlSYeLzdIey+/JTBh0QURumLr6EhRIGrOJ4m1TmOLYPZlSttaiV4+nCfhQSNKu4oCUUaf9PD8YYkVFEBI3ZPEpab11FeqtlJ+SwJiJ6yqo1bhUgLYvn1vrXIkPcUCGZaEHQJYpcSu9MFyGmJX0+/CCJaTiQVqCjYJv9/O4FrrJjLvF2RRGulM8moAC5zGCqZFp8ulBvn0AlcNjGJZXKeLbmIVnH47k6y27BMutSDGN1CXG+fFjlHnGgpgt7JnoE+O4UjLeuou5M87CMGM66UDab/AC4WJQ7lJSw3vxuumrs7/gZS9tTpSvJ0EtuWCKLE363S0KI0osS+qwiqLMC/A5RH7VCCWxOGWAoc3z+eRYvverZ1qLRrDh0Sosm2YMRAOounVOhooqiK5RmpLHwhjuSDMMyUyPITLpdjSH7rAy0wTOwWwhhk3AkHsa6qjG0WL3WnYeopD1SFE82zpe6a7rrx3hmfPC+FF9dNCMk7HdTrntoL2ONetNdVO2KrA1fhauuk1sD2+4xyvJIn9xJhtP5MS7zQ30HdefE4bZLpnk0SKvyRCTU7St2L1tLUkINnWiiCqZi9nABY4rzaT6n3tbCwOCJi/9qPP7QmyM81n8iVsMXZ5aTHXFVHBDnVzNQs8mV1xLQyHBK6+1kh/qklAhFDn1I9zu7+/m+dUatgDwmYw5gA4PmJir/o7mUjzXkL2p57zyjDwhlFPt9xWxROI7TR3S59vT+Y823ekuY2AzTlJHTfqaY/SiLBwAEBk/H1GMvY36/S1Wwg1riiQ3AD59mTZqo23XSLNlyYlRbhjRCn7fyyR5lqWeEVouMsS33iphOdZq9DXSfzAjfYJ0h6nWs/YQD3jiU4GYdw1dNK9fPVCY32pSFYjEdQ5JwK7Gip4odZ6oEBUMtl/YI+gWpjZs/0fzmOxEnuFhr3EaABl14t7Yn/gQPxKqFg/vrRWscH9tJsB8fNr+uFrpiJ+fEU/fTw0FfkHLzFJUVNAgecAAAAASUVORK5CYII=");
+  content: "";
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-animation: spin .8s linear infinite;
+  -moz-animation: spin .8s linear infinite;
+  animation: spin .8s linear infinite;
+}
+
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+#ganttchart-plugin.loading > * {
+  display: none;
+}
+
+#ganttchart-plugin .form-submit {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+
+#ganttchart-plugin .form-submit.submit-bottom {
+  padding-top: 20px;
+  border-bottom: 0;
+  border-top: 1px solid #eee;
+}
+
+#ganttchart-plugin .form-submit > button {
+  margin-right: 10px;
+}
+
+#ganttchart-plugin .ganttchart-plugin-form {
+  overflow: auto;
+}
+
+#ganttchart-plugin .ganttchart-plugin-form .kintoneplugin-row:first-child {
+  margin-top: 20px;
+}
+
+#ganttchart-plugin .ganttchart-plugin-form .kintoneplugin-field-description {
+  color: #8f8f8f;
+  font-size: 90%;
+}
+
+#ganttchart-plugin .ganttchart-plugin-form .kintoneplugin-require {
+  color: #e74c3c;
+}
+
+#ganttchart-plugin .ganttchart-plugin-form .kintoneplugin-label {
+  font-size: 14px;
+}
+
+#ganttchart-plugin .ganttchart-plugin-form .kintoneplugin-input-text,
+#ganttchart-plugin .ganttchart-plugin-form .kintoneplugin-select {
+  height: 40px;
+}
+
+#ganttchart-plugin .ganttchart-plugin-form .kintoneplugin-select > select {
+  height: 40px;
+  line-height: 40px;
+}
+
+#ganttchart-plugin .ganttchart-plugin-form .kintoneplugin-input-text {
+  margin: 5px;
+}
+
+#ganttchart-plugin table {
+  min-width: 500px;
+  margin-top: 10px;
+}
+
+#ganttchart-plugin table thead {
+  line-height: 2.5;
+  border: 2px solid #3498db;
+  background: #3498db;
+}
+
+#ganttchart-plugin table thead th {
+  padding-left: 10px;
+}
+
+#ganttchart-plugin table thead th > label {
+  color: white;
+}
+
+#ganttchart-plugin table tbody {
+  border: 1px solid #e3e7e8;
+  box-shadow: 1px 1px 1px #fff inset;
+}
+
+#ganttchart-plugin table td.column-add-more > a {
+  cursor: pointer;
+}
+
+#ganttchart-plugin input:checked + label {
+  font-weight: bold;
+}
+
+#ganttchart-plugin input[type="radio"] + label,
+#ganttchart-plugin select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+}
+
+#ganttchart-plugin .kintoneplugin-input-radio-item input[type="radio"] + label {
+  padding-left: 30px;
+  margin: 0;
+}
+
+#ganttchart-plugin .kintoneplugin-input-radio-item input[type="radio"] + label:before {
+  left: 0;
+}
+
+#ganttchart-plugin .kintoneplugin-input-radio-item input[type="radio"] + label:after {
+  left: 4px;
+}
