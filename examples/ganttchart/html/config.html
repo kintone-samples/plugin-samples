@@ -1,114 +1,101 @@
-<div id="ganttchart-plugin">
-
-    <div class="kintoneplugin-row">
-        <div class="kintoneplugin-label">{{html:terms.ganttchartTitle_label}}<span class="kintoneplugin-require" id="ganttTitle_require">*</span></div>
-        <div class="kintoneplugin-select-outer">
-            <div class="kintoneplugin-select">
-                <select id="ganttchart-plugin-title">
-                    <option value="">--</option>
-                </select>
+<div id="ganttchart-plugin" class="loading">
+    <div class="form-submit gaia-argoui-app-edit-buttons-contents">
+        <button class="kintoneplugin-button-dialog-ok pluginSubmit" type="button">{{html:terms.pluginSubmit}}</button><button class="kintoneplugin-button-dialog-cancel pluginCancel" type="button">{{html:terms.pluginCancel}}</button>
+    </div>
+    <div class="ganttchart-plugin-form">
+        <div class="kintoneplugin-row">
+            <div class="kintoneplugin-label">{{html:terms.ganttchartTitleLabel}}<span class="kintoneplugin-require" id="ganttTitle_require">*</span></div>
+            <div class="kintoneplugin-select-outer">
+                <div class="kintoneplugin-select">
+                    <select id="ganttchart-plugin-title">
+                        <option value="">--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="kintoneplugin-field-description">{{html:terms.ganttchartTitleDescription}}</div>
+        </div>
+        <div class="kintoneplugin-row">
+            <div class="kintoneplugin-label">{{html:terms.ganttchartDescLabel}}</div>
+            <div class="kintoneplugin-select-outer">
+                <div class="kintoneplugin-select">
+                    <select id="ganttchart-plugin-desc">
+                        <option value="">--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="kintoneplugin-field-description">{{html:terms.ganttchartDescDescription}}</div>
+        </div>
+        <div class="kintoneplugin-row">
+            <div class="kintoneplugin-label">{{html:terms.ganttchartFromLabel}}<span class="kintoneplugin-require" id="ganttFrom_require">*</span></div>
+            <div class="kintoneplugin-select-outer">
+                <div class="kintoneplugin-select">
+                    <select id="ganttchart-plugin-from">
+                        <option value="">--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="kintoneplugin-field-description">{{html:terms.ganttchartFromDescription}}</div>
+        </div>
+        <div class="kintoneplugin-row">
+            <div class="kintoneplugin-label">{{html:terms.ganttchartToLabel}}<span class="kintoneplugin-require">*</span></div>
+            <div class="kintoneplugin-select-outer">
+                <div class="kintoneplugin-select">
+                    <select id="ganttchart-plugin-to">
+                        <option value="">--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="kintoneplugin-field-description">{{html:terms.ganttchartToDescription}}</div>
+        </div>
+        <div class="kintoneplugin-row">
+            <div class="kintoneplugin-label">{{html:terms.ganttchartColorLabel}}<span class="kintoneplugin-require">*</span></div>
+            <div class="kintoneplugin-select-outer">
+                <div class="kintoneplugin-select">
+                    <select id="ganttchart-plugin-color">
+                        <option value="">--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="kintoneplugin-field-description">{{html:terms.ganttchartColorDescription}}</div>
+            <div id="ganttchart-plugin-setting-color">
+                <table>
+                    <thead>
+                        <th>
+                            <label class="input-title-cybozu kintoneplugin-label">{{html:terms.ganttchartColorLabelSetting}}</label>
+                        </th>
+                        <th>
+                            <label class="kintoneplugin-label">{{html:terms.ganttchartColorLabelName}}</label>
+                        </th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input class="kintoneplugin-input-text ganttchart-plugin-color-value" type="text" />
+                            </td>
+                            <td>
+                                <input class="kintoneplugin-input-text ganttchart-plugin-color-selected no-alpha" value="#FFFFFF" type="text" />
+                            </td>
+                            <td class="column-add-more">
+                                <a href="javascript:void(0)" class="treeeditor-node-item-add-cybozu add" tabindex="-1" title="Add"></a><a href="javascript:void(0)" class="treeeditor-node-item-remove-cybozu remove" tabindex="-1" title="Delete"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div>{{html:terms.ganttchartTitle_description}}</div>
-    </div>
-
-    <div class="kintoneplugin-row">
-        <div class="kintoneplugin-label">{{html:terms.ganttchartDesc_label}}</div>
-        <div class="kintoneplugin-select-outer">
-            <div class="kintoneplugin-select">
-                <select id="ganttchart-plugin-desc">
-                    <option value="">--</option>
-                </select>
+        <div class="kintoneplugin-row">
+            <div class="kintoneplugin-label">{{html:terms.ganttchartScallLabel}}<span class="kintoneplugin-require">*</span></div>
+            <div class="kintoneplugin-input-radio">
+                {{props terms.ganttchartScallOption}}<span class="kintoneplugin-input-radio-item">
+                    <input type="radio" name="ganttchart-plugin-scale" value="{{:key}}" id="ganttchart-plugin-radio-{{:key}}">
+                    <label for="ganttchart-plugin-radio-{{:key}}">{{:prop}}</label>
+                </span>{{/props}}
             </div>
-        </div>
-        <div>{{html:terms.ganttchartDesc_description}}</div>
-    </div>
-
-    <div class="kintoneplugin-row">
-        <div class="kintoneplugin-label">{{html:terms.ganttchartFrom_label}}<span class="kintoneplugin-require" id="ganttFrom_require">*</span></div>
-        <div class="kintoneplugin-select-outer">
-            <div class="kintoneplugin-select">
-                <select id="ganttchart-plugin-from">
-                    <option value="">--</option>
-                </select>
-            </div>
-        </div>
-        <div>{{html:terms.ganttchartFrom_description}}</div>
-    </div>
-
-    <div class="kintoneplugin-row">
-        <div class="kintoneplugin-label">{{html:terms.ganttchartTo_label}}<span class="kintoneplugin-require">*</span></div>
-        <div class="kintoneplugin-select-outer">
-            <div class="kintoneplugin-select">
-                <select id="ganttchart-plugin-to">
-                    <option value="">--</option>
-                </select>
-            </div>
-        </div>
-        <div>{{html:terms.ganttchartTo_description}}</div>
-    </div>
-
-    <div class="kintoneplugin-row">
-        <div class="kintoneplugin-label">{{html:terms.ganttchartColor_label}}<span class="kintoneplugin-require">*</span></div>
-        <div class="kintoneplugin-select-outer">
-            <div class="kintoneplugin-select">
-                <select id="ganttchart-plugin-color">
-                    <option value="">--</option>
-                </select>
-            </div>
-        </div>
-        <div>{{html:terms.ganttchartColor_description}}</div>
-        <div>
-            <table>
-                <tbody>
-                    <th><label>{{html:terms.ganttchartColor_label_name}}</label></th>
-                    <th><label class="input-title-cybozu">{{html:terms.ganttchartColor_label_setting}}</label></th>
-                    <tr>
-                        <td><label>{{html:terms.ganttchartColor_red_name}}</label></td>
-                        <td><input class="kintoneplugin-input-text" type="text" id="ganttchart-plugin-color-red"/></td>
-                    </tr>
-                    <tr>
-                        <td><label>{{html:terms.ganttchartColor_orange_name}}</label></td>
-                        <td><input class="kintoneplugin-input-text" type="text" id="ganttchart-plugin-color-orange"/></td>
-                    </tr>
-                    <tr>
-                        <td><label>{{html:terms.ganttchartColor_green_name}}</label></td>
-                        <td><input class="kintoneplugin-input-text" type="text" id="ganttchart-plugin-color-green"/></td>
-                    </tr>
-                    <tr>
-                        <td><label>{{html:terms.ganttchartColor_blue_name}}</label></td>
-                        <td><input class="kintoneplugin-input-text" type="text" id="ganttchart-plugin-color-blue"/></td>
-                    </tr>
-                    <tr>
-                        <td><label>{{html:terms.ganttchartColor_yellow_name}}</label></td>
-                        <td><input class="kintoneplugin-input-text" type="text" id="ganttchart-plugin-color-yellow"/></td>
-                    </tr>
-                    <tr>
-                        <td><label>{{html:terms.ganttchartColor_gray_name}}</label></td>
-                        <td><input class="kintoneplugin-input-text" type="text" id="ganttchart-plugin-color-gray"/></td>
-                    </tr>
-                 </tbody>
-            </table>
+            <div id="ganttchart-plugin-scall-description" class="kintoneplugin-field-description">{{html:terms.ganttchartScallDescription}}</div>
         </div>
     </div>
-
-    <div class="kintoneplugin-row">
-        <div class="kintoneplugin-label">{{html:terms.ganttchartScall_label}}<span class="kintoneplugin-require">*</span></div>
-        <div class="kintoneplugin-select-outer">
-            <div class="kintoneplugin-select">
-                <select id="ganttchart-plugin-scall">
-                    <option value="days">days</option>
-                    <option value="weeks">weeks</option>
-                    <option value="months">months</option>
-                </select>
-            </div>
-        </div>
-        <div id="ganttchart-plugin-scall-description">{{html:terms.ganttchartScall_description}}</div>
+    <div class="form-submit gaia-argoui-app-edit-buttons-contents submit-bottom">
+        <button class="kintoneplugin-button-dialog-ok pluginSubmit" type="button">{{html:terms.pluginSubmit}}</button><button class="kintoneplugin-button-dialog-cancel pluginCancel" type="button">{{html:terms.pluginCancel}}</button>
     </div>
-
-    <div class="form-submit">
-        <button class="kintoneplugin-button-dialog-ok" id="plugin_submit" type="button">{{html:terms.plugin_submit}}</button>
-        <button class="kintoneplugin-button-dialog-cancel" id="plugin_cancel" type="button">{{html:terms.plugin_cancel}}</button>
-    </div>
-    
 </div>
