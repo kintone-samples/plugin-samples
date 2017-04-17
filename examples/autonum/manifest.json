@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": 1,
+    "version": 2,
     "type": "APP",
     "name": {
         "ja": "自動採番プラグイン",
@@ -13,26 +13,28 @@
     "icon": "img/icon.png",
     "desktop": {
         "js": [
-                "lib/jquery.min.js",
-                "lib/moment-with-locales.min.js",
-                "lib/sweetalert.min.js",
-                "js/desktop.js"
+            "https://js.cybozu.com/jquery/2.1.3/jquery.min.js",
+            "https://js.kintone.com/momentjs/2.14.1/moment-with-locales.min.js",
+            "js/desktop.js"
         ],
-        "css": ["css/sweetalert.css"]
+        "css": [
+            "css/51-us-default.css",
+            "css/desktop.css"
+        ]
     },
     "config": {
         "html": "html/config.html",
         "js": [
-                "lib/jquery.min.js",
-                "lib/moment-with-locales.min.js",
-                "lib/sweetalert.min.js",
-                "js/config.js"
+            "https://js.cybozu.com/jquery/2.1.3/jquery.min.js",
+            "https://js.kintone.com/momentjs/2.14.1/moment-with-locales.min.js",
+            "https://js.kintone.com/jsrender/0.9.80/jsrender.min.js",
+            "js/config.js"
         ],
         "css": [
-                "css/sweetalert.css",
-                "css/51-us-default.css",
-                "css/config.css"
+            "https://js.kintone.com/sweetalert/v1.1.3/sweetalert.css",
+            "css/51-us-default.css",
+            "css/config.css"
         ],
-        "required_params": ["autofield", "format", "connective"]
+        "required_params": ["autoNumberingFieldcode", "format", "connective"]
     }
 }
