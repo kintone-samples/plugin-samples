@@ -24,6 +24,21 @@ jQuery.noConflict();
         });
     }
 
+	// 全件取得関数
+    function fetchRecords(appId, query, opt_offset, opt_limit, opt_records) {
+        var offset = opt_offset || 0;
+        var limit = opt_limit || 500;
+        var allRecords = opt_records || [];
+        var params = {app: appId, query: query + ' limit ' + limit + ' offset ' + offset};
+        return kintone.api('/k/v1/records', 'GET', params).then(function(resp) {
+            allRecords = allRecords.concat(resp.records);
+            if (resp.records.length === limit) {
+                return fetchRecords(appId, query, offset + limit, limit, allRecords);
+            }
+            return allRecords;
+        });
+    }
+
     // レコード一覧画面表示イベント
     kintone.events.on('app.record.index.show', function(event) {
         var config = kintone.plugin.app.getConfig(PLUGIN_ID);
@@ -31,143 +46,151 @@ jQuery.noConflict();
             return false;
         }
 
-        var evTitle = config.name;
-        var evStart = config.start_datetime;
-        var evEnd = config.end_datetime;
+        new kintone.Promise(function(resolve, reject) {
 
-        var startDate;
-        var endDate;
+            var evTitle = config.name;
+            var evStart = config.start_datetime;
+            var evEnd = config.end_datetime;
 
-        var records = event.records;
-        var recEvents = [];
-        // アプリにレコードがある場合のみループ
-        if (records.length !== 0) {
-            for (var i = 0; i < records.length; i++) {
-                startDate = moment(records[i][evStart].value);
-                endDate = moment(records[i][evEnd].value);
+            var startDate;
+            var endDate;
 
-                // イベント背景色設定でミスがある場合とプロセス管理無効の場合はデフォルト青色とする
-                var eventColor = "#0000ff";
-                // イベント背景色設定処理
-                if (typeof (records[i].ステータス) !== 'undefined') {
-                    var eventStatus = records[i].ステータス.value;
+            fetchRecords(kintone.app.getId(), '').then(function(calRecords) {
 
-                    for (var k = 1; k < 6; k++) {
-                        var stsPropName = "status" + k;
-                        var clrPropName = "color" + k;
-                        var status = config[stsPropName];
-                        if (status === eventStatus) {
-                            eventColor = config[clrPropName];
-                            break;
+                var records = calRecords;
+                var recEvents = [];
+                // アプリにレコードがある場合のみループ
+                if (records.length !== 0) {
+                    for (var i = 0; i < records.length; i++) {
+                        startDate = moment(records[i][evStart].value);
+                        endDate = moment(records[i][evEnd].value);
+
+                        // イベント背景色設定でミスがある場合とプロセス管理無効の場合はデフォルト青色とする
+                        var eventColor = "#0000ff";
+                        // イベント背景色設定処理
+                        if (typeof (records[i].ステータス) !== 'undefined') {
+                            var eventStatus = records[i].ステータス.value;
+
+                            for (var k = 1; k < 6; k++) {
+                                var stsPropName = "status" + k;
+                                var clrPropName = "color" + k;
+                                var status = config[stsPropName];
+                                if (status === eventStatus) {
+                                    eventColor = config[clrPropName];
+                                    break;
+                                }
+                            }
                         }
+                        recEvents.push({
+                            title: records[i][evTitle].value,
+                            start: startDate.format("YYYY-MM-DD HH:mm:ss"),
+                            end: endDate.format("YYYY-MM-DD HH:mm:ss"),
+                            url: location.protocol + '//' + location.hostname + '/k/' +
+                                kintone.app.getId() + '/show#record=' + records[i].$id.value,
+                            rec: records[i].$id.value,
+                            backgroundColor: eventColor,
+                            borderColor: eventColor
+                        });
                     }
                 }
-                recEvents.push({
-                    title: records[i][evTitle].value,
-                    start: startDate.format("YYYY-MM-DD HH:mm:ss"),
-                    end: endDate.format("YYYY-MM-DD HH:mm:ss"),
-                    url: location.protocol + '//' + location.hostname + '/k/' +
-                        kintone.app.getId() + '/show#record=' + records[i].$id.value,
-                    rec: records[i].$id.value,
-                    backgroundColor: eventColor,
-                    borderColor: eventColor
+
+
+                // カレンダーの設定
+                $('#calendar').fullCalendar({
+                    lang: 'ja',
+                    theme: false,
+                    // 上部のボタンやタイトル
+                    header: {
+                        left: 'prev,next, today',
+                        center: 'title',
+                        right: ' month,agendaWeek,agendaDay'
+                    },
+                    // 各カレンダーの1日毎の表記方法
+                    columnFormat: {
+                        month: 'ddd',
+                        week: 'M/D[(]ddd[)]',
+                        day: 'M/D[(]ddd[)]'
+                    },
+                    // 各カレンダーのタイトル
+                    titleFormat: {
+                        month: 'YYYY年M月',
+                        week: "YYYY年 M月 D日",
+                        day: 'YYYY年 M月 D日[(]ddd[)]'
+                    },
+                    // ボタン文字列の表記
+                    buttonText: {
+                        prev: '＜',
+                        next: '＞',
+                        today: '今日',
+                        month: '月',
+                        week: '週',
+                        day: '日'
+                    },
+                    // 日曜開始のカレンダーとする
+                    firstDay: '0',
+                    // 週末（土日）を表示
+                    weekends: true,
+                    // デフォルトは月カレンダー
+                    defaultView: 'month',
+                    // 月の表記
+                    monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    monthNamesShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                   // 曜日の表記
+                    dayNames: ['日曜', '月曜', '火曜', '水曜', '木曜', '金曜', '土曜'],
+                    dayNamesShort: ['日', '月', '火', '水', '木', '金', '土'],
+                    // 各カレンダーの各時間の表記
+                    axisFormat: 'H:mm',
+                    timeFormat: 'H:mm',
+                    // イベントをカレンダー上から編集する
+                    editable: true,
+                    durationEditable: true,
+                    startEditable: true,
+                    unselectAuto: true,
+                    unselectCancel: '',
+                    dragRevertDuration: 100,
+                    // 終日予定は表示しない
+                    allDaySlot: false,
+                    // 0時区切りのカレンダーとする
+                    nextDayThreshold: '00:00:00',
+                    // カレンダーの高さ
+                    height: 700,
+                    contentHeight: 600,
+                    // 時間軸の単位
+                    slotDuration: '01:00:00',
+                    // 何分刻みでバーを動かすか
+                    snapDuration: '01:00:00',
+                    // 日カレンダーのみ詳細に表示するための設定
+                    views: {
+                        day: {
+                            slotDuration: '00:30:00',
+                            snapDuration: '00:30:00',
+                            scrollTime: '06:00:00'
+                        }
+                    },
+                    minTime: '00:00:00',
+                    maxTime: '24:00:00',
+                    // 初期時間位置
+                    scrollTime: '00:00:00',
+                    // 月カレンダーでイベントが多い場合に表所を省略する
+                    eventLimit: true,
+                    eventLimitText: 'すべて見る',
+                    eventResize: function(ev, delta, revertFunc, jsEvent, ui, view) {
+                        putRecord(ev);
+                        $('#calendar').fullCalendar('unselect');
+                    },
+                    eventDrop: function(ev, delta, revertFunc, jsEvent, ui, view) {
+                        putRecord(ev);
+                        $('#calendar').fullCalendar('unselect');
+                    },
+                    eventSources: [{
+                        events: recEvents
+                    }]
                 });
-            }
-        }
-
-
-        // カレンダーの設定
-        $('#calendar').fullCalendar({
-            lang: 'ja',
-            theme: false,
-            // 上部のボタンやタイトル
-            header: {
-                left: 'prev,next, today',
-                center: 'title',
-                right: ' month,agendaWeek,agendaDay'
-            },
-            // 各カレンダーの1日毎の表記方法
-            columnFormat: {
-                month: 'ddd',
-                week: 'M/D[(]ddd[)]',
-                day: 'M/D[(]ddd[)]'
-            },
-            // 各カレンダーのタイトル
-            titleFormat: {
-                month: 'YYYY年M月',
-                week: "YYYY年 M月 D日",
-                day: 'YYYY年 M月 D日[(]ddd[)]'
-            },
-            // ボタン文字列の表記
-            buttonText: {
-                prev: '＜',
-                next: '＞',
-                today: '今日',
-                month: '月',
-                week: '週',
-                day: '日'
-            },
-            // 日曜開始のカレンダーとする
-            firstDay: '0',
-            // 週末（土日）を表示
-            weekends: true,
-            // デフォルトは月カレンダー
-            defaultView: 'month',
-            // 月の表記
-            monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-            monthNamesShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-            // 曜日の表記
-            dayNames: ['日曜', '月曜', '火曜', '水曜', '木曜', '金曜', '土曜'],
-            dayNamesShort: ['日', '月', '火', '水', '木', '金', '土'],
-            // 各カレンダーの各時間の表記
-            axisFormat: 'H:mm',
-            timeFormat: 'H:mm',
-            // イベントをカレンダー上から編集する
-            editable: true,
-            durationEditable: true,
-            startEditable: true,
-            unselectAuto: true,
-            unselectCancel: '',
-            dragRevertDuration: 100,
-            // 終日予定は表示しない
-            allDaySlot: false,
-            // 0時区切りのカレンダーとする
-            nextDayThreshold: '00:00:00',
-            // カレンダーの高さ
-            height: 700,
-            contentHeight: 600,
-            // 時間軸の単位
-            slotDuration: '01:00:00',
-            // 何分刻みでバーを動かすか
-            snapDuration: '01:00:00',
-            // 日カレンダーのみ詳細に表示するための設定
-            views: {
-                day: {
-                    slotDuration: '00:30:00',
-                    snapDuration: '00:30:00',
-                    scrollTime: '06:00:00'
-                }
-            },
-            minTime: '00:00:00',
-            maxTime: '24:00:00',
-            // 初期時間位置
-            scrollTime: '00:00:00',
-            // 月カレンダーでイベントが多い場合に表所を省略する
-            eventLimit: true,
-            eventLimitText: 'すべて見る',
-            eventResize: function(ev, delta, revertFunc, jsEvent, ui, view) {
-                putRecord(ev);
-                $('#calendar').fullCalendar('unselect');
-            },
-            eventDrop: function(ev, delta, revertFunc, jsEvent, ui, view) {
-                putRecord(ev);
-                $('#calendar').fullCalendar('unselect');
-            },
-            eventSources: [{
-                events: recEvents
-            }]
+                resolve(event);
+            });
+        }).then(function() {
+            return event;
         });
-        return event;
     });
 
     // レコード作成・編集画面・一覧編集イベント
