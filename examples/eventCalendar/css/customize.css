@@ -16,3 +16,7 @@
 .fc-center {
     margin-right: 1.75em;
 }
+
+.fc-clear {
+    clear: none;
+}
