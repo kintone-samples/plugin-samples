@@ -24,10 +24,13 @@
          "https://js.cybozu.com/jquerygantt/20140623/jquery.fn.gantt.min.js",
          "https://js.kintone.com/momentjs/2.14.1/moment.min.js",
          "https://momentjs.com/downloads/moment-timezone-with-data.min.js",
+         "https://js.cybozu.com/jqueryui/1.12.1/jquery-ui.min.js",
+         "js/jquery.ui.datepicker-ja.min.js",
          "js/desktop-ganttchart.js"
       ],
       "css":[
          "https://js.cybozu.com/jquerygantt/20140623/css/style.css",
+         "https://js.cybozu.com/jqueryui/1.12.1/themes/smoothness/jquery-ui.css",
          "css/addin-style.css"
       ]
    },
