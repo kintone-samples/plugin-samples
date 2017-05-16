@@ -7,21 +7,21 @@ jQuery.noConflict();
             terms: {
                 en: {
                     ganttchartTitle: 'Title',
-                    ganttchartTitleLabel: 'Field of title',
+                    ganttchartTitleLabel: '(A).Field of title',
                     ganttchartTitleDescription: 'Please specify the fields to be displayed' +
                         ' in the first classification of the vertical axis of the Gantt chart.',
                     ganttchartDesc: 'Subtitle',
-                    ganttchartDescLabel: 'Field of subtitle',
+                    ganttchartDescLabel: '(B).Field of subtitle',
                     ganttchartDescDescription: 'Please specify the fields to be displayed' +
                         ' in the second classification of the vertical axis of the Gantt chart.',
                     ganttchartFrom: 'Start date',
-                    ganttchartFromLabel: 'Field of start date (or date and time)',
+                    ganttchartFromLabel: '(C).Field of start date (or date and time)',
                     ganttchartFromDescription: '',
                     ganttchartTo: 'End date',
-                    ganttchartToLabel: 'Field of end date (or date and time)',
+                    ganttchartToLabel: '(D).Field of end date (or date and time)',
                     ganttchartToDescription: '',
                     ganttchartColor: 'Color of chart',
-                    ganttchartColorLabel: 'Field of color',
+                    ganttchartColorLabel: '(E).Field of color',
                     ganttchartColorLabelName: 'Color',
                     ganttchartColorLabelSetting: 'Value',
                     ganttchartColorDescription: 'Please enter the condition value coloring to.' +
@@ -39,23 +39,25 @@ jQuery.noConflict();
                     error: 'Error: ',
                     pluginSubmit: 'Save',
                     pluginCancel: 'Cancel',
-                    requiredField: 'Required field is empty.'
+                    requiredField: 'Required field is empty.',
+                    subTableField: 'This field can not select table field.',
+                    mixedField: 'Can not mix [Table] field and normal field.'
                 },
                 ja: {
                     ganttchartTitle: 'タイトル',
-                    ganttchartTitleLabel: 'タイトルにするフィールド',
+                    ganttchartTitleLabel: '(A).タイトルにするフィールド',
                     ganttchartTitleDescription: 'ガントチャートの縦軸の第一分類に表示するフィールドを指定してください。',
                     ganttchartDesc: 'サブタイトル',
-                    ganttchartDescLabel: 'サブタイトルにするフィールド',
+                    ganttchartDescLabel: '(B).サブタイトルにするフィールド',
                     ganttchartDescDescription: 'ガントチャートの縦軸の第二分類に表示するフィールドを指定してください。',
                     ganttchartFrom: '開始日',
-                    ganttchartFromLabel: '開始日(開始日時)のフィールド',
+                    ganttchartFromLabel: '(C).開始日(開始日時)のフィールド',
                     ganttchartFromDescription: '',
                     ganttchartTo: '終了日',
-                    ganttchartToLabel: '終了日(終了日時)のフィールド',
+                    ganttchartToLabel: '(D).終了日(終了日時)のフィールド',
                     ganttchartToDescription: '',
                     ganttchartColor: 'チャートカラー',
-                    ganttchartColorLabel: '色付けするフィールド',
+                    ganttchartColorLabel: '(E).色付けするフィールド',
                     ganttchartColorLabelName: 'カラー',
                     ganttchartColorLabelSetting: '設定値',
                     ganttchartColorDescription: '色付けする条件値を入力してください。（複数ある際の例「A,B,C」） 条件値が重複する場合には、上から優先されます。',
@@ -63,15 +65,17 @@ jQuery.noConflict();
                     ganttchartScallLabel: '初期に表示するスケール',
                     ganttchartScallDescription: '',
                     ganttchartScallOption: {
-                        hours: '時間、',
-                        days: '日、',
-                        weeks: '週、',
+                        hours: '時間',
+                        days: '日',
+                        weeks: '週',
                         months: '月'
                     },
                     error: 'エラー: ',
                     pluginSubmit: '保存',
                     pluginCancel: 'キャンセル',
-                    requiredField: '必須項目が入力されていません。'
+                    requiredField: '必須項目が入力されていません。',
+                    subTableField: 'タイトルをテーブルフィールドにすることはできません。',
+                    mixedField: '[Table]フィールドと通常のフィールドを混在させることはできません。'
                 }
             },
             settings: {
@@ -160,6 +164,51 @@ jQuery.noConflict();
                                     .text(prop['label'])
                                     .val(this.escapeHtml(prop['code'])));
                             break;
+                        case 'SUBTABLE':
+                            if (key !== "Table") continue;
+                            for (var key2 in this.settings.form[prop.code].fields) {
+                                if (!this.settings.form[prop.code].fields.hasOwnProperty(key2)) {
+                                    continue;
+                                };
+                                var prop2 = this.settings.form[prop.code].fields[key2];
+                                this.settings.formCode[prop2['code']] = this.settings.form[prop.code].fields[key2];
+                                switch (prop2['type']) {
+                                    case 'SINGLE_LINE_TEXT':
+                                    case 'MULTI_LINE_TEXT':
+                                        $('#ganttchart-plugin-title')
+                                            .append($('<option>')
+                                                .text('[Table]' + prop2['label'])
+                                                .val(this.escapeHtml(prop2['code'])));
+                                        $('#ganttchart-plugin-desc')
+                                            .append($('<option>')
+                                                .text('[Table]' + prop2['label'])
+                                                .val(this.escapeHtml(prop2['code'])));
+                                        $('#ganttchart-plugin-url')
+                                            .append($('<option>')
+                                                .text('[Table]' + prop2['label'])
+                                                .val(this.escapeHtml(prop2['code'])));
+                                        break;
+            
+                                    case 'DATE':
+                                    case 'DATETIME':
+                                        $('#ganttchart-plugin-from')
+                                            .append($('<option>').text('[Table]' + prop2['label'])
+                                                .val(this.escapeHtml(prop2['code'])));
+                                        $('#ganttchart-plugin-to')
+                                            .append($('<option>').text('[Table]' + prop2['label'])
+                                                .val(this.escapeHtml(prop2['code'])));
+                                        break;
+            
+                                    case 'RADIO_BUTTON':
+                                    case 'DROP_DOWN':
+                                        $('#ganttchart-plugin-color')
+                                            .append($('<option>')
+                                                .text('[Table]' + prop2['label'])
+                                                .val(this.escapeHtml(prop2['code'])));
+                                        break;
+                                }
+                            }
+                            break;
                     }
                 }
                 // Get the plug-in information to set the definition data
@@ -229,10 +278,23 @@ jQuery.noConflict();
                 var ganttchartTo = $(this.settings.element.ganttchartTo).val();
                 var ganttchartColor = $(this.settings.element.ganttchartColor).val();
                 var ganttchartScall = $(this.settings.element.ganttchartScall + ':checked').val() || 'days';
+                
+                // Check table fields
+                var ganntTableCheckTmp = {
+                    title: $(this.settings.element.ganttchartTitle + " option:selected").text(),
+                    desc: $(this.settings.element.ganttchartDesc + " option:selected").text(),
+                    from: $(this.settings.element.ganttchartFrom + " option:selected").text(),
+                    to: $(this.settings.element.ganttchartTo + " option:selected").text(),
+                    color: $(this.settings.element.ganttchartColor + " option:selected").text()
+                };
+                
                 var formValid = true;
                 // Check the required fields
                 if (ganttchartTitle === '') {
                     this.alert(this.settings.element.ganttchartTitle, this.settings.i18n.requiredField);
+                    formValid = false;
+                } else if (ganntTableCheckTmp.title.indexOf("[Table]") === 0) {
+                    this.alert(this.settings.element.ganttchartTitle, this.settings.i18n.subTableField);
                     formValid = false;
                 }
                 if (ganttchartFrom === '') {
@@ -254,6 +316,24 @@ jQuery.noConflict();
                 if (!formValid) {
                     return;
                 }
+                // テーブルと非テーブルフィールドの混在チェック
+                if (!(((ganntTableCheckTmp.desc.indexOf("[Table]") === 0 || ganntTableCheckTmp.desc === "--") &&
+                ganntTableCheckTmp.from.indexOf("[Table]") === 0 &&
+                ganntTableCheckTmp.to.indexOf("[Table]") === 0 &&
+                ganntTableCheckTmp.color.indexOf("[Table]") === 0) ||
+                (ganntTableCheckTmp.desc.indexOf("[Table]") === -1 &&
+                ganntTableCheckTmp.from.indexOf("[Table]") === -1 &&
+                ganntTableCheckTmp.to.indexOf("[Table]") === -1 &&
+                ganntTableCheckTmp.color.indexOf("[Table]") === -1))) {
+                    this.alert(this.settings.element.ganttchartDesc, this.settings.i18n.mixedField);
+                    this.alert(this.settings.element.ganttchartFrom, this.settings.i18n.mixedField);
+                    this.alert(this.settings.element.ganttchartTo, this.settings.i18n.mixedField);
+                    this.alert(this.settings.element.ganttchartColor, this.settings.i18n.mixedField);
+                    formValid = false;
+                }
+                if (!formValid) {
+                    return;
+                }
                 // Set the definition data
                 this.settings.config['ganttchartTitle'] = ganttchartTitle;
                 this.settings.config['ganttchartDesc'] = ganttchartDesc;
@@ -262,6 +342,11 @@ jQuery.noConflict();
                 this.settings.config['ganttchartColor'] = ganttchartColor;
                 this.settings.config['ganttchartScall'] = ganttchartScall;
                 this.settings.config['settingColors'] = JSON.stringify(this.settingColorsGet());
+                this.settings.config['fieldNameTitle'] = ganntTableCheckTmp.title;
+                this.settings.config['fieldNameDesc'] = ganntTableCheckTmp.desc;
+                this.settings.config['fieldNameFrom'] = ganntTableCheckTmp.from;
+                this.settings.config['fieldNameTo'] = ganntTableCheckTmp.to;
+                this.settings.config['fieldNameColor'] = ganntTableCheckTmp.color;
                 kintone.plugin.app.setConfig(this.settings.config);
             },
             settingColorsGet: function() {
@@ -294,7 +379,9 @@ jQuery.noConflict();
                     tableColor.append(settingColorRowClone);
                 }
                 //Add more setting
-                tableColor.append(settingColorRow.clone());
+                if (Object.keys(this.settings.config.settingColors).length === 0) {
+                    tableColor.append(settingColorRow.clone());
+                }
                 settingColorRow.remove();
             },
             settingColorsListen: function() {
@@ -304,6 +391,7 @@ jQuery.noConflict();
                     var rowContain = elementAction.parent().parent();
                     if (elementAction.hasClass('add')) {
                         rowContain.parent().append(rowContain.clone());
+                        rowContain.next().find('input[type=text]').val('').removeAttr('style');
                         return;
                     }
                     //remove value input if has one element 'tr'
