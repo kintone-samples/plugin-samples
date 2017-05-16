@@ -9,6 +9,7 @@ document.write('<script type="text/javascript" src="https://js.cybozu.com/jquery
 
 // ローディング画面を出す関数
 function setLoading() {
+    "use strict";
     var $body = $('body');
     $body.css('width', '100%');
 
@@ -125,6 +126,7 @@ function setLoading() {
 
 // ローディング画面を消す関数
 function removeLoading() {
+    "use strict";
     var $loading = $('.loading');
     $loading.remove();
 
@@ -134,6 +136,7 @@ function removeLoading() {
 
 // ×ボタンでモーダルウィンドウを消すときの処理
 function closeButton() {
+    "use strict";
     $('#modal').fadeOut(250);
     $('#blackOut').remove();
     $('body').css('position', 'relative');
@@ -168,7 +171,8 @@ function closeButton() {
         var $weather = $('<div id=' + divid + ' class="box"><div id="box-min"><div id="header">' +
         '<h3>' + data.name + '　' + data.desc + '</h3>' +
         '</div><button type="button" class="sw-modal-close" onclick="closeButton()">×</button><div class="content">' +
-        '<p>' + data.lang.plzEnterStartDate + '</p><input type="text" id="start" value="' + moment(data.start).format("YYYY/MM/DD") + '">' +
+        '<p>' + data.lang.plzEnterStartDate + '</p><input type="text" id="start" value="' +
+        moment(data.start).format("YYYY/MM/DD") + '">' +
         '<p>' + data.lang.plzEnterEndDate + '</p>' +
         '<input type="text" name="end" id="end" value="' + moment(data.end).format("YYYY/MM/DD") + '">' +
         '<br><br><button id="goButton" class="gaia-ui-actionmenu-save">　' + data.lang.update + '　</button>' +
@@ -204,12 +208,13 @@ function closeButton() {
 
             var confs = kintone.plugin.app.getConfig(PLUGIN_ID);
             var tableFlgs = false;
-            if (confs.fieldNameColor.indexOf("[Table]") === 0) tableFlgs = true;
-
+            if (confs.fieldNameColor.indexOf("[Table]") === 0) {
+                tableFlgs = true;
+            }
             if (tableFlgs) {
-                for (var key in data.record) {
-                    if (key !== "Table") {
-                        delete data.record[key];
+                for (var key2 in data.record) {
+                    if (key2 !== "Table") {
+                        delete data.record[key2];
                     }
                 }
 
@@ -263,40 +268,38 @@ function closeButton() {
             var tag = obj.tag;
             var elm = document.createElement(tag);
             for (i in obj) {
-                if (callback) {
-                    if (callback(i, elm, obj[i])) {
+                if (obj.hasOwnProperty(i)) {
+                    if (callback) {
+                        if (callback(i, elm, obj[i])) {
+                            continue;
+                        }
+                    }
+                    if (i === 'tag') {
                         continue;
                     }
-                }
-                if (i === 'tag') {
-                    continue;
-                }
-                if (i === '__onload') {
-                    elm.__onload = obj[i];
-                    continue;
-                }
-                var v;
-                if (i === 'content') {
-                    v = domFromObject(obj[i]);
-                    if (v instanceof Array) {
-                        for (var j = 0; j < v.length; j++) {
-                            var v_;
-                            if (typeof v[j] === 'string') {
-                                v_ = document.createTextNode(v[j]);
-                            } else {
-                                v_ = v[j];
+                    var v;
+                    if (i === 'content') {
+                        v = domFromObject(obj[i]);
+                        if (v instanceof Array) {
+                            for (var j = 0; j < v.length; j++) {
+                                var v2;
+                                if (typeof v[j] === 'string') {
+                                    v2 = document.createTextNode(v[j]);
+                                } else {
+                                    v2 = v[j];
+                                }
+                                elm.appendChild(v2);
                             }
-                            elm.appendChild(v_);
+                        } else if (v instanceof HTMLElement) {
+                            elm.appendChild(v);
+                        } else {
+                            elm.innerHTML = v;
                         }
-                    } else if (v instanceof HTMLElement) {
-                        elm.appendChild(v);
-                    } else {
-                        elm.innerHTML = v;
-                    }
 
-                } else {
-                    v = obj[i];
-                    elm.setAttribute(i, v);
+                    } else {
+                        v = obj[i];
+                        elm.setAttribute(i, v);
+                    }
                 }
             }
             r = elm;
@@ -405,20 +408,21 @@ function closeButton() {
                 GANTT_NAME = self.settings.config['ganttchartTitle'] || '',
                 GANTT_DESC = self.settings.config['ganttchartDesc'] || '',
                 GANTT_FROM = self.settings.config['ganttchartFrom'] || '',
-                GANTT_TO = self.settings.config['ganttchartTo'] || '',
-                GANTT_LABEL = self.settings.config['ganttchartTitle'] || '';
+                GANTT_TO = self.settings.config['ganttchartTo'] || '';
 
             // Set the record.
             var conf = kintone.plugin.app.getConfig(PLUGIN_ID);
             var tableFlg = false;
-            if (conf.fieldNameColor.indexOf("[Table]") === 0) tableFlg = true;
+            if (conf.fieldNameColor.indexOf("[Table]") === 0) {
+                tableFlg = true;
+            }
             if (tableFlg) {
-                for (var i = 0; i < records.length; i++) {
-                    var subTable = records[i].Table.value;
+                for (var i2 = 0; i2 < records.length; i2++) {
+                    var subTable = records[i2].Table.value;
 
                     for (var j = 0; j < subTable.length; j++) {
                         var colorGantt = self.settings.element.classColorGanttDefault;
-                        var descGantt = '<b>' + self.escapeHtml(records[i][GANTT_NAME].value) + '</b>';
+                        var descGantt = '<b>' + self.escapeHtml(records[i2][GANTT_NAME].value) + '</b>';
 
                         var deskFlg = true;
                         if (subTable[j].value[GANTT_DESC]) {
@@ -434,19 +438,21 @@ function closeButton() {
 
                         var colorValue = subTable[j].value[GANTT_COLOR]['value'] || '';
                         if (colorValue && self.settings.config.settingColors[colorValue]) {
-                            var styleRecordClass = self.settings.element.prefixColorGantt + 'class-' + i + '-' + j;
+                            var styleRecordClass = self.settings.element.prefixColorGantt + 'class-' + i2 + '-' + j;
                             colorGantt = styleRecordClass;
                             ganttStylesRecord[styleRecordClass] = self.settings.config.settingColors[colorValue];
                         }
 
                         if (subTable[j].value[GANTT_FROM]['value']) {
-                            descGantt += '<div>' + conf.fieldNameFrom.slice(conf.fieldNameFrom.indexOf("[Table]") + 7) + ': ' +
-                                self.escapeHtml(self.convertDateTimeWithTimezone(subTable[j].value[GANTT_FROM]['value'])) +
+                            descGantt += '<div>' + conf.fieldNameFrom.slice(conf.fieldNameFrom.indexOf("[Table]") + 7) +
+                                ': ' + self.escapeHtml
+                                (self.convertDateTimeWithTimezone(subTable[j].value[GANTT_FROM]['value'])) +
                                 '</div>';
                         }
                         if (subTable[j].value[GANTT_TO]['value']) {
-                            descGantt += '<div>' + conf.fieldNameTo.slice(conf.fieldNameTo.indexOf("[Table]") + 7) + ': ' +
-                                self.escapeHtml(self.convertDateTimeWithTimezone(subTable[j].value[GANTT_TO]['value'])) +
+                            descGantt += '<div>' + conf.fieldNameTo.slice(conf.fieldNameTo.indexOf("[Table]") + 7) +
+                                ': ' + self.escapeHtml
+                                (self.convertDateTimeWithTimezone(subTable[j].value[GANTT_TO]['value'])) +
                                 '</div>';
                         }
                         if (subTable[j].value[GANTT_COLOR]['value']) {
@@ -455,25 +461,26 @@ function closeButton() {
                         }
 
                         var ganttRecordData = {
-                            id: self.escapeHtml(records[i]['$id'].value),
-                            name: !(j === 0) ? '' : self.escapeHtml(records[i][GANTT_NAME].value),
-                            desc: subTable[j].value[GANTT_DESC] ? self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
+                            id: self.escapeHtml(records[i2]['$id'].value),
+                            name: (j !== 0) ? '' : self.escapeHtml(records[i2][GANTT_NAME].value),
+                            desc: subTable[j].value[GANTT_DESC] ? self.escapeHtml
+                            (subTable[j].value[GANTT_DESC].value) : '',
                             values: [{
                                 from: self.convertDateTime(subTable[j].value[GANTT_FROM].value),
                                 to: self.convertDateTime(subTable[j].value[GANTT_TO].value),
                                 desc: descGantt,
                                 label: deskFlg ? self.escapeHtml(subTable[j].value[GANTT_DESC].value)
-                                : self.escapeHtml(records[i][GANTT_NAME].value),
+                                : self.escapeHtml(records[i2][GANTT_NAME].value),
                                 customClass: self.escapeHtml(colorGantt),
                                 dataObj: {
-                                    'url': '/k/' + kintone.app.getId() + '/show#record=' + records[i]['$id']['value'],
-                                    'name': records[i][GANTT_NAME].value,
+                                    'url': '/k/' + kintone.app.getId() + '/show#record=' + records[i2]['$id']['value'],
+                                    'name': records[i2][GANTT_NAME].value,
                                     'desc': deskFlg ? self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
                                     'start': subTable[j].value[GANTT_FROM].value,
                                     'end': subTable[j].value[GANTT_TO].value,
-                                    'recId': records[i]['$id'].value,
+                                    'recId': records[i2]['$id'].value,
                                     'tableId': subTable[j].id,
-                                    'record': records[i],
+                                    'record': records[i2],
                                     'GANTT_FROM': GANTT_FROM,
                                     'GANTT_TO': GANTT_TO,
                                     'lang': this.lang[this.settings.i18n]
@@ -485,64 +492,64 @@ function closeButton() {
                     }
                 }
             } else {
-                for (var i = 0; i < records.length; i++) {
+                for (var i3 = 0; i3 < records.length; i3++) {
 
-                    var colorGantt = self.settings.element.classColorGanttDefault;
+                    var colorGantt2 = self.settings.element.classColorGanttDefault;
 
-                    var colorValue = records[i][GANTT_COLOR]['value'] || '';
-                    if (colorValue && self.settings.config.settingColors[colorValue]) {
-                        var styleRecordClass = self.settings.element.prefixColorGantt + 'class-' + i;
-                        colorGantt = styleRecordClass;
-                        ganttStylesRecord[styleRecordClass] = self.settings.config.settingColors[colorValue];
+                    var colorValue2 = records[i3][GANTT_COLOR]['value'] || '';
+                    if (colorValue2 && self.settings.config.settingColors[colorValue2]) {
+                        var styleRecordClass2 = self.settings.element.prefixColorGantt + 'class-' + i3;
+                        colorGantt2 = styleRecordClass2;
+                        ganttStylesRecord[styleRecordClass2] = self.settings.config.settingColors[colorValue2];
                     }
 
-                    var descGantt = '<b>' + self.escapeHtml(records[i][GANTT_NAME].value) + '</b>';
-                        if (records[i][GANTT_DESC]) {
-                            descGantt += '<div>' +
-                                self.escapeHtml(records[i][GANTT_DESC]['value']) +
-                                '</div>';
-                        }
-                    if (records[i][GANTT_FROM]['value']) {
-                        descGantt += '<div>' + conf.fieldNameFrom + ': ' +
-                            self.escapeHtml(self.convertDateTimeWithTimezone(records[i][GANTT_FROM]['value'])) +
+                    var descGantt2 = '<b>' + self.escapeHtml(records[i3][GANTT_NAME].value) + '</b>';
+                    if (records[i3][GANTT_DESC]) {
+                        descGantt2 += '<div>' +
+                            self.escapeHtml(records[i3][GANTT_DESC]['value']) +
                             '</div>';
                     }
-                    if (records[i][GANTT_TO]['value']) {
-                        descGantt += '<div>' + conf.fieldNameTo + ': ' +
-                            self.escapeHtml(self.convertDateTimeWithTimezone(records[i][GANTT_TO]['value'])) +
+                    if (records[i3][GANTT_FROM]['value']) {
+                        descGantt2 += '<div>' + conf.fieldNameFrom + ': ' +
+                            self.escapeHtml(self.convertDateTimeWithTimezone(records[i3][GANTT_FROM]['value'])) +
                             '</div>';
                     }
-                    if (records[i][GANTT_COLOR]['value']) {
-                        descGantt += conf.fieldNameColor + ': ' + self.escapeHtml(records[i][GANTT_COLOR]['value']);
+                    if (records[i3][GANTT_TO]['value']) {
+                        descGantt2 += '<div>' + conf.fieldNameTo + ': ' +
+                            self.escapeHtml(self.convertDateTimeWithTimezone(records[i3][GANTT_TO]['value'])) +
+                            '</div>';
                     }
-                    var ganttRecordData = {
-                        id: self.escapeHtml(records[i]['$id'].value),
-                        name: records[i][GANTT_NAME] ? self.escapeHtml(records[i][GANTT_NAME].value) : '',
-                        desc: records[i][GANTT_DESC] ? self.escapeHtml(records[i][GANTT_DESC].value) : '',
+                    if (records[i3][GANTT_COLOR]['value']) {
+                        descGantt2 += conf.fieldNameColor + ': ' + self.escapeHtml(records[i3][GANTT_COLOR]['value']);
+                    }
+                    var ganttRecordData2 = {
+                        id: self.escapeHtml(records[i3]['$id'].value),
+                        name: records[i3][GANTT_NAME] ? self.escapeHtml(records[i3][GANTT_NAME].value) : '',
+                        desc: records[i3][GANTT_DESC] ? self.escapeHtml(records[i3][GANTT_DESC].value) : '',
                         values: [{
-                            from: self.convertDateTime(records[i][GANTT_FROM].value),
-                            to: self.convertDateTime(records[i][GANTT_TO].value),
-                            desc: descGantt,
-                            label: (records[i][GANTT_DESC] && records[i][GANTT_DESC].value !== "") ?
-                            self.escapeHtml(records[i][GANTT_DESC]['value'])
-                            : self.escapeHtml(records[i][GANTT_NAME].value),
-                            customClass: self.escapeHtml(colorGantt),
+                            from: self.convertDateTime(records[i3][GANTT_FROM].value),
+                            to: self.convertDateTime(records[i3][GANTT_TO].value),
+                            desc: descGantt2,
+                            label: (records[i3][GANTT_DESC] && records[i3][GANTT_DESC].value !== "") ?
+                            self.escapeHtml(records[i3][GANTT_DESC]['value'])
+                            : self.escapeHtml(records[i3][GANTT_NAME].value),
+                            customClass: self.escapeHtml(colorGantt2),
                             dataObj: {
-                                'url': '/k/' + kintone.app.getId() + '/show#record=' + records[i]['$id']['value'],
-                                'name': records[i][GANTT_NAME].value,
-                                'desc': records[i][GANTT_DESC] ? records[i][GANTT_DESC].value : '',
-                                'start': records[i][GANTT_FROM].value,
-                                'end': records[i][GANTT_TO].value,
-                                'recId': records[i]['$id'].value,
+                                'url': '/k/' + kintone.app.getId() + '/show#record=' + records[i3]['$id']['value'],
+                                'name': records[i3][GANTT_NAME].value,
+                                'desc': records[i3][GANTT_DESC] ? records[i3][GANTT_DESC].value : '',
+                                'start': records[i3][GANTT_FROM].value,
+                                'end': records[i3][GANTT_TO].value,
+                                'recId': records[i3]['$id'].value,
                                 'tableId': "",
-                                'record': records[i],
+                                'record': records[i3],
                                 'GANTT_FROM': GANTT_FROM,
                                 'GANTT_TO': GANTT_TO,
                                 'lang': this.lang[this.settings.i18n]
                             }
                         }]
                     };
-                    self.data.push(ganttRecordData);
+                    self.data.push(ganttRecordData2);
                 }
             }
             (typeof callbackFnc === 'function') && callbackFnc();
