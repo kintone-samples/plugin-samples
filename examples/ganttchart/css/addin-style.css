@@ -17,6 +17,9 @@
 .fn-gantt .ganttYellow .fn-label {
     color: #444 !important;
 }
+.fn-gantt .leftPanel, .fn-gantt .bar{
+    z-index: 0;
+}
 .row.day.sa {
     background-color: #bddbf1;
 }
