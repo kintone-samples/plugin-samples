@@ -127,7 +127,7 @@ jQuery.noConflict();
                 for (var key in this.settings.form) {
                     if (!this.settings.form.hasOwnProperty(key)) {
                         continue;
-                    };
+                    }
                     var prop = this.settings.form[key];
                     this.settings.formCode[prop['code']] = this.settings.form[key];
                     switch (prop['type']) {
@@ -165,11 +165,13 @@ jQuery.noConflict();
                                     .val(this.escapeHtml(prop['code'])));
                             break;
                         case 'SUBTABLE':
-                            if (key !== "Table") continue;
+                            if (key !== "Table") {
+                                continue;
+                            }
                             for (var key2 in this.settings.form[prop.code].fields) {
                                 if (!this.settings.form[prop.code].fields.hasOwnProperty(key2)) {
                                     continue;
-                                };
+                                }
                                 var prop2 = this.settings.form[prop.code].fields[key2];
                                 this.settings.formCode[prop2['code']] = this.settings.form[prop.code].fields[key2];
                                 switch (prop2['type']) {
@@ -188,7 +190,7 @@ jQuery.noConflict();
                                                 .text('[Table]' + prop2['label'])
                                                 .val(this.escapeHtml(prop2['code'])));
                                         break;
-            
+
                                     case 'DATE':
                                     case 'DATETIME':
                                         $('#ganttchart-plugin-from')
@@ -198,7 +200,7 @@ jQuery.noConflict();
                                             .append($('<option>').text('[Table]' + prop2['label'])
                                                 .val(this.escapeHtml(prop2['code'])));
                                         break;
-            
+
                                     case 'RADIO_BUTTON':
                                     case 'DROP_DOWN':
                                         $('#ganttchart-plugin-color')
@@ -278,7 +280,7 @@ jQuery.noConflict();
                 var ganttchartTo = $(this.settings.element.ganttchartTo).val();
                 var ganttchartColor = $(this.settings.element.ganttchartColor).val();
                 var ganttchartScall = $(this.settings.element.ganttchartScall + ':checked').val() || 'days';
-                
+
                 // Check table fields
                 var ganntTableCheckTmp = {
                     title: $(this.settings.element.ganttchartTitle + " option:selected").text(),
@@ -287,7 +289,7 @@ jQuery.noConflict();
                     to: $(this.settings.element.ganttchartTo + " option:selected").text(),
                     color: $(this.settings.element.ganttchartColor + " option:selected").text()
                 };
-                
+
                 var formValid = true;
                 // Check the required fields
                 if (ganttchartTitle === '') {
