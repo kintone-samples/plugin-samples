@@ -14,9 +14,9 @@
    },
    "icon":"img/icon.png",
    "homepage_url":{
-      "ja":"https://cybozudev.zendesk.com/hc/ja/articles/203716110",
-      "en":"https://cybozudev.zendesk.com/hc/ja/articles/203716110",
-      "zh":"https://cybozudev.zendesk.com/hc/ja/articles/203716110"
+      "ja":"https://developer.cybozu.io/hc/ja/articles/203716110",
+      "en":"https://developer.cybozu.io/hc/ja/articles/203716110",
+      "zh":"https://developer.cybozu.io/hc/ja/articles/203716110"
    },
    "desktop":{
       "js":[
