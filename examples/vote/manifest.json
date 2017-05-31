@@ -29,7 +29,7 @@
             "js/config.js"
         ],
         "css": [
-            "css/51-jp-default.css"
+            "css/51-current-default.css"
         ],
         "required_params": ["vote_field", "vote_count_field"]
     }
