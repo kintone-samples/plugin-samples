@@ -20,7 +20,8 @@
     },
     "desktop": {
         "js": [
-            "https://js.cybozu.com/momentjs/2.10.6/moment.min.js",
+            "https://js.cybozu.com/momentjs/2.18.1/moment.min.js",
+            "https://js.cybozu.com/moment-timezone/0.5.13/moment-timezone-with-data.min.js",
             "https://js.cybozu.com/jquery/2.1.4/jquery.min.js",
             "js/desktop.js"
         ],
