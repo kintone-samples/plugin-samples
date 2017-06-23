@@ -86,10 +86,10 @@ jQuery.noConflict();
             'en': {
                 'cf_text_title': 'Text Format Conditions',
                 'cf_date_title': 'Date Format Conditions',
-                'cf_text_column1': 'Field (condition)',
+                'cf_text_column1': 'Field with condition',
                 'cf_text_column2': 'Condition',
                 'cf_text_column3': 'Value',
-                'cf_text_column4': 'Field (target)',
+                'cf_text_column4': 'Field to format',
                 'cf_text_column5': 'Font Color',
                 'cf_text_column6': 'Background Color',
                 'cf_text_column7': 'Font Size',
@@ -97,12 +97,12 @@ jQuery.noConflict();
                 'cf_status_option': 'Status(Process Management)',
                 'cf_text_column2_option1': 'includes',
                 'cf_text_column2_option2': 'doesn\'t include',
-                'cf_text_column2_option3': '=',
-                'cf_text_column2_option4': '≠',
-                'cf_text_column2_option5': '≦',
-                'cf_text_column2_option6': '<',
-                'cf_text_column2_option7': '≧',
-                'cf_text_column2_option8': '>',
+                'cf_text_column2_option3': '= (equal to)',
+                'cf_text_column2_option4': '≠ (doesn\'t equal)',
+                'cf_text_column2_option5': '≦ (equal or less)',
+                'cf_text_column2_option6': '< (less than)',
+                'cf_text_column2_option7': '≧ (equal or greater)',
+                'cf_text_column2_option8': '> (greater than)',
                 'cf_text_column7_option1': 'Normal',
                 'cf_text_column7_option2': 'Very Small',
                 'cf_text_column7_option3': 'Small',
@@ -112,22 +112,22 @@ jQuery.noConflict();
                 'cf_text_column8_option2': 'Bold',
                 'cf_text_column8_option3': 'Underline',
                 'cf_text_column8_option4': 'Strikethrough',
-                'cf_date_column1': 'Field (condition)',
+                'cf_date_column1': 'Field with condition',
                 'cf_date_column2': 'Condition',
                 'cf_date_column3': 'Value',
-                'cf_date_column4': 'Field (target)',
+                'cf_date_column4': 'Field to format',
                 'cf_date_column5': 'Font Color',
                 'cf_date_column6': 'Background Color',
                 'cf_date_column7': 'Font Size',
                 'cf_date_column8': 'Style',
                 'cf_date_column2_desc1': '',
                 'cf_date_column2_desc2': 'days',
-                'cf_date_column2_option1': '=',
-                'cf_date_column2_option2': '≠',
-                'cf_date_column2_option3': '≦',
-                'cf_date_column2_option4': '<',
-                'cf_date_column2_option5': '≧',
-                'cf_date_column2_option6': '>',
+                'cf_date_column2_option1': '= (equal to)',
+                'cf_date_column2_option2': '≠ (doesn\'t equal)',
+                'cf_date_column2_option3': '≦ (equal or less)',
+                'cf_date_column2_option4': '< (less than)',
+                'cf_date_column2_option5': '≧ (equal or greater)',
+                'cf_date_column2_option6': '> (greater than)',
                 'cf_date_column3_option1': 'before today',
                 'cf_date_column3_option2': 'after today',
                 'cf_date_column7_option1': 'Normal',
@@ -215,7 +215,7 @@ jQuery.noConflict();
 
         function escapeHtml(htmlstr) {
             return htmlstr.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+                .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
         }
 
         function checkRowNumber() {
@@ -358,8 +358,9 @@ jQuery.noConflict();
                             $option.attr("value", escapeHtml(prop.code));
                             $option.text(escapeHtml(prop.label));
                             $("#cf-plugin-text-tbody > tr:eq(0) .cf-plugin-column1").append($option.clone());
-                            $("#cf-plugin-date-tbody > tr:eq(0) .cf-plugin-column4").append($option.clone());
+                            $("#cf-plugin-text-tbody > tr:eq(0) .cf-plugin-column4").append($option.clone());
                             $("#cf-plugin-date-tbody > tr:eq(0) .cf-plugin-column1").append($option.clone());
+                            $("#cf-plugin-date-tbody > tr:eq(0) .cf-plugin-column4").append($option.clone());
                             break;
 
                         case "STATUS":
@@ -368,7 +369,7 @@ jQuery.noConflict();
                                 $option.text(terms[lang]["cf_status_option"]);
                                 $("#cf-plugin-text-tbody > tr:eq(0) .cf-plugin-column1").append($option.clone());
                                 $("#cf-plugin-text-tbody > tr:eq(0) .cf-plugin-column4").append($option.clone());
-                                $("#cf-plugin-date-tbody > tr:eq(0) .cf-plugin-column1").append($option.clone());
+                                $("#cf-plugin-date-tbody > tr:eq(0) .cf-plugin-column4").append($option.clone());
                             }
                             break;
                         default :
@@ -443,7 +444,7 @@ jQuery.noConflict();
                         "1": "文字条件書式の" + row_num + "行目の必須入力項目を入力してください",
                         "2": "文字条件書式の" + row_num + "行目の文字色には\nカラーコード「#000000-#FFFFFF」を入力してください",
                         "3": "文字条件書式の" + row_num + "行目の背景色には\nカラーコード「#000000-#FFFFFF」を入力してください",
-                        "4": "文字条件書式の" + row_num + "行目の条件値または色に\n" + "HTML特殊文字(&, <, >, \", \')を入力することはできません"
+                        "4": "文字条件書式の" + row_num + "行目の条件値または色に\n" + "HTML特殊文字(&, <, >, \", ')を入力することはできません"
                     },
                     'date': {
                         "1": "日付条件書式の" + row_num + "行目の必須入力項目を入力してください",
@@ -451,7 +452,7 @@ jQuery.noConflict();
                         "3": "日付条件書式の" + row_num + "行目の条件値には\n整数を入力してください",
                         "4": "日付条件書式の" + row_num + "行目の文字色には\nカラーコード「#000000-#FFFFFF」を入力してください",
                         "5": "日付条件書式の" + row_num + "行目の背景色には\nカラーコード「#000000-#FFFFFF」を入力してください",
-                        "6": "日付条件書式の" + row_num + "行目の条件値または色に\nHTML特殊文字(&, <, >, \", \')を入力することはできません"
+                        "6": "日付条件書式の" + row_num + "行目の条件値または色に\nHTML特殊文字(&, <, >, \", ')を入力することはできません"
                     }
                 },
                 'en': {
@@ -479,7 +480,7 @@ jQuery.noConflict();
                         "1": "文字条件格式的第" + row_num + "行有必填项未填写",
                         "2": "文字条件格式的第" + row_num + "行的字体颜色框中\n请输入颜色代码[#000000-#FFFFFF]",
                         "3": "文字条件格式的第" + row_num + "行的背景色框中\n请输入颜色代码[#000000-#FFFFFF]",
-                        "4": "文字条件格式的第" + row_num + "行的条件值或颜色不可输入\nHTML特殊符号(&, <, >, \", \')"
+                        "4": "文字条件格式的第" + row_num + "行的条件值或颜色不可输入\nHTML特殊符号(&, <, >, \", ')"
                     },
                     'date': {
                         "1": "日期条件格式的第" + row_num + "行有必填项未填写",
@@ -487,7 +488,7 @@ jQuery.noConflict();
                         "3": "日期条件格式的第" + row_num + "行的条件值\n仅可输入整数",
                         "4": "日期条件格式的第" + row_num + "行的字体颜色\n请输入颜色代码[#000000-#FFFFFF]",
                         "5": "日期条件格式的第" + row_num + "行的背景色\n请输入颜色代码[#000000-#FFFFFF]",
-                        "6": "日期条件格式的第" + row_num + "行的条件值或颜色不可输入\nHTML特殊符号(&, <, >, \", \')"
+                        "6": "日期条件格式的第" + row_num + "行的条件值或颜色不可输入\nHTML特殊符号(&, <, >, \", ')"
                     }
                 }
             };
@@ -521,9 +522,9 @@ jQuery.noConflict();
                         throw new Error(createErrorMessage("text", "3", ct));
                     }
                 }
-                if (text.value.match(/\&|<|\>|\"|\'/g) !== null ||
-                    text.targetcolor.match(/\&|<|\>|\"|\'/g) !== null ||
-                    text.targetbgcolor.match(/\&|<|\>|\"|\'/g) !== null) {
+                if (text.value.match(/&|<|>|"|'/g) !== null ||
+                    text.targetcolor.match(/&|<|>|"|'/g) !== null ||
+                    text.targetbgcolor.match(/&|<|>|"|'/g) !== null) {
                     throw new Error(createErrorMessage("text", "4", ct));
                 }
             }
@@ -533,7 +534,7 @@ jQuery.noConflict();
             var date_row_num = Number(config["date_row_number"]);
             for (var cd = 1; cd <= date_row_num; cd++) {
                 var date = JSON.parse(config["date_row" + cd]);
-                if (!date.field || !date.type || !date.targetfield) {
+                if (!date.field || !date.type || !date.targetfield || !date.value) {
                     throw new Error(createErrorMessage("date", "1", cd));
                 }
                 if (isNaN(date.value)) {
@@ -558,9 +559,9 @@ jQuery.noConflict();
                         throw new Error(createErrorMessage("date", "5", cd));
                     }
                 }
-                if (date.value.match(/\&|<|\>|\"|\'/g) !== null ||
-                    date.targetcolor.match(/\&|<|\>|\"|\'/g) !== null ||
-                    date.targetbgcolor.match(/\&|<|\>|\"|\'/g) !== null) {
+                if (date.value.match(/&|<|>|"|'/g) !== null ||
+                    date.targetcolor.match(/&|<|>|"|'/g) !== null ||
+                    date.targetbgcolor.match(/&|<|>|"|'/g) !== null) {
                     throw new Error(createErrorMessage("date", "6", cd));
                 }
             }
@@ -634,7 +635,7 @@ jQuery.noConflict();
                 checkConfigTextValues(config);
                 checkConfigDateValues(config);
                 kintone.plugin.app.setConfig(config);
-            } catch(error) {
+            } catch (error) {
                 alert(error.message);
             }
         });
