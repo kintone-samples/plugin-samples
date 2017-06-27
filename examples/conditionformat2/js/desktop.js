@@ -249,6 +249,9 @@ jQuery.noConflict();
 
             field_obj = record[text_obj.field];
             if (field_obj.type === "CHECK_BOX" || field_obj.type === "MULTI_SELECT") {
+                if (field_obj.value.length === 0) {
+                    field_obj.value[0] = "";
+                }
                 for (var i = 0; i < field_obj.value.length; i++) {
                     if (checkTextConditionFormat(field_obj.value[i], text_obj.value, text_obj.type)) {
                         changeFieldElement(el_text, text_obj, "detail");

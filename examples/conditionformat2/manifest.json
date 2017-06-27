@@ -14,8 +14,8 @@
     },
     "icon": "image/icon.png",
     "homepage_url": {
-        "ja": "https://cybozudev.zendesk.com/hc/ja/articles/208236353",
-        "en": "https://cybozudev.zendesk.com/hc/ja/articles/208236353",
+        "ja": "https://developer.cybozu.io/hc/ja/articles/208236353",
+        "en": "https://developer.kintone.io/hc/en-us/articles/115009635868",
         "zh": "https://cybozudev.kf5.com/hc/kb/article/1011206/"
     },
     "desktop": {
@@ -36,7 +36,7 @@
         ],
         "css": [
             "https://js.cybozu.com/font-awesome/v4.7.0/css/font-awesome.min.css",
-            "css/51-current-default.css",
+            "css/51-modern-default.css",
             "css/config.css"
         ]
     }
