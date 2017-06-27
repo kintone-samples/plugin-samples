@@ -53,12 +53,12 @@ jQuery.noConflict();
                 el.style.textDecoration = "none";
                 break;
             case "underline":
-                el.style.textDecoration = font;
                 el.style.fontWeight = "normal";
+                el.style.textDecoration = font;
                 break;
             case "line-through":
-                el.style.textDecoration = font;
                 el.style.fontWeight = "normal";
+                el.style.textDecoration = font;
                 break;
             case "":
                 el.style.fontWeight = "normal";
