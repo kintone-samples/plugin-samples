@@ -18,11 +18,15 @@
 }
 
 .cf-ctype {
-    width: 150px;
+    width: 170px;
 }
 
 .cf-date-type {
-    width: 50px;
+    width: 120px;
+}
+
+.cf-field-type {
+    width: 220px;
 }
 
 .cf-cvalue-date {
@@ -39,7 +43,7 @@
 }
 
 .cf-plugin-date-column3-td {
-    min-width: 260px;
+    white-space: nowrap;
 }
 
 .cf-plugin-column5-td, .cf-plugin-column6-td {
