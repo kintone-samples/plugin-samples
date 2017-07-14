@@ -29,7 +29,7 @@
             "js/config.js"
         ],
         "css": [
-            "css/51-current-default.css"
+            "css/51-modern-default.css"
         ],
         "required_params": ["vote_field", "vote_count_field"]
     }
