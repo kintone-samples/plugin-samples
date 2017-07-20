@@ -6,6 +6,7 @@
  *
  * Licensed under the MIT License
  */
+/* global kintoneUtility */
 
 jQuery.noConflict();
 (function($, PLUGIN_ID) {
@@ -15,20 +16,20 @@ jQuery.noConflict();
     if (!CONFIG) {
         return false;
     }
-    var C_POSTRECORDS_FLG = CONFIG['sansan_postrecords_flg'];   //レコード一括登録機能ON/OFF
+    var C_POSTRECORDS_FLG = CONFIG['sansan_postrecords_flg'];//レコード一括登録機能ON/OFF
     var C_UPSERTRECORDS_FLG = CONFIG['sansan_upsertrecords_flg'];//レコード一括登録時のUpsert機能ON/OFF
     if (C_POSTRECORDS_FLG !== 'postrecords_on') {
         return false;
     }
 
-    var C_UPSERTKEYFIELD = CONFIG['upsertkeyfield'];            //Upsertキーとなるフィールド
-    var C_COPYFIELDS = window.sansanLib.getConfigValues(CONFIG); //Sansanからコピーするフィールド
+    var C_UPSERTKEYFIELD = CONFIG['upsertkeyfield'];//Upsertキーとなるフィールド
+    var C_COPYFIELDS = window.sansanLib.getConfigValues(CONFIG);//Sansanからコピーするフィールド
 
-/*
-*------------------------------------------------------------------------------------------
-*レコード一覧画面の Sansan レコード一括登録 機能
-*------------------------------------------------------------------------------------------
-*/
+    /*
+    *------------------------------------------------------------------------------------------
+    *レコード一覧画面の Sansan レコード一括登録 機能
+    *------------------------------------------------------------------------------------------
+    */
     var SansanPostRecords = {
 
         init: function() {

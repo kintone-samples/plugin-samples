@@ -15,19 +15,19 @@ jQuery.noConflict();
     if (!CONFIG) {
         return false;
     }
-    var C_LOOKUP_FLG = CONFIG['sansan_lookup_flg'];             //ルックアップ機能ON/OFF
+    var C_LOOKUP_FLG = CONFIG['sansan_lookup_flg'];//ルックアップ機能ON/OFF
     if (C_LOOKUP_FLG !== 'lookup_on') {
         return false;
     }
-    var C_SPACEFIELD = CONFIG['spacefield'];                    //ボタンを配置するスペースフィールド
-    var C_KEYFIELD = CONFIG['keyfield'];                        //kintoneでキーとするフィールド
-    var C_COPYFIELDS = window.sansanLib.getConfigValues(CONFIG); //コピー先のフィールド
+    var C_SPACEFIELD = CONFIG['spacefield'];//ボタンを配置するスペースフィールド
+    var C_KEYFIELD = CONFIG['keyfield'];//kintoneでキーとするフィールド
+    var C_COPYFIELDS = window.sansanLib.getConfigValues(CONFIG);//コピー先のフィールド
 
-/*
-*------------------------------------------------------------------------------------------
-*レコード詳細画面の Sansan ルックアップ機能
-*------------------------------------------------------------------------------------------
-*/
+    /*
+    *------------------------------------------------------------------------------------------
+    *レコード詳細画面の Sansan ルックアップ機能
+    *------------------------------------------------------------------------------------------
+    */
     var Sansanlookup = {
         //初期処理
         init: function() {

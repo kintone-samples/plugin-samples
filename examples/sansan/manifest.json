@@ -42,7 +42,7 @@
 		],
 		"css": [
 		        "https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.css",
-				"css/51-current-default.css",
+				"css/51-modern-default.css",
 				"css/config.css"
 		],
 		"required_params": ["sansanapikey"]

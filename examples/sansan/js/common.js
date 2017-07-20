@@ -25,7 +25,7 @@ jQuery.noConflict();
         }
         try {
             return htmlstr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         } catch (e) {
             return htmlstr;
         }
@@ -85,28 +85,34 @@ jQuery.noConflict();
 
     //設定値からコピー先のフィールドの値を取得
     function getConfigValues(config) {
+        //名刺ID → cardId 会社ID → companyId 人物ID → presonId 名刺交換日 → exchangeDate
+        //名刺登録日時 → registeredTime 名刺所有者ID → owner.id 名刺所有者名 → owner.name
+        //氏名 → lastName + firstName 氏名カナ → lastNameReading + firstNameReading
+        //部署名 → departmentName 役職 → title E-mail → email 携帯 → mobile 会社名 → companyName
+        //郵便番号 → postalCode 住所 → address Tel → tel Tel2 → secondtel
+        //Fax → fax URL → url メモ → memo
         return {
-            "cardid": config['copy_cardid'],                          //名刺ID → cardId
-            "companyid": config['copy_companyid'],                    //会社ID → companyId
-            "userid": config['copy_userid'],                          //人物ID → presonId
-            "exchangedate": config['copy_exchangedate'],              //名刺交換日 → exchangeDate
-            "registeredtime": config['copy_registeredtime'],          //名刺登録日時 → registeredTime
-            "ownerid": config['copy_ownerid'],                        //名刺所有者ID → owner.id
-            "ownername": config['copy_ownername'],                    //名刺所有者名 → owner.name
-            "username": config['copy_username'],                      //氏名 → lastName + firstName
-            "usernamereading": config['copy_usernamereading'],        //氏名カナ → lastNameReading + firstNameReading
-            "departmentname": config['copy_departmentname'],          //部署名 → departmentName
-            "title": config['copy_title'],                            //役職 → title
-            "email": config['copy_email'],                            //E-mail → email
-            "mobile": config['copy_mobile'],                          //携帯 → mobile
-            "companyname": config['copy_companyname'],                //会社名 → companyName
-            "postalcode": config['copy_postalcode'],                  //郵便番号 → postalCode
-            "address": config['copy_address'],                        //住所 → address
-            "tel": config['copy_tel'],                                //Tel → tel
-            "secondtel": config['copy_secondtel'],                    //Tel2 → secondtel
-            "fax": config['copy_fax'],                                //Fax → fax
-            "url": config['copy_url'],                                //URL → url
-            "memo": config['copy_memo']                               //メモ → memo
+            "cardid": config['copy_cardid'],
+            "companyid": config['copy_companyid'],
+            "userid": config['copy_userid'],
+            "exchangedate": config['copy_exchangedate'],
+            "registeredtime": config['copy_registeredtime'],
+            "ownerid": config['copy_ownerid'],
+            "ownername": config['copy_ownername'],
+            "username": config['copy_username'],
+            "usernamereading": config['copy_usernamereading'],
+            "departmentname": config['copy_departmentname'],
+            "title": config['copy_title'],
+            "email": config['copy_email'],
+            "mobile": config['copy_mobile'],
+            "companyname": config['copy_companyname'],
+            "postalcode": config['copy_postalcode'],
+            "address": config['copy_address'],
+            "tel": config['copy_tel'],
+            "secondtel": config['copy_secondtel'],
+            "fax": config['copy_fax'],
+            "url": config['copy_url'],
+            "memo": config['copy_memo']
         };
     }
 
