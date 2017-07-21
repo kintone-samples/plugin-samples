@@ -13,6 +13,11 @@
 		"zh": "This sample plug-in looks up Sansan's contact data."
 	},
 	"icon": "img/icon.png",
+    "homepage_url": {
+        "ja": "https://developer.cybozu.io/hc/ja/articles/207420183",
+        "en": "https://developer.cybozu.io/hc/ja/articles/207420183",
+        "zh": "https://developer.cybozu.io/hc/ja/articles/207420183"
+    },
 	"desktop": {
 		"js": [
 				"https://js.cybozu.com/jquery/2.2.4/jquery.min.js",
@@ -42,7 +47,7 @@
 		],
 		"css": [
 		        "https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.css",
-				"css/51-current-default.css",
+				"css/51-modern-default.css",
 				"css/config.css"
 		],
 		"required_params": ["sansanapikey"]

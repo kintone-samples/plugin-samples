@@ -9,7 +9,7 @@
 
 jQuery.noConflict();
 (function($, PLUGIN_ID) {
-    "use strict";
+    'use strict';
 
     $(document).ready(function() {
         var terms = {
@@ -131,14 +131,14 @@ jQuery.noConflict();
 
         function escapeHtml(htmlstr) {
             return htmlstr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
-        //アップデート互換性対応
+        // アップデート互換性対応
         function checkUpdateValue(str) {
             var value = str;
             if (value === undefined) {
-                value = "null";
+                value = 'null';
             }
             return value;
         }
@@ -147,43 +147,43 @@ jQuery.noConflict();
 
             var conf = kintone.plugin.app.getConfig(PLUGIN_ID);
 
-            //既に値が設定されている場合はフィールドに値を設定する
+            // 既に値が設定されている場合はフィールドに値を設定する
             if (Object.keys(conf).length !== 0) {
                 $('#sansan_api_code').val(checkUpdateValue(conf['sansanapikey']));
                 $('#sansan-checkbox input[value="' +
                     checkUpdateValue(conf['sansan_lookup_flg']) +
-                    '"]').prop("checked", true);
+                    '"]').prop('checked', true);
                 $('#sansan-checkbox input[value="' +
                     checkUpdateValue(conf['sansan_postrecords_flg']) +
-                    '"]').prop("checked", true);
+                    '"]').prop('checked', true);
                 $('#sansan-checkbox input[value="' +
                     checkUpdateValue(conf['sansan_upsertrecords_flg']) +
-                    '"]').prop("checked", true);
-                $("#sansan_spacefield_code").val(checkUpdateValue(conf['spacefield']));
-                $("#sansan_keyfield_code").val(checkUpdateValue(conf['keyfield']));
-                $("#sansan_originalfield_code").val(checkUpdateValue(conf['originalfield']));
-                $("#sansan_upsertkeyfield_code").val(checkUpdateValue(conf['upsertkeyfield']));
-                $("#sansan_copy_cardid_code").val(checkUpdateValue(conf['copy_cardid']));
-                $("#sansan_copy_companyid_code").val(checkUpdateValue(conf['copy_companyid']));
-                $("#sansan_copy_userid_code").val(checkUpdateValue(conf['copy_userid']));
-                $("#sansan_copy_exchangedate_code").val(checkUpdateValue(conf['copy_exchangedate']));
-                $("#sansan_copy_registeredtime_code").val(checkUpdateValue(conf['copy_registeredtime']));
-                $("#sansan_copy_ownerid_code").val(checkUpdateValue(conf['copy_ownerid']));
-                $("#sansan_copy_ownername_code").val(checkUpdateValue(conf['copy_ownername']));
-                $("#sansan_copy_username_code").val(checkUpdateValue(conf['copy_username']));
-                $("#sansan_copy_usernamereading_code").val(checkUpdateValue(conf['copy_usernamereading']));
-                $("#sansan_copy_departmentname_code").val(checkUpdateValue(conf['copy_departmentname']));
-                $("#sansan_copy_title_code").val(checkUpdateValue(conf['copy_title']));
-                $("#sansan_copy_email_code").val(checkUpdateValue(conf['copy_email']));
-                $("#sansan_copy_mobile_code").val(checkUpdateValue(conf['copy_mobile']));
-                $("#sansan_copy_companyname_code").val(checkUpdateValue(conf['copy_companyname']));
-                $("#sansan_copy_postalcode_code").val(checkUpdateValue(conf['copy_postalcode']));
-                $("#sansan_copy_address_code").val(checkUpdateValue(conf['copy_address']));
-                $("#sansan_copy_tel_code").val(checkUpdateValue(conf['copy_tel']));
-                $("#sansan_copy_secondtel_code").val(checkUpdateValue(conf['copy_secondtel']));
-                $("#sansan_copy_fax_code").val(checkUpdateValue(conf['copy_fax']));
-                $("#sansan_copy_url_code").val(checkUpdateValue(conf['copy_url']));
-                $("#sansan_copy_memo_code").val(checkUpdateValue(conf['copy_memo']));
+                    '"]').prop('checked', true);
+                $('#sansan_spacefield_code').val(checkUpdateValue(conf['spacefield']));
+                $('#sansan_keyfield_code').val(checkUpdateValue(conf['keyfield']));
+                $('#sansan_originalfield_code').val(checkUpdateValue(conf['originalfield']));
+                $('#sansan_upsertkeyfield_code').val(checkUpdateValue(conf['upsertkeyfield']));
+                $('#sansan_copy_cardid_code').val(checkUpdateValue(conf['copy_cardid']));
+                $('#sansan_copy_companyid_code').val(checkUpdateValue(conf['copy_companyid']));
+                $('#sansan_copy_userid_code').val(checkUpdateValue(conf['copy_userid']));
+                $('#sansan_copy_exchangedate_code').val(checkUpdateValue(conf['copy_exchangedate']));
+                $('#sansan_copy_registeredtime_code').val(checkUpdateValue(conf['copy_registeredtime']));
+                $('#sansan_copy_ownerid_code').val(checkUpdateValue(conf['copy_ownerid']));
+                $('#sansan_copy_ownername_code').val(checkUpdateValue(conf['copy_ownername']));
+                $('#sansan_copy_username_code').val(checkUpdateValue(conf['copy_username']));
+                $('#sansan_copy_usernamereading_code').val(checkUpdateValue(conf['copy_usernamereading']));
+                $('#sansan_copy_departmentname_code').val(checkUpdateValue(conf['copy_departmentname']));
+                $('#sansan_copy_title_code').val(checkUpdateValue(conf['copy_title']));
+                $('#sansan_copy_email_code').val(checkUpdateValue(conf['copy_email']));
+                $('#sansan_copy_mobile_code').val(checkUpdateValue(conf['copy_mobile']));
+                $('#sansan_copy_companyname_code').val(checkUpdateValue(conf['copy_companyname']));
+                $('#sansan_copy_postalcode_code').val(checkUpdateValue(conf['copy_postalcode']));
+                $('#sansan_copy_address_code').val(checkUpdateValue(conf['copy_address']));
+                $('#sansan_copy_tel_code').val(checkUpdateValue(conf['copy_tel']));
+                $('#sansan_copy_secondtel_code').val(checkUpdateValue(conf['copy_secondtel']));
+                $('#sansan_copy_fax_code').val(checkUpdateValue(conf['copy_fax']));
+                $('#sansan_copy_url_code').val(checkUpdateValue(conf['copy_url']));
+                $('#sansan_copy_memo_code').val(checkUpdateValue(conf['copy_memo']));
             }
         }
 
@@ -247,7 +247,7 @@ jQuery.noConflict();
             });
         }
 
-        //「保存する」ボタン押下時に入力情報を設定する
+        // 「保存する」ボタン押下時に入力情報を設定する
         $('#sansan_plugin_submit').click(function() {
             var config = {};
             var header = {
@@ -267,7 +267,7 @@ jQuery.noConflict();
                 upsertrecords_flg = $('#sansan-checkbox input[id="sansan-checkbox-upsertrecords"]:checked')[0].value;
             }
 
-            //Upsert機能の設定画面項目チェック
+            // Upsert機能の設定画面項目チェック
             if ((upsertrecords_flg !== "" && $("#sansan_upsertkeyfield_code").val() === "null") ||
                 (upsertrecords_flg === "" && $("#sansan_upsertkeyfield_code").val() !== "null")) {
                 swal('Error!', 'レコード一括登録時のUpsert機能を利用する場合は\n' +
@@ -281,10 +281,10 @@ jQuery.noConflict();
             config['sansan_lookup_flg'] = lookup_flg;
             config['sansan_postrecords_flg'] = postrecords_flg;
             config['sansan_upsertrecords_flg'] = upsertrecords_flg;
-            config['spacefield'] = $("#sansan_spacefield_code").val();
-            config['keyfield'] = $("#sansan_keyfield_code").val();
-            config['originalfield'] = $("#sansan_originalfield_code").val();
-            config['upsertkeyfield'] = $("#sansan_upsertkeyfield_code").val();
+            config['spacefield'] = $('#sansan_spacefield_code').val();
+            config['keyfield'] = $('#sansan_keyfield_code').val();
+            config['originalfield'] = $('#sansan_originalfield_code').val();
+            config['upsertkeyfield'] = $('#sansan_upsertkeyfield_code').val();
             config['copy_cardid'] = $('#sansan_copy_cardid_code').val();
             config['copy_companyid'] = $('#sansan_copy_companyid_code').val();
             config['copy_userid'] = $('#sansan_copy_userid_code').val();
@@ -306,12 +306,12 @@ jQuery.noConflict();
             config['copy_fax'] = $('#sansan_copy_fax_code').val();
             config['copy_url'] = $('#sansan_copy_url_code').val();
             config['copy_memo'] = $('#sansan_copy_memo_code').val();
-            kintone.plugin.app.setProxyConfig("https://api.sansan.com/", "GET", header, {}, function(resp) {
+            kintone.plugin.app.setProxyConfig('https://api.sansan.com/', 'GET', header, {}, function(resp) {
                 kintone.plugin.app.setConfig(config);
             });
         });
 
-        //「キャンセル」ボタン押下時の処理
+        // 「キャンセル」ボタン押下時の処理
         $('#sansan_plugin_cancel').click(function() {
             history.back();
         });

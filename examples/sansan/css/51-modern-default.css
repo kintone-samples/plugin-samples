@@ -59,10 +59,10 @@
   font-weight: bold;
 }
 
-/* 設定項目の見出し */
+/* 設定項目名 */
 /* 項目 */
 /*
-<div class="kintoneplugin-title">設定項目の見出し</div>
+<div class="kintoneplugin-title">設定項目名</div>
 */
 .kintoneplugin-title {
   margin-bottom: 8px;
