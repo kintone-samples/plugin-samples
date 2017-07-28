@@ -20,8 +20,8 @@ jQuery.noConflict();
     var centerLon = parseFloat(config.indexCenterLon, 10) || undefined;
     var zoomSize = parseFloat(config.indexZoomSize, 10) || 10;
     var latlons = [];
-    //--------------関数--------------------------//
-    //外部JSをロードする関数
+    // --------------関数--------------------------//
+    // 外部JSをロードする関数
     function loadJS(src) {
         $('<script>')
             .attr('src', src)
@@ -30,10 +30,10 @@ jQuery.noConflict();
     }
     function setClickEvent(mark, obj) {
         ZDC.bind(mark, ZDC.MARKER_CLICK, obj, function() {
-            location.href = this.url; //obj.url
+            location.href = this.url; // obj.url
         });
     }
-    //地図上にプロットするピンのオブジェクトリストを作成
+    // 地図上にプロットするピンのオブジェクトリストを作成
     function makeMarkList(records) {
         var markList = [];
         var url = location.href.replace(/\?.*/, '') + 'show#record=';
@@ -57,11 +57,11 @@ jQuery.noConflict();
         }
         return markList;
     }
-    //マップを画面上に描画する
+    // マップを画面上に描画する
     function displayMap(markList) {
-        //マップを表示するスペース
+        // マップを表示するスペース
         var mapSpace = kintone.app.getHeaderSpaceElement();
-        if ($("[id^='itsumo-navi-map']")[0]) {
+        if ($('[id^=\'itsumo-navi-map\']')[0]) {
             return;
         }
         var $mapElement = $('<div>')
@@ -74,16 +74,16 @@ jQuery.noConflict();
                 'border': 'solid 2px #c4b097'
             });
         $(mapSpace).append($mapElement);
-        //オプションを指定
+        // オプションを指定
         var tmpCenterLat = (centerLat) ? centerLat : 35.68;
         var tmpCenterLon = (centerLon) ? centerLon : 139.76;
         var mapOption = {
             latlon: new ZDC.LatLon(tmpCenterLat, tmpCenterLon),
             zoom: zoomSize
         };
-        //マップを描画
+        // マップを描画
         var map = new ZDC.Map($('#itsumo-navi-map')[0], mapOption);
-        //コントロールを表示
+        // コントロールを表示
         var control = new ZDC.Control({
             type: ZDC.CTRL_TYPE_NORMAL
         });
@@ -94,17 +94,17 @@ jQuery.noConflict();
                 map.setZoom(adjust.zoom);
                 map.moveLatLon(adjust.latlon);
                 map.setZoom(adjust.zoom);
-            }else {
+            } else {
                 alert('取得住所が広域なためマップのサイズ調整が必要です。');
             }
         }
-        //ピンをプロット
+        // ピンをプロット
         for (var i = 0; i < markList.length; i++) {
             var mark = markList[i];
             map.addWidget(mark);
         }
     }
-    //いつもNAVI API(JS)がロードされるのを待って処理を実行する
+    // いつもNAVI API(JS)がロードされるのを待って処理を実行する
     function waitLoaded(event, interval, timeout) {
         setTimeout(function() {
             var remainingTime = timeout - interval;
@@ -113,7 +113,7 @@ jQuery.noConflict();
                 var markList = makeMarkList(records);
                 if (event.records.length > 0) {
                     displayMap(markList);
-                }else {
+                } else {
                     var $myMsg = $('<p></p>', {
                         text: 'レコードを登録してください。CSVでの登録時は、緯度・経度は自動で登録されません。'
                     }).css({
@@ -129,16 +129,16 @@ jQuery.noConflict();
             }
         }, interval);
     }
-    //初期化
+    // 初期化
     function init(event) {
         if (indexMapAvailable) {
-            //add js-file by using zenrin API
+            // add js-file by using zenrin API
             loadJS('https://' + domain + '/cgi/loader.cgi?key=' +
             apikey + '&ver=2.0&api=zdcmap.js,control.js&enc=SJIS');
-            //waiting ZDC object defined, and loading marker and map
+            // waiting ZDC object defined, and loading marker and map
             waitLoaded(event, 200, 4000);
         }
     }
-    //--------------Main--------------------------//
+    // --------------Main--------------------------//
     kintone.events.on('app.record.index.show', init);
 })(jQuery, kintone.$PLUGIN_ID);
