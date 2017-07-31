@@ -21,8 +21,8 @@ jQuery.noConflict();
             .appendTo('head');
     }
     // --------Main------------------------------//
-    var events = ['app.record.create.show', 'app.record.edit.show', 'app.record.index.edit.show'];
-    kintone.events.on(events, function(event) {
+    var showEvents = ['app.record.create.show', 'app.record.edit.show', 'app.record.index.edit.show'];
+    kintone.events.on(showEvents, function(event) {
         // SDK(JS)のロード
         loadJS('https://' + domain + '/cgi/loader.cgi?key=' + apikey + '&ver=2.0&api=zdcmap.js,search.js&enc=SJIS');
         // 緯度、経度フィールドのdisabled
