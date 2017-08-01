@@ -6,7 +6,7 @@
 jQuery.noConflict();
 (function($, PLUGIN_ID) {
     'use strict';
-    //escape HTML
+    // escape HTML
     function escapeHtml(str) {
         var string = str;
         string = string.replace(/&/g, '&amp;');
@@ -16,21 +16,21 @@ jQuery.noConflict();
         string = string.replace(/'/g, '&#39;');
         return string;
     }
-    //checking app in guest space
+    // checking app in guest space
     function appIsGuest() {
         if (location.pathname.match(/guest/) !== null) {
-            return true; //guest
+            return true; // guest
         }
-        return false; //not guest
+        return false; // not guest
     }
-    //add option in select box
+    // add option in select box
     function addSelectOption(elementId, label, value) {
         var option = $('<option>')
             .html(escapeHtml(label))
             .val(escapeHtml(value));
         $(elementId).append(option);
     }
-    //get currend config
+    // get currend config
     function getCurrentConf() {
         var config = JSON.parse(kintone.plugin.app.getConfig(PLUGIN_ID).options);
         if (config.apikey) {
@@ -88,14 +88,14 @@ jQuery.noConflict();
             $('#itsunavi-api-domain').val(config.domain);
         }
     }
-    //getFieldList and add select option
+    // getFieldList and add select option
     function getFieldList() {
         var appId = kintone.app.getId();
         kintone.api(
             kintone.api.url('/k/v1/form', appIsGuest()),
             'GET',
             {app: appId},
-            function(resp) {  //success
+            function(resp) { // success
                 var properties = resp.properties;
                 for (var i = 0; i < properties.length; i++) {
                     var property = properties[i];
@@ -121,12 +121,12 @@ jQuery.noConflict();
                 }
                 getCurrentConf();
             },
-            function(resp) {  //failed
+            function(resp) { // failed
                 alert('フォーム情報の取得に失敗しました\nError: ' + resp.message);
             }
         );
     }
-    //set new config
+    // set new config
     function setConf() {
         var config = {};
         config.apikey = escapeHtml($('#itsunavi-api-key').val());
@@ -148,23 +148,27 @@ jQuery.noConflict();
         config.mobileMapHeight = escapeHtml($('#itsunavi-mobile-map-height').val());
         config.domain = escapeHtml($('#itsunavi-api-domain').val());
 
-        //checking required
-        if (config.apikey === '' || config.addressField === '' || config.latField === '' || config.lonField === '' || config.domain == '') {
+        // checking required
+        if (config.apikey === ''
+            || config.addressField === ''
+            || config.latField === ''
+            || config.lonField === ''
+            || config.domain === '') {
             alert('未入力項目があります。\n必須項目を入力してください。');
             return false;
         }
         kintone.plugin.app.setConfig({options: JSON.stringify(config)});
     }
-    //cansel
+    // cansel
     function browserBack() {
         history.back();
     }
-    //set button onclick event
+    // set button onclick event
     function setEvent() {
         $('#plugin_submit').click(setConf);
         $('#plugin_cancel').click(browserBack);
     }
-    //initialize
+    // initialize
     $(document).ready(function() {
         getFieldList();
         setEvent();
