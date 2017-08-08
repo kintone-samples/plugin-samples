@@ -89,6 +89,7 @@ fi
 
 # Create a package file
 OUTPUT_DIR=$BASE_DIR/vault/plugins/$PLUGIN_NAME.$UUID
+/bin/mkdir $BASE_DIR/vault >/dev/null 2>&1
 /bin/mkdir $BASE_DIR/vault/plugins >/dev/null 2>&1
 /bin/mkdir $OUTPUT_DIR > /dev/null 2>&1
 
