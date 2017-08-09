@@ -229,10 +229,10 @@
                 this.settings.element.input.textFormatSelect + ', ' +
                 this.settings.element.input.dateFormatSelect + ', ' +
                 this.settings.element.input.connectiveSelect)
-            .change(function() {
-                var format = self.createPreview($(self.settings.element.input.textFormatSelect).val());
-                $(self.settings.element.input.preview).html(self.escapeHtml(format || ''));
-            });
+                .change(function() {
+                    var format = self.createPreview($(self.settings.element.input.textFormatSelect).val());
+                    $(self.settings.element.input.preview).html(self.escapeHtml(format || ''));
+                });
             $(this.settings.element.input.textFormatSelect).change(function() {
                 self.checkAutonumFormat();
             });
@@ -306,7 +306,7 @@
             this.validateProxy(appUrl, method, headerProxy, {}, function() {
                 kintone.plugin.app.setProxyConfig(appUrl, method, headerProxy, {}, callback);
             });
-            
+
         },
         validateProxy: function(url, method, header, data, callback) {
             var self = this;
@@ -319,7 +319,7 @@
                         self.settings.i18n.alertMessage.apiTokenInvalid);
                     return;
                 }
-                
+
             }, function() {
                 self.alert(self.settings.i18n.alertMessage.apiTokenInvalid);
             });
@@ -344,7 +344,7 @@
 
             if (autoNumberingFieldcode === 'null') {
                 this.alert(this.settings.element.input.fieldCode,
-                        this.settings.i18n.alertMessage.notSelectedNumberingField);
+                    this.settings.i18n.alertMessage.notSelectedNumberingField);
                 validateResult = false;
             }
             if (!this.isNumberPositive(numOfDigit)) {
@@ -361,13 +361,13 @@
                     this.settings.i18n.alertMessage.notSelectedFormat);
                 validateResult = false;
             }
-            //「書式」と「日付形式」未選択チェック
+            // 「書式」と「日付形式」未選択チェック
             if ((format[0] === 'date' || format[1] === 'date') && dateformat === 'null') {
                 this.alert(this.settings.element.input.dateFormatSelect,
                     this.settings.i18n.alertMessage.notSelectedDateFormat);
                 validateResult = false;
             }
-            //「書式」と「テキスト設定」未入力チェック
+            // 「書式」と「テキスト設定」未入力チェック
             if ((format[0] === 'text' || format[1] === 'text') && prefix === '') {
                 this.alert(this.settings.element.input.prefix, this.settings.i18n.alertMessage.notInputTextFormat);
                 validateResult = false;
@@ -396,9 +396,9 @@
             // 設定文書の値を返す
             config['autoNumberingFieldcode'] = autoNumberingFieldcode;
             config['format'] = $(this.settings.element.input.textFormatSelect).val();
-            config['format1'] = format[0]; //date
-            config['format2'] = format[1]; //number
-            config['format3'] = format[2]; //textの何れかが入る。
+            config['format1'] = format[0]; // date
+            config['format2'] = format[1]; // number
+            config['format3'] = format[2]; // textの何れかが入る。
             config['dateFormat'] = dateformat;
             config['text'] = prefix;
             config['preview'] = preview;
