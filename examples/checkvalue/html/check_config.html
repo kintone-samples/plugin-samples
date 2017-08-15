@@ -1,46 +1,74 @@
-<div>  
-  <div class="block">
-    <label class="kintoneplugin-label">
-    	<span id ="container_label">郵便番号をチェックするフィールド</span>
-    	<span class="kintoneplugin-require">*</span>
-    </label>
-    <div class="kintoneplugin-row">郵便番号をチェックするフィールドのフィールドコードをいれてください。</div>
-     <div class="kintoneplugin-input-outer"> 
-      <input id ="check-plugin-post_code" class="kintoneplugin-input-text"></input>
-     </div>
-  </div>
-  <div class="block">
-    <label class="kintoneplugin-label">
-    	<span id ="container_label">電話番号をチェックするフィールド</span>
-    	<span class="kintoneplugin-require">*</span>
-    </label>
-    <div class="kintoneplugin-row">電話番号をチェックするフィールドのフィールドコードをいれてください。</div>
-     <div class="kintoneplugin-input-outer"> 
-      <input id ="check-plugin-phone_code" class="kintoneplugin-input-text"></input>
-     </div>
-  </div>
-  <div class="block">
-    <label class="kintoneplugin-label">
-    	<span id ="container_label">FAX番号をチェックするフィールド</span>
-    	<span class="kintoneplugin-require">*</span>
-    </label>
-    <div class="kintoneplugin-row">FAX番号をチェックするフィールドのフィールドコードをいれてください。</div>
-     <div class="kintoneplugin-input-outer"> 
-      <input id ="check-plugin-fax_code"  class="kintoneplugin-input-text"></input>
-     </div>
-  </div>
-  <div class="block">
-    <label class="kintoneplugin-label">
-    	<span id ="container_label">メールアドレスをチェックするフィールド</span>
-    	<span class="kintoneplugin-require">*</span>
-    </label>
-    <div class="kintoneplugin-row">メールアドレスをチェックするフィールドのフィールドコードをいれてください。</div>
-     <div class="kintoneplugin-input-outer"> 
-      <input id ="check-plugin-mail_code" class="kintoneplugin-input-text"></input>
-     </div>
-  </div>
-  <div class="block">
-    <button type="button" id="check-plugin-submit" class="kintoneplugin-button-dialog-ok">     保存する     </button>
-    <button type="button" id="check-plugin-cancel" class="kintoneplugin-button-dialog-cancel">     キャンセル   </button>
-  </div>
-</div>  
+<div>
+	<div class="block">
+		<label class="kintoneplugin-label">
+			<span id ="container_label">値変更後入力チェック</span>
+		</label>
+		<div class="kintoneplugin-row"></div>
+		<div class="kintoneplugin-input-checkbox">
+			<span class="kintoneplugin-input-checkbox-item">
+				<input type="checkbox" name="checkbox" value="1" id="check-plugin-change_mode" checked="false">
+				<label for="check-plugin-change_mode">値変更後に入力チェックを行う場合はチェックしてください。</label>
+			</span>
+		</div>
+	</div>
+	<div class="block">
+		<label class="kintoneplugin-label">
+			<span id ="container_label">郵便番号をチェックするフィールド</span>
+			<span class="kintoneplugin-require">*</span>
+		</label>
+		<div class="kintoneplugin-row">郵便番号のチェックを行うフィールドを選択してください。</div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select">
+				<select id="select_checkvalue_field_zip" name="select_checkvalue_field_zip">
+					<option value="">-----</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<label class="kintoneplugin-label">
+			<span id ="container_label">電話番号をチェックするフィールド</span>
+			<span class="kintoneplugin-require">*</span>
+		</label>
+		<div class="kintoneplugin-row">電話番号のチェックを行うフィールドを選択してください。</div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select">
+				<select id="select_checkvalue_field_tel" name="select_checkvalue_field_tel">
+					<option value="">-----</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<label class="kintoneplugin-label">
+			<span id ="container_label">FAX番号をチェックするフィールド</span>
+			<span class="kintoneplugin-require">*</span>
+		</label>
+		<div class="kintoneplugin-row">FAX番号のチェックを行うフィールドを選択してください。</div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select">
+				<select id="select_checkvalue_field_fax" name="select_checkvalue_field_fax">
+					<option value="">-----</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<label class="kintoneplugin-label">
+			<span id ="container_label">メールアドレスをチェックするフィールド</span>
+			<span class="kintoneplugin-require">*</span>
+		</label>
+		<div class="kintoneplugin-row">メールアドレスのチェックを行うフィールドを選択してください。</div>
+		<div class="kintoneplugin-select-outer">
+			<div class="kintoneplugin-select">
+				<select id="select_checkvalue_field_mail" name="select_checkvalue_field_mail">
+					<option value="">-----</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<button type="button" id="check-plugin-submit" class="kintoneplugin-button-dialog-ok">　保存する　</button>
+		<button type="button" id="check-plugin-cancel" class="kintoneplugin-button-dialog-cancel">　キャンセル　</button>
+	</div>
+</div>
