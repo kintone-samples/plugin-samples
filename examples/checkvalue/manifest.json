@@ -1,10 +1,10 @@
 {
     "manifest_version": 1,
-    "version": 1,
+    "version": 2,
     "type": "APP",
     "name": {
-        "ja": "入力値チェックプラグイン2",
-        "en": "Input value check plug-in2",
+        "ja": "入力値チェックプラグイン",
+        "en": "Input value check plug-in",
         "zh": "输入值校验插件"
     },
     "description": {
@@ -12,11 +12,11 @@
         "en": "This plugin checks zip code, telephone number, FAX number, e-mail address",
         "zh": "邮政编码，它是一个插件，以检查电话号码，传真号码，E-mail地址的输入值"
     },
-    "icon": "image/check2.png",
+    "icon": "image/check.png",
     "homepage_url": {
-        "ja": "https://cybozudev.zendesk.com/hc/ja/articles/202640890",
-        "en": "https://cybozudev.zendesk.com/hc/ja/articles/202640890",
-        "zh": "https://cybozudev.zendesk.com/hc/ja/articles/202640890"
+        "ja": "https://developer.cybozu.io/hc/ja/articles/203501094",
+        "en": "https://developer.cybozu.io/hc/ja/articles/203501094",
+        "zh": "https://developer.cybozu.io/hc/ja/articles/203501094"
     },
     "desktop": {
         "js": [
@@ -32,7 +32,7 @@
         ],
         "css": [
                 "css/check_config.css",
-                "css/51-us-default.css"
+                "css/51-modern-default.css"
         ],
         "required_params": ["zip", "tel", "fax", "mail", "mode"]
     }
