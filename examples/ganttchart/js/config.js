@@ -165,7 +165,7 @@ jQuery.noConflict();
                                     .val(this.escapeHtml(prop['code'])));
                             break;
                         case 'SUBTABLE':
-                            if (key !== "Table") {
+                            if (key !== 'Table') {
                                 continue;
                             }
                             for (var key2 in this.settings.form[prop.code].fields) {
@@ -220,7 +220,7 @@ jQuery.noConflict();
                 $('#ganttchart-plugin-to').val(this.escapeHtml(this.settings.config['ganttchartTo']));
                 $('#ganttchart-plugin-color').val(this.escapeHtml(this.settings.config['ganttchartColor']));
                 $(this.settings.element.ganttchartScall).val([self.settings.config['ganttchartScall'] || 'days']);
-                //Fixed header
+                // Fixed header
                 this.uiSetFormSubmitIsFixed();
                 var timeoutResize;
                 $(window).resize(function() {
@@ -229,11 +229,11 @@ jQuery.noConflict();
                         self.uiSetFormSubmitIsFixed();
                     }, 150);
                 });
-                //Set color setting
+                // Set color setting
                 this.settingColorsSet();
-                //Show form setting
+                // Show form setting
                 $(this.settings.element.gantt).css('display', 'block');
-                //Listen action
+                // Listen action
                 this.listenAction();
             },
             uiSetFormSubmitIsFixed: function() {
@@ -251,19 +251,19 @@ jQuery.noConflict();
             },
             listenAction: function() {
                 var self = this;
-                //Remove alert when select
+                // Remove alert when select
                 $(this.settings.element.gantt).on('change', 'select', function() {
                     $(this).parents('.kintoneplugin-row').find('.kintoneplugin-alert').remove();
                 });
-                //on submit
+                // on submit
                 $(document).on('click', '.pluginSubmit', function() {
                     self.settingSave();
                 });
-                //on cancel
+                // on cancel
                 $(document).on('click', '.pluginCancel', function() {
                     history.back();
                 });
-                //Select color picker
+                // Select color picker
                 $(this.settings.element.gantt).on('focus', 'input.ganttchart-plugin-color-selected', function() {
                     $(this).colorPicker({
                         opacity: false,
@@ -283,11 +283,11 @@ jQuery.noConflict();
 
                 // Check table fields
                 var ganntTableCheckTmp = {
-                    title: $(this.settings.element.ganttchartTitle + " option:selected").text(),
-                    desc: $(this.settings.element.ganttchartDesc + " option:selected").text(),
-                    from: $(this.settings.element.ganttchartFrom + " option:selected").text(),
-                    to: $(this.settings.element.ganttchartTo + " option:selected").text(),
-                    color: $(this.settings.element.ganttchartColor + " option:selected").text()
+                    title: $(this.settings.element.ganttchartTitle + ' option:selected').text(),
+                    desc: $(this.settings.element.ganttchartDesc + ' option:selected').text(),
+                    from: $(this.settings.element.ganttchartFrom + ' option:selected').text(),
+                    to: $(this.settings.element.ganttchartTo + ' option:selected').text(),
+                    color: $(this.settings.element.ganttchartColor + ' option:selected').text()
                 };
 
                 var formValid = true;
@@ -295,7 +295,7 @@ jQuery.noConflict();
                 if (ganttchartTitle === '') {
                     this.alert(this.settings.element.ganttchartTitle, this.settings.i18n.requiredField);
                     formValid = false;
-                } else if (ganntTableCheckTmp.title.indexOf("[Table]") === 0) {
+                } else if (ganntTableCheckTmp.title.indexOf('[Table]') === 0) {
                     this.alert(this.settings.element.ganttchartTitle, this.settings.i18n.subTableField);
                     formValid = false;
                 }
@@ -319,14 +319,14 @@ jQuery.noConflict();
                     return;
                 }
                 // テーブルと非テーブルフィールドの混在チェック
-                if (!(((ganntTableCheckTmp.desc.indexOf("[Table]") === 0 || ganntTableCheckTmp.desc === "--") &&
-                ganntTableCheckTmp.from.indexOf("[Table]") === 0 &&
-                ganntTableCheckTmp.to.indexOf("[Table]") === 0 &&
-                ganntTableCheckTmp.color.indexOf("[Table]") === 0) ||
-                (ganntTableCheckTmp.desc.indexOf("[Table]") === -1 &&
-                ganntTableCheckTmp.from.indexOf("[Table]") === -1 &&
-                ganntTableCheckTmp.to.indexOf("[Table]") === -1 &&
-                ganntTableCheckTmp.color.indexOf("[Table]") === -1))) {
+                if (!(((ganntTableCheckTmp.desc.indexOf('[Table]') === 0 || ganntTableCheckTmp.desc === '--') &&
+                ganntTableCheckTmp.from.indexOf('[Table]') === 0 &&
+                ganntTableCheckTmp.to.indexOf('[Table]') === 0 &&
+                ganntTableCheckTmp.color.indexOf('[Table]') === 0) ||
+                (ganntTableCheckTmp.desc.indexOf('[Table]') === -1 &&
+                ganntTableCheckTmp.from.indexOf('[Table]') === -1 &&
+                ganntTableCheckTmp.to.indexOf('[Table]') === -1 &&
+                ganntTableCheckTmp.color.indexOf('[Table]') === -1))) {
                     this.alert(this.settings.element.ganttchartDesc, this.settings.i18n.mixedField);
                     this.alert(this.settings.element.ganttchartFrom, this.settings.i18n.mixedField);
                     this.alert(this.settings.element.ganttchartTo, this.settings.i18n.mixedField);
@@ -380,14 +380,14 @@ jQuery.noConflict();
                     elementValue[1].children[0].style.backgroundColor = this.settings.config.settingColors[valueColor];
                     tableColor.append(settingColorRowClone);
                 }
-                //Add more setting
+                // Add more setting
                 if (Object.keys(this.settings.config.settingColors).length === 0) {
                     tableColor.append(settingColorRow.clone());
                 }
                 settingColorRow.remove();
             },
             settingColorsListen: function() {
-                //Add/remove color setting
+                // Add/remove color setting
                 $(this.settings.element.gantt).on('click', '.column-add-more > a', function() {
                     var elementAction = $(this);
                     var rowContain = elementAction.parent().parent();
@@ -396,7 +396,7 @@ jQuery.noConflict();
                         rowContain.next().find('input[type=text]').val('').removeAttr('style');
                         return;
                     }
-                    //remove value input if has one element 'tr'
+                    // remove value input if has one element 'tr'
                     if (rowContain.parent().find('tr').length === 1) {
                         rowContain.find('input[type=text]').val('').removeAttr('style');
                         return;

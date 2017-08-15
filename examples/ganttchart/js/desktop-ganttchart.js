@@ -9,12 +9,12 @@ document.write('<script type="text/javascript" src="https://js.cybozu.com/jquery
 
 // ローディング画面を出す関数
 function setLoading() {
-    "use strict";
+    'use strict';
     var $body = $('body');
     $body.css('width', '100%');
 
     var $loading = $('<div>').attr('id', 'loading').attr('class', 'loading')
-                .attr('style', 'width: 100%; height: 100%; position:absolute;' +
+        .attr('style', 'width: 100%; height: 100%; position:absolute;' +
                         ' top:0; left:0; text-align:center; background-color:#666666; opacity:0.6; z-index: 10000;');
     var $div = $('<div>').attr('id', 'imgBox').attr('style', 'width: 100%; height: 100%;');
     var $img = $('<img>').attr('src', 'data:image/gif;base64,R0lGODlhZABkAPQAAAAAAP///3BwcJaWlsjIyMLCwqKiouLi4uzs7NLS' +
@@ -126,7 +126,7 @@ function setLoading() {
 
 // ローディング画面を消す関数
 function removeLoading() {
-    "use strict";
+    'use strict';
     var $loading = $('.loading');
     $loading.remove();
 
@@ -136,7 +136,7 @@ function removeLoading() {
 
 // ×ボタンでモーダルウィンドウを消すときの処理
 function closeButton() {
-    "use strict";
+    'use strict';
     $('#modal').fadeOut(250);
     $('#blackOut').remove();
     $('body').css('position', 'relative');
@@ -144,116 +144,6 @@ function closeButton() {
 
 (function($, moment, PLUGIN_ID) {
     'use strict';
-
-
-    //モーダルウィンドウの表示
-    function createModalWindow(data) {
-
-        var $body = $('body');
-        $body.css('width', '100%');
-        var $black = $('<div>').attr('id', 'blackOut').attr('style', 'width: 100%; height: 100%;' +
-        'position:absolute; top:0; left:0; text-align:center; background-color:#666666; opacity:0.6; z-index: 10;');
-        $body.append($black);
-        $body.css('position', 'fixed');
-
-        // モーダルウィンドウの基礎部分を作成
-        var divid = "modal";
-
-        var styleTag = {
-            "tag": "style",
-            "content": ["\ndiv#modal{\n\tposition: fixed;\n\ttop:0;\n\tz-index:11;\n\twidth: 100%;\n\theight: 100%;" +
-            "\n\tbackground-color: transparent;}\ndiv#modal div#box-min{\n\tposition: relative;" +
-            "\n\tbackground-color:#ffffff;\n\twidth:500px;height:400px;\n\tborder:2px solid #666666;" +
-            "\n\tpadding:0 5px 0 5px;\n}\ndiv#box-min div.content{\n\t\n\toverflow: visible;\n}"]
-        };
-
-        // モーダルウィンドウのHTMLを格納
-        var $weather = $('<div id=' + divid + ' class="box"><div id="box-min"><div id="header">' +
-        '<h3>' + data.name + '　' + data.desc + '</h3>' +
-        '</div><button type="button" class="sw-modal-close" onclick="closeButton()">×</button><div class="content">' +
-        '<p>' + data.lang.plzEnterStartDate + '</p><input type="text" id="start" value="' +
-        moment(data.start).format("YYYY/MM/DD") + '">' +
-        '<p>' + data.lang.plzEnterEndDate + '</p>' +
-        '<input type="text" name="end" id="end" value="' + moment(data.end).format("YYYY/MM/DD") + '">' +
-        '<br><br><button id="goButton" class="gaia-ui-actionmenu-save">　' + data.lang.update + '　</button>' +
-        '<a href="' + data.url + '" target="_blank">　　' + data.lang.detailPage + '</a></div></div></div>');
-
-        $("#" + divid).remove();
-        // モーダルウィンドウをHTMLに配置
-        $("body").append($weather);
-
-        var style = domFromObject(styleTag);
-        $("#box-min").before(style);
-        // モーダルウィンドウをセンターに
-        adjustCenter();
-
-        $("#start").datepicker();
-        $("#end").datepicker();
-
-        // 登録処理
-        $('#goButton').click(function() {
-            setLoading();
-
-            var startDate = $("#start").datepicker('getDate');
-            var endDate = $("#end").datepicker('getDate');
-
-            if (!startDate || !endDate) {
-                alert(data.lang.emptyAlert);
-                removeLoading();
-                return;
-            }
-
-            startDate = moment(startDate).format("YYYY-MM-DD");
-            endDate = moment(endDate).format("YYYY-MM-DD");
-
-            var confs = kintone.plugin.app.getConfig(PLUGIN_ID);
-            var tableFlgs = false;
-            if (confs.fieldNameColor.indexOf("[Table]") === 0) {
-                tableFlgs = true;
-            }
-            if (tableFlgs) {
-                for (var key2 in data.record) {
-                    if (key2 !== "Table") {
-                        delete data.record[key2];
-                    }
-                }
-
-                for (var i = 0; i < data.record.Table.value.length; i++) {
-                    if (data.record.Table.value[i].id === data.tableId) {
-                        data.record.Table.value[i].value[data.GANTT_FROM].value = startDate;
-                        data.record.Table.value[i].value[data.GANTT_TO].value = endDate;
-                    }
-                }
-            } else {
-                for (var key in data.record) {
-                    if (key !== data.GANTT_FROM && key !== data.GANTT_TO) {
-                        delete data.record[key];
-                    }
-                }
-                data.record[data.GANTT_FROM].value = startDate;
-                data.record[data.GANTT_TO].value = endDate;
-            }
-            var body = {
-                "app": kintone.app.getId(),
-                "id": data.recId,
-                "record": data.record
-            };
-
-            kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', body, function(resp) {
-                location.reload();
-            }, function() {
-                alert(data.lang.authAlert);
-                removeLoading();
-            });
-        });
-    }
-
-    // モーダルウィンドウをセンターに寄せる
-    function adjustCenter() {
-        var margin_top = ($(window).height() - $('#box-min').height()) / 2;
-        var margin_left = ($(window).width() - $('#box-min').width()) / 2;
-        $('#box-min').css({top: margin_top + "px", left: margin_left + "px"});
-    }
 
     var domFromObject = function(obj, callback) {
         var i, r;
@@ -306,6 +196,116 @@ function closeButton() {
         }
         return r;
     };
+
+    // モーダルウィンドウをセンターに寄せる
+    function adjustCenter() {
+        var marginTop = ($(window).height() - $('#box-min').height()) / 2;
+        var marginLeft = ($(window).width() - $('#box-min').width()) / 2;
+        $('#box-min').css({top: marginTop + 'px', left: marginLeft + 'px'});
+    }
+
+    // モーダルウィンドウの表示
+    function createModalWindow(data) {
+
+        var $body = $('body');
+        $body.css('width', '100%');
+        var $black = $('<div>').attr('id', 'blackOut').attr('style', 'width: 100%; height: 100%;' +
+        'position:absolute; top:0; left:0; text-align:center; background-color:#666666; opacity:0.6; z-index: 10;');
+        $body.append($black);
+        $body.css('position', 'fixed');
+
+        // モーダルウィンドウの基礎部分を作成
+        var divid = 'modal';
+
+        var styleTag = {
+            'tag': 'style',
+            'content': ['\ndiv#modal{\n\tposition: fixed;\n\ttop:0;\n\tz-index:11;\n\twidth: 100%;\n\theight: 100%;' +
+            '\n\tbackground-color: transparent;}\ndiv#modal div#box-min{\n\tposition: relative;' +
+            '\n\tbackground-color:#ffffff;\n\twidth:500px;height:400px;\n\tborder:2px solid #666666;' +
+            '\n\tpadding:0 5px 0 5px;\n}\ndiv#box-min div.content{\n\t\n\toverflow: visible;\n}']
+        };
+
+        // モーダルウィンドウのHTMLを格納
+        var $weather = $('<div id=' + divid + ' class="box"><div id="box-min"><div id="header">' +
+        '<h3>' + data.name + '　' + data.desc + '</h3>' +
+        '</div><button type="button" class="sw-modal-close" onclick="closeButton()">×</button><div class="content">' +
+        '<p>' + data.lang.plzEnterStartDate + '</p><input type="text" id="start" value="' +
+        moment(data.start).format('YYYY/MM/DD') + '">' +
+        '<p>' + data.lang.plzEnterEndDate + '</p>' +
+        '<input type="text" name="end" id="end" value="' + moment(data.end).format('YYYY/MM/DD') + '">' +
+        '<br><br><button id="goButton" class="gaia-ui-actionmenu-save">　' + data.lang.update + '　</button>' +
+        '<a href="' + data.url + '" target="_blank">　　' + data.lang.detailPage + '</a></div></div></div>');
+
+        $('#' + divid).remove();
+        // モーダルウィンドウをHTMLに配置
+        $('body').append($weather);
+
+        var style = domFromObject(styleTag);
+        $('#box-min').before(style);
+        // モーダルウィンドウをセンターに
+        adjustCenter();
+
+        $('#start').datepicker();
+        $('#end').datepicker();
+
+        // 登録処理
+        $('#goButton').click(function() {
+            setLoading();
+
+            var startDate = $('#start').datepicker('getDate');
+            var endDate = $('#end').datepicker('getDate');
+
+            if (!startDate || !endDate) {
+                alert(data.lang.emptyAlert);
+                removeLoading();
+                return;
+            }
+
+            startDate = moment(startDate).format('YYYY-MM-DD');
+            endDate = moment(endDate).format('YYYY-MM-DD');
+
+            var confs = kintone.plugin.app.getConfig(PLUGIN_ID);
+            var tableFlgs = false;
+            if (confs.fieldNameColor.indexOf('[Table]') === 0) {
+                tableFlgs = true;
+            }
+            if (tableFlgs) {
+                for (var key2 in data.record) {
+                    if (key2 !== 'Table') {
+                        delete data.record[key2];
+                    }
+                }
+
+                for (var i = 0; i < data.record.Table.value.length; i++) {
+                    if (data.record.Table.value[i].id === data.tableId) {
+                        data.record.Table.value[i].value[data.GANTT_FROM].value = startDate;
+                        data.record.Table.value[i].value[data.GANTT_TO].value = endDate;
+                    }
+                }
+            } else {
+                for (var key in data.record) {
+                    if (key !== data.GANTT_FROM && key !== data.GANTT_TO) {
+                        delete data.record[key];
+                    }
+                }
+                data.record[data.GANTT_FROM].value = startDate;
+                data.record[data.GANTT_TO].value = endDate;
+            }
+            var body = {
+                'app': kintone.app.getId(),
+                'id': data.recId,
+                'record': data.record
+            };
+
+            kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', body, function(resp) {
+                location.reload();
+            }, function() {
+                alert(data.lang.authAlert);
+                removeLoading();
+            });
+        });
+    }
+
 
     var kintonePluginGranttChart = {
         lang: {
@@ -360,13 +360,13 @@ function closeButton() {
                 if (!self.settings.config) {
                     return;
                 }
-                if (typeof self.settings.config.settingColors === "string") {
+                if (typeof self.settings.config.settingColors === 'string') {
                     self.initSetting();
                 }
                 var ganttBox = self.uiCreateGanttBox();
                 self.data = [];
                 self.getRecordsData(event.records, ganttBox, function() {
-                    //Put to jquery gantt and render
+                    // Put to jquery gantt and render
                     self.gantt(ganttBox);
                 });
             });
@@ -382,7 +382,7 @@ function closeButton() {
             this.settings.i18n = (this.settings.lang in this.lang) ? this.settings.lang : 'en';
 
             var settingColors = JSON.parse(this.settings.config.settingColors || '{}');
-            //Check multi field corlor and overide settingColors
+            // Check multi field corlor and overide settingColors
             this.settings.config.settingColors = {};
             for (var fieldColor in settingColors) {
                 if (!settingColors.hasOwnProperty(fieldColor)) {
@@ -413,7 +413,7 @@ function closeButton() {
             // Set the record.
             var conf = kintone.plugin.app.getConfig(PLUGIN_ID);
             var tableFlg = false;
-            if (conf.fieldNameColor.indexOf("[Table]") === 0) {
+            if (conf.fieldNameColor.indexOf('[Table]') === 0) {
                 tableFlg = true;
             }
             if (tableFlg) {
@@ -426,7 +426,7 @@ function closeButton() {
 
                         var deskFlg = true;
                         if (subTable[j].value[GANTT_DESC]) {
-                            if (subTable[j].value[GANTT_DESC].value === "") {
+                            if (subTable[j].value[GANTT_DESC].value === '') {
                                 deskFlg = false;
                             }
                             descGantt += '<div>' +
@@ -444,33 +444,30 @@ function closeButton() {
                         }
 
                         if (subTable[j].value[GANTT_FROM]['value']) {
-                            descGantt += '<div>' + conf.fieldNameFrom.slice(conf.fieldNameFrom.indexOf("[Table]") + 7) +
-                                ': ' + self.escapeHtml
-                                (self.convertDateTimeWithTimezone(subTable[j].value[GANTT_FROM]['value'])) +
+                            descGantt += '<div>' + conf.fieldNameFrom.slice(conf.fieldNameFrom.indexOf('[Table]') + 7) +
+                                ': ' + self.escapeHtml(self.convertDateTimeWithTimezone(subTable[j].value[GANTT_FROM]['value'])) +
                                 '</div>';
                         }
                         if (subTable[j].value[GANTT_TO]['value']) {
-                            descGantt += '<div>' + conf.fieldNameTo.slice(conf.fieldNameTo.indexOf("[Table]") + 7) +
-                                ': ' + self.escapeHtml
-                                (self.convertDateTimeWithTimezone(subTable[j].value[GANTT_TO]['value'])) +
+                            descGantt += '<div>' + conf.fieldNameTo.slice(conf.fieldNameTo.indexOf('[Table]') + 7) +
+                                ': ' + self.escapeHtml(self.convertDateTimeWithTimezone(subTable[j].value[GANTT_TO]['value'])) +
                                 '</div>';
                         }
                         if (subTable[j].value[GANTT_COLOR]['value']) {
-                            descGantt += conf.fieldNameColor.slice(conf.fieldNameColor.indexOf("[Table]") + 7) +
+                            descGantt += conf.fieldNameColor.slice(conf.fieldNameColor.indexOf('[Table]') + 7) +
                             ': ' + self.escapeHtml(subTable[j].value[GANTT_COLOR]['value']);
                         }
 
                         var ganttRecordData = {
                             id: self.escapeHtml(records[i2]['$id'].value),
                             name: (j !== 0) ? '' : self.escapeHtml(records[i2][GANTT_NAME].value),
-                            desc: subTable[j].value[GANTT_DESC] ? self.escapeHtml
-                            (subTable[j].value[GANTT_DESC].value) : '',
+                            desc: subTable[j].value[GANTT_DESC] ? self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
                             values: [{
                                 from: self.convertDateTime(subTable[j].value[GANTT_FROM].value),
                                 to: self.convertDateTime(subTable[j].value[GANTT_TO].value),
                                 desc: descGantt,
                                 label: deskFlg ? self.escapeHtml(subTable[j].value[GANTT_DESC].value)
-                                : self.escapeHtml(records[i2][GANTT_NAME].value),
+                                    : self.escapeHtml(records[i2][GANTT_NAME].value),
                                 customClass: self.escapeHtml(colorGantt),
                                 dataObj: {
                                     'url': '/k/' + kintone.app.getId() + '/show#record=' + records[i2]['$id']['value'],
@@ -530,9 +527,9 @@ function closeButton() {
                             from: self.convertDateTime(records[i3][GANTT_FROM].value),
                             to: self.convertDateTime(records[i3][GANTT_TO].value),
                             desc: descGantt2,
-                            label: (records[i3][GANTT_DESC] && records[i3][GANTT_DESC].value !== "") ?
-                            self.escapeHtml(records[i3][GANTT_DESC]['value'])
-                            : self.escapeHtml(records[i3][GANTT_NAME].value),
+                            label: (records[i3][GANTT_DESC] && records[i3][GANTT_DESC].value !== '') ?
+                                self.escapeHtml(records[i3][GANTT_DESC]['value'])
+                                : self.escapeHtml(records[i3][GANTT_NAME].value),
                             customClass: self.escapeHtml(colorGantt2),
                             dataObj: {
                                 'url': '/k/' + kintone.app.getId() + '/show#record=' + records[i3]['$id']['value'],
@@ -541,7 +538,7 @@ function closeButton() {
                                 'start': records[i3][GANTT_FROM].value,
                                 'end': records[i3][GANTT_TO].value,
                                 'recId': records[i3]['$id'].value,
-                                'tableId': "",
+                                'tableId': '',
                                 'record': records[i3],
                                 'GANTT_FROM': GANTT_FROM,
                                 'GANTT_TO': GANTT_TO,
@@ -559,7 +556,7 @@ function closeButton() {
             elGantt.className = 'loaded';
 
             var GANTT_SCALL = this.settings.config['ganttchartScall'] || 'days';
-            //Execute jquery gantt
+            // Execute jquery gantt
             $(elGantt).gantt({
                 source: this.data,
                 navigate: 'scroll',
@@ -573,18 +570,18 @@ function closeButton() {
                 waitText: this.lang[this.settings.i18n].wait,
                 scrollToToday: true,
                 onItemClick: function(dataRecord) {
-                    $(".leftPanel").css("z-index", "inherit");
+                    $('.leftPanel').css('z-index', 'inherit');
                     createModalWindow(dataRecord);
                 }
             });
         },
         uiCreateGanttBox: function() {
-/*             var elGantt = document.getElementById('gantt');
+            /*             var elGantt = document.getElementById('gantt');
            if (elGantt !== null) {
                 return elGantt;
             }*/
-            if ($("#gantt").length > 0) {
-                $("#gantt").remove();
+            if ($('#gantt').length > 0) {
+                $('#gantt').remove();
             }
 
             var elSpace = kintone.app.getHeaderSpaceElement();
@@ -615,7 +612,7 @@ function closeButton() {
                 }
                 styleRule += '.' + className + '{background-color:' + styles[className] + '!important}';
             }
-            //Change cursor progress bar to pointer
+            // Change cursor progress bar to pointer
             styleRule += '.fn-gantt .bar .fn-label{cursor: pointer!important;}';
             $('html > head').append($('<style>' + styleRule + '</style>'));
         },
