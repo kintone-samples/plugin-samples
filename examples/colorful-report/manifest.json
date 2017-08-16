@@ -35,7 +35,7 @@
       "js/colorful-weekly-config.js"
     ],
     "css": [
-      "css/51-us-default.css",
+      "css/51-modern-default.css",
       "css/colorful-weekly-config.css"
     ],
     "required_params": []
