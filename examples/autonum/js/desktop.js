@@ -93,7 +93,7 @@
                     if (self.isResetNumber(respdata)) {
                         numbering = NUMBERING_DEFAULT;
                     } else {
-                        //handle case NUM_OF_DIGIT was changed
+                        // handle case NUM_OF_DIGIT was changed
                         var lastIdArray = lastNumberingResponse.split(self.settings.config.CONNECTIVE);
                         var lastIdInt = lastIdArray[lastIdArray.length - 1];
 
@@ -165,7 +165,7 @@
 
             }, function() {
                 self.alertMessage(self.settings.i18n.alertMessage.failedAutoNumbering);
-                throw(self.settings.i18n.alertMessage.failedAutoNumbering);
+                throw (self.settings.i18n.alertMessage.failedAutoNumbering);
             });
         },
         apiRequest: function(query) {
@@ -186,7 +186,7 @@
                         } else {
                             self.alertMessage(self.settings.i18n.alertMessage.apiTokenInvalid);
                         }
-                        
+
                     }, function(error) {
                         reject(error);
                     });
