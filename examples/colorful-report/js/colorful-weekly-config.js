@@ -16,16 +16,16 @@ jQuery.noConflict();
         kintone.api(kintone.api.url('/k/v1/preview/form', true), 'GET', {app: appId}).then(function(resp) {
             var $op;
             for (var i = 0; i < resp.properties.length; i++) {
-                //set field for title.
+                // set field for title.
                 if (resp.properties[i]['type'] === 'SINGLE_LINE_TEXT') {
-                    $op = $("<option>", {
+                    $op = $('<option>', {
                         value: resp.properties[i]['code']
                     }).append(
                         '<span>' + resp.properties[i]['label'] + '(' + resp.properties[i]['code'] + ')</span>'
                     );
                     $('#title-field').append($op);
-                }else if (resp.properties[i]['type'] === 'DATE') {
-                    $op = $("<option>", {
+                } else if (resp.properties[i]['type'] === 'DATE') {
+                    $op = $('<option>', {
                         value: resp.properties[i]['code']
                     }).append(
                         '<span>' + resp.properties[i]['label'] + '(' + resp.properties[i]['code'] + ')</span>'
@@ -34,7 +34,7 @@ jQuery.noConflict();
                 }
             }
         }).then(function() {
-            //if exist setting.
+            // if exist setting.
             if (config) {
                 $('#view-id').val(config['viewId']);
                 $('#set-day').val(config['theDate']);
@@ -56,7 +56,7 @@ jQuery.noConflict();
                     $createTable.appendTo($('.viewSettingTable'));
                 }
             }
-            //if push the button for setting of view details.
+            // if push the button for setting of view details.
             $('#getViewSetting').click(function() {
                 var $table = $('<table>', {
                     border: 1,
@@ -79,10 +79,10 @@ jQuery.noConflict();
                     }
                     $table.appendTo($('.viewSettingTable'));
                 }, function(err) {
-                    alert("一覧の取得に失敗しました。\n" + err.message);
+                    alert('一覧の取得に失敗しました。\n' + err.message);
                 });
             });
-            //if push the button for submit.
+            // if push the button for submit.
             $('#submit').click(function() {
                 var conf = [];
                 var viewId = $('#view-id').val();
