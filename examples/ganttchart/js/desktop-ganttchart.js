@@ -135,6 +135,7 @@ function removeLoading() {
 }
 
 // ×ボタンでモーダルウィンドウを消すときの処理
+// eslint-disable-next-line no-unused-vars
 function closeButton() {
     'use strict';
     $('#modal').fadeOut(250);
@@ -144,58 +145,6 @@ function closeButton() {
 
 (function($, moment, PLUGIN_ID) {
     'use strict';
-
-    var domFromObject = function(obj, callback) {
-        var i, r;
-        if (['string', 'number'].indexOf(typeof obj) >= 0) {
-            r = obj;
-        } else if (obj instanceof Array) {
-            r = [];
-            for (i = 0; i < obj.length; i++) {
-                r.push(domFromObject(obj[i]));
-            }
-        } else if (obj.constructor === Object) {
-            var tag = obj.tag;
-            var elm = document.createElement(tag);
-            for (i in obj) {
-                if (obj.hasOwnProperty(i)) {
-                    if (callback) {
-                        if (callback(i, elm, obj[i])) {
-                            continue;
-                        }
-                    }
-                    if (i === 'tag') {
-                        continue;
-                    }
-                    var v;
-                    if (i === 'content') {
-                        v = domFromObject(obj[i]);
-                        if (v instanceof Array) {
-                            for (var j = 0; j < v.length; j++) {
-                                var v2;
-                                if (typeof v[j] === 'string') {
-                                    v2 = document.createTextNode(v[j]);
-                                } else {
-                                    v2 = v[j];
-                                }
-                                elm.appendChild(v2);
-                            }
-                        } else if (v instanceof HTMLElement) {
-                            elm.appendChild(v);
-                        } else {
-                            elm.innerHTML = v;
-                        }
-
-                    } else {
-                        v = obj[i];
-                        elm.setAttribute(i, v);
-                    }
-                }
-            }
-            r = elm;
-        }
-        return r;
-    };
 
     // モーダルウィンドウをセンターに寄せる
     function adjustCenter() {
@@ -217,14 +166,6 @@ function closeButton() {
         // モーダルウィンドウの基礎部分を作成
         var divid = 'modal';
 
-        var styleTag = {
-            'tag': 'style',
-            'content': ['\ndiv#modal{\n\tposition: fixed;\n\ttop:0;\n\tz-index:11;\n\twidth: 100%;\n\theight: 100%;' +
-            '\n\tbackground-color: transparent;}\ndiv#modal div#box-min{\n\tposition: relative;' +
-            '\n\tbackground-color:#ffffff;\n\twidth:500px;height:400px;\n\tborder:2px solid #666666;' +
-            '\n\tpadding:0 5px 0 5px;\n}\ndiv#box-min div.content{\n\t\n\toverflow: visible;\n}']
-        };
-
         // モーダルウィンドウのHTMLを格納
         var $weather = $('<div id=' + divid + ' class="box"><div id="box-min"><div id="header">' +
         '<h3>' + data.name + '　' + data.desc + '</h3>' +
@@ -240,8 +181,6 @@ function closeButton() {
         // モーダルウィンドウをHTMLに配置
         $('body').append($weather);
 
-        var style = domFromObject(styleTag);
-        $('#box-min').before(style);
         // モーダルウィンドウをセンターに
         adjustCenter();
 
@@ -305,7 +244,6 @@ function closeButton() {
             });
         });
     }
-
 
     var kintonePluginGranttChart = {
         lang: {
@@ -384,15 +322,19 @@ function closeButton() {
             var settingColors = JSON.parse(this.settings.config.settingColors || '{}');
             // Check multi field corlor and overide settingColors
             this.settings.config.settingColors = {};
+
+            function settingFieldClors(fieldColorArray, fieldColor) {
+                fieldColorArray.forEach(function(item) {
+                    var fieldColorOuput = item.trim();
+                    self.settings.config.settingColors[fieldColorOuput] = settingColors[fieldColor];
+                });
+            }
             for (var fieldColor in settingColors) {
                 if (!settingColors.hasOwnProperty(fieldColor)) {
                     continue;
                 }
                 var fieldColorArray = fieldColor.split(',');
-                fieldColorArray.forEach(function(item) {
-                    var fieldColorOuput = item.trim();
-                    self.settings.config.settingColors[fieldColorOuput] = settingColors[fieldColor];
-                });
+                settingFieldClors(fieldColorArray, fieldColor);
             }
         },
         getRecordsData: function(records, ganttBox, callbackFnc) {
@@ -416,7 +358,9 @@ function closeButton() {
             if (conf.fieldNameColor.indexOf('[Table]') === 0) {
                 tableFlg = true;
             }
-            if (tableFlg) {
+
+            // Create the record.
+            function createRecords1() {
                 for (var i2 = 0; i2 < records.length; i2++) {
                     var subTable = records[i2].Table.value;
 
@@ -437,31 +381,33 @@ function closeButton() {
                         }
 
                         var colorValue = subTable[j].value[GANTT_COLOR]['value'] || '';
+                        var fromValue = subTable[j].value[GANTT_FROM]['value'];
+                        var toValue = subTable[j].value[GANTT_TO]['value'];
                         if (colorValue && self.settings.config.settingColors[colorValue]) {
                             var styleRecordClass = self.settings.element.prefixColorGantt + 'class-' + i2 + '-' + j;
                             colorGantt = styleRecordClass;
                             ganttStylesRecord[styleRecordClass] = self.settings.config.settingColors[colorValue];
                         }
 
-                        if (subTable[j].value[GANTT_FROM]['value']) {
+                        if (fromValue) {
                             descGantt += '<div>' + conf.fieldNameFrom.slice(conf.fieldNameFrom.indexOf('[Table]') + 7) +
-                                ': ' + self.escapeHtml(self.convertDateTimeWithTimezone(subTable[j].value[GANTT_FROM]['value'])) +
-                                '</div>';
+                                ': ' + self.escapeHtml(self.convertDateTimeWithTimezone(fromValue)) + '</div>';
                         }
-                        if (subTable[j].value[GANTT_TO]['value']) {
+                        if (toValue) {
                             descGantt += '<div>' + conf.fieldNameTo.slice(conf.fieldNameTo.indexOf('[Table]') + 7) +
-                                ': ' + self.escapeHtml(self.convertDateTimeWithTimezone(subTable[j].value[GANTT_TO]['value'])) +
-                                '</div>';
+                                ': ' + self.escapeHtml(self.convertDateTimeWithTimezone(toValue)) + '</div>';
                         }
-                        if (subTable[j].value[GANTT_COLOR]['value']) {
+                        if (colorValue) {
                             descGantt += conf.fieldNameColor.slice(conf.fieldNameColor.indexOf('[Table]') + 7) +
-                            ': ' + self.escapeHtml(subTable[j].value[GANTT_COLOR]['value']);
+                            ': ' + self.escapeHtml(colorValue);
                         }
 
                         var ganttRecordData = {
                             id: self.escapeHtml(records[i2]['$id'].value),
                             name: (j !== 0) ? '' : self.escapeHtml(records[i2][GANTT_NAME].value),
-                            desc: subTable[j].value[GANTT_DESC] ? self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
+                            desc:
+                                subTable[j].value[GANTT_DESC] ?
+                                    self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
                             values: [{
                                 from: self.convertDateTime(subTable[j].value[GANTT_FROM].value),
                                 to: self.convertDateTime(subTable[j].value[GANTT_TO].value),
@@ -485,12 +431,11 @@ function closeButton() {
                             }]
                         };
                         self.data.push(ganttRecordData);
-
                     }
                 }
-            } else {
+            }
+            function createRecords2() {
                 for (var i3 = 0; i3 < records.length; i3++) {
-
                     var colorGantt2 = self.settings.element.classColorGanttDefault;
 
                     var colorValue2 = records[i3][GANTT_COLOR]['value'] || '';
@@ -506,18 +451,22 @@ function closeButton() {
                             self.escapeHtml(records[i3][GANTT_DESC]['value']) +
                             '</div>';
                     }
-                    if (records[i3][GANTT_FROM]['value']) {
+
+                    var fromValue2 = records[i3][GANTT_FROM]['value'];
+                    if (fromValue2) {
                         descGantt2 += '<div>' + conf.fieldNameFrom + ': ' +
-                            self.escapeHtml(self.convertDateTimeWithTimezone(records[i3][GANTT_FROM]['value'])) +
+                            self.escapeHtml(self.convertDateTimeWithTimezone(fromValue2)) +
                             '</div>';
                     }
-                    if (records[i3][GANTT_TO]['value']) {
+
+                    var toValue2 = records[i3][GANTT_TO]['value'];
+                    if (toValue2) {
                         descGantt2 += '<div>' + conf.fieldNameTo + ': ' +
-                            self.escapeHtml(self.convertDateTimeWithTimezone(records[i3][GANTT_TO]['value'])) +
+                            self.escapeHtml(self.convertDateTimeWithTimezone(toValue2)) +
                             '</div>';
                     }
-                    if (records[i3][GANTT_COLOR]['value']) {
-                        descGantt2 += conf.fieldNameColor + ': ' + self.escapeHtml(records[i3][GANTT_COLOR]['value']);
+                    if (colorValue2) {
+                        descGantt2 += conf.fieldNameColor + ': ' + self.escapeHtml(colorValue2);
                     }
                     var ganttRecordData2 = {
                         id: self.escapeHtml(records[i3]['$id'].value),
@@ -542,14 +491,21 @@ function closeButton() {
                                 'record': records[i3],
                                 'GANTT_FROM': GANTT_FROM,
                                 'GANTT_TO': GANTT_TO,
-                                'lang': this.lang[this.settings.i18n]
+                                'lang': self.lang[self.settings.i18n]
                             }
                         }]
                     };
                     self.data.push(ganttRecordData2);
                 }
             }
-            (typeof callbackFnc === 'function') && callbackFnc();
+            if (tableFlg) {
+                createRecords1();
+            } else {
+                createRecords2();
+            }
+            if (typeof callbackFnc === 'function') {
+                callbackFnc();
+            }
             self.uiSetStyleProcessBar(ganttStylesRecord);
         },
         gantt: function(elGantt) {
