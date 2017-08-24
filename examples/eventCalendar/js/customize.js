@@ -1,6 +1,6 @@
 jQuery.noConflict();
 (function($, PLUGIN_ID) {
-    "use strict";
+    'use strict';
 
     // カレンダー上でイベントの時間を変更した時の更新処理
     function putRecord(event) {
@@ -9,26 +9,26 @@ jQuery.noConflict();
         var eddtKey = putConfig.end_datetime;
 
         kintone.api('/k/v1/record', 'PUT', {
-            "app": kintone.app.getId(),
-            "id": event.rec,
-            "record": (function() {
+            'app': kintone.app.getId(),
+            'id': event.rec,
+            'record': (function() {
                 var param = {};
                 param[stdtKey] = {
-                    "value": moment(event.start).add(-9, 'hours').format('YYYY-MM-DDTHH:mm:ssZ')
+                    'value': moment(event.start).add(-9, 'hours').format('YYYY-MM-DDTHH:mm:ssZ')
                 };
                 param[eddtKey] = {
-                    "value": moment(event.end).add(-9, 'hours').format('YYYY-MM-DDTHH:mm:ssZ')
+                    'value': moment(event.end).add(-9, 'hours').format('YYYY-MM-DDTHH:mm:ssZ')
                 };
                 return param;
             })()
         });
     }
 
-	// 全件取得関数
-    function fetchRecords(appId, query, opt_offset, opt_limit, opt_records) {
-        var offset = opt_offset || 0;
-        var limit = opt_limit || 500;
-        var allRecords = opt_records || [];
+    // 全件取得関数
+    function fetchRecords(appId, query, optOffset, optLimit, optRecords) {
+        var offset = optOffset || 0;
+        var limit = optLimit || 500;
+        var allRecords = optRecords || [];
         var params = {app: appId, query: query + ' limit ' + limit + ' offset ' + offset};
         return kintone.api('/k/v1/records', 'GET', params).then(function(resp) {
             allRecords = allRecords.concat(resp.records);
@@ -66,14 +66,14 @@ jQuery.noConflict();
                         endDate = moment(records[i][evEnd].value);
 
                         // イベント背景色設定でミスがある場合とプロセス管理無効の場合はデフォルト青色とする
-                        var eventColor = "#0000ff";
+                        var eventColor = '#0000ff';
                         // イベント背景色設定処理
                         if (typeof (records[i].ステータス) !== 'undefined') {
                             var eventStatus = records[i].ステータス.value;
 
                             for (var k = 1; k < 6; k++) {
-                                var stsPropName = "status" + k;
-                                var clrPropName = "color" + k;
+                                var stsPropName = 'status' + k;
+                                var clrPropName = 'color' + k;
                                 var status = config[stsPropName];
                                 if (status === eventStatus) {
                                     eventColor = config[clrPropName];
@@ -83,8 +83,8 @@ jQuery.noConflict();
                         }
                         recEvents.push({
                             title: records[i][evTitle].value,
-                            start: startDate.format("YYYY-MM-DD HH:mm:ss"),
-                            end: endDate.format("YYYY-MM-DD HH:mm:ss"),
+                            start: startDate.format('YYYY-MM-DD HH:mm:ss'),
+                            end: endDate.format('YYYY-MM-DD HH:mm:ss'),
                             url: location.protocol + '//' + location.hostname + '/k/' +
                                 kintone.app.getId() + '/show#record=' + records[i].$id.value,
                             rec: records[i].$id.value,
@@ -114,7 +114,7 @@ jQuery.noConflict();
                     // 各カレンダーのタイトル
                     titleFormat: {
                         month: 'YYYY年M月',
-                        week: "YYYY年 M月 D日",
+                        week: 'YYYY年 M月 D日',
                         day: 'YYYY年 M月 D日[(]ddd[)]'
                     },
                     // ボタン文字列の表記
@@ -135,7 +135,7 @@ jQuery.noConflict();
                     // 月の表記
                     monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
                     monthNamesShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-                   // 曜日の表記
+                    // 曜日の表記
                     dayNames: ['日曜', '月曜', '火曜', '水曜', '木曜', '金曜', '土曜'],
                     dayNamesShort: ['日', '月', '火', '水', '木', '金', '土'],
                     // 各カレンダーの各時間の表記
@@ -209,26 +209,26 @@ jQuery.noConflict();
 
         // イベントタイトル・イベント開始/終了日時は未入力不可
         if (!evTitleVal || !evStartVal || !evEndVal) {
-            event.error = "未入力項目があります";
+            event.error = '未入力項目があります';
             if (!evTitleVal) {
-                record[config.name].error = "必須です";
+                record[config.name].error = '必須です';
             }
             if (!evStartVal) {
-                record[config.start_datetime].error = "必須です";
+                record[config.start_datetime].error = '必須です';
             }
             if (!evEndVal) {
-                record[config.end_datetime].error = "必須です";
+                record[config.end_datetime].error = '必須です';
             }
         // 開始日時が終了日時より未来の場合はエラー
-        } else if (moment(evStartVal).format("X") > moment(evEndVal).format("X")) {
-            event.error = "開始日時が終了日時より未来になっています";
-            record[config.start_datetime].error = "終了日時より過去にして下さい";
-            record[config.end_datetime].error = "開始日時より未来にして下さい";
+        } else if (moment(evStartVal).format('X') > moment(evEndVal).format('X')) {
+            event.error = '開始日時が終了日時より未来になっています';
+            record[config.start_datetime].error = '終了日時より過去にして下さい';
+            record[config.end_datetime].error = '開始日時より未来にして下さい';
         // 開始日時と終了日時が同時刻の場合はエラー（FullCalendarの仕様上の問題）
-        } else if (moment(evStartVal).format("X") === moment(evEndVal).format("X")) {
-            event.error = "開始日時と終了日時は1分以上あけて下さい";
-            record[config.start_datetime].error = "終了日時より過去にして下さい";
-            record[config.end_datetime].error = "開始日時より未来にして下さい";
+        } else if (moment(evStartVal).format('X') === moment(evEndVal).format('X')) {
+            event.error = '開始日時と終了日時は1分以上あけて下さい';
+            record[config.start_datetime].error = '終了日時より過去にして下さい';
+            record[config.end_datetime].error = '開始日時より未来にして下さい';
         }
 
         return event;
