@@ -1,11 +1,11 @@
 jQuery.noConflict();
 (function($, PLUGIN_ID) {
-    "use strict";
+    'use strict';
 
-	// プラグインIDの設定
+    // プラグインIDの設定
     var conf = kintone.plugin.app.getConfig(PLUGIN_ID);
 
-	//既に値が設定されている場合はフィールドに値を設定する
+    // 既に値が設定されている場合はフィールドに値を設定する
     if (typeof (conf['name']) !== 'undefined') {
         $('#status1').val(conf['status1']);
         $('#color1').val(conf['color1']);
@@ -18,7 +18,7 @@ jQuery.noConflict();
         $('#status5').val(conf['status5']);
         $('#color5').val(conf['color5']);
     }
-	// アプリのフォーム情報を取得
+    // アプリのフォーム情報を取得
     kintone.api('/k/v1/preview/form', 'GET', {
         app: kintone.app.getId()
     }, function(resp) {
@@ -70,7 +70,7 @@ jQuery.noConflict();
         }
 
 
-		//「保存する」ボタン押下時に入力情報を設定する
+        // 「保存する」ボタン押下時に入力情報を設定する
         $('#submit').click(function() {
             var config = [];
             var name;
@@ -78,21 +78,21 @@ jQuery.noConflict();
             var end_datetime;
             singleLineText.filter(function(item) {
                 if (item.label === $('#name_code :selected').text() &&
-                    item.index === $('#name_code :selected').attr("name")) {
+                    item.index === $('#name_code :selected').attr('name')) {
                     name = item.key;
                     return true;
                 }
             });
             sDatetime.filter(function(item) {
                 if (item.label === $('#start_datetime_code :selected').text() &&
-                    item.index === $('#start_datetime_code :selected').attr("name")) {
+                    item.index === $('#start_datetime_code :selected').attr('name')) {
                     start_datetime = item.key;
                     return true;
                 }
             });
             eDatetime.filter(function(item) {
                 if (item.label === $('#end_datetime_code :selected').text() &&
-                    item.index === $('#end_datetime_code :selected').attr("name")) {
+                    item.index === $('#end_datetime_code :selected').attr('name')) {
                     end_datetime = item.key;
                     return true;
                 }
@@ -108,8 +108,8 @@ jQuery.noConflict();
             var status5 = $('#status5').val();
             var color5 = $('#color5').val();
 
-            if (name === "" || start_datetime === "" || end_datetime === "") {
-                alert("入力されていない必須項目があります。");
+            if (name === '' || start_datetime === '' || end_datetime === '') {
+                alert('入力されていない必須項目があります。');
                 return;
             }
             config['name'] = name;
@@ -126,7 +126,7 @@ jQuery.noConflict();
             config['status5'] = status5;
             config['color5'] = color5;
 
-			// カスタマイズビューを追加
+            // カスタマイズビューを追加
             var VIEW_NAME = 'スケジュール';
             kintone.api(kintone.api.url('/k/v1/preview/app/views', true), 'GET', {
                 'app': kintone.app.getId()
@@ -143,10 +143,10 @@ jQuery.noConflict();
                     }
                 }
 
-				// カスタマイズビューが存在しなければ追加
+                // カスタマイズビューが存在しなければ追加
                 if (!existFlg) {
 
-					// 一番上のビュー（デフォルトビュー）に「スケジュール」ビューを作成
+                    // 一番上のビュー（デフォルトビュー）に「スケジュール」ビューを作成
                     for (var key in req.views) {
                         if (req.views.hasOwnProperty(key)) {
                             req.views[key].index = Number(req.views[key].index) + 1;
@@ -154,12 +154,12 @@ jQuery.noConflict();
                     }
 
                     req.views[VIEW_NAME] = {
-                        "type": "CUSTOM",
-                        "name": VIEW_NAME,
-                        "html": "<div id='calendar'></div>",
-                        "filterCond": "",
-                        "pager": true,
-                        "index": 0
+                        'type': 'CUSTOM',
+                        'name': VIEW_NAME,
+                        'html': '<div id="calendar"></div>',
+                        'filterCond': '',
+                        'pager': true,
+                        'index': 0
                     };
 
                     kintone.api(kintone.api.url('/k/v1/preview/app/views', true), 'PUT', req).then(function(putResp) {
@@ -177,7 +177,7 @@ jQuery.noConflict();
             });
         });
 
-		//「キャンセル」ボタン押下時の処理
+        // 「キャンセル」ボタン押下時の処理
         $('#cancel').click(function() {
             history.back();
         });
