@@ -33,7 +33,7 @@
         ],
         "css": [
             "css/config.css",
-            "css/51-us-default.css"
+            "css/51-modern-default.css"
         ],
         "required_params": ["name", "start_datetime", "end_datetime"]
     }
