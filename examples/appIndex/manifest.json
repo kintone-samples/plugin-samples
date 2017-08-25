@@ -35,7 +35,7 @@
         ],
         "css": [
             "css/config.css",
-            "css/51-us-default.css",
+            "css/51-modern-default.css",
             "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
         ],
         "required_params": ["folderIcon", "appIcon"]
