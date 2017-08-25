@@ -426,7 +426,7 @@ function closeButton() {
                                     'record': records[i2],
                                     'GANTT_FROM': GANTT_FROM,
                                     'GANTT_TO': GANTT_TO,
-                                    'lang': this.lang[this.settings.i18n]
+                                    'lang': self.lang[self.settings.i18n]
                                 }
                             }]
                         };
