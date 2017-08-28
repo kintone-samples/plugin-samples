@@ -328,7 +328,7 @@ jQuery.noConflict();
     var uploadFile = function(fileName) {
         var d = new $.Deferred();
 
-        var blob = new Blob([editor.getValue()], {type: 'text/\\/javascript'});
+        var blob = new Blob([editor.getValue()], {type: 'text/javascript'});
         var formData = new FormData();
         formData.append('__REQUEST_TOKEN__', kintone.getRequestToken());
         formData.append('file', blob, fileName);
