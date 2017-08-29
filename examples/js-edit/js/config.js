@@ -232,13 +232,13 @@ jQuery.noConflict();
         return jsFiles.length - 1;
     };
 
+    var app = {};
     $.fn.spinner = function() {
         var caller = this;
         var component = new app.Spinner(this);
         return component;
     };
 
-    var app = {};
     app.Spinner = function($element) {
         var opts = {};
         if (!$element) {
@@ -255,39 +255,38 @@ jQuery.noConflict();
         }
     };
 
-    var setDefaultSource = function() {
-        var defaultSource;
-
-        if (getCurrentType() === 'js_pc') {
-            defaultSource = 'jQuery.noConflict();\n\
-(function($) {\n\
-    "use strict";\n\
-    kintone.events.on("app.record.index.show", function(e) {\n\
-    });\n\
-})(jQuery);\n';
-        } else if (getCurrentType() === 'js_mb') {
-            defaultSource = 'jQuery.noConflict();\n\
-(function($) {\n\
-    "use strict";\n\
-    kintone.events.on("mobile.app.record.index.show", function(e) {\n\
-    });\n\
-})(jQuery);\n';
-        } else if (getCurrentType() === 'css_pc') {
-            defaultSource = '@charset "UTF-8";';
-        }
-
-        setValue(defaultSource);
-    };
-
-    var confirmDiscard = function() {
-        return (window.confirm(i18n.msg_discard));
-    };
-
     var setValue = function(data) {
         editor.setValue(data);
         editor.selection.moveCursorToPosition({row: 1, column: 0});
         editor.selection.selectLine();
         modified = false;
+    };
+
+    var setDefaultSource = function() {
+        var defaultSource;
+
+        if (getCurrentType() === 'js_pc') {
+            defaultSource = 'jQuery.noConflict();\n' +
+            '(function($) {\n' +
+                '"use strict";\n' +
+                'kintone.events.on("app.record.index.show", function(e) {\n' +
+                '});\n' +
+            '})(jQuery);\n';
+        } else if (getCurrentType() === 'js_mb') {
+            defaultSource = 'jQuery.noConflict();\n' +
+            '(function($) {\n' +
+                '"use strict";\n' +
+                'kintone.events.on("mobile.app.record.index.show", function(e) {\n' +
+                '});\n' +
+            '})(jQuery);\n';
+        } else if (getCurrentType() === 'css_pc') {
+            defaultSource = '@charset "UTF-8";';
+        }
+        setValue(defaultSource);
+    };
+
+    var confirmDiscard = function() {
+        return (window.confirm(i18n.msg_discard));
     };
 
     var getFile = function() {
@@ -328,7 +327,7 @@ jQuery.noConflict();
     var uploadFile = function(fileName) {
         var d = new $.Deferred();
 
-        var blob = new Blob([editor.getValue()], {type: 'text/javascript'});
+        var blob = new Blob([editor.getValue()], {type: 'text/\\/javascript'});
         var formData = new FormData();
         formData.append('__REQUEST_TOKEN__', kintone.getRequestToken());
         formData.append('file', blob, fileName);
@@ -344,6 +343,21 @@ jQuery.noConflict();
         });
 
         return d.promise();
+    };
+
+    var getLib = function(url) {
+        var re = new RegExp(CDN_URL_REGEX + '(.*?)\\/');
+        var m = url.match(re);
+        if (m) {
+            var libName = m[1];
+            for (var i = 0; i < libs.length; i++) {
+                var lib = libs[i];
+                if (lib.key === libName) {
+                    return lib;
+                }
+            }
+        }
+        return null;
     };
 
     var addNewLibs = function(tmpFiles) {
@@ -381,21 +395,6 @@ jQuery.noConflict();
         }
     };
 
-    var getLib = function(url) {
-        var re = new RegExp(CDN_URL_REGEX + '(.*?)\\/');
-        var m = url.match(re);
-        if (m) {
-            var libName = m[1];
-            for (var i = 0; i < libs.length; i++) {
-                var lib = libs[i];
-                if (lib.key === libName) {
-                    return lib;
-                }
-            }
-        }
-        return null;
-    };
-
     var isSelected = function(lib) {
         for (var i = 0; i < libs.length; i++) {
             if (lib === libs[i]) {
@@ -406,95 +405,29 @@ jQuery.noConflict();
         return false;
     };
 
-    var save = function() {
-        if (spinner) {
-            return;
-        }
-        if (!jsFiles) {
-            return;
-        }
-        if (currentIndex < 0) {
-            spinner = new app.Spinner();
-            _save();
-            return;
-        }
-        var js = jsFiles[currentIndex];
-        if (js.type !== 'FILE') {
-            return;
-        }
-        spinner = new app.Spinner();
-        uploadFile(js.file.name).done(function(f) {
-            js.file.fileKey = f.fileKey;
-            // update customize.json
-            _save();
-        }).fail(function(f) {
-        });
-    };
-
-    var _save = function() {
-        var tmpFiles = [];
-        addNewLibs(tmpFiles);
-
-        for (var i = 0; i < jsFiles.length; i++) {
-            var jsFile = jsFiles[i];
-            if (jsFile.url) {
-                var lib = getLib(jsFile.url);
-                if (lib) {
-                    if (isSelected(lib)) {
-                        tmpFiles.push(jsFile);
-                    }
-                } else {
-                    tmpFiles.push(jsFile);
-                }
-            } else if (jsFile.file && jsFile.file.fileKey) {
-                tmpFiles.push(jsFile);
+    var setLibs = function() {
+        var $container = $id('libraries');
+        $container.empty();
+        for (var i = 0; i < libs.length; i++) {
+            var lib = libs[i];
+            var text;
+            if (lib.currentVersion && lib.version !== lib.currentVersion) {
+                text = lib.name + '(' + lib.currentVersion + ' -> ' + lib.version + ')';
+            } else {
+                text = lib.name + '(' + lib.version + ')';
             }
-        }
-        var data = {
-            app: kintone.app.getId()
-        };
-        if (getCurrentType() === 'js_pc') {
-            data.desktop = {
-                js: tmpFiles
-            };
-        } else if (getCurrentType() === 'js_mb') {
-            data.mobile = {
-                js: tmpFiles
-            };
-        } else if (getCurrentType() === 'css_pc') {
-            data.desktop = {
-                css: tmpFiles
-            };
-        }
-        kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'PUT', data,
-            function(resp) {
-                var finalize = function() {
-                    getFiles(true);
-                    modified = false;
-                    spinner.stop();
-                    spinner = null;
-                };
-                if ($id('deploy').prop('checked')) {
-                    // deploy
-                    kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'POST', {apps: [{app: kintone.app.getId()}]}, function() {
-                        finalize();
-                    });
-                } else {
-                    finalize();
-                }
-            },
-            function() {
-                alert(i18n.msg_failed_to_update);
-                spinner.stop();
-                spinner = null;
+            var $opt = $('<OPTION>').text(text).val(lib.key);
+            if (lib.selected) {
+                $opt.prop('selected', true);
             }
-        );
+            $container.append($opt);
+        }
     };
-
     var getFiles = function(refresh) {
 
         // get all files
         var $files = $id('files');
+        var currentFileName;
 
         kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'GET', {app: kintone.app.getId()}, function(resp) {
             if (refresh) {
@@ -504,7 +437,6 @@ jQuery.noConflict();
             }
 
             jsFiles = [];
-            var currentFileName;
             var records;
             $files.empty();
             if (getCurrentType() === 'js_pc') {
@@ -574,23 +506,89 @@ jQuery.noConflict();
 
     };
 
-    var setLibs = function(libs) {
-        var $container = $id('libraries');
-        $container.empty();
-        for (var i = 0; i < libs.length; i++) {
-            var lib = libs[i];
-            var text;
-            if (lib.currentVersion && lib.version !== lib.currentVersion) {
-                text = lib.name + '(' + lib.currentVersion + ' -> ' + lib.version + ')';
-            } else {
-                text = lib.name + '(' + lib.version + ')';
+    var _save = function() {
+        var tmpFiles = [];
+        addNewLibs(tmpFiles);
+
+        for (var i = 0; i < jsFiles.length; i++) {
+            var jsFile = jsFiles[i];
+            if (jsFile.url) {
+                var lib = getLib(jsFile.url);
+                if (lib) {
+                    if (isSelected(lib)) {
+                        tmpFiles.push(jsFile);
+                    }
+                } else {
+                    tmpFiles.push(jsFile);
+                }
+            } else if (jsFile.file && jsFile.file.fileKey) {
+                tmpFiles.push(jsFile);
             }
-            var $opt = $('<OPTION>').text(text).val(lib.key);
-            if (lib.selected) {
-                $opt.prop('selected', true);
-            }
-            $container.append($opt);
         }
+        var data = {
+            app: kintone.app.getId()
+        };
+        if (getCurrentType() === 'js_pc') {
+            data.desktop = {
+                js: tmpFiles
+            };
+        } else if (getCurrentType() === 'js_mb') {
+            data.mobile = {
+                js: tmpFiles
+            };
+        } else if (getCurrentType() === 'css_pc') {
+            data.desktop = {
+                css: tmpFiles
+            };
+        }
+        kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'PUT', data,
+            function(resp) {
+                var finalize = function() {
+                    getFiles(true);
+                    modified = false;
+                    spinner.stop();
+                    spinner = null;
+                };
+                if ($id('deploy').prop('checked')) {
+                    // deploy
+                    kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'POST', {apps: [{app: kintone.app.getId()}]}, function() {
+                        finalize();
+                    });
+                } else {
+                    finalize();
+                }
+            },
+            function() {
+                alert(i18n.msg_failed_to_update);
+                spinner.stop();
+                spinner = null;
+            }
+        );
+    };
+
+    var save = function() {
+        if (spinner) {
+            return;
+        }
+        if (!jsFiles) {
+            return;
+        }
+        if (currentIndex < 0) {
+            spinner = new app.Spinner();
+            _save();
+            return;
+        }
+        var js = jsFiles[currentIndex];
+        if (js.type !== 'FILE') {
+            return;
+        }
+        spinner = new app.Spinner();
+        uploadFile(js.file.name).done(function(f) {
+            js.file.fileKey = f.fileKey;
+            // update customize.json
+            _save();
+        }).fail(function(f) {
+        });
     };
 
     $(function() {
@@ -651,12 +649,6 @@ jQuery.noConflict();
             enableBasicAutocompletion: false,
             enableSnippets: false,
             enableLiveAutocompletion: true
-        });
-        var completions = kintoneCompletions();
-        editor.completers.push({
-            getCompletions: function(editor, session, pos, prefix, callback) {
-                callback(null, completions);
-            }
         });
         /*
         editor.commands.on('afterExec', function(e){
@@ -891,4 +883,10 @@ jQuery.noConflict();
         }
         return ret;
     };
+    var completions = kintoneCompletions();
+    editor.completers.push({
+        getCompletions: function(session, pos, prefix, callback) {
+            callback(null, completions);
+        }
+    });
 })(jQuery, kintone.$PLUGIN_ID);
