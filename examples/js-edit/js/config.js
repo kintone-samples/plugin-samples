@@ -238,7 +238,6 @@ jQuery.noConflict();
 
     var app = {};
     $.fn.spinner = function() {
-        // var caller = this;
         var component = new app.Spinner(this);
         return component;
     };
