@@ -1,3 +1,4 @@
+/* global ace */
 jQuery.noConflict();
 
 (function($, PLUGIN_ID) {
@@ -87,9 +88,9 @@ jQuery.noConflict();
             {url: 'https://developer.kintone.io/hc/en-us/articles/212495178', label: 'API Docs'}
         ],
         ja: [
-            {url: 'https://cybozudev.zendesk.com/hc/ja', label: 'cybozu.com developer network'},
-            {url: 'https://cybozudev.zendesk.com/hc/ja/articles/202960194', label: 'Cybozu CDN'},
-            {url: 'https://cybozudev.zendesk.com/hc/ja/articles/202738940', label: 'kintone API 一覧'}
+            {url: 'https://developer.cybozu.io/hc/ja', label: 'cybozu.com developer network'},
+            {url: 'https://developer.cybozu.io/hc/ja/articles/202960194', label: 'Cybozu CDN'},
+            {url: 'https://developer.cybozu.io/hc/ja/articles/202738940', label: 'kintone API 一覧'}
         ],
         zh: [
             {url: 'https://cybozudev.kf5.com/hc/', label: 'cybozu developer network'},
@@ -180,7 +181,7 @@ jQuery.noConflict();
         ]
     };
 
-    var _cdnLibs = {
+    var cdnLibsDetail = {
         'jQuery': ['jquery', '2.2.4', 'jquery.min.js'],
         'jQuery UI': ['jqueryui', '1.12.0', ['jquery-ui.min.js', 'themes/smoothness/jquery-ui.css']],
         'Moment.js': ['momentjs', '2.15.1', ['moment.min.js', 'moment-with-locales.min.js']],
@@ -190,10 +191,13 @@ jQuery.noConflict();
         'DataTables': ['datatables', 'v1.10.12', ['js/jquery.dataTables.min.js', 'css/jquery.dataTables.min.css']],
         'DomPurify': ['dompurify', '0.8.3', 'purify.min.js'],
         'FontAwesome': ['font-awesome', 'v4.6.3', 'css/font-awesome.min.css'],
-        'FullCalendar': ['fullcalendar', 'v3.0.1', ['fullcalendar.min.js', 'fullcalendar.min.css', 'fullcalendar.print.css']],
+        'FullCalendar': ['fullcalendar', 'v3.0.1',
+            ['fullcalendar.min.js', 'fullcalendar.min.css', 'fullcalendar.print.css']],
         'Handsontable': ['handsontable', '0.28.3', ['handsontable.full.min.js', 'handsontable.full.min.css']],
         'highlightjs': ['highlightjs', '9.7.0', ['highlight.js', 'styles/default.css']],
-        'jqGrid': ['jqgrid', 'v5.1.1', ['js/jquery.jqGrid.min.js', 'js/i18n/grid.locale-ja.js', 'js/i18n/grid.locale-en.js', 'js/i18n/grid.locale-cn.js', 'css/ui.jqgrid.css']],
+        'jqGrid': ['jqgrid', 'v5.1.1',
+            ['js/jquery.jqGrid.min.js', 'js/i18n/grid.locale-ja.js', 'js/i18n/grid.locale-en.js',
+                'js/i18n/grid.locale-cn.js', 'css/ui.jqgrid.css']],
         'jQuery.Gantt': ['jquerygantt', '20140623', ['jquery.fn.gantt.min.js', 'css/style.css']],
         'JSRender': ['jsrender', '0.9.80', 'jsrender.min.js'],
         'jsTree': ['jstree', '3.3.2', ['jstree.min.js', 'themes/default/style.min.css']],
@@ -234,23 +238,24 @@ jQuery.noConflict();
 
     var app = {};
     $.fn.spinner = function() {
-        var caller = this;
+        // var caller = this;
         var component = new app.Spinner(this);
         return component;
     };
 
     app.Spinner = function($element) {
         var opts = {};
-        if (!$element) {
-            $element = $('<div id="spinner-backdrop" class="spinner-backdrop"></div>');
-            $('body').append($element);
+        var tmpElement = $element;
+        if (!tmpElement) {
+            tmpElement = $('<div id="spinner-backdrop" class="spinner-backdrop"></div>');
+            $('body').append(tmpElement);
         }
-        this._spinner = new Spinner(opts).spin($element.get(0));
+        this.spinner2 = new Spinner(opts).spin(tmpElement.get(0));
     };
 
     app.Spinner.prototype = {
         stop: function() {
-            this._spinner.stop();
+            this.spinner2.stop();
             $('#spinner-backdrop').remove();
         }
     };
@@ -429,8 +434,9 @@ jQuery.noConflict();
         // get all files
         var $files = $id('files');
         var currentFileName;
+        var params = {app: kintone.app.getId()};
 
-        kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'GET', {app: kintone.app.getId()}, function(resp) {
+        kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'GET', params, function(resp) {
             if (refresh) {
                 currentFileName = jsFiles[currentIndex].file.name;
             } else {
@@ -507,7 +513,7 @@ jQuery.noConflict();
 
     };
 
-    var _save = function() {
+    var saveEdit = function() {
         var tmpFiles = [];
         addNewLibs(tmpFiles);
 
@@ -552,7 +558,8 @@ jQuery.noConflict();
                 };
                 if ($id('deploy').prop('checked')) {
                     // deploy
-                    kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'POST', {apps: [{app: kintone.app.getId()}]}, function() {
+                    var params = {apps: [{app: kintone.app.getId()}]};
+                    kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'POST', params, function() {
                         finalize();
                     });
                 } else {
@@ -576,7 +583,7 @@ jQuery.noConflict();
         }
         if (currentIndex < 0) {
             spinner = new app.Spinner();
-            _save();
+            saveEdit();
             return;
         }
         var js = jsFiles[currentIndex];
@@ -587,7 +594,7 @@ jQuery.noConflict();
         uploadFile(js.file.name).done(function(f) {
             js.file.fileKey = f.fileKey;
             // update customize.json
-            _save();
+            saveEdit();
         }).fail(function(f) {
         });
     };
@@ -700,7 +707,7 @@ jQuery.noConflict();
         });
 
         cdnLibs[lang].forEach(function(libName) {
-            var lib = _cdnLibs[libName];
+            var lib = cdnLibsDetail[libName];
             var tmpLib = {
                 name: libName,
                 key: lib[0],
@@ -751,7 +758,7 @@ jQuery.noConflict();
 
         var completions = kintoneCompletions();
         editor.completers.push({
-            getCompletions: function(editor, session, pos, prefix, callback) {
+            getCompletions: function(compEditor, session, pos, prefix, callback) {
                 callback(null, completions);
             }
         });
