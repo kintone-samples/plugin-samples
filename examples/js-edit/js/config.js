@@ -88,7 +88,7 @@ jQuery.noConflict();
             {url: 'https://developer.kintone.io/hc/en-us/articles/212495178', label: 'API Docs'}
         ],
         ja: [
-            {url: 'https://developer.cybozu.io/hc/ja', label: 'cybozu.com developer network'},
+            {url: 'https://developer.cybozu.io/hc/ja', label: 'Cybozu developer network'},
             {url: 'https://developer.cybozu.io/hc/ja/articles/202960194', label: 'Cybozu CDN'},
             {url: 'https://developer.cybozu.io/hc/ja/articles/202738940', label: 'kintone API 一覧'}
         ],
