@@ -1,4 +1,5 @@
 /*
+ * kyotenn Plug-in
  * Copyright (c) 2015 Cybozu
  *
  * Licensed under the MIT License

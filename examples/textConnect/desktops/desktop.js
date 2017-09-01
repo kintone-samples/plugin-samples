@@ -1,3 +1,9 @@
+/*
+ * textConnect Plug-in
+ * Copyright (c) 2016 Cybozu
+ *
+ * Licensed under the MIT License
+ */
 (function(PLUGIN_ID) {
     "use strict";
 

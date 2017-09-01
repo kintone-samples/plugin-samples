@@ -1,5 +1,5 @@
 /*
- * Sansan plug-in PostRecords
+ * Sansan plug-in
  * Copyright (c) 2016 Cybozu
  *
  * create by masaya chikamoto

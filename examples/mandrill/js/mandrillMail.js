@@ -1,3 +1,9 @@
+/*
+ * mandrill Plug-in
+ * Copyright (c) 2015 Cybozu
+ *
+ * Licensed under the MIT License
+ */
 (function(PLUGIN_ID) {
     'use strict';
     //Config key
