@@ -1,4 +1,10 @@
-/* Author : cstap inc. Takuji Takei */
+/*
+* appIndex Plug-in
+* Copyright (c) 2017 Cybozu
+* Author : cstap inc. Takuji Takei
+*
+* Licensed under the MIT License
+*/
 jQuery.noConflict();
 (function($, PLUGIN_ID) {
     'use strict';

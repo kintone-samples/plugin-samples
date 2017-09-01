@@ -1,3 +1,9 @@
+/*
+ * checkvalue Plug-in
+ * Copyright (c) 2017 Cybozu
+ *
+ * Licensed under the MIT License
+ */
 jQuery.noConflict();
 
 (function($, PLUGIN_ID) {
