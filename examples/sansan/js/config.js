@@ -190,61 +190,61 @@ jQuery.noConflict();
         function setDropdown() {
             // キーフィールド選択肢作成
             kintone.api(kintone.api.url('/k/v1/preview/form', true), 'GET', {'app': kintone.app.getId()},
-            function(resp) {
-                for (var i = 0; i < resp.properties.length; i++) {
-                    var prop = resp.properties[i];
-                    var $appendhtml;
-                    switch (prop.type) {
-                        case 'SINGLE_LINE_TEXT':
-                            $appendhtml = $('<option value = ' + '\"' +
-                            escapeHtml(prop.code) + '\">' + escapeHtml(prop.label) + '</option>');
-                            $('.sansan-copy-text').append($appendhtml);
-                            if (prop.unique === "true") {
-                                $('.sansan-copy-text-unique').append($appendhtml);
-                            }
-                            break;
+                function(resp) {
+                    for (var i = 0; i < resp.properties.length; i++) {
+                        var prop = resp.properties[i];
+                        var $appendhtml;
+                        switch (prop.type) {
+                            case 'SINGLE_LINE_TEXT':
+                                $appendhtml = $('<option value = ' + '"' +
+                            escapeHtml(prop.code) + '">' + escapeHtml(prop.label) + '</option>');
+                                $('.sansan-copy-text').append($appendhtml);
+                                if (prop.unique === 'true') {
+                                    $('.sansan-copy-text-unique').append($appendhtml);
+                                }
+                                break;
 
-                        case 'MULTI_LINE_TEXT':
-                            $appendhtml = $('<option value = ' + '\"' +
-                            escapeHtml(prop.code) + '\">' + escapeHtml(prop.label) + '</option>');
-                            $('.sansan-copy-textbox').append($appendhtml);
-                            break;
+                            case 'MULTI_LINE_TEXT':
+                                $appendhtml = $('<option value = ' + '"' +
+                            escapeHtml(prop.code) + '">' + escapeHtml(prop.label) + '</option>');
+                                $('.sansan-copy-textbox').append($appendhtml);
+                                break;
 
-                        case 'DATE':
-                        case 'DATETIME':
-                            $appendhtml = $('<option value = ' + '\"' +
-                            escapeHtml(prop.code) + '\">' + escapeHtml(prop.label) + '</option>');
-                            $('.sansan-copy-date').append($appendhtml);
-                            break;
+                            case 'DATE':
+                            case 'DATETIME':
+                                $appendhtml = $('<option value = ' + '"' +
+                            escapeHtml(prop.code) + '">' + escapeHtml(prop.label) + '</option>');
+                                $('.sansan-copy-date').append($appendhtml);
+                                break;
 
-                        case 'LINK':
-                            if (prop.protocol === "MAIL") {
-                                $appendhtml = $('<option value = ' + '\"' +
-                                escapeHtml(prop.code) + '\">' + escapeHtml(prop.label) + '</option>');
-                                $('.sansan-copy-mail').append($appendhtml);
+                            case 'LINK':
+                                if (prop.protocol === 'MAIL') {
+                                    $appendhtml = $('<option value = ' + '"' +
+                                escapeHtml(prop.code) + '">' + escapeHtml(prop.label) + '</option>');
+                                    $('.sansan-copy-mail').append($appendhtml);
 
-                            } else if (prop.protocol === "CALL") {
-                                $appendhtml = $('<option value = ' + '\"' +
-                                escapeHtml(prop.code) + '\">' + escapeHtml(prop.label) + '</option>');
-                                $('.sansan-copy-call').append($appendhtml);
-                            } else if (prop.protocol === "WEB") {
-                                $appendhtml = $('<option value = ' + '\"' +
-                                escapeHtml(prop.code) + '\">' + escapeHtml(prop.label) + '</option>');
-                                $('.sansan-copy-web').append($appendhtml);
-                            }
-                            break;
+                                } else if (prop.protocol === 'CALL') {
+                                    $appendhtml = $('<option value = ' + '"' +
+                                escapeHtml(prop.code) + '">' + escapeHtml(prop.label) + '</option>');
+                                    $('.sansan-copy-call').append($appendhtml);
+                                } else if (prop.protocol === 'WEB') {
+                                    $appendhtml = $('<option value = ' + '"' +
+                                escapeHtml(prop.code) + '">' + escapeHtml(prop.label) + '</option>');
+                                    $('.sansan-copy-web').append($appendhtml);
+                                }
+                                break;
 
-                        case 'SPACER':
-                            if (prop.elementId !== "") {
-                                $appendhtml = $('<option value = ' + '\"' +
-                                escapeHtml(prop.elementId) + '\">' + escapeHtml(prop.elementId) + '</option>');
-                                $('#sansan_spacefield_code').append($appendhtml);
-                            }
-                            break;
+                            case 'SPACER':
+                                if (prop.elementId !== '') {
+                                    $appendhtml = $('<option value = ' + '"' +
+                                escapeHtml(prop.elementId) + '">' + escapeHtml(prop.elementId) + '</option>');
+                                    $('#sansan_spacefield_code').append($appendhtml);
+                                }
+                                break;
+                        }
                     }
-                }
-                setDefault();
-            });
+                    setDefault();
+                });
         }
 
         // 「保存する」ボタン押下時に入力情報を設定する
@@ -253,9 +253,9 @@ jQuery.noConflict();
             var header = {
                 'X-Sansan-Api-Key': $('#sansan_api_code').val()
             };
-            var lookup_flg = "";
-            var postrecords_flg = "";
-            var upsertrecords_flg = "";
+            var lookup_flg = '';
+            var postrecords_flg = '';
+            var upsertrecords_flg = '';
 
             if ($('#sansan-checkbox input[id="sansan-checkbox-lookup"]:checked')[0]) {
                 lookup_flg = $('#sansan-checkbox input[id="sansan-checkbox-lookup"]:checked')[0].value;
@@ -268,8 +268,8 @@ jQuery.noConflict();
             }
 
             // Upsert機能の設定画面項目チェック
-            if ((upsertrecords_flg !== "" && $("#sansan_upsertkeyfield_code").val() === "null") ||
-                (upsertrecords_flg === "" && $("#sansan_upsertkeyfield_code").val() !== "null")) {
+            if ((upsertrecords_flg !== '' && $('#sansan_upsertkeyfield_code').val() === 'null') ||
+                (upsertrecords_flg === '' && $('#sansan_upsertkeyfield_code').val() !== 'null')) {
                 swal('Error!', 'レコード一括登録時のUpsert機能を利用する場合は\n' +
                     '使用機能の「レコード一括登録時のUpsert機能」にチェックを入れ、\n' +
                     '「レコード一括登録時のUpsert機能設定項目」で使用するフィールドを選択してください。', 'error');
