@@ -189,17 +189,18 @@ jQuery.noConflict();
 
         function setDropdown() {
             // キーフィールド選択肢作成
-            kintone.api(kintone.api.url('/k/v1/preview/form', true), 'GET', {'app': kintone.app.getId()},
+            kintone.api(kintone.api.url('/k/v1/preview/app/form/fields', true), 'GET', {'app': kintone.app.getId()},
                 function(resp) {
-                    for (var i = 0; i < resp.properties.length; i++) {
-                        var prop = resp.properties[i];
+                    for (var key in resp.properties) {
+                        if (!resp.properties.hasOwnProperty(key)) {continue;}
+                        var prop = resp.properties[key];
                         var $appendhtml;
                         switch (prop.type) {
                             case 'SINGLE_LINE_TEXT':
                                 $appendhtml = $('<option value = ' + '"' +
                             escapeHtml(prop.code) + '">' + escapeHtml(prop.label) + '</option>');
                                 $('.sansan-copy-text').append($appendhtml);
-                                if (prop.unique === 'true') {
+                                if (prop.unique === true) {
                                     $('.sansan-copy-text-unique').append($appendhtml);
                                 }
                                 break;
@@ -241,6 +242,27 @@ jQuery.noConflict();
                                     $('#sansan_spacefield_code').append($appendhtml);
                                 }
                                 break;
+                        }
+                    }
+                    setDefault();
+                });
+        }
+
+        function setDropdowSpace() {
+            // キーフィールド選択肢（スペース）作成
+            kintone.api(kintone.api.url('/k/v1/preview/app/form/layout', true), 'GET', {'app': kintone.app.getId()},
+                function(resp) {
+                    for (var i = 0; i < resp.layout.length; i++) {
+                        var row = resp.layout[i];
+                        if (row.type !== 'ROW') {continue;}
+                        for (var cnt = 0; cnt < row.fields.length; cnt++) {
+                            var rowField = row.fields[cnt];
+                            var $appendhtmlSpace;
+                            if (rowField.type === 'SPACER' && rowField.elementId !== '') {
+                                $appendhtmlSpace = $('<option value = ' + '"' + escapeHtml(rowField.elementId) + '">' +
+                                        escapeHtml(rowField.elementId) + '</option>');
+                                $('#sansan_spacefield_code').append($appendhtmlSpace);
+                            }
                         }
                     }
                     setDefault();
@@ -317,5 +339,6 @@ jQuery.noConflict();
         });
 
         setDropdown();
+        setDropdowSpace();
     });
 })(jQuery, kintone.$PLUGIN_ID);
