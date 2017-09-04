@@ -248,13 +248,15 @@ jQuery.noConflict();
                 });
         }
 
-        function setDropdowSpace() {
-            // キーフィールド選択肢（スペース）作成
+        function setDropdownSpace() {
+            // キーフィールド選択肢作成（スペース）
             kintone.api(kintone.api.url('/k/v1/preview/app/form/layout', true), 'GET', {'app': kintone.app.getId()},
                 function(resp) {
                     for (var i = 0; i < resp.layout.length; i++) {
                         var row = resp.layout[i];
+                        // テーブル、グループは対象外
                         if (row.type !== 'ROW') {continue;}
+                        // 各行のフィールド情報を取得
                         for (var cnt = 0; cnt < row.fields.length; cnt++) {
                             var rowField = row.fields[cnt];
                             var $appendhtmlSpace;
@@ -339,6 +341,6 @@ jQuery.noConflict();
         });
 
         setDropdown();
-        setDropdowSpace();
+        setDropdownSpace();
     });
 })(jQuery, kintone.$PLUGIN_ID);
