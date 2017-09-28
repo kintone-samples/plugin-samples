@@ -14,22 +14,24 @@ jQuery.noConflict();
         var KEY = PLUGIN_ID;
         var appId = kintone.app.getId();
         var config = kintone.plugin.app.getConfig(KEY);
-        kintone.api(kintone.api.url('/k/v1/preview/form', true), 'GET', {app: appId}).then(function(resp) {
+        kintone.api(kintone.api.url('/k/v1/preview/app/form/fields', true), 'GET', {app: appId}).then(function(resp) {
             var $op;
-            for (var i = 0; i < resp.properties.length; i++) {
+            var respKeys = Object.keys(resp.properties);
+            for (var i = 0; i < respKeys.length; i++) {
+                var prop = resp.properties[respKeys[i]];
                 // set field for title.
-                if (resp.properties[i]['type'] === 'SINGLE_LINE_TEXT') {
+                if (prop.type === 'SINGLE_LINE_TEXT') {
                     $op = $('<option>', {
-                        value: resp.properties[i]['code']
+                        value: prop.code
                     }).append(
-                        '<span>' + resp.properties[i]['label'] + '(' + resp.properties[i]['code'] + ')</span>'
+                        '<span>' + prop.label + '(' + prop.code + ')</span>'
                     );
                     $('#title-field').append($op);
-                } else if (resp.properties[i]['type'] === 'DATE') {
+                } else if (prop.type === 'DATE') {
                     $op = $('<option>', {
-                        value: resp.properties[i]['code']
+                        value: prop.code
                     }).append(
-                        '<span>' + resp.properties[i]['label'] + '(' + resp.properties[i]['code'] + ')</span>'
+                        '<span>' + prop.label + '(' + prop.code + ')</span>'
                     );
                     $('#kaisai-date').append($op);
                 }
