@@ -33,7 +33,9 @@ jQuery.noConflict();
     }
     // get currend config
     function getCurrentConf() {
-        var config = JSON.parse(kintone.plugin.app.getConfig(PLUGIN_ID).options);
+        var CONF = kintone.plugin.app.getConfig(PLUGIN_ID);
+        if (!CONF.options) {return; }
+        var config = JSON.parse(CONF.options);
         if (config.apikey) {
             $('#itsunavi-api-key').val(config.apikey);
         }
@@ -92,14 +94,15 @@ jQuery.noConflict();
     // getFieldList and add select option
     function getFieldList() {
         var appId = kintone.app.getId();
+        // add single_line_text and number field
         kintone.api(
-            kintone.api.url('/k/v1/form', appIsGuest()),
+            kintone.api.url('/k/v1/preview/app/form/fields', appIsGuest()),
             'GET',
             {app: appId},
             function(resp) { // success
                 var properties = resp.properties;
-                for (var i = 0; i < properties.length; i++) {
-                    var property = properties[i];
+                for (var key in resp.properties) {
+                    var property = properties[key];
                     switch (property.type) {
                         case 'SINGLE_LINE_TEXT':
                             // add option in select Box
@@ -114,19 +117,33 @@ jQuery.noConflict();
                             addSelectOption('#itsunavi-lon-feeld', property.label, property.code);
                             addSelectOption('#itsunavi-tooltip-title', property.label, property.code);
                             break;
-                        case 'SPACER':
-                            addSelectOption('#itsunavi-space-feeld', property.elementId, property.elementId);
-                            break;
                         default:
                     }
                 }
                 getCurrentConf();
-            },
-            function(resp) { // failed
-                alert('フォーム情報の取得に失敗しました\nError: ' + resp.message);
+            }
+        );
+
+        // add space field
+        kintone.api(
+            kintone.api.url('/k/v1/preview/app/form/layout', appIsGuest()),
+            'GET',
+            {app: appId},
+            function(response) { // success
+                var layout = response.layout;
+                for (var i = 0; i < layout.length; i++) {
+                    var fields = layout[i].fields;
+                    for (var y = 0; y < fields.length; y++) {
+                        var pr = fields[y];
+                        if (pr.type === 'SPACER') {
+                            addSelectOption('#itsunavi-space-feeld', pr.elementId, pr.elementId);
+                        }
+                    }
+                }
             }
         );
     }
+
     // set new config
     function setConf() {
         var config = {};

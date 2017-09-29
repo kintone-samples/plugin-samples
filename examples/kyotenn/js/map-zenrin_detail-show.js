@@ -7,7 +7,9 @@
 jQuery.noConflict();
 (function($, PLUGIN_ID) {
     'use strict';
-    var config = JSON.parse(kintone.plugin.app.getConfig(PLUGIN_ID).options);
+    var CONF = kintone.plugin.app.getConfig(PLUGIN_ID);
+    if (!CONF.options) {return; }
+    var config = JSON.parse(CONF.options);
     var latField = config.latField;
     var lonField = config.lonField;
     var detailMapField = config.detailMapField;
