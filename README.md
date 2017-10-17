@@ -6,7 +6,9 @@ This SDK includes kintone plug-in packaging tool.
 ## Requirement
 
 * A bash shell
-* zip and openssl libraries are required on Windows using Cygwin.
+* zip and openssl libraries are required on Windows using Cygwin
+* No dotfiles (such as .DS_Store) in any of the folders inside your plugin. To remove dotfiles, run the following command in the plugin directory in Terminal:
+```find . -name ".DS_Store" -delete```
 
 
 ## How to Use
