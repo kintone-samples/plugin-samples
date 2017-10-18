@@ -7,9 +7,9 @@ This SDK includes kintone plug-in packaging tool.
 
 * A bash shell
 * zip and openssl libraries are required on Windows using Cygwin
-* No dotfiles (such as .DS_Store) in any of the folders inside your plugin. To remove dotfiles, run the following command in the plugin directory in Terminal:
+* **For Mac users only**: No dotfiles (such as .DS_Store) in any of the folders inside your plugin. To automatically remove all instances of .DS_Store in your plugin folders, run the following Terminal command in the plugin directory:
 ```find . -name ".DS_Store" -delete```
-
+(Note that .DS_Store files are only used by the Finder to hold custom view settings for that particular folder. In most cases nothing will happen if you delete them, or at worst custom Finder view settings (icon size, position, background color, etc) will be lost.)
 
 ## How to Use
 
