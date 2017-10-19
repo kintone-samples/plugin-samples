@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "version": 5,
+  "version": 4,
   "type": "APP",
   "name": {
     "ja": "JSEdit for kintone",
@@ -20,10 +20,10 @@
   "config": {
     "html": "html/config.html",
     "js": [
-      "https://js.cybozu.com/ace/v1.2.8/ace.js",
-      "https://js.cybozu.com/ace/v1.2.8/ext-language_tools.js",
-      "https://js.cybozu.com/jquery/1.12.4/jquery.min.js",
-      "https://js.cybozu.com/spinjs/2.3.2/spin.min.js",
+      "https://js.cybozu.com/ace/v1.2.0/ace.js",
+      "https://js.cybozu.com/ace/v1.2.0/ext-language_tools.js",
+      "https://js.cybozu.com/jquery/1.11.3/jquery.min.js",
+      "https://js.cybozu.com/spinjs/2.0.1/spin.min.js",
       "js/config.js"
     ],
     "css": [
