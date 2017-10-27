@@ -91,6 +91,47 @@ jQuery.noConflict();
             $('#itsunavi-api-domain').val(config.domain);
         }
     }
+    // add single_line_text and number field to option
+    function setTextAndNumField(resp) {
+        var properties = resp.properties;
+        for (var key in resp.properties) {
+            var property = properties[key];
+            switch (property.type) {
+                case 'SINGLE_LINE_TEXT':
+                    // add option in select Box
+                    addSelectOption('#itsunavi-address-feeld', property.label, property.code);
+                    addSelectOption('#itsunavi-lat-feeld', property.label, property.code);
+                    addSelectOption('#itsunavi-lon-feeld', property.label, property.code);
+                    addSelectOption('#itsunavi-tooltip-title', property.label, property.code);
+                    break;
+                case 'NUMBER':
+                    // add option in select Box
+                    addSelectOption('#itsunavi-lat-feeld', property.label, property.code);
+                    addSelectOption('#itsunavi-lon-feeld', property.label, property.code);
+                    addSelectOption('#itsunavi-tooltip-title', property.label, property.code);
+                    break;
+                default:
+            }
+        }
+    }
+    // add space field to option
+    function setSpaceField(response) {
+        var layout = response.layout;
+        for (var i = 0; i < layout.length; i++) {
+            switch (layout[i].type) {
+                case 'ROW':
+                    var fields = layout[i].fields;
+                    for (var y = 0; y < fields.length; y++) {
+                        var pr = fields[y];
+                        if (pr.type === 'SPACER') {
+                            addSelectOption('#itsunavi-space-feeld', pr.elementId, pr.elementId);
+                        }
+                    }
+                    break;
+                default:
+            }
+        }
+    }
     // getFieldList and add select option
     function getFieldList() {
         var appId = kintone.app.getId();
@@ -100,26 +141,7 @@ jQuery.noConflict();
             'GET',
             {app: appId},
             function(resp) { // success
-                var properties = resp.properties;
-                for (var key in resp.properties) {
-                    var property = properties[key];
-                    switch (property.type) {
-                        case 'SINGLE_LINE_TEXT':
-                            // add option in select Box
-                            addSelectOption('#itsunavi-address-feeld', property.label, property.code);
-                            addSelectOption('#itsunavi-lat-feeld', property.label, property.code);
-                            addSelectOption('#itsunavi-lon-feeld', property.label, property.code);
-                            addSelectOption('#itsunavi-tooltip-title', property.label, property.code);
-                            break;
-                        case 'NUMBER':
-                            // add option in select Box
-                            addSelectOption('#itsunavi-lat-feeld', property.label, property.code);
-                            addSelectOption('#itsunavi-lon-feeld', property.label, property.code);
-                            addSelectOption('#itsunavi-tooltip-title', property.label, property.code);
-                            break;
-                        default:
-                    }
-                }
+                setTextAndNumField(resp);
                 getCurrentConf();
             }
         );
@@ -130,18 +152,11 @@ jQuery.noConflict();
             'GET',
             {app: appId},
             function(response) { // success
-                var layout = response.layout;
-                for (var i = 0; i < layout.length; i++) {
-                    var fields = layout[i].fields;
-                    for (var y = 0; y < fields.length; y++) {
-                        var pr = fields[y];
-                        if (pr.type === 'SPACER') {
-                            addSelectOption('#itsunavi-space-feeld', pr.elementId, pr.elementId);
-                        }
-                    }
-                }
+                setSpaceField(response);
+                getCurrentConf();
             }
         );
+
     }
 
     // set new config
