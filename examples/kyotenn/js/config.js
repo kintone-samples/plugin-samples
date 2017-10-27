@@ -118,17 +118,14 @@ jQuery.noConflict();
     function setSpaceField(response) {
         var layout = response.layout;
         for (var i = 0; i < layout.length; i++) {
-            switch (layout[i].type) {
-                case 'ROW':
-                    var fields = layout[i].fields;
-                    for (var y = 0; y < fields.length; y++) {
-                        var pr = fields[y];
-                        if (pr.type === 'SPACER') {
-                            addSelectOption('#itsunavi-space-feeld', pr.elementId, pr.elementId);
-                        }
+            if (layout[i].type === 'ROW') {
+                var fields = layout[i].fields;
+                for (var y = 0; y < fields.length; y++) {
+                    var pr = fields[y];
+                    if (pr.type === 'SPACER') {
+                        addSelectOption('#itsunavi-space-feeld', pr.elementId, pr.elementId);
                     }
-                    break;
-                default:
+                }
             }
         }
     }
