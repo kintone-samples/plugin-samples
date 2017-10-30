@@ -95,7 +95,7 @@ jQuery.noConflict();
     function setTextAndNumField(resp) {
         var properties = resp.properties;
         for (var key in resp.properties) {
-            if (resp.properties.hasOwnProperty(key)) {continue; }
+            if (!resp.properties.hasOwnProperty(key)) {continue; }
             var property = properties[key];
             switch (property.type) {
                 case 'SINGLE_LINE_TEXT':
