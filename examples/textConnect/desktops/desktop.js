@@ -12,18 +12,15 @@
     if (!CONF) {
         return false;
     }
-    var evselect1 = CONF.select1;
-    var evselect2 = CONF.select2;
-    var evselect3 = CONF.select3;
-    var evselect4 = CONF.select4;
-    var evselect5 = CONF.select5;
-    var lineNumber = CONF.line_number;
 
-    // 一覧作成編集画面
-    var events1 = ['app.record.edit.show',
-        'app.record.create.show',
-        'app.record.index.edit.show'
-    ];
+    if (!CONF.copyfield1) {
+        return;
+    }
+
+    function escapeHtml(htmlstr) {
+        return htmlstr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/'/g, '&quot;').replace(/'/g, '&#39;');
+    }
 
     function checkTexValue(tex) {
         var tex_changes = '';
@@ -59,50 +56,97 @@
     }
 
     // 空のフィールドを探す
-    function fieldValues(record) {
+    function fieldValues(record, selectionArry) {
         var fieldarray = [];
-        for (var j = 1; j <= lineNumber; j++) {
-            var tex = record[String(CONF['select' + j])];
-            if (tex !== undefined) {
-                fieldarray.push(checkTexValue(tex));
-            } else {
-                fieldarray.push('');
+        for (var j = 0; j < 5; j++) {
+            if (selectionArry[j] !== '') {
+                var tex = record[String(selectionArry[j])];
+                if (tex.value !== undefined) {
+                    fieldarray.push(checkTexValue(tex));
+                } else {
+                    fieldarray.push('');
+                }
             }
+
         }
         return fieldarray;
     }
 
+    function createSelectionArry() {
+        // 行毎にselectionの配列を作成
+        var selectionArry = [];
+        selectionArry[0] = [];
+        selectionArry[1] = [];
+        selectionArry[2] = [];
+        for (var i = 1; i < 16; i++) {
+            selectionArry[parseInt((i - 1) / 5, 10)].push(CONF['select' + i]);
+        }
+        return selectionArry;
+    }
+
+
+    function connectField(record) {
+        // 各結合項目の処理
+        for (var i = 1; i < 4; i++) {
+            var cdcopyfield = CONF['copyfield' + i];
+            var cdbetween = CONF['between' + i];
+            var selectionArry = createSelectionArry();
+            var joinText = fieldValues(record, selectionArry[i - 1]);
+            if (cdbetween === '&nbsp;') {
+                cdbetween = '\u0020';
+            } else if (cdbetween === '&emsp;') {
+                cdbetween = '\u3000';
+            }
+            if (joinText.length > 0) {
+                record[String(cdcopyfield)]['value'] = String(joinText.join(cdbetween));
+            }
+        }
+    }
+
+    // 値に変更があった場合のイベントと保存前イベント
+    function createEvents() {
+
+        var changeEvent = ['app.record.edit.submit',
+            'app.record.create.submit',
+            'app.record.index.edit.submit'];
+        var edit_change = 'app.record.edit.change.';
+        var create_change = 'app.record.create.change.';
+        var index_change = 'app.record.index.edit.change.';
+
+        for (var a = 1; a < 16; a++) {
+            var target = CONF['select' + a];
+            changeEvent.push(edit_change + escapeHtml(target));
+            changeEvent.push(create_change + escapeHtml(target));
+            changeEvent.push(index_change + escapeHtml(target));
+        }
+        return changeEvent;
+    }
+
+    // 一覧作成編集画面
+    var events1 = ['app.record.edit.show',
+        'app.record.create.show',
+        'app.record.index.edit.show'
+    ];
+
     // 結合フィールドを入力不可にする
     kintone.events.on(events1, function(event) {
-        var record1 = event['record'];
-        record1[String(CONF.copyfield)]['disabled'] = true;
+        var record = event['record'];
+        for (var i = 1; i < 4; i++) {
+            if (CONF['copyfield' + i] !== '') {
+                record[String(CONF['copyfield' + i])]['disabled'] = true;
+            }
+        }
         return event;
     });
 
+    // changeイベントとsubmitイベント発火時に文字結合処理を行う
+    var valevents = createEvents();
+    kintone.events.on(valevents, function connect_texts(event) {
+        var record = event.record;
+        connectField(record);
+        return event;
+    });
 
-
-    // 値に変更があった場合と保存前に結合フィールドに反映させる
-    var valevents = ['app.record.edit.change.' + evselect1,
-        'app.record.edit.change.' + evselect2,
-        'app.record.edit.change.' + evselect3,
-        'app.record.edit.change.' + evselect4,
-        'app.record.edit.change.' + evselect5,
-        'app.record.edit.submit',
-
-        'app.record.create.change.' + evselect1,
-        'app.record.create.change.' + evselect2,
-        'app.record.create.change.' + evselect3,
-        'app.record.create.change.' + evselect4,
-        'app.record.create.change.' + evselect5,
-        'app.record.create.submit',
-
-        'app.record.index.edit.change.' + evselect1,
-        'app.record.index.edit.change.' + evselect2,
-        'app.record.index.edit.change.' + evselect3,
-        'app.record.index.edit.change.' + evselect4,
-        'app.record.index.edit.change.' + evselect5,
-        'app.record.index.edit.submit'
-    ];
 
     // 保存前イベント
     var submitEvent = ['app.record.edit.submit',
@@ -110,37 +154,32 @@
         'app.record.index.edit.submit'
     ];
 
-    kintone.events.on(valevents, function connect_texts(event) {
-
-        var record = event.record;
-        // cdselectにconfigで設定した値を代入する
-        var cdcopyfield = CONF.copyfield;
-        var cdbetween = CONF.between;
-        if (cdbetween === '&nbsp;') {
-            cdbetween = '\u0020';
-        } else if (cdbetween === '&emsp;') {
-            cdbetween = '\u3000';
-        }
-        var jointext = fieldValues(record);
-        record[String(cdcopyfield)]['value'] = String(jointext.join(cdbetween));
-        return event;
-    });
-
 
     // 保存ボタンを押下したときに空フィールドが指定されているかを確認
     kintone.events.on(submitEvent, function(event) {
         var record = event.record;
-        var jointext = fieldValues(record);
-        for (var i = 0; i < jointext.length; i++) {
-            if (!jointext[i]) {
-                var res = confirm('結合対象のフィールドに空文字が含まれています。登録しますか？');
-                if (res === false) {
-                    event.error = 'キャンセルしました';
-                    return event;
+        var selectionArry = createSelectionArry();
+        var flag = false;
+
+        for (var m = 0; m < 3; m++) {
+            var jointext = fieldValues(record, selectionArry[m]);
+            for (var i = 0; i < jointext.length; i++) {
+                if (!jointext[i]) {
+                    var res = confirm('結合対象のフィールドに空文字が含まれています。登録しますか？');
+                    if (res === false) {
+                        event.error = 'キャンセルしました';
+                        return event;
+                    }
+                    flag = true;
+                    break;
                 }
+            }
+            if (flag) {
                 break;
             }
         }
         return event;
     });
+
+
 })(kintone.$PLUGIN_ID);
