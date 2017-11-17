@@ -178,7 +178,7 @@
             };
             return new kintone.Promise(function(resolve, reject) {
                 if (self.settings.config.plugin.useProxy > 0) {
-                    appUrl = kintone.api.urlForGet('/k/v1/records', params);
+                    appUrl = kintone.api.urlForGet('/k/v1/records', params, true);
                     kintone.plugin.app.proxy(PLUGIN_ID, appUrl, 'GET', {}, {}, function(respdata) {
                         var responeDataJson = JSON.parse(respdata);
                         if (responeDataJson.records) {
