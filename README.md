@@ -1,4 +1,4 @@
-kintone Plug-in SDK
+kintone Plug-in SDKs
 ==========================
 
 This SDK includes kintone plug-in packaging tool.
