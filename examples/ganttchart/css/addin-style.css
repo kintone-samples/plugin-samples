@@ -59,9 +59,9 @@ div#box-min div.content{
 h3 {
 	text-align:center;
 	font-size:xx-large;
-	overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+	overflow: hidden;  
+    white-space: nowrap;  
+    text-overflow: ellipsis; 
 }
 
 .content {
