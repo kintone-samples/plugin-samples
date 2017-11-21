@@ -7,17 +7,17 @@
 jQuery.noConflict();
 
 (function(pluginId, $) {
-    "use strict";
+    'use strict';
 
     $(document).ready(function() {
-        kintone.api(kintone.api.url('/k/v1/preview/form', true), 'GET', {
+        kintone.api(kintone.api.url('/k/v1/preview/app/form/fields', true), 'GET', {
             'app': kintone.app.getId()
         }, function(resp) {
-            $.each(resp['properties'], function(index, property) {
-                if (property['type'] === 'NUMBER') {
-                    $('#vote-plugin-count-field').append($('<OPTION>').html(property['label']).val(property['code']));
-                } else if (property['type'] === 'USER_SELECT') {
-                    $('#vote-plugin-vote-field').append($('<OPTION>').html(property['label']).val(property['code']));
+            $.each(resp.properties, function(index, property) {
+                if (property.type === 'NUMBER') {
+                    $('#vote-plugin-count-field').append($('<OPTION>').html(property.label).val(property.code));
+                } else if (property.type === 'USER_SELECT') {
+                    $('#vote-plugin-vote-field').append($('<OPTION>').html(property.label).val(property.code));
                 }
             });
             var config = kintone.plugin.app.getConfig(pluginId);
