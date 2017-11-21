@@ -25,54 +25,57 @@ jQuery.noConflict();
         $('#color5').val(conf['color5']);
     }
     // アプリのフォーム情報を取得
-    kintone.api('/k/v1/preview/form', 'GET', {
+    kintone.api(kintone.api.url('/k/v1/preview/app/form/fields', true), 'GET', {
         app: kintone.app.getId()
     }, function(resp) {
         var singleLineText = [];
         var sDatetime = [];
         var eDatetime = [];
+        var count = 0;
 
-        for (var i = 0; i < resp.properties.length; i++) {
+        for (var key in resp.properties) {
+            if (!resp.properties.hasOwnProperty(key)) {continue;}
             var confFlg = false;
-            if (resp.properties[i].type === 'SINGLE_LINE_TEXT') {
-                singleLineText[i] = {
-                    'label': resp.properties[i].label,
-                    'key': resp.properties[i].code,
-                    'index': String(i)
+            if (resp.properties[key].type === 'SINGLE_LINE_TEXT') {
+                singleLineText[count] = {
+                    'label': resp.properties[key].label,
+                    'key': resp.properties[key].code,
+                    'index': String(count)
                 };
-                if (typeof (conf['name']) !== 'undefined' && resp.properties[i].code === conf['name']) {
+                if (typeof (conf['name']) !== 'undefined' && resp.properties[key].code === conf['name']) {
                     confFlg = true;
                 }
                 if (confFlg) {
-                    $('#name_code').prepend('<option name=' + i + ' selected>' + singleLineText[i].label + '</option>');
+                    $('#name_code').prepend('<option name=' + count + ' selected>' + singleLineText[count].label + '</option>');
                 } else {
-                    $('#name_code').append('<option name=' + i + '>' + singleLineText[i].label + '</option>');
+                    $('#name_code').append('<option name=' + count + '>' + singleLineText[count].label + '</option>');
                 }
-            } else if (resp.properties[i].type === 'DATETIME') {
-                sDatetime[i] = {
-                    'label': resp.properties[i].label,
-                    'key': resp.properties[i].code,
-                    'index': String(i)
+            } else if (resp.properties[key].type === 'DATETIME') {
+                sDatetime[count] = {
+                    'label': resp.properties[key].label,
+                    'key': resp.properties[key].code,
+                    'index': String(count)
                 };
-                eDatetime[i] = {
-                    'label': resp.properties[i].label,
-                    'key': resp.properties[i].code,
-                    'index': String(i)
+                eDatetime[count] = {
+                    'label': resp.properties[key].label,
+                    'key': resp.properties[key].code,
+                    'index': String(count)
                 };
-                if (typeof (conf['name']) !== 'undefined' && resp.properties[i].code === conf['start_datetime']) {
-                    $('#start_datetime_code').prepend('<option name=' + i + ' selected>' +
-                        sDatetime[i].label + '</option>');
-                    $('#end_datetime_code').append('<option name=' + i + '>' + eDatetime[i].label + '</option>');
-                } else if (typeof (conf['name']) !== 'undefined' && resp.properties[i].code === conf['end_datetime']) {
-                    $('#start_datetime_code').append('<option name=' + i + '>' + sDatetime[i].label + '</option>');
-                    $('#end_datetime_code').prepend('<option name=' + i + ' selected>' +
-                        eDatetime[i].label + '</option>');
+                if (typeof (conf['name']) !== 'undefined' && resp.properties[key].code === conf['start_datetime']) {
+                    $('#start_datetime_code').prepend('<option name=' + count + ' selected>' +
+                        sDatetime[count].label + '</option>');
+                    $('#end_datetime_code').append('<option name=' + count + '>' + eDatetime[count].label + '</option>');
+                } else if (typeof (conf['name']) !== 'undefined' && resp.properties[key].code === conf['end_datetime']) {
+                    $('#start_datetime_code').append('<option name=' + count + '>' + sDatetime[count].label + '</option>');
+                    $('#end_datetime_code').prepend('<option name=' + count + ' selected>' +
+                        eDatetime[count].label + '</option>');
                 } else {
-                    $('#start_datetime_code').append('<option name=' + i + '>' + sDatetime[i].label + '</option>');
-                    $('#end_datetime_code').append('<option name=' + i + '>' + eDatetime[i].label + '</option>');
+                    $('#start_datetime_code').append('<option name=' + count + '>' + sDatetime[count].label + '</option>');
+                    $('#end_datetime_code').append('<option name=' + count + '>' + eDatetime[count].label + '</option>');
                 }
 
             }
+            count++;
         }
 
 
