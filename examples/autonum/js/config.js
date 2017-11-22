@@ -160,7 +160,7 @@
                     app: kintone.app.getId(),
                     fields: this.settings.config.plugin.autoNumberingFieldcode
                 };
-                var appUrl = kintone.api.urlForGet('/k/v1/records', params);
+                var appUrl = kintone.api.urlForGet('/k/v1/records', params, true);
                 this.settings.config.proxy = kintone.plugin.app.getProxyConfig(appUrl, 'GET');
             }
             kintone.api(this.settings.apiURL.formField, 'GET', { 'app': kintone.app.getId() },
@@ -301,7 +301,7 @@
             var headerProxy = {
                 'X-Cybozu-API-Token': apiToken
             };
-            var appUrl = kintone.api.urlForGet('/k/v1/records', params);
+            var appUrl = kintone.api.urlForGet('/k/v1/records', params, true);
             var method = 'GET';
             this.validateProxy(appUrl, method, headerProxy, {}, function() {
                 kintone.plugin.app.setProxyConfig(appUrl, method, headerProxy, {}, callback);
