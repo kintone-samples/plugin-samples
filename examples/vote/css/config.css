@@ -1,0 +1,22 @@
+/*
+ * vote Plug-in
+ * Copyright (c) 2015 Cybozu
+ *
+ * Licensed under the MIT License
+ */
+#vote-plugin-container .kintoneplugin-dropdown-outer {
+    user-select: none;
+}
+#vote-plugin-container .kintoneplugin-dropdown-list {
+    user-select: none;
+    position: absolute;
+    display: none;
+    z-index: 2000;
+    margin-top: -6px;
+}
+#vote-plugin-container .kintoneplugin-dropdown-list-item:hover {
+    background-color: #E2F2FE;
+} 
+#vote-plugin-container .kintoneplugin-dropdown-list-item-selected {
+    color: #3498db;
+}
