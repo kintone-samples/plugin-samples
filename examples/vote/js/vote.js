@@ -7,7 +7,7 @@
 jQuery.noConflict();
 
 (function(pluginId, $) {
-    "use strict";
+    'use strict';
 
     var APPID = kintone.app.getId();
     var config = kintone.plugin.app.getConfig(pluginId);
@@ -16,10 +16,17 @@ jQuery.noConflict();
 
     function getRecordField() {
         var d = new $.Deferred();
-        kintone.api(kintone.api.url('/k/v1/form', true), 'GET', {'app': APPID}, function(evt) {
-            var found = $.grep(evt.properties, function(field) {
-                return field['type'] === 'RECORD_NUMBER';
-            });
+        kintone.api(kintone.api.url('/k/v1/preview/app/form/layout', true), 'GET', {'app': APPID}, function(evt) {
+            var found;
+            for (var i = 0; i < evt.layout.length; i++) {
+                var row = evt.layout[i];
+                found = $.grep(row.fields, function(field) {
+                    return field['type'] === 'RECORD_NUMBER';
+                });
+                if (found.length === 1) {
+                    break;
+                }
+            }
             if (found.length === 0) {
                 alert('レコード番号フィールドが見つかりません。いいねプラグインを使うためには、フォーム編集画面でレコード番号フィールドを配置する必要があります。');
                 d.reject();
@@ -220,7 +227,7 @@ jQuery.noConflict();
             for (var i = 0; i < users.length; i++) {
                 record[VOTE_FIELD].value = [];
             }
-            record[VOTE_COUNT_FIELD].value = "";
+            record[VOTE_COUNT_FIELD].value = '';
         } else {
             record[VOTE_FIELD]['disabled'] = true;
             record[VOTE_COUNT_FIELD]['disabled'] = true;
@@ -242,7 +249,7 @@ jQuery.noConflict();
                 })[0];
 
                 if (voteModel !== null) {
-                    var $parentEl = $(this).find("*").contents().filter(function() {
+                    var $parentEl = $(this).find('*').contents().filter(function() {
                         return this.nodeType === 3;
                     }).parent();
                     new VoteView(voteModel).append($parentEl);
