@@ -32,15 +32,15 @@ jQuery.noConflict();
     var Loading = {
         setting: {
             style: {
-                spinner: '.kintoneCustomizeloading{position: fixed; width: 100%; height:100%;' +
-                'top: 0; left:0; z-index:1000; background:rgba(204, 204, 204, 0.3)}' +
-                '.kintoneCustomizeloading:before{position: fixed; top: calc(50% - 25px);' +
-                'content: "";left: calc(50% - 25px);' +
-                'border:8px solid #f3f3f3;border-radius:50%;border-top:8px solid #3498db;width:50px;' +
-                'height:50px;-webkit-animation:spin .8s linear infinite; animation:spin .8s linear infinite}' +
-                '@-webkit-keyframes' +
-                'spin{0%{-webkit-transform:rotate(0)}100%{-webkit-transform:rotate(360deg)}}' +
-                '@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}'
+                spinner: '.kintoneCustomizeloading{position: fixed; width: 100%; height:100%;'
+                + 'top: 0; left:0; z-index:1000; background:rgba(204, 204, 204, 0.3)}'
+                + '.kintoneCustomizeloading:before{position: fixed; top: calc(50% - 25px);'
+                + 'content: "";left: calc(50% - 25px);'
+                + 'border:8px solid #f3f3f3;border-radius:50%;border-top:8px solid #3498db;width:50px;'
+                + 'height:50px;-webkit-animation:spin .8s linear infinite; animation:spin .8s linear infinite}'
+                + '@-webkit-keyframes'
+                + 'spin{0%{-webkit-transform:rotate(0)}100%{-webkit-transform:rotate(360deg)}}'
+                + '@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}'
             }
         },
         loading: null,

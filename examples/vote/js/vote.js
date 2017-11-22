@@ -35,10 +35,14 @@ jQuery.noConflict();
         control: {
             popup: null
         },
-        template: '<div class="customization-notify error">' +
-                  '<div class="notify-title"></div>' +
-                  '<div class= "icon icon-danger"><img /></div>' +
-                  '</div>',
+        template: '<div class="customization-notify error">'
+                  + '    <div class="notify-title"></div>'
+                  + '    <div class= "close-button">'
+                  + '        <div class="close-button-icon">'
+                  + '            <div class="icon-1"><div class="icon-2"></div></div>'
+                  + '        </div>'
+                  + '    </div>'
+                  + '</div>',
         createPopup: function() {
             this.control.popup = $(this.template);
             $('body').append(this.control.popup[0]);
