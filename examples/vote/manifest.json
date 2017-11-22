@@ -16,21 +16,21 @@
     "desktop": {
         "js": [
             "https://js.cybozu.com/jquery/jquery-1.11.0.min.js",
-            "https://10.192.12.15:8080/plugin-sdk/examples/vote/js/vote.js"
+            "js/vote.js"
         ],
         "css": [
-            "https://10.192.12.15:8080/plugin-sdk/examples/vote/css/vote.css"
+            "css/vote.css"
         ]
     },
     "config": {
         "html": "html/config.html",
         "js": [
             "https://js.cybozu.com/jquery/jquery-1.11.0.min.js",
-            "https://10.192.12.15:8080/plugin-sdk/examples/vote/js/config.js"
+            "js/config.js"
         ],
         "css": [
             "css/51-modern-default.css",
-            "https://10.192.12.15:8080/plugin-sdk/examples/vote/css/config.css"
+            "css/config.css"
         ],
         "required_params": ["vote_field", "vote_count_field"]
     }
