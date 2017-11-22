@@ -14,6 +14,70 @@ jQuery.noConflict();
     var VOTE_FIELD = config['vote_field'];
     var VOTE_COUNT_FIELD = config['vote_count_field'];
 
+    var Msg = {
+        ja: {
+            recordNumFieldNotFound: 'レコード番号フィールドが見つかりません。いいねプラグインを使うためには、フォーム編集画面でレコード番号フィールドを配置する必要があります。',
+            updatedWhileClicking: 'いいね中に誰かがレコードを更新しました。もう一度いいねしてください。',
+            notHavePermissionToEdit: 'レコード編集権限がないユーザはいいねできません。アプリ管理者にお問い合わせ下さい。',
+            errorOccurred: 'エラーが発生しました。アプリ管理者にお問い合わせ下さい。'
+        },
+        en: {
+            recordNumFieldNotFound: 'The Record number field cannot be found. In order to use the Vote plug-in,'
+                                  + ' you need to place a Record number field on the Edit form screen.',
+            updatedWhileClicking: 'Someone updated the record while you are clicking "Like". Please like again.',
+            notHavePermissionToEdit: 'Users who do not have permission to edit record cannot "like".'
+                                    + ' Please contact an application administrator.',
+            errorOccurred: 'An error occurred. Please contact an application administrator.'
+        }
+    };
+
+    var NotifyPopup = {
+        control: {
+            popup: null
+        },
+        template: '<div class="customization-notify error">' +
+                  '<div class="notify-title"></div>' +
+                  '<div class= "icon icon-danger"><img /></div>' +
+                  '</div>',
+        createPopup: function() {
+            this.control.popup = $(this.template);
+            $('body').append(this.control.popup[0]);
+
+            this.bindEvent();
+
+            return this.control.popup;
+        },
+        showPopup: function(message) {
+            this.control.popup.find('.notify-title').text(message);
+
+            var popupWidth = this.control.popup.width();
+            this.control.popup.css({left: '-' + popupWidth / 2 + 'px'});
+
+            this.control.popup.addClass('notify-slidedown');
+        },
+        hidePopup: function() {
+            this.control.popup.removeClass('notify-slidedown');
+        },
+        bindEvent: function() {
+            this.control.popup.click(function() {
+                this.hidePopup();
+            }.bind(this));
+        }
+    };
+
+    function getLanguage(lang) {
+        switch (lang) {
+            case 'ja':
+                return 'ja';
+            case 'en':
+                return 'en';
+            case 'zh':
+                return 'zh';
+            default:
+                return 'en';
+        }
+    }
+
     function getRecordField() {
         var d = new $.Deferred();
         kintone.api(kintone.api.url('/k/v1/preview/app/form/layout', true), 'GET', {'app': APPID}, function(evt) {
@@ -28,8 +92,7 @@ jQuery.noConflict();
                 }
             }
             if (found.length === 0) {
-                alert('レコード番号フィールドが見つかりません。いいねプラグインを使うためには、フォーム編集画面でレコード番号フィールドを配置する必要があります。');
-                d.reject();
+                d.reject({error: 'recordNumFieldNotFound'});
             } else {
                 var code = found[0]['code'];
                 d.resolve(code);
@@ -38,7 +101,7 @@ jQuery.noConflict();
         return d.promise();
     }
 
-    function VoteModel(record) {
+    function VoteModel(record, language) {
         var recordId = Number(record['$id']['value']);
         var voteUsers = record[VOTE_FIELD]['value'];
         var revision = Number(record['$revision']['value']);
@@ -47,13 +110,13 @@ jQuery.noConflict();
             var message;
             switch (e['code']) {
                 case 'GAIA_CO02':
-                    message = 'いいね中に誰かがレコードを更新しました。もう一度いいねしてください。';
+                    message = Msg[language].updatedWhileClicking;
                     break;
                 case 'CB_NO02':
-                    message = 'レコード編集権限がないユーザはいいねできません。アプリ管理者にお問い合わせ下さい。';
+                    message = Msg[language].notHavePermissionToEdit;
                     break;
                 default:
-                    message = 'エラーが発生しました。アプリ管理者にお問い合わせ下さい。';
+                    message = Msg[language].errorOccurred;
                     break;
             }
             message += '(id:' + e['id'] + ', code:' + e['code'] + ')';
@@ -118,14 +181,14 @@ jQuery.noConflict();
                     'record': newRecord,
                     'revision': revision
                 }, d.resolve, function(e) {
-                    alert(createErrorMessage(e));
+                    NotifyPopup.showPopup(createErrorMessage(e));
                 });
                 return d.promise();
             }
         };
     }
 
-    function fetchVoteModel() {
+    function fetchVoteModel(language) {
         var d = new $.Deferred();
         var id = kintone.app.record.getId();
         kintone.api(kintone.api.url('/k/v1/record', true), 'GET', {
@@ -137,12 +200,12 @@ jQuery.noConflict();
                 '$revision': evt['record']['$revision']
             };
             record[VOTE_FIELD] = evt['record'][VOTE_FIELD];
-            d.resolve(new VoteModel(record));
+            d.resolve(new VoteModel(record, language));
         });
         return d.promise();
     }
 
-    function fetchVoteModels() {
+    function fetchVoteModels(language) {
         var d = new $.Deferred();
 
         var rawQuery = kintone.app.getQuery().match(/(.*)(limit .+)/);
@@ -160,7 +223,7 @@ jQuery.noConflict();
         }, function(evt) {
             var models = [];
             $.each(evt['records'], function(i, record) {
-                var model = new VoteModel(record);
+                var model = new VoteModel(record, language);
                 models.push(model);
             });
             d.resolve(models);
@@ -236,10 +299,15 @@ jQuery.noConflict();
     });
 
     kintone.events.on('app.record.index.show', function() {
+        var loginInfo = kintone.getLoginUser();
+        var lang = getLanguage(loginInfo.language);
+
+        NotifyPopup.createPopup();
+
         var RECORD_FIELD;
         getRecordField().then(function(code) {
             RECORD_FIELD = code;
-            return fetchVoteModels();
+            return fetchVoteModels(lang);
         }).then(function(voteModels) {
             var cellEls = $(kintone.app.getFieldElements(RECORD_FIELD));
             cellEls.each(function() {
@@ -255,11 +323,19 @@ jQuery.noConflict();
                     new VoteView(voteModel).append($parentEl);
                 }
             });
+        }).fail(function(mess) {
+            var error = mess.error;
+            NotifyPopup.showPopup(Msg[lang][error]);
         });
     });
 
     kintone.events.on('app.record.detail.show', function(appId, record, recordId) {
-        fetchVoteModel().then(function(voteModel) {
+        var loginInfo = kintone.getLoginUser();
+        var lang = getLanguage(loginInfo.language);
+
+        NotifyPopup.createPopup();
+
+        fetchVoteModel(lang).then(function(voteModel) {
             var $labelEl = $(kintone.app.record.getFieldElement(VOTE_FIELD));
             new VoteView(voteModel).prepend($labelEl);
         });
