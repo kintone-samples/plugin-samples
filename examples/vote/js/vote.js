@@ -200,11 +200,9 @@ jQuery.noConflict();
         var rawQuery = kintone.app.getQuery().match(/(.*)(limit .+)/);
         var query;
         if (rawQuery[1] === '') {
-            // query = 'order by 作成日時 desc ' + rawQuery[2];
-            query = rawQuery[2];
+            query = 'order by 作成日時 desc ' + rawQuery[2];
         } else {
-            // query = rawQuery[1] + ', 作成日時 desc ' + rawQuery[2];
-            query = rawQuery[1] + rawQuery[2];
+            query = rawQuery[1] + ', 作成日時 desc ' + rawQuery[2];
         }
 
         kintone.api('/k/v1/records', 'GET', {
