@@ -113,23 +113,29 @@ jQuery.noConflict();
         getSelectedValue: function() {
             return this.data;
         },
-        setSelectedValue: function(data, element) {
+        setSelectedValue: function(data) {
+            var arrItem = [];
             if (data) {
-                this.data = {
-                    name: data.name,
-                    value: data.value
-                };
+                this.$listOption.find('.kintoneplugin-dropdown-list-item').each(function(index, item) {
+                    if (data === $(item).data('value')) {
+                        arrItem.push($(item));
+                    }
+                });
+                this.data.value = data;
+                this.data.name = arrItem[0].text();
             }
             var itemSelected = this.$el.find('.kintoneplugin-dropdown-list-item-selected');
             itemSelected.removeClass('kintoneplugin-dropdown-list-item-selected');
-            if (this.data.value === null) {
+            if (!this.data.value) {
                 var $selected = $(this.$el.find('.kintoneplugin-dropdown-list-item')[0]);
                 $selected.addClass('kintoneplugin-dropdown-list-item-selected');
-                this.$select.text(this.data.name);
             } else {
-                element.addClass('kintoneplugin-dropdown-list-item-selected');
-                this.$select.text(this.data.name);
+                arrItem[0].addClass('kintoneplugin-dropdown-list-item-selected');
             }
+            this.$select.text(this.data.name);
+        },
+        findItemInList: function() {
+
         },
         renderItemList: function() {
             var self = this;
@@ -142,14 +148,9 @@ jQuery.noConflict();
                 $item = $(self.template.item);
                 $item.text(item.name);
                 $item.data('value', item.value);
-                $item.addClass('option-' + item.value);
                 $itemList.append($item);
             });
 
-        },
-        find: function(el) {
-            var $el = this.$el.find(el);
-            return $el;
         },
         catchElement: function() {
             this.$select = this.$el.find('.kintoneplugin-dropdown-selected-name');
@@ -169,8 +170,8 @@ jQuery.noConflict();
             var self = this;
             this.$listOption.on('click', '.kintoneplugin-dropdown-list-item', function() {
                 self.data.name = $(this).text();
-                self.data.value = $(this).data('value') !== undefined ? $(this).data('value') : null;
-                self.setSelectedValue(this.data, $(this));
+                self.data.value = $(this).data('value');
+                self.setSelectedValue(self.data.value);
                 self.$listOption.toggle();
             });
         }
@@ -263,16 +264,8 @@ jQuery.noConflict();
 
             var config = kintone.plugin.app.getConfig(pluginId);
             if (config.vote_field && config.vote_count_field) {
-                var data = {};
-                var voteSelected = voteDropdown.find('.option-' + config.vote_field);
-                data.name = voteSelected.text();
-                data.value = config.vote_field;
-                voteDropdown.setSelectedValue(data, voteSelected);
-
-                var countSelected = countDropdown.find('.option-' + config.vote_count_field);
-                data.name = countSelected.text();
-                data.value = config.vote_count_field;
-                countDropdown.setSelectedValue(data, countSelected);
+                voteDropdown.setSelectedValue(config.vote_field);
+                countDropdown.setSelectedValue(config.vote_count_field);
             }
 
             Loading.hide();
@@ -281,10 +274,10 @@ jQuery.noConflict();
         $('#setting_submit').click(function() {
             var config = {};
             var voteValue = voteDropdown.getSelectedValue().value;
-            config.vote_field = voteValue === null ? '' : voteValue;
+            config.vote_field = !voteValue ? '' : voteValue;
 
             var countValue = countDropdown.getSelectedValue().value;
-            config.vote_count_field = countValue === null ? '' : countValue;
+            config.vote_count_field = !countValue ? '' : countValue;
 
             kintone.plugin.app.setConfig(config);
         });
