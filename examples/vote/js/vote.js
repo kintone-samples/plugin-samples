@@ -15,19 +15,29 @@ jQuery.noConflict();
     var VOTE_COUNT_FIELD = config['vote_count_field'];
 
     var Msg = {
+        en: {
+            recordNumFieldNotFound: 'To use the Like Plug-in, the Record number field must be set in the List View',
+            updatedWhileClicking: 'Someone updated the record while you were clicking "Like".'
+                                    + ' Please click the "Like" button again.',
+            notHavePermissionToEdit: 'Users who do not have permission to edit the record'
+                                    + ' cannot click the "Like" button.'
+                                    + ' Please contact the Administrator of this App to resolve this issue.',
+            errorOccurred: 'An error occurred. Please contact the Administrator of this App to resolve this issue.'
+        },
         ja: {
             recordNumFieldNotFound: 'レコード番号フィールドが見つかりません。いいねプラグインを使うためには、フォーム編集画面でレコード番号フィールドを配置する必要があります。',
             updatedWhileClicking: 'いいね中に誰かがレコードを更新しました。もう一度いいねしてください。',
             notHavePermissionToEdit: 'レコード編集権限がないユーザはいいねできません。アプリ管理者にお問い合わせ下さい。',
             errorOccurred: 'エラーが発生しました。アプリ管理者にお問い合わせ下さい。'
         },
-        en: {
-            recordNumFieldNotFound: 'The Record number field cannot be found. In order to use the Vote plug-in,'
-                                  + ' you need to place a Record number field on the Edit form screen.',
-            updatedWhileClicking: 'Someone updated the record while you are clicking "Like". Please like again.',
-            notHavePermissionToEdit: 'Users who do not have permission to edit record cannot "like".'
-                                    + ' Please contact an application administrator.',
-            errorOccurred: 'An error occurred. Please contact an application administrator.'
+        zh: {
+            recordNumFieldNotFound: 'To use the Like Plug-in, the Record number field must be set in the List View',
+            updatedWhileClicking: 'Someone updated the record while you were clicking "Like".'
+                                    + ' Please click the "Like" button again.',
+            notHavePermissionToEdit: 'Users who do not have permission to edit the record'
+                                    + ' cannot click the "Like" button.'
+                                    + ' Please contact the Administrator of this App to resolve this issue.',
+            errorOccurred: 'An error occurred. Please contact the Administrator of this App to resolve this issue.'
         }
     };
 

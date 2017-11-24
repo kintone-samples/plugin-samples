@@ -10,21 +10,30 @@ jQuery.noConflict();
     'use strict';
 
     var Msg = {
+        en: {
+            header: 'Like Plug-in',
+            description1: 'This Plug-in uses the User selection field '
+                        + 'and Number field to record data of "Likes" given to a record.',
+            description2: 'Select the relative field names for the settings below.',
+            labelOfVoteField: 'The field to record the users who "Liked" the record:',
+            labelOfCountfield: 'The field to count the number of users who "Liked" the record:',
+            btnSave: 'Save'
+        },
         ja: {
-            header: 'Vote extension',
+            header: 'いいねプラグイン',
             description1: 'ユーザー選択フィールドと数値フィールドをつかって、いいねした人といいねの数を実現します。',
-            description2: 'それぞれのフィールドコードをドロップダウンより選択してください。',
+            description2: '下記の設定に対するフィールド名を選択してください',
             labelOfVoteField: '「いいねした人」に使うフィールド:',
             labelOfCountfield: '「いいねの数」に使うフィールド:',
             btnSave: '保存する'
         },
-        en: {
-            header: 'Vote extension',
-            description1: 'Use the User selection field and the Numeric field to display number of people' 
-                        + ' who say like and number of like.',
-            description2: 'Select each field code from the dropdown.',
-            labelOfVoteField: 'Field is used for "people who said like"',
-            labelOfCountfield: 'Field is used for "number of like"',
+        zh: {
+            header: 'Like Plug-in',
+            description1: 'This Plug-in uses the User selection field '
+                        + 'and Number field to record data of "Likes" given to a record.',
+            description2: 'Select the relative field names for the settings below.',
+            labelOfVoteField: 'The field to record the users who "Liked" the record:',
+            labelOfCountfield: 'The field to count the number of users who "Liked" the record:',
             btnSave: 'Save'
         }
     };
@@ -133,9 +142,6 @@ jQuery.noConflict();
                 arrItem[0].addClass('kintoneplugin-dropdown-list-item-selected');
             }
             this.$select.text(this.data.name);
-        },
-        findItemInList: function() {
-
         },
         renderItemList: function() {
             var self = this;
