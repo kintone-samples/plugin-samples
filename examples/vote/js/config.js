@@ -116,10 +116,10 @@ jQuery.noConflict();
             this.renderItemList(this.settings.itemList);
             this.setSelectedValue();
             this.bindEvent();
-            this.getSelectedValue();
+            this.getSelectedData();
             return this.$el;
         },
-        getSelectedValue: function() {
+        getSelectedData: function() {
             return this.data;
         },
         setSelectedValue: function(data) {
@@ -279,10 +279,10 @@ jQuery.noConflict();
 
         $('#setting_submit').click(function() {
             var config = {};
-            var voteValue = voteDropdown.getSelectedValue().value;
+            var voteValue = voteDropdown.getSelectedData().value;
             config.vote_field = !voteValue ? '' : voteValue;
 
-            var countValue = countDropdown.getSelectedValue().value;
+            var countValue = countDropdown.getSelectedData().value;
             config.vote_count_field = !countValue ? '' : countValue;
 
             kintone.plugin.app.setConfig(config);
