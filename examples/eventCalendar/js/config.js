@@ -25,7 +25,7 @@ jQuery.noConflict();
         $('#color5').val(conf['color5']);
     }
     // アプリのフォーム情報を取得
-    kintone.api(kintone.api.url('/k/v1/preview/app/form/fields', true), 'GET', {
+    kintone.api('/k/v1/preview/app/form/fields', 'GET', {
         app: kintone.app.getId()
     }, function(resp) {
         var singleLineText = [];
