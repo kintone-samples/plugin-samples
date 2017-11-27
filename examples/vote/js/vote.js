@@ -144,14 +144,7 @@ jQuery.noConflict();
 
     function fetchVoteModels() {
         var d = new $.Deferred();
-
-        var rawQuery = kintone.app.getQuery().match(/(.*)(limit .+)/);
-        var query;
-        if (rawQuery[1] === '') {
-            query = rawQuery[2];
-        } else {
-            query = rawQuery[1] + rawQuery[2];
-        }
+        var query = kintone.app.getQuery();
 
         kintone.api('/k/v1/records', 'GET', {
             'app': APPID,
