@@ -20,3 +20,9 @@
 #vote-plugin-container .kintoneplugin-dropdown-list-item-selected {
     color: #3498db;
 }
+#vote-plugin-container .kintoneplugin-dropdown-container {
+    display: inline-block;
+}
+#vote-plugin-container .kintoneplugin-dropdown {
+    margin: 0px;
+}

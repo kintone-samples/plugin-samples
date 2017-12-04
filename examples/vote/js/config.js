@@ -90,6 +90,7 @@ jQuery.noConflict();
     };
 
     function Dropdown(settings) {
+
         this.settings = settings;
         this.data = {
             name: '-----',
@@ -98,7 +99,7 @@ jQuery.noConflict();
     }
     Dropdown.prototype = {
         template: {
-            container: '<div>'
+            container: '<div class="kintoneplugin-dropdown-container">'
             + '    <div class="kintoneplugin-dropdown-outer">'
             + '        <div class="kintoneplugin-dropdown">'
             + '            <div class="kintoneplugin-dropdown-selected">'
@@ -165,6 +166,7 @@ jQuery.noConflict();
         bindEvent: function() {
             this.handleDropdownOuterClick();
             this.handleDropdownListClick();
+            this.handleOutsideDropdownListClick();
         },
         handleDropdownOuterClick: function() {
             var self = this;
@@ -179,6 +181,15 @@ jQuery.noConflict();
                 self.data.value = $(this).data('value');
                 self.setSelectedValue(self.data.value);
                 self.$listOption.toggle();
+            });
+        },
+        handleOutsideDropdownListClick: function() {
+            var self = this;
+            $('body').on('click', function(event) {
+                var isClickOnDropdown = $(event.target).closest(self.$el).length > 0;
+                if (!isClickOnDropdown) {
+                    self.$listOption.hide();
+                }
             });
         }
     };
