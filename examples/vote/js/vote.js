@@ -16,7 +16,7 @@ jQuery.noConflict();
 
     function getRecordField() {
         var d = new $.Deferred();
-        kintone.api(kintone.api.url('/k/v1/preview/app/form/layout', true), 'GET', {'app': APPID}, function(evt) {
+        kintone.api(kintone.api.url('/k/v1/app/form/layout', true), 'GET', {'app': APPID}, function(evt) {
             var found;
             for (var i = 0; i < evt.layout.length; i++) {
                 var row = evt.layout[i];
