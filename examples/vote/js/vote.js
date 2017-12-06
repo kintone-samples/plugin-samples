@@ -16,7 +16,7 @@ jQuery.noConflict();
 
     var Msg = {
         en: {
-            recordNumFieldNotFound: 'To use the Like Plug-in, the Record number field must be set in the List View',
+            recordNumFieldNotFound: 'To use the Like Plug-in, the Record number field must be set in the List View.',
             updatedWhileClicking: 'Someone updated the record while you were clicking "Like".'
                                     + ' Please click the "Like" button again.',
             notHavePermissionToEdit: 'Users who do not have permission to edit the record'
