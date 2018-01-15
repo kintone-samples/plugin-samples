@@ -102,6 +102,7 @@
     width: 10px;
     float: left;
     text-align: left;
+    line-height: 28px;
     padding-right: 4px;
 }
 .kintone-ui.cp-color-picker .cp-panel div input {
