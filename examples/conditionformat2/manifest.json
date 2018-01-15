@@ -32,6 +32,7 @@
         "js": [
             "https://js.cybozu.com/jquery/2.1.4/jquery.min.js",
             "https://js.cybozu.com/jsrender/0.9.83/jsrender.min.js",
+            "thirdparties/jqColorPicker.min.js",
             "js/config.js"
         ],
         "css": [

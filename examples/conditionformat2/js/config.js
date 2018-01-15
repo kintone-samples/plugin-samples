@@ -30,6 +30,56 @@ jQuery.noConflict();
         DATE_ROW_NUM = 10;
     }
 
+    function createColorPickerConfig(callback) {
+        return {
+            opacity: false,
+            doRender: false,
+            buildCallback: function($elm) {
+                $elm.addClass('kintone-ui');
+    
+                var colorInstance = this.color,
+                    colorPicker = this;
+    
+                $elm.prepend('<div class="cp-panel">' +
+                    '<div><label>R</label> <input type="text" class="cp-r" /></div>' +
+                    '<div><label>G</label> <input type="text" class="cp-g" /></div>' +
+                    '<div><label>B</label> <input type="text" class="cp-b" /></div>' +
+                    '<hr>' +
+                    '<div><label>H</label> <input type="text" class="cp-h" /></div>' +
+                    '<div><label>S</label> <input type="text" class="cp-s" /></div>' +
+                    '<div><label>V</label> <input type="text" class="cp-v" /></div>' +
+                    '<hr>' +
+                    '<div><input type="text" class="cp-HEX" /></div>' +
+                '</div>').on('change', 'input', function(e) {
+                    var value = this.value,
+                        className = this.className,
+                        type = className.split('-')[1],
+                        color = {};
+    
+                    color[type] = value;
+                    colorInstance.setColor(type === 'HEX' ? value : color,
+                        type === 'HEX' ? 'HEX' : /(?:r|g|b)/.test(type) ? 'rgb' : 'hsv');
+                    colorPicker.render();
+                    this.blur();
+                });
+            },
+            renderCallback: function($elm, toggled) {
+                var colors = this.color.colors.RND,
+                modes = {
+                    r: colors.rgb.r, g: colors.rgb.g, b: colors.rgb.b,
+                    h: colors.hsv.h, s: colors.hsv.s, v: colors.hsv.v,
+                    HEX: this.color.colors.HEX
+                };
+    
+                $('input', '.cp-panel').each(function() {
+                    this.value = modes[this.className.substr(3)];
+                });
+
+                callback(this.color.colors.HEX);
+            }
+        }
+    }
+
     $(document).ready(function() {
         var terms = {
             'ja': {
@@ -251,29 +301,23 @@ jQuery.noConflict();
                 $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column3').val(CONF['text_row' + ti]['value']);
                 $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column4').
                     val(CONF['text_row' + ti]['targetfield']);
-                $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column5').
-                    val(CONF['text_row' + ti]['targetcolor']);
-                $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column6').
-                    val(CONF['text_row' + ti]['targetbgcolor']);
                 $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column7').
                     val(CONF['text_row' + ti]['targetsize']);
                 $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column8').
                     val(CONF['text_row' + ti]['targetfont']);
-                $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column5').
-                    css('color', CONF['text_row' + ti]['targetcolor']);
-                $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column6').
-                    css('background-color', CONF['text_row' + ti]['targetbgcolor']);
-                $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column5').
-                    parent('div').find('i').css('border-bottom-color', CONF['text_row' + ti]['targetcolor']);
-                $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column6').
-                    parent('div').find('i').css('border-bottom-color', CONF['text_row' + ti]['targetbgcolor']);
-                $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column5-color').
-                    val(CONF['text_row' + ti]['targetcolor']);
+
+                var $fontColor = $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column5');
+                $fontColor.val(CONF['text_row' + ti]['targetcolor']);
+                $fontColor.css('color', CONF['text_row' + ti]['targetcolor']);
+
+                var $backgroundColor = $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column6');
+                $backgroundColor.css('color', CONF['text_row' + ti]['targetcolor']);
                 if (CONF['text_row' + ti]['targetbgcolor'] !== '#') {
-                    $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column6-color').
-                        val(CONF['text_row' + ti]['targetbgcolor']);
+                    $backgroundColor.val(CONF['text_row' + ti]['targetbgcolor']);
+                    $backgroundColor.css('background-color', CONF['text_row' + ti]['targetbgcolor']);
                 } else {
-                    $('#cf-plugin-text-tbody > tr:eq(' + ti + ') .cf-plugin-column6-color').val('#808080');
+                    $backgroundColor.val('#808080');
+                    $backgroundColor.css('background-color', '#808080');
                 }
             }
         }
@@ -290,32 +334,25 @@ jQuery.noConflict();
                     val(CONF['date_row' + di]['type2']);
                 $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column4').
                     val(CONF['date_row' + di]['targetfield']);
-                $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column5').
-                    val(CONF['date_row' + di]['targetcolor']);
-                $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column6').
-                    val(CONF['date_row' + di]['targetbgcolor']);
                 $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column7').
                     val(CONF['date_row' + di]['targetsize']);
                 $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column8').
                     val(CONF['date_row' + di]['targetfont']);
-                $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column5').
-                    css('color', CONF['date_row' + di]['targetcolor']);
-                $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column6').
-                    css('background-color', CONF['date_row' + di]['targetbgcolor']);
-                $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column5').
-                    parent('div').find('i').css('border-bottom-color', CONF['date_row' + di]['targetcolor']);
-                $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column6').
-                    parent('div').find('i').css('border-bottom-color', CONF['date_row' + di]['targetbgcolor']);
-                $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column5-color').
-                    val(CONF['date_row' + di]['targetcolor']);
+
+                var $fontColor = $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column5');
+                $fontColor.val(CONF['date_row' + di]['targetcolor']);
+                $fontColor.css('color', CONF['date_row' + di]['targetcolor']);
+
+                var $backgroundColor = $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column6');
+                $backgroundColor.css('color', CONF['date_row' + di]['targetcolor']);
                 if (CONF['date_row' + di]['targetbgcolor'] !== '#') {
-                    $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column6-color').
-                        val(CONF['date_row' + di]['targetbgcolor']);
+                    $backgroundColor.val(CONF['date_row' + di]['targetbgcolor']);
+                    $backgroundColor.css('background-color', CONF['date_row' + di]['targetbgcolor']);
                 } else {
-                    $('#cf-plugin-date-tbody > tr:eq(' + di + ') .cf-plugin-column6-color').val('#808080');
+                    $backgroundColor.val('#808080');
+                    $backgroundColor.css('background-color', '#808080');
                 }
             }
-
         }
 
         function setDefault() {
@@ -447,43 +484,34 @@ jQuery.noConflict();
             });
         }
 
+        $('.cf-plugin-column5').focus(function(event) {
+            var $fontColorInput = $(this);
+            var $backgroundColorInput = $fontColorInput.parents('td').next().find('.cf-plugin-column6');
+            $(this).colorPicker(createColorPickerConfig(function(colorCode) {
+                    $fontColorInput.css('color', '#' + colorCode);
+                    $backgroundColorInput.css('color', '#' + colorCode);
+            }));
+        });
+
+        $('.cf-plugin-column6').focus(function(event) {
+            var $backgroundColorInput = $(this);
+            $(this).colorPicker(createColorPickerConfig(function(colorCode) {
+                    $backgroundColorInput.css('background-color', '#' + colorCode);
+            }));
+        });
+
         // Change color
         $('.cf-plugin-column5').change(function() {
-            $(this).css('color', $(this).val());
-            $(this).parent('div').find('i').css('border-bottom-color', $(this).val());
+            var $fontColorInput = $(this);
+            $fontColorInput.css('color', $fontColorInput.val());
+            $fontColorInput.parents('td').next().find('.cf-plugin-column6').css('color', $fontColorInput.val());
             return true;
         });
 
         // Change backgroundcolor
         $('.cf-plugin-column6').change(function() {
             $(this).css('background-color', $(this).val());
-            $(this).parent('div').find('i').css('border-bottom-color', $(this).val());
             return true;
-        });
-
-        // Change color
-        $('.cf-plugin-column5-color').change(function() {
-            var color_code = $(this).parent('div').find('input[type="color"]').val();
-            var $el = $(this).parent('div').find('input[type="text"]');
-            $el.val(color_code);
-            $el.css('color', color_code);
-            $(this).parent('div').find('i').css('border-bottom-color', $(this).val());
-            return true;
-        });
-
-        // Change color
-        $('.cf-plugin-column6-color').change(function() {
-            var color_code = $(this).parent('div').find('input[type="color"]').val();
-            var $el = $(this).parent('div').find('input[type="text"]');
-            $el.val(color_code);
-            $el.css('background-color', color_code);
-            $(this).parent('div').find('i').css('border-bottom-color', $(this).val());
-            return true;
-        });
-
-        // Color picker
-        $('.color-paint-brush').click(function() {
-            $($(this).parents('td')[0]).find('input[type="color"]').click();
         });
 
         // Add Row

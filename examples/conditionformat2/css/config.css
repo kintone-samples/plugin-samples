@@ -58,10 +58,7 @@
 
 .cf-plugin-column5, .cf-plugin-column6 {
     width: 90px;
-}
-
-.cf-plugin-column5-color, .cf-plugin-column6-color{
-    display:none;
+    box-shadow: none;
 }
 
 .color-paint-brush {
@@ -70,6 +67,78 @@
     border-bottom: 3px solid #000000;
 }
 
-.cf-plugin-column9{
+.cf-plugin-column9 {
     min-width: 70px;
 }
+
+.cf-plugin-submit {
+    margin-top: 50px;
+}
+
+/* color picker */
+.kintone-ui.cp-color-picker {
+    background: #fff;
+    box-sizing: border-box;
+    width: 330px;
+    /* height: 215px; */
+    border-radius: 0px;
+    box-shadow: 0 0 8px 2px rgba(0,0,0,.1);
+    padding: 8px;
+}
+
+.kintone-ui.cp-color-picker .cp-panel {
+    width: 75px;
+    line-height: 21px;
+    float: right;
+    padding: 0 1px 0 8px;
+    margin-top: -1px;
+    overflow: visible
+}
+.kintone-ui.cp-color-picker .cp-panel div {
+    margin-bottom: 4px;
+    padding-left: 10px;
+}
+.kintone-ui.cp-color-picker .cp-panel div label {
+    width: 10px;
+    float: left;
+    text-align: left;
+    padding-right: 4px;
+}
+.kintone-ui.cp-color-picker .cp-panel div input {
+    width: 50px;
+    font-size: 12px;
+    padding: 4px 2px;
+    box-sizing: border-box;
+    text-align: right;
+    color: #a7a7a7;
+    background-color: #ffffff;
+    border: 1px solid #e3e7e8;
+    box-shadow: 2px 2px 6px #f5f5f5 inset, -2px -2px 6px #f5f5f5 inset;
+}
+.kintone-ui.cp-color-picker .cp-panel div input:focus {
+    background-color: #e2f2fe;
+    box-shadow: none;
+}
+.kintone-ui.cp-color-picker .cp-panel hr {
+    border-top: 1px solid #e3e7e8;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+}
+.kintone-ui.cp-color-picker .cp-panel .cp-HEX {
+    width: 65px;
+    float: right;
+}
+
+.kintone-ui.cp-color-picker .cp-z-slider {
+    height: 200px;
+}
+
+.kintone-ui.cp-color-picker .cp-xy-slider {
+    width: 200px;
+    height: 200px;
+}
+.kintone-ui.cp-color-picker .cp-xy-slider:active {
+    cursor: none;
+}
+/* color picker */
