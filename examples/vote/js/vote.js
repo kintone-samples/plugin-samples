@@ -16,7 +16,7 @@ jQuery.noConflict();
 
     var Msg = {
         en: {
-            recordNumFieldNotFound: 'To use the Like Plug-in, the Record number field must be set in the List View.',
+            recordNumFieldNotFound: 'To use the Like Plug-in, the Record number field must be set in the Form edit settings.',
             updatedWhileClicking: 'Someone updated the record while you were clicking "Like".'
                                     + ' Please click the "Like" button again.',
             notHavePermissionToEdit: 'Users who do not have permission to edit the record'
@@ -25,13 +25,13 @@ jQuery.noConflict();
             errorOccurred: 'An error occurred. Please contact the Administrator of this App to resolve this issue.'
         },
         ja: {
-            recordNumFieldNotFound: 'レコード番号フィールドが見つかりません。いいねプラグインを使うためには、フォーム編集画面でレコード番号フィールドを配置する必要があります。',
+            recordNumFieldNotFound: 'いいねプラグインを使うためには、フォーム編集画面でレコード番号フィールドを配置する必要があります。',
             updatedWhileClicking: 'いいね中に誰かがレコードを更新しました。もう一度いいねしてください。',
             notHavePermissionToEdit: 'レコード編集権限がないユーザはいいねできません。アプリ管理者にお問い合わせ下さい。',
             errorOccurred: 'エラーが発生しました。アプリ管理者にお問い合わせ下さい。'
         },
         zh: {
-            recordNumFieldNotFound: 'To use the Like Plug-in, the Record number field must be set in the List View',
+            recordNumFieldNotFound: 'To use the Like Plug-in, the Record number field must be set in the Form edit settings.',
             updatedWhileClicking: 'Someone updated the record while you were clicking "Like".'
                                     + ' Please click the "Like" button again.',
             notHavePermissionToEdit: 'Users who do not have permission to edit the record'

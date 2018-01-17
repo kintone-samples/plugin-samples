@@ -4,13 +4,13 @@
     "type": "APP",
     "name": {
         "ja": "いいねプラグイン",
-        "en": "Vote Extension",
-        "zh": "Vote Extension"
+        "en": "Like Plug-in",
+        "zh": "Like Plug-in"
     },
     "description": {
-        "ja": "アプリにいいねを追加します。",
-        "en": "Add the vote extension to application.",
-        "zh": "Add the vote extension to application."
+        "ja": "アプリにいいね機能を追加します。",
+        "en": "Adds a Like feature to each record of the App.",
+        "zh": "Adds a Like feature to each record of the App."
     },
     "icon": "image/icon.png",
     "desktop": {

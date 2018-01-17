@@ -11,7 +11,6 @@ jQuery.noConflict();
 
     var Msg = {
         en: {
-            header: 'Like Plug-in',
             description1: 'This Plug-in uses the User selection field '
                         + 'and Number field to record data of "Likes" given to a record.',
             description2: 'Select the relative field names for the settings below.',
@@ -20,7 +19,6 @@ jQuery.noConflict();
             btnSave: 'Save'
         },
         ja: {
-            header: 'いいねプラグイン',
             description1: 'ユーザー選択フィールドと数値フィールドをつかって、いいねした人といいねの数を実現します。',
             description2: '下記の設定に対するフィールド名を選択してください',
             labelOfVoteField: '「いいねした人」に使うフィールド:',
@@ -28,7 +26,6 @@ jQuery.noConflict();
             btnSave: '保存する'
         },
         zh: {
-            header: 'Like Plug-in',
             description1: 'This Plug-in uses the User selection field '
                         + 'and Number field to record data of "Likes" given to a record.',
             description2: 'Select the relative field names for the settings below.',
@@ -207,9 +204,6 @@ jQuery.noConflict();
         }
     }
 
-    function createVoteHeader(text) {
-        return $('<h1> ' + text + '</h1>');
-    }
     function createVoteDescription(text) {
         return $('<p> ' + text + '</p>');
     }
@@ -240,7 +234,6 @@ jQuery.noConflict();
     }
     function renderConfigUI(language) {
         var $Container = $('#vote-plugin-container');
-        $Container.append(createVoteHeader(Msg[language].header));
         $Container.append(createVoteDescription(Msg[language].description1));
         $Container.append(createVoteDescription(Msg[language].description2));
         $Container.append(createForm('setting', language));
