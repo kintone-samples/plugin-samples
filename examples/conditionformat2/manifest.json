@@ -4,12 +4,12 @@
     "type": "APP",
     "name": {
         "ja": "新条件書式プラグイン",
-        "en": "New conditional format plug-in",
+        "en": "Conditional Format",
         "zh": "新条件格式插件"
     },
     "description": {
         "ja": "新デザインに対応した条件により表示するアイテムの色、背景色等を変更するプラグインです。",
-        "en": "It is plug-in which changes the color etc. of the item displayed according to conditions. ",
+        "en": "This plug-in changes colors and styles of fields",
         "zh": "是變更根據條件表示的條款的顏色等的插件。"
     },
     "icon": "image/icon.png",
