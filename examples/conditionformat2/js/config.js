@@ -75,7 +75,11 @@ jQuery.noConflict();
                     this.value = modes[this.className.substr(3)];
                 });
 
+                this.$trigger = $elm;
                 callback(this.color.colors.HEX);
+            },
+            positionCallback: function($elm) {
+                this.color.setColor($elm.val());
             }
         }
     }
