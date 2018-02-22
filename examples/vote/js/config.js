@@ -14,23 +14,38 @@ jQuery.noConflict();
             description1: 'This Plug-in uses the User selection field '
                         + 'and Number field to record data of "Likes" given to a record.',
             description2: 'Select the relative field names for the settings below.',
-            labelOfVoteField: 'The field to record the users who "Liked" the record:',
-            labelOfCountfield: 'The field to count the number of users who "Liked" the record:',
+            description3: 'To view the Like button on the Record List view, include the Record Number field into the view.',
+            labelOfVoteField: 'Users who Liked the record',
+            labelOfCountfield: 'Like Count',
+            descriptionOfVoteField1: 'Select a User Selection field from the list.',
+            descriptionOfVoteField2: 'Users who like (or unlike) the record will be automatically added to (or removed from) this field.',
+            descriptionOfCountField1: 'Select a Number field from the list.',
+            descriptionOfCountField2: 'The number of Likes will be recorded into this field.',
             btnSave: 'Save'
         },
         ja: {
             description1: 'ユーザー選択フィールドと数値フィールドをつかって、いいねした人といいねの数を実現します。',
             description2: '下記の設定に対するフィールド名を選択してください',
-            labelOfVoteField: '「いいねした人」に使うフィールド:',
-            labelOfCountfield: '「いいねの数」に使うフィールド:',
+            description3: 'レコード一覧にいいねボタンを表示したい場合は、一覧にレコード番号フィールドを追加してください。',
+            labelOfVoteField: '「いいねした人」に使うフィールド',
+            labelOfCountfield: '「いいねの数」に使うフィールド',
+            descriptionOfVoteField1: 'リストからユーザ選択フィールドを選択してください。',
+            descriptionOfVoteField2: 'いいねボタンをクリックするユーザの情報がこのフィールドに記録されます。',
+            descriptionOfCountField1: 'リストから数値フィールドを選択してください。',
+            descriptionOfCountField2: 'いいねの数がこのフィールドに保存されます。',
             btnSave: '保存する'
         },
         zh: {
             description1: 'This Plug-in uses the User selection field '
                         + 'and Number field to record data of "Likes" given to a record.',
             description2: 'Select the relative field names for the settings below.',
-            labelOfVoteField: 'The field to record the users who "Liked" the record:',
-            labelOfCountfield: 'The field to count the number of users who "Liked" the record:',
+            description3: 'To view the Like button on the Record List view, include the Record Number field into the view.',
+            labelOfVoteField: 'Users who Liked the record',
+            labelOfCountfield: 'Like Count',
+            descriptionOfVoteField1: 'Select a User Selection field from the list.',
+            descriptionOfVoteField2: 'Users who like (or unlike) the record will be automatically added to (or removed from) this field.',
+            descriptionOfCountField1: 'Select a Number field from the list.',
+            descriptionOfCountField2: 'The number of Likes will be recorded into this field.',
             btnSave: 'Save'
         }
     };
