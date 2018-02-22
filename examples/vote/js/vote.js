@@ -14,26 +14,14 @@ jQuery.noConflict();
     var VOTE_FIELD = config['vote_field'];
     var VOTE_COUNT_FIELD = config['vote_count_field'];
 
-    function getRecordField() {
+    function getRecordNumberFieldCode() {
         var d = new $.Deferred();
-        kintone.api(kintone.api.url('/k/v1/app/form/layout', true), 'GET', {'app': APPID}, function(evt) {
-            var found;
-            for (var i = 0; i < evt.layout.length; i++) {
-                var row = evt.layout[i];
-                found = $.grep(row.fields, function(field) {
-                    return field['type'] === 'RECORD_NUMBER';
-                });
-                if (found.length === 1) {
-                    break;
+        kintone.api(kintone.api.url('/k/v1/app/form/fields', true), 'GET', {'app': APPID}, function(evt) {
+            $.each( evt.properties, function(fieldCode, value ) {
+                if(value.type === 'RECORD_NUMBER') {
+                    d.resolve(fieldCode);
                 }
-            }
-            if (found.length === 0) {
-                alert('レコード番号フィールドが見つかりません。いいねプラグインを使うためには、フォーム編集画面でレコード番号フィールドを配置する必要があります。');
-                d.reject();
-            } else {
-                var code = found[0]['code'];
-                d.resolve(code);
-            }
+              });
         });
         return d.promise();
     }
@@ -230,7 +218,7 @@ jQuery.noConflict();
 
     kintone.events.on('app.record.index.show', function() {
         var RECORD_FIELD;
-        getRecordField().then(function(code) {
+        getRecordNumberFieldCode().then(function(code) {
             RECORD_FIELD = code;
             return fetchVoteModels();
         }).then(function(voteModels) {
