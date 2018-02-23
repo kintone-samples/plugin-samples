@@ -14,16 +14,15 @@ jQuery.noConflict();
     var VOTE_FIELD = config['vote_field'];
     var VOTE_COUNT_FIELD = config['vote_count_field'];
 
-    function getRecordNumberFieldCode() {
-        var d = new $.Deferred();
-        kintone.api(kintone.api.url('/k/v1/app/form/fields', true), 'GET', {'app': APPID}, function(evt) {
-            $.each( evt.properties, function(fieldCode, value ) {
-                if(value.type === 'RECORD_NUMBER') {
-                    d.resolve(fieldCode);
-                }
-              });
+    function getRecordNumberFieldCode(fields) {
+        var code = '';
+        $.each(fields, function(fieldCode, value) {
+            if (value.type === 'RECORD_NUMBER') {
+                code = fieldCode;
+                return true;
+            }
         });
-        return d.promise();
+        return code;
     }
 
     function VoteModel(record) {
@@ -216,12 +215,13 @@ jQuery.noConflict();
         return evt;
     });
 
-    kintone.events.on('app.record.index.show', function() {
-        var RECORD_FIELD;
-        getRecordNumberFieldCode().then(function(code) {
-            RECORD_FIELD = code;
-            return fetchVoteModels();
-        }).then(function(voteModels) {
+    kintone.events.on('app.record.index.show', function(event) {
+        if (event.records.length === 0) {
+            return event;
+        }
+
+        var RECORD_FIELD = getRecordNumberFieldCode(event.records[0]);
+        fetchVoteModels().then(function(voteModels) {
             var cellEls = $(kintone.app.getFieldElements(RECORD_FIELD));
             cellEls.each(function() {
                 var recordId = Number($(this).text().split('-').pop());
