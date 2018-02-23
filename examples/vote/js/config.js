@@ -14,11 +14,13 @@ jQuery.noConflict();
             description1: 'This Plug-in uses the User selection field '
                         + 'and Number field to record data of "Likes" given to a record.',
             description2: 'Select the relative field names for the settings below.',
-            description3: 'To view the Like button on the Record List view, include the Record Number field into the view.',
+            description3: 'To view the Like button on the Record List view, '
+                        + 'include the Record Number field into the view.',
             labelOfVoteField: 'Users who Liked the record',
             labelOfCountfield: 'Like Count',
             descriptionOfVoteField1: 'Select a User Selection field from the list.',
-            descriptionOfVoteField2: 'Users who like (or unlike) the record will be automatically added to (or removed from) this field.',
+            descriptionOfVoteField2: 'Users who like (or unlike) the record will be automatically '
+                        + 'added to (or removed from) this field.',
             descriptionOfCountField1: 'Select a Number field from the list.',
             descriptionOfCountField2: 'The number of Likes will be recorded into this field.',
             btnSave: 'Save'
@@ -39,11 +41,13 @@ jQuery.noConflict();
             description1: 'This Plug-in uses the User selection field '
                         + 'and Number field to record data of "Likes" given to a record.',
             description2: 'Select the relative field names for the settings below.',
-            description3: 'To view the Like button on the Record List view, include the Record Number field into the view.',
+            description3: 'To view the Like button on the Record List view, '
+                        + 'include the Record Number field into the view.',
             labelOfVoteField: 'Users who Liked the record',
             labelOfCountfield: 'Like Count',
             descriptionOfVoteField1: 'Select a User Selection field from the list.',
-            descriptionOfVoteField2: 'Users who like (or unlike) the record will be automatically added to (or removed from) this field.',
+            descriptionOfVoteField2: 'Users who like (or unlike) the record will be automatically added '
+                        + 'to (or removed from) this field.',
             descriptionOfCountField1: 'Select a Number field from the list.',
             descriptionOfCountField2: 'The number of Likes will be recorded into this field.',
             btnSave: 'Save'
@@ -228,12 +232,18 @@ jQuery.noConflict();
     function createVoteField(language) {
         var $container = $('<div class="kintoneplugin-row"></div>');
         $container.append(createVoteLabel(Msg[language].labelOfVoteField));
+        $container.append(createVoteDescription(Msg[language].descriptionOfVoteField1));
+        $container.append(createVoteDescription(Msg[language].descriptionOfVoteField2));
+        $container.append('</br>');
         $container.append($('<div class="vote-dropdown"></div>'));
         return $container;
     }
     function createCountfield(language) {
         var $container = $('<div class="kintoneplugin-row"></div>');
         $container.append(createVoteLabel(Msg[language].labelOfCountfield));
+        $container.append(createVoteDescription(Msg[language].descriptionOfCountField1));
+        $container.append(createVoteDescription(Msg[language].descriptionOfCountField2));
+        $container.append('</br>');
         $container.append($('<div class="count-dropdown"></div>'));
         return $container;
     }
@@ -251,6 +261,8 @@ jQuery.noConflict();
         var $Container = $('#vote-plugin-container');
         $Container.append(createVoteDescription(Msg[language].description1));
         $Container.append(createVoteDescription(Msg[language].description2));
+        $Container.append(createVoteDescription(Msg[language].description3));
+        $Container.append('</br>');
         $Container.append(createForm('setting', language));
         $Container.append(createVoteSaveBtn(language));
     }
