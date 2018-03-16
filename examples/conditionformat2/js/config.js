@@ -319,9 +319,6 @@ jQuery.noConflict();
                 if (CONF['text_row' + ti]['targetbgcolor'] !== '#') {
                     $backgroundColor.val(CONF['text_row' + ti]['targetbgcolor']);
                     $backgroundColor.css('background-color', CONF['text_row' + ti]['targetbgcolor']);
-                } else {
-                    $backgroundColor.val('#808080');
-                    $backgroundColor.css('background-color', '#808080');
                 }
             }
         }
@@ -352,9 +349,6 @@ jQuery.noConflict();
                 if (CONF['date_row' + di]['targetbgcolor'] !== '#') {
                     $backgroundColor.val(CONF['date_row' + di]['targetbgcolor']);
                     $backgroundColor.css('background-color', CONF['date_row' + di]['targetbgcolor']);
-                } else {
-                    $backgroundColor.val('#808080');
-                    $backgroundColor.css('background-color', '#808080');
                 }
             }
         }
@@ -491,7 +485,8 @@ jQuery.noConflict();
         $('.cf-plugin-column5').focus(function(event) {
             var $fontColorInput = $(this);
             var $backgroundColorInput = $fontColorInput.parents('td').next().find('.cf-plugin-column6');
-            $(this).colorPicker(createColorPickerConfig(function(colorCode) {
+
+            $fontColorInput.colorPicker(createColorPickerConfig(function(colorCode) {
                     $fontColorInput.css('color', '#' + colorCode);
                     $backgroundColorInput.css('color', '#' + colorCode);
             }));
@@ -499,8 +494,11 @@ jQuery.noConflict();
 
         $('.cf-plugin-column6').focus(function(event) {
             var $backgroundColorInput = $(this);
-            $(this).colorPicker(createColorPickerConfig(function(colorCode) {
-                    $backgroundColorInput.css('background-color', '#' + colorCode);
+            if ($backgroundColorInput.val() === '#') {
+                $backgroundColorInput.val('#FFFFFF');
+            }
+            $backgroundColorInput.colorPicker(createColorPickerConfig(function(colorCode) {
+                $backgroundColorInput.css('background-color', '#' + colorCode);
             }));
         });
 
