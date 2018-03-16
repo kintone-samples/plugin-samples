@@ -79,7 +79,7 @@
 .kintone-ui.cp-color-picker {
     background: #fff;
     box-sizing: border-box;
-    width: 330px;
+    width: 275px;
     border-radius: 0px;
     box-shadow: 0 0 8px 2px rgba(0,0,0,.1);
 }
@@ -88,8 +88,6 @@
     width: 75px;
     line-height: 21px;
     float: right;
-    padding: 0 1px 0 8px;
-    margin-top: -1px;
     overflow: visible
 }
 .kintone-ui.cp-color-picker .cp-panel div {
@@ -128,18 +126,14 @@
     border-right: none;
     border-bottom: none;
 }
-.kintone-ui.cp-color-picker .cp-panel .cp-HEX {
-    width: 65px;
-    float: right;
-}
 
 .kintone-ui.cp-color-picker .cp-z-slider {
-    height: 200px;
+    height: 160px;
 }
 
 .kintone-ui.cp-color-picker .cp-xy-slider {
-    width: 200px;
-    height: 200px;
+    width: 160px;
+    height: 160px;
 }
 .kintone-ui.cp-color-picker .cp-xy-slider:active {
     cursor: none;
