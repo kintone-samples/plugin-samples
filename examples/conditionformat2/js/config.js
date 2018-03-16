@@ -41,15 +41,13 @@ jQuery.noConflict();
                     colorPicker = this;
     
                 $elm.prepend('<div class="cp-panel">' +
-                    '<div><label>R</label> <input type="text" class="cp-r" /></div>' +
-                    '<div><label>G</label> <input type="text" class="cp-g" /></div>' +
-                    '<div><label>B</label> <input type="text" class="cp-b" /></div>' +
+                    '<div><label>R</label> <input type="number" max="255" min="0" class="cp-r" /></div>' +
+                    '<div><label>G</label> <input type="number" max="255" min="0" class="cp-g" /></div>' +
+                    '<div><label>B</label> <input type="number" max="255" min="0" class="cp-b" /></div>' +
                     '<hr>' +
-                    '<div><label>H</label> <input type="text" class="cp-h" /></div>' +
-                    '<div><label>S</label> <input type="text" class="cp-s" /></div>' +
-                    '<div><label>V</label> <input type="text" class="cp-v" /></div>' +
-                    '<hr>' +
-                    '<div><input type="text" class="cp-HEX" /></div>' +
+                    '<div><label>H</label> <input type="number" max="360" min="0" class="cp-h" /></div>' +
+                    '<div><label>S</label> <input type="number" max="100" min="0" class="cp-s" /></div>' +
+                    '<div><label>V</label> <input type="number" max="100" min="0" class="cp-v" /></div>' +
                 '</div>').on('change', 'input', function(e) {
                     var value = this.value,
                         className = this.className,
@@ -57,8 +55,7 @@ jQuery.noConflict();
                         color = {};
     
                     color[type] = value;
-                    colorInstance.setColor(type === 'HEX' ? value : color,
-                        type === 'HEX' ? 'HEX' : /(?:r|g|b)/.test(type) ? 'rgb' : 'hsv');
+                    colorInstance.setColor(color, /(?:r|g|b)/.test(type) ? 'rgb' : 'hsv');
                     colorPicker.render();
                     this.blur();
                 });
@@ -484,7 +481,6 @@ jQuery.noConflict();
 
         $('.cf-plugin-column5').focus(function(event) {
             var $fontColorInput = $(this);
-            $fontColorInput.data('val', $fontColorInput.val());
             var $backgroundColorInput = $fontColorInput.parents('td').next().find('.cf-plugin-column6');
 
             $fontColorInput.colorPicker(createColorPickerConfig(function(colorCode) {
@@ -499,8 +495,6 @@ jQuery.noConflict();
             if ($backgroundColorInput.val() === '#') {
                 $backgroundColorInput.val('#FFFFFF');
             }
-
-            $backgroundColorInput.data('val', $backgroundColorInput.val());
 
             $backgroundColorInput.colorPicker(createColorPickerConfig(function(colorCode) {
                 $backgroundColorInput.css('background-color', '#' + colorCode);
@@ -522,7 +516,7 @@ jQuery.noConflict();
                     throw new Error(createErrorMessage('text', '4', rowIndex));
                 }
             } catch (error) {
-                $(this).val($(this).data('val'));
+                $(this).val('#000000');
                 alert(error.message);
             }
 
@@ -547,7 +541,7 @@ jQuery.noConflict();
                     throw new Error(createErrorMessage('date', '6', rowIndex));
                 }
             } catch (error) {
-                $(this).val($(this).data('val'));
+                $(this).val('#000000');
                 alert(error.message);
             }
 
@@ -572,7 +566,7 @@ jQuery.noConflict();
                     throw new Error(createErrorMessage('text', '4', rowIndex));
                 }
             } catch (error) {
-                $(this).val($(this).data('val'));
+                $(this).val('#FFFFFF');
                 alert(error.message);
             }
 
@@ -594,7 +588,7 @@ jQuery.noConflict();
                     throw new Error(createErrorMessage('date', '6', rowIndex));
                 }
             } catch (error) {
-                $(this).val($(this).data('val'));
+                $(this).val('#FFFFFF');
                 alert(error.message);
             }
 
