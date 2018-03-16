@@ -484,6 +484,7 @@ jQuery.noConflict();
 
         $('.cf-plugin-column5').focus(function(event) {
             var $fontColorInput = $(this);
+            $fontColorInput.data('val', $fontColorInput.val());
             var $backgroundColorInput = $fontColorInput.parents('td').next().find('.cf-plugin-column6');
 
             $fontColorInput.colorPicker(createColorPickerConfig(function(colorCode) {
@@ -494,16 +495,62 @@ jQuery.noConflict();
 
         $('.cf-plugin-column6').focus(function(event) {
             var $backgroundColorInput = $(this);
+
             if ($backgroundColorInput.val() === '#') {
                 $backgroundColorInput.val('#FFFFFF');
             }
+
+            $backgroundColorInput.data('val', $backgroundColorInput.val());
+
             $backgroundColorInput.colorPicker(createColorPickerConfig(function(colorCode) {
                 $backgroundColorInput.css('background-color', '#' + colorCode);
             }));
         });
 
         // Change color
-        $('.cf-plugin-column5').change(function() {
+        $('#cf-plugin-text-tbody .cf-plugin-column5').change(function() {
+            var value = $(this).val();
+            var $row = $(this).parents('tr').first();
+            var $body = $(this).parents('tbody').first();
+            var rowIndex = $body.children().index($row);
+
+            try {
+                if (value.match(/#[0-9A-Fa-f]{6}/) === null) {
+                    throw new Error(createErrorMessage('text', '2', rowIndex));
+                }
+                if (value.match(/&|<|>|"|'/g) !== null) {
+                    throw new Error(createErrorMessage('text', '4', rowIndex));
+                }
+            } catch (error) {
+                $(this).val($(this).data('val'));
+                alert(error.message);
+            }
+
+            var $fontColorInput = $(this);
+            $fontColorInput.css('color', $fontColorInput.val());
+            $fontColorInput.parents('td').next().find('.cf-plugin-column6').css('color', $fontColorInput.val());
+            return true;
+        });
+
+        // Change color
+        $('#cf-plugin-date-tbody .cf-plugin-column5').change(function() {
+            var value = $(this).val();
+            var $row = $(this).parents('tr').first();
+            var $body = $(this).parents('tbody').first();
+            var rowIndex = $body.children().index($row);
+
+            try {
+                if (value.match(/#[0-9A-Fa-f]{6}/) === null) {
+                    throw new Error(createErrorMessage('date', '4', rowIndex));
+                }
+                if (value.match(/&|<|>|"|'/g) !== null) {
+                    throw new Error(createErrorMessage('date', '6', rowIndex));
+                }
+            } catch (error) {
+                $(this).val($(this).data('val'));
+                alert(error.message);
+            }
+
             var $fontColorInput = $(this);
             $fontColorInput.css('color', $fontColorInput.val());
             $fontColorInput.parents('td').next().find('.cf-plugin-column6').css('color', $fontColorInput.val());
@@ -511,7 +558,46 @@ jQuery.noConflict();
         });
 
         // Change backgroundcolor
-        $('.cf-plugin-column6').change(function() {
+        $('#cf-plugin-text-tbody .cf-plugin-column6').change(function() {
+            var value = $(this).val();
+            var $row = $(this).parents('tr').first();
+            var $body = $(this).parents('tbody').first();
+            var rowIndex = $body.children().index($row);
+
+            try {
+                if (value.match(/#[0-9A-Fa-f]{6}/) === null) {
+                    throw new Error(createErrorMessage('text', '3', rowIndex));
+                }
+                if (value.match(/&|<|>|"|'/g) !== null) {
+                    throw new Error(createErrorMessage('text', '4', rowIndex));
+                }
+            } catch (error) {
+                $(this).val($(this).data('val'));
+                alert(error.message);
+            }
+
+            $(this).css('background-color', $(this).val());
+            return true;
+        });
+
+        $('#cf-plugin-date-tbody .cf-plugin-column6').change(function() {
+            var value = $(this).val();
+            var $row = $(this).parents('tr').first();
+            var $body = $(this).parents('tbody').first();
+            var rowIndex = $body.children().index($row);
+
+            try {
+                if (value.match(/#[0-9A-Fa-f]{6}/) === null) {
+                    throw new Error(createErrorMessage('date', '5', rowIndex));
+                }
+                if (value.match(/&|<|>|"|'/g) !== null) {
+                    throw new Error(createErrorMessage('date', '6', rowIndex));
+                }
+            } catch (error) {
+                $(this).val($(this).data('val'));
+                alert(error.message);
+            }
+
             $(this).css('background-color', $(this).val());
             return true;
         });
