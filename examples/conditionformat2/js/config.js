@@ -514,98 +514,66 @@ jQuery.noConflict();
         });
 
         // Change color
-        $('#cf-plugin-text-tbody .cf-plugin-column5').change(function() {
-            var value = $(this).val();
-            var $row = $(this).parents('tr').first();
-            var $body = $(this).parents('tbody').first();
+        $('.cf-plugin-column5, .cf-plugin-column6').change(function() {
+            var $colorInput = $(this);
+            var value = $colorInput .val();
+
+            var colorType = 'font';
+            if ($colorInput .hasClass('cf-plugin-column6')) {
+                colorType = 'background';
+            }
+
+            // Checking color has format #000000 -> #FFFFFF
+            if (value.match(/#[0-9A-Fa-f]{6}/) !== null &&
+            // Checking color code doesn't contain html code.
+                value.match(/&|<|>|"|'/g) === null) {
+                if (colorType === 'font') {
+                    $colorInput.css('color', value);
+                    $colorInput.parents('td').next().find('.cf-plugin-column6').css('color', value);
+                } else {
+                    $colorInput.css('background-color', value);
+                }
+                return true;
+            }
+
+            var $row = $colorInput .parents('tr').first();
+            var $body = $colorInput .parents('tbody').first();
             var rowIndex = $body.children().index($row);
+
+            var type = 'text';
+            if ($body.id === 'cf-plugin-date-tbody') {
+                type = 'date';
+            }
 
             try {
                 if (value.match(/#[0-9A-Fa-f]{6}/) === null) {
-                    throw new Error(createErrorMessage('text', '2', rowIndex));
+                    var errorType = '2';
+                    if (type === 'text' && colorType === 'background') {
+                        errorType = '3';
+                    } else if(type === 'date' && colorType === 'font') {
+                        errorType = '4';
+                    } else if(type === 'date' && colorType === 'background') {
+                        errorType = '5';
+                    }
+                    throw new Error(createErrorMessage(type, errorType, rowIndex));
                 }
                 if (value.match(/&|<|>|"|'/g) !== null) {
-                    throw new Error(createErrorMessage('text', '4', rowIndex));
+                    var errorType = '4';
+                    if (type === 'date') {
+                        errorType = '6';
+                    }
+                    throw new Error(createErrorMessage(type, errorType, rowIndex));
                 }
             } catch (error) {
-                $(this).val('#000000');
+                var defaultValue = '#000000';
+                if (colorType === 'background') {
+                    defaultValue = '#FFFFFF';
+                }
+
+                $colorInput .val(defaultValue);
                 alert(error.message);
+                return false;
             }
-
-            var $fontColorInput = $(this);
-            $fontColorInput.css('color', $fontColorInput.val());
-            $fontColorInput.parents('td').next().find('.cf-plugin-column6').css('color', $fontColorInput.val());
-            return true;
-        });
-
-        // Change color
-        $('#cf-plugin-date-tbody .cf-plugin-column5').change(function() {
-            var value = $(this).val();
-            var $row = $(this).parents('tr').first();
-            var $body = $(this).parents('tbody').first();
-            var rowIndex = $body.children().index($row);
-
-            try {
-                if (value.match(/#[0-9A-Fa-f]{6}/) === null) {
-                    throw new Error(createErrorMessage('date', '4', rowIndex));
-                }
-                if (value.match(/&|<|>|"|'/g) !== null) {
-                    throw new Error(createErrorMessage('date', '6', rowIndex));
-                }
-            } catch (error) {
-                $(this).val('#000000');
-                alert(error.message);
-            }
-
-            var $fontColorInput = $(this);
-            $fontColorInput.css('color', $fontColorInput.val());
-            $fontColorInput.parents('td').next().find('.cf-plugin-column6').css('color', $fontColorInput.val());
-            return true;
-        });
-
-        // Change backgroundcolor
-        $('#cf-plugin-text-tbody .cf-plugin-column6').change(function() {
-            var value = $(this).val();
-            var $row = $(this).parents('tr').first();
-            var $body = $(this).parents('tbody').first();
-            var rowIndex = $body.children().index($row);
-
-            try {
-                if (value.match(/#[0-9A-Fa-f]{6}/) === null) {
-                    throw new Error(createErrorMessage('text', '3', rowIndex));
-                }
-                if (value.match(/&|<|>|"|'/g) !== null) {
-                    throw new Error(createErrorMessage('text', '4', rowIndex));
-                }
-            } catch (error) {
-                $(this).val('#FFFFFF');
-                alert(error.message);
-            }
-
-            $(this).css('background-color', $(this).val());
-            return true;
-        });
-
-        $('#cf-plugin-date-tbody .cf-plugin-column6').change(function() {
-            var value = $(this).val();
-            var $row = $(this).parents('tr').first();
-            var $body = $(this).parents('tbody').first();
-            var rowIndex = $body.children().index($row);
-
-            try {
-                if (value.match(/#[0-9A-Fa-f]{6}/) === null) {
-                    throw new Error(createErrorMessage('date', '5', rowIndex));
-                }
-                if (value.match(/&|<|>|"|'/g) !== null) {
-                    throw new Error(createErrorMessage('date', '6', rowIndex));
-                }
-            } catch (error) {
-                $(this).val('#FFFFFF');
-                alert(error.message);
-            }
-
-            $(this).css('background-color', $(this).val());
-            return true;
         });
 
         // Add Row
