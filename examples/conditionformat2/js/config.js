@@ -76,7 +76,14 @@ jQuery.noConflict();
                 callback(this.color.colors.HEX);
             },
             positionCallback: function($elm) {
-                this.color.setColor($elm.val());
+                var value = $elm.val();
+                if (value.match(/#[0-9A-Fa-f]{6}/) === null ||
+                    value.match(/&|<|>|"|'/g) !== null) {
+                    $elm.trigger('change');
+                    return;
+                }
+
+                this.color.setColor(value);
             }
         }
     }
@@ -499,6 +506,11 @@ jQuery.noConflict();
             $backgroundColorInput.colorPicker(createColorPickerConfig(function(colorCode) {
                 $backgroundColorInput.css('background-color', '#' + colorCode);
             }));
+        });
+
+        $('.cf-plugin-column5, .cf-plugin-column6').bind('paste', function(event) {
+            $(this).val(event.originalEvent.clipboardData.getData('Text').trim());
+            $(this).trigger('change');
         });
 
         // Change color
