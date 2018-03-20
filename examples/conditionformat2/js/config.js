@@ -510,7 +510,7 @@ jQuery.noConflict();
 
         $('.cf-plugin-column5, .cf-plugin-column6').bind('paste', function(event) {
             $(this).val(event.originalEvent.clipboardData.getData('Text').trim());
-            $(this).trigger('change');
+            $(this).trigger('focus');
         });
 
         // Change color
@@ -519,7 +519,7 @@ jQuery.noConflict();
             var value = $colorInput .val();
 
             var colorType = 'font';
-            if ($colorInput .hasClass('cf-plugin-column6')) {
+            if ($colorInput.hasClass('cf-plugin-column6')) {
                 colorType = 'background';
             }
 
@@ -541,7 +541,7 @@ jQuery.noConflict();
             var rowIndex = $body.children().index($row);
 
             var type = 'text';
-            if ($body.id === 'cf-plugin-date-tbody') {
+            if ($body[0].id === 'cf-plugin-date-tbody') {
                 type = 'date';
             }
 
