@@ -510,7 +510,7 @@ jQuery.noConflict();
 
         $('.cf-plugin-column5, .cf-plugin-column6').bind('paste', function(event) {
             $(this).val(event.originalEvent.clipboardData.getData('Text').trim());
-            $(this).trigger('change');
+            $(this).trigger(['focus', 'change']);
         });
 
         // Change color
