@@ -643,7 +643,7 @@ jQuery.noConflict();
                 }
             };
 
-            if (user_lang !== 'zh' || user_lang !== 'ja' || user_lang !== 'en') {
+            if (!error_messages[user_lang]) {
                 user_lang = 'en';
             }
 
