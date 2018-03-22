@@ -76,14 +76,7 @@ jQuery.noConflict();
                 callback(this.color.colors.HEX);
             },
             positionCallback: function($elm) {
-                var value = $elm.val();
-                if (value.match(/#[0-9A-Fa-f]{6}/) === null ||
-                    value.match(/&|<|>|"|'/g) !== null) {
-                    $elm.trigger('change');
-                    return;
-                }
-
-                this.color.setColor(value);
+                this.color.setColor($elm.val());
             }
         }
     }
@@ -486,7 +479,7 @@ jQuery.noConflict();
             });
         }
 
-        $('.cf-plugin-column5').focus(function(event) {
+        $('.cf-plugin-column5').bind('mousedown', function(event) {
             var $fontColorInput = $(this);
             var $backgroundColorInput = $fontColorInput.parents('td').next().find('.cf-plugin-column6');
 
@@ -496,7 +489,7 @@ jQuery.noConflict();
             }));
         });
 
-        $('.cf-plugin-column6').focus(function(event) {
+        $('.cf-plugin-column6').bind('mousedown', function(event) {
             var $backgroundColorInput = $(this);
 
             if ($backgroundColorInput.val() === '#') {
