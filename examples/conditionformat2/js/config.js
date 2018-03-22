@@ -642,6 +642,11 @@ jQuery.noConflict();
                     }
                 }
             };
+
+            if (user_lang !== 'zh' || user_lang !== 'ja' || user_lang !== 'en') {
+                user_lang = 'en';
+            }
+
             return error_messages[user_lang][type][error_num];
         }
 
