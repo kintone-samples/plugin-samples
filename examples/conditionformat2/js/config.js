@@ -76,7 +76,15 @@ jQuery.noConflict();
                 callback(this.color.colors.HEX);
             },
             positionCallback: function($elm) {
-                this.color.setColor($elm.val());
+                var value = $elm.val();
+                // Checking color has format #000000 -> #FFFFFF
+                if (value.match(/#[0-9A-Fa-f]{6}/) === null ||
+                    // Checking color code contains html code.
+                    value.match(/&|<|>|"|'/g) !== null) {
+                    $elm.trigger('change');
+                } else {
+                    this.color.setColor(value);
+                }
             }
         }
     }
