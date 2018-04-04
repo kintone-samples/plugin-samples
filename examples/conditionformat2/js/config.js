@@ -510,7 +510,8 @@ jQuery.noConflict();
         });
 
         $('.cf-plugin-column5, .cf-plugin-column6').bind('paste', function(event) {
-            $(this).val(event.originalEvent.clipboardData.getData('Text').trim());
+            var clipboardData = event.clipboardData || window.clipboardData;
+            $(this).val(clipboardData.getData('Text').trim());
             $(this).trigger('focus');
         });
 
