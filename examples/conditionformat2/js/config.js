@@ -510,7 +510,12 @@ jQuery.noConflict();
         });
 
         $('.cf-plugin-column5, .cf-plugin-column6').bind('paste', function(event) {
-            var clipboardData = event.clipboardData || window.clipboardData;
+            var clipboardData;
+            if (event.originalEvent && event.originalEvent.clipboardData) {
+                clipboardData = event.originalEvent.clipboardData;
+            } else {
+                clipboardData = window.clipboardData;
+            }
             $(this).val(clipboardData.getData('Text').trim());
             $(this).trigger('focus');
         });
