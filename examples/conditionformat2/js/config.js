@@ -510,14 +510,14 @@ jQuery.noConflict();
         });
 
         $('.cf-plugin-column5, .cf-plugin-column6').bind('paste', function(event) {
-            var clipboardData;
-            if (event.originalEvent && event.originalEvent.clipboardData) {
-                clipboardData = event.originalEvent.clipboardData;
-            } else {
-                clipboardData = window.clipboardData;
-            }
-            $(this).val(clipboardData.getData('Text').trim());
-            $(this).trigger('focus');
+            var $el = $(this);
+            $el.attr('maxLength', '50');
+            setTimeout(function() {
+                var val = $el.val();
+                $el.attr('maxLength', '7');
+                $el.val(val.replace(/\s/g, ''));
+                $el.trigger('change');
+            });
         });
 
         // Change color
