@@ -520,6 +520,18 @@ jQuery.noConflict();
             });
         });
 
+        $('.cf-plugin-column5, .cf-plugin-column6').keyup(function(event) {
+            var TAB_KEY_CODE = 9;
+            var ENTER_KEY_CODE = 13;
+            var ESC_KEY_CODE = 27;
+            if (event.keyCode === TAB_KEY_CODE || event.keyCode === ENTER_KEY_CODE || event.keyCode === ESC_KEY_CODE) {
+                var $colorPicker = $(this).colorPicker;
+                if ($colorPicker) {
+                    $colorPicker.destroy();
+                }
+            }
+        });
+
         // Change color
         $('.cf-plugin-column5, .cf-plugin-column6').change(function() {
             var $colorInput = $(this);
