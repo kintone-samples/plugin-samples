@@ -230,7 +230,7 @@ jQuery.noConflict();
             query = rawQuery[1] + ', 作成日時 desc ' + rawQuery[2];
         }
 
-        kintone.api('/k/v1/records', 'GET', {
+        kintone.api(kintone.api.url('/k/v1/records', true), 'GET', {
             'app': APPID,
             'query': query,
             'fields': ['$id', VOTE_FIELD, '$revision']
