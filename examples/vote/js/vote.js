@@ -92,27 +92,15 @@ jQuery.noConflict();
         }
     }
 
-    function getRecordField() {
-        var d = new $.Deferred();
-        kintone.api(kintone.api.url('/k/v1/app/form/layout', true), 'GET', {'app': APPID}, function(evt) {
-            var found;
-            for (var i = 0; i < evt.layout.length; i++) {
-                var row = evt.layout[i];
-                found = $.grep(row.fields, function(field) {
-                    return field['type'] === 'RECORD_NUMBER';
-                });
-                if (found.length === 1) {
-                    break;
-                }
-            }
-            if (found.length === 0) {
-                d.reject({error: 'recordNumFieldNotFound'});
-            } else {
-                var code = found[0]['code'];
-                d.resolve(code);
+    function getRecordNumberFieldCode(fields) {
+        var code = '';
+        $.each(fields, function(fieldCode, value) {
+            if (value.type === 'RECORD_NUMBER') {
+                code = fieldCode;
+                return true;
             }
         });
-        return d.promise();
+        return code;
     }
 
     function VoteModel(record, language) {
@@ -222,13 +210,7 @@ jQuery.noConflict();
     function fetchVoteModels(language) {
         var d = new $.Deferred();
 
-        var rawQuery = kintone.app.getQuery().match(/(.*)(limit .+)/);
-        var query;
-        if (rawQuery[1] === '') {
-            query = 'order by 作成日時 desc ' + rawQuery[2];
-        } else {
-            query = rawQuery[1] + ', 作成日時 desc ' + rawQuery[2];
-        }
+        var query = kintone.app.getQuery();
 
         kintone.api(kintone.api.url('/k/v1/records', true), 'GET', {
             'app': APPID,
@@ -312,17 +294,18 @@ jQuery.noConflict();
         return evt;
     });
 
-    kintone.events.on('app.record.index.show', function() {
+    kintone.events.on('app.record.index.show', function(event) {
+        if (event.records.length === 0) {
+            return event;
+        }
+
         var loginInfo = kintone.getLoginUser();
         var lang = getLanguage(loginInfo.language);
 
         NotifyPopup.createPopup();
 
-        var RECORD_FIELD;
-        getRecordField().then(function(code) {
-            RECORD_FIELD = code;
-            return fetchVoteModels(lang);
-        }).then(function(voteModels) {
+        var RECORD_FIELD = getRecordNumberFieldCode(event.records[0]);
+        fetchVoteModels().then(function(voteModels) {
             var cellEls = $(kintone.app.getFieldElements(RECORD_FIELD));
             cellEls.each(function() {
                 var recordId = Number($(this).text().split('-').pop());
