@@ -26,13 +26,13 @@ jQuery.noConflict();
             btnSave: 'Save'
         },
         ja: {
-            description1: 'ユーザー選択フィールドと数値フィールドをつかって、いいねした人といいねの数を実現します。',
+            description1: 'ユーザー選択フィールドと数値フィールドを使って、「いいね」した人のリストと「いいね」された数を表示します。',
             description2: '下記の設定に対するフィールド名を選択してください',
             description3: 'レコード一覧にいいねボタンを表示したい場合は、一覧にレコード番号フィールドを追加してください。',
             labelOfVoteField: '「いいねした人」に使うフィールド',
             labelOfCountfield: '「いいねの数」に使うフィールド',
-            descriptionOfVoteField1: 'リストからユーザ選択フィールドを選択してください。',
-            descriptionOfVoteField2: 'いいねボタンをクリックするユーザの情報がこのフィールドに記録されます。',
+            descriptionOfVoteField1: 'リストからユーザー選択フィールドを選択してください。',
+            descriptionOfVoteField2: 'いいねボタンをクリックするユーザーの情報がこのフィールドに記録されます。',
             descriptionOfCountField1: 'リストから数値フィールドを選択してください。',
             descriptionOfCountField2: 'いいねの数がこのフィールドに保存されます。',
             btnSave: '保存する'
