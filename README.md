@@ -3,6 +3,13 @@ kintone Plug-in SDK
 
 This SDK includes kintone plug-in packaging tool.
 
+## package.sh is now deprecated!
+
+`package.sh` has been deprecated.
+
+Please use [@kintone/plugin-packer](https://www.npmjs.com/package/@kintone/plugin-packer) instead.
+It requires [Node.js](https://nodejs.org/).
+
 ## Requirement
 
 * A bash shell

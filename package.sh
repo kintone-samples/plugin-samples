@@ -1,6 +1,15 @@
 #!/bin/sh
 BASE_DIR=$(cd $(dirname $0); pwd)
 
+echo ""
+echo "WARNING!"
+echo "--------------------------------"
+echo "package.sh has been deprecated."
+echo "Please use @kintone/plugin-packer instead."
+echo "https://www.npmjs.com/package/@kintone/plugin-packer"
+echo "--------------------------------"
+echo ""
+
 if [ $# -lt 1 ]; then
     echo "usage: $0 PLUGIN_DIR [PRIVATE_KEY_FILE]"
     exit 1
