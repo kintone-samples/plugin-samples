@@ -58,6 +58,36 @@ jQuery.noConflict();
                     type === 'HEX' ? 'HEX' : /(?:r|g|b)/.test(type) ? 'rgb' : 'hsv');
                 colorPicker.render();
             });
+
+            var buttons = $elm.append('<div class="cp-disp">' +
+                '<button type="button" id="cp-submit">OK</button>' +
+                '<button type="button" id="cp-cancel">Cancel</button>' +
+            '</div>');
+
+            buttons.on('click', '#cp-submit', function(e) {
+                var colorCode = '#' + colorPicker.color.colors.HEX;
+
+                $elm.css('border-bottom-color', colorCode);
+                $elm.attr('value', colorCode);
+
+                var $el = colorPicker.$trigger.parent('div').find('input[type="text"]');
+                $el.val(colorCode);
+
+                if ($el.hasClass('cf-plugin-column6')) {
+                    $el.css('background-color', colorCode);
+                }
+
+                if ($el.hasClass('cf-plugin-column5')) {
+                    $el.css('color', colorCode);
+                }
+
+                colorPicker.$trigger.css('border-bottom-color', colorCode);
+                colorPicker.toggle(false);
+            });
+
+            buttons.on('click', '#cp-cancel', function(e) {
+                colorPicker.toggle(false);
+            });
         },
         renderCallback: function($elm, toggled) {
             var colors = this.color.colors.RND;
@@ -74,20 +104,6 @@ jQuery.noConflict();
             });
 
             this.$trigger = $elm;
-
-            $elm.css('border-bottom-color', colorCode);
-            $elm.attr('value', colorCode);
-
-            var $el = $elm.parent('div').find('input[type="text"]');
-            $el.val(colorCode);
-
-            if ($el.hasClass('cf-plugin-column6')) {
-                $el.css('background-color', colorCode);
-            }
-
-            if ($el.hasClass('cf-plugin-column5')) {
-                $el.css('color', colorCode);
-            }
         },
         positionCallback: function($elm) {
             this.color.setColor($elm.attr('value'));
