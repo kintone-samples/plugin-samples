@@ -31,13 +31,10 @@ jQuery.noConflict();
             errorOccurred: 'エラーが発生しました。アプリ管理者にお問い合わせ下さい。'
         },
         zh: {
-            recordNumFieldNotFound: 'To use the Like Plug-in, the Record number field must be set in the Form edit settings.',
-            updatedWhileClicking: 'Someone updated the record while you were clicking "Like".'
-                                    + ' Please click the "Like" button again.',
-            notHavePermissionToEdit: 'Users who do not have permission to edit the record'
-                                    + ' cannot click the "Like" button.'
-                                    + ' Please contact the Administrator of this App to resolve this issue.',
-            errorOccurred: 'An error occurred. Please contact the Administrator of this App to resolve this issue.'
+            recordNumFieldNotFound: '未找到记录编号字段。需要在表单中设置记录编号字段才可使用顶！插件。',
+            updatedWhileClicking: '在点顶的同时有其他人更新了记录，请再点一次。',
+            notHavePermissionToEdit: '无记录编辑权限的用户不可以点顶。详情请咨询应用管理员。',
+            errorOccurred: '出错了！详情请咨询应用管理员。'
         }
     };
 
