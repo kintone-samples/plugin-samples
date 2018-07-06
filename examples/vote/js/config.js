@@ -38,19 +38,16 @@ jQuery.noConflict();
             btnSave: '保存する'
         },
         zh: {
-            description1: 'This Plug-in uses the User selection field '
-                        + 'and Number field to record data of "Likes" given to a record.',
-            description2: 'Select the relative field names for the settings below.',
-            description3: 'To view the Like button on the Record List view, '
-                        + 'include the Record Number field into the view.',
-            labelOfVoteField: 'Users who Liked the record',
-            labelOfCountfield: 'Like Count',
-            descriptionOfVoteField1: 'Select a User Selection field from the list.',
-            descriptionOfVoteField2: 'Users who like (or unlike) the record will be automatically added '
-                        + 'to (or removed from) this field.',
-            descriptionOfCountField1: 'Select a Number field from the list.',
-            descriptionOfCountField2: 'The number of Likes will be recorded into this field.',
-            btnSave: 'Save'
+            description1: '使用用户选择字段和数值字段来显示“点了顶的人”和“点了顶的人数”。',
+            description2: '从下拉框选择字段代码。',
+            description3: '要在记录列表页面中查看“顶”按钮，请在列表中包含“记录编号”字段。',
+            labelOfVoteField: '用于显示“点了顶的人”的字段',
+            labelOfCountfield: '用于显示“点了顶的人数”的字段',
+            descriptionOfVoteField1: '从下拉框中选择一个“选择用户”字段。',
+            descriptionOfVoteField2: '在记录上点了顶（或取消顶）的人将会被自动添加到此字段（或从此字段中删除）。',
+            descriptionOfCountField1: '从下拉框中选择一个“数值”字段。',
+            descriptionOfCountField2: '点了顶的人数将显示在此字段中。',
+            btnSave: '保存'
         }
     };
 
