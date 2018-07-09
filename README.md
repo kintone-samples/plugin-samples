@@ -1,43 +1,57 @@
-kintone Plug-in SDK
+kintone Plug-in Examples
 ==========================
 
-This SDK includes kintone plug-in packaging tool.
+This is a repository for kintone plugin-in examples.
+
+## package.sh is now deprecated!
+
+`package.sh` has been deprecated.
+
+Please use [@kintone/plugin-packer](https://www.npmjs.com/package/@kintone/plugin-packer) instead.
+It requires [Node.js](https://nodejs.org/).
 
 ## Requirement
 
-* A bash shell
-* zip and openssl libraries are required on Windows using Cygwin
-* **For Mac users only**: No dotfiles (such as .DS_Store) in any of the folders inside your plugin. To automatically remove all instances of .DS_Store in your plugin folders, run the following Terminal command in the plugin directory:
-```find . -name ".DS_Store" -delete```
-(Note that .DS_Store files are only used by the Finder to hold custom view settings for that particular folder. In most cases nothing will happen if you delete them, or at worst custom Finder view settings (icon size, position, background color, etc) will be lost.)
+* Node.js v6 or later
 
 ## How to Use
 
 ```bash
-$ package.sh <plug-in dir> [<key file>]
+$ npm install -g @kintone/plugin-packer
+$ kintone-plugin-packer <plug-in dir> [--ppk <key file>]
 ```
+
+For more information, please check the following pages.
+
+* https://github.com/kintone/plugin-packer
+* https://developer.cybozu.io/hc/ja/articles/360000910783 (in Japanese)
+
 ## Output Files
 
 ### Plug-in Package
+
 ```bash
-plugins/<plug-in id>/plugin.zip
+plugin.zip
 ```
 
 ### Private Key
+
 ```bash
-keys/<plug-in dir>.<plug-in id>.ppk
+<plug-in id>.ppk
 ```
 **Do not lose the private key!** Keep the .ppk file secret and in a safe place. You'll need it later if you want to update the plug-in.
 
 ## Example
+
 ```bash
 $ cd /tmp
-$ git clone https://github.com/kintone/plugin-sdk
-$ cd plugin-sdk
-$ ./package.sh examples/colorcell
-Plugin ID: lnamdpliafiofedbofmbgijdjpgebobo
-Plugin file: /tmp/plugin-sdk/plugins/lnamdpliafiofedbofmbgijdjpgebobo/plugin.zip
-Private key file: /tmp/plugin-sdk/keys/colorcell.lnamdpliafiofedbofmbgijdjpgebobo.ppk
+$ git clone https://github.com/kintone/plugin-examples
+$ cd plugin-examples
+$ npm install -g @kintone/plugin-packer
+$ kintone-plugin-packer examples/colorcell
+Succeeded: /tmp/plugin-examples/examples/plugin.zip
+$ ls examples/*.ppk
+examples/dhcpcmonencgafiddfaofdfednmjnbem.ppk
 ```
 
 ## Install Plug-in
