@@ -3,12 +3,35 @@
  * Copyright (c) 2016 Cybozu
  *
  * Licensed under the MIT License
- */
+ // */
 jQuery.noConflict();
 (function($, PLUGIN_ID) {
     'use strict';
 
-    // プラグインIDの設定
+    //ユーザーの使用言語によって、表示する言語を変える。
+    //To switch the language used for instructions based on the user's launguage setting
+    var terms = {
+        'en': {
+            connectTitle: 'Fields to Connect',
+            connectDescription: 'Please select the fields to connect. (5 fields max)',
+            delimiterTitle: 'Delimiter',
+            delimiterDescription: 'Please specify the delimiter used between connected values. If not specified, values will be connected without delimiters.',
+            resultTitle: 'Fields to display the connected result',
+            resultDescription: 'Please select the fields to display the connected result.'
+        },
+        'ja': {
+            connectTitle: '結合する項目',
+            connectDescription: '結合する項目を選択してください。（最大5つまで）',
+            delimiterTitle: '項目間の記号',
+            delimiterDescription: '結合される項目の間に表示される記号を入力してください。未選択の場合、各項目が直接結合されます。',
+            resultTitle: '結合された文字列を表示する項目',
+            resultDescription: '結合された文字列を表示する項目を選択してください。'
+        }
+    }
+    var lang = kintone.getLoginUser().language;
+    var i18n = (lang in terms) ? terms[lang] : terms['en'];
+
+    // set the pluginID
     var CONF = kintone.plugin.app.getConfig(PLUGIN_ID);
 
     function decodeSpace(htmlstr) {
@@ -21,7 +44,7 @@ jQuery.noConflict();
                 $('#select' + i).val(CONF['select' + i]);
             }
 
-            // 旧プラグインから設定を引き継ぐ
+            // get the previous plugin setting
             if (CONF.hasOwnProperty('line_number')) {
                 $('#copyfield1').val(CONF.copyfield);
                 if (CONF.copyfield !== '') {
@@ -55,10 +78,26 @@ jQuery.noConflict();
 
 
     function setDropdown() {
-        // フォーム設計情報を取得し、選択ボックスに代入する
+        // get the form fields info and put them in the selection boxes
         var url = kintone.api.url('/k/v1/preview/app/form/fields', true);
         kintone.api(url, 'GET', {'app': kintone.app.getId()}, function(resp) {
+
+            //
+            var template = $.templates(document.querySelector('#plugin-template'));
+            var templateItems = {
+                connectTitle: i18n.connectTitle,
+                connectDescription: i18n.connectDescription,
+                delimiterTitle: i18n.delimiterTitle,
+                delimiterDescription: i18n.delimiterDescription,
+                resultTitle: i18n.resultTitle,
+                resultDescription: i18n.resultDescription
+            };
+            $('#plugin-container').html(template(templateItems));
+            appendEvents();
+
+
             var $option = $('<option>');
+
             for (var key in resp.properties) {
                 if (!resp.properties.hasOwnProperty(key)) {continue; }
                 var prop = resp.properties[key];
@@ -120,47 +159,52 @@ jQuery.noConflict();
         // 必須項目のチェック、
         for (var b = 1; b < 6; b++) {
             if ($('#select' + b).val() !== '' && $('#copyfield1').val() === '') {
-                swal('Error!', '「結合された文字列を表示する項目」は必須です。', 'error');
+  // swal('Error!', '「結合された文字列を表示する項目」は必須です。', 'error');
+                swal('Error!', 'Please select a field to display the combined texts.', 'error');
                 return false;
             }
         }
         for (var c = 6; c < 11; c++) {
             if ($('#select' + c).val() !== '' && $('#copyfield2').val() === '') {
-                swal('Error!', '「結合された文字列を表示する項目」は必須です。', 'error');
+  // swal('Error!', '「結合された文字列を表示する項目」は必須です。', 'error');
+                swal('Error!', 'Please select a field to display the combined texts.', 'error');
                 return false;
             }
         }
         for (var d = 11; d < 16; d++) {
             if ($('#select' + d).val() !== '' && $('#copyfield3').val() === '') {
-                swal('Error!', '「結合された文字列を表示する項目」は必須です。', 'error');
+  // swal('Error!', '「結合された文字列を表示する項目」は必須です。', 'error');
+                swal('Error!', 'Please select a field to display the combined texts.', 'error');
                 return false;
             }
         }
         return true;
     }
 
-    // 「保存する」ボタン押下時に入力情報を設定する
-    $('#submit').click(function() {
-        var config = [];
-        for (var i = 1; i < 16; i++) {
-            config['select' + i] = $('#select' + i).val();
-        }
-        config['copyfield1'] = $('#copyfield1').val();
-        config['copyfield2'] = $('#copyfield2').val();
-        config['copyfield3'] = $('#copyfield3').val();
-        config['between1'] = encodeSpace($('#between1').val());
-        config['between2'] = encodeSpace($('#between2').val());
-        config['between3'] = encodeSpace($('#between3').val());
+    var appendEvents = function(){
+        // 「保存する」ボタン押下時に入力情報を設定する
+        $('#submit').click(function() {
+            var config = [];
+            for (var i = 1; i < 16; i++) {
+                config['select' + i] = $('#select' + i).val();
+            }
+            config['copyfield1'] = $('#copyfield1').val();
+            config['copyfield2'] = $('#copyfield2').val();
+            config['copyfield3'] = $('#copyfield3').val();
+            config['between1'] = encodeSpace($('#between1').val());
+            config['between2'] = encodeSpace($('#between2').val());
+            config['between3'] = encodeSpace($('#between3').val());
 
-        if (checkValues()) {
-            kintone.plugin.app.setConfig(config);
-        }
-    });
+            if (checkValues()) {
+                kintone.plugin.app.setConfig(config);
+            }
+        });
 
-    // 「キャンセル」ボタン押下時の処理
-    $('#cancel').click(function() {
-        window.history.back();
-    });
+        // 「キャンセル」ボタン押下時の処理
+        $('#cancel').click(function() {
+            window.history.back();
+        });
+    }
 
     setDropdown();
 })(jQuery, kintone.$PLUGIN_ID);
