@@ -14,6 +14,7 @@ jQuery.noConflict();
         'en': {
             connectTitle: 'Fields to Connect',
             connectDescription: 'Please select the fields to connect. (5 fields max)',
+            errorMessage: 'Please select a field to display the combined texts.',
             delimiterTitle: 'Delimiter',
             delimiterDescription: 'Please specify the delimiter used between connected values. If not specified, values will be connected without delimiters.',
             resultTitle: 'Fields to display the connected result',
@@ -22,6 +23,7 @@ jQuery.noConflict();
         'ja': {
             connectTitle: '結合する項目',
             connectDescription: '結合する項目を選択してください。（最大5つまで）',
+            errorMessage: '「結合された文字列を表示する項目」は必須です。',
             delimiterTitle: '項目間の記号',
             delimiterDescription: '結合される項目の間に表示される記号を入力してください。未選択の場合、各項目が直接結合されます。',
             resultTitle: '結合された文字列を表示する項目',
@@ -159,22 +161,19 @@ jQuery.noConflict();
         // 必須項目のチェック、
         for (var b = 1; b < 6; b++) {
             if ($('#select' + b).val() !== '' && $('#copyfield1').val() === '') {
-  // swal('Error!', '「結合された文字列を表示する項目」は必須です。', 'error');
-                swal('Error!', 'Please select a field to display the combined texts.', 'error');
+                swal('Error!', i18n.errorMessage, 'error');
                 return false;
             }
         }
         for (var c = 6; c < 11; c++) {
             if ($('#select' + c).val() !== '' && $('#copyfield2').val() === '') {
-  // swal('Error!', '「結合された文字列を表示する項目」は必須です。', 'error');
-                swal('Error!', 'Please select a field to display the combined texts.', 'error');
+                swal('Error!', i18n.errorMessage, 'error');
                 return false;
             }
         }
         for (var d = 11; d < 16; d++) {
             if ($('#select' + d).val() !== '' && $('#copyfield3').val() === '') {
-  // swal('Error!', '「結合された文字列を表示する項目」は必須です。', 'error');
-                swal('Error!', 'Please select a field to display the combined texts.', 'error');
+                swal('Error!', i18n.errorMessage, 'error');
                 return false;
             }
         }
