@@ -4,18 +4,14 @@
  *
  * Licensed under the MIT License
 -->
-<div id="plugin-container">
-
-</div>
-
-<script id="plugin-template" type="text/x-jsrender">
+<div id="cf-plugin">
   <div>
     <div class="block">
       <label class="kintoneplugin-label">
-        <span id ="container_label">{{html:connectTitle}}</span>
+        <span id ="container_label">{{html:terms.connectTitle}}</span>
       </label><br >
-      <div class="kintoneplugin-desc">{{html:connectDescription}}</div>
-  
+      <div class="kintoneplugin-desc">{{html:terms.connectDescription}}</div>
+
       <div class="kintoneplugin-row" id="row1">
           <span class="num">①</span>
           <div class="kintoneplugin-select-outer">
@@ -58,7 +54,7 @@
             </div>
           </div>
       </div>
-  
+
       <div class="kintoneplugin-row" id="row2">
           <span class="num">②</span>
           <div class="kintoneplugin-select-outer">
@@ -101,7 +97,7 @@
             </div>
           </div>
       </div>
-  
+
       <div class="kintoneplugin-row" id="row3">
           <span class="num">③</span>
           <div class="kintoneplugin-select-outer">
@@ -144,43 +140,43 @@
             </div>
           </div>
       </div>
-  
+
   　　</div>
     <br >
     <div class="block">
       <label class="kintoneplugin-label">
-          <span id ="container_label">{{html:delimiterTitle}}</span>
+          <span id ="container_label">{{html:terms.delimiterTitle}}</span>
       </label><br >
-      <div class="kintoneplugin-desc">{{html:delimiterDescription}}</div>
+      <div class="kintoneplugin-desc">{{html:terms.delimiterDescription}}</div>
       <div class="kintoneplugin-row">
           <span class="num">①</span>
           <div class="kintoneplugin-input-outer">
               <input name="between" id= "between1" class="kintoneplugin-input-text" type="text">
           </div>
       </div>
-  
+
       <div class="kintoneplugin-row">
           <span class="num">②</span>
           <div class="kintoneplugin-input-outer">
               <input name="between" id= "between2" class="kintoneplugin-input-text" type="text">
           </div>
       </div>
-  
+
       <div class="kintoneplugin-row">
           <span class="num">③</span>
           <div class="kintoneplugin-input-outer">
               <input name="between" id= "between3" class="kintoneplugin-input-text" type="text">
           </div>
       </div>
-  
+
       </div>
     <br >
     <div class="block">
       <label class="kintoneplugin-label">
-          <span id ="container_label">{{html:resultTitle}}</span>
+          <span id ="container_label">{{html:terms.resultTitle}}</span>
           <span class="kintoneplugin-require">*</span>
       </label><br >
-      <div class="kintoneplugin-desc">{{html:resultDescription}}</div>
+      <div class="kintoneplugin-desc">{{html:terms.resultDescription}}</div>
       <div class="kintoneplugin-row">
           <span class="num">①</span>
           <div class="kintoneplugin-select-outer">
@@ -214,8 +210,8 @@
     </div>
     <br >
     <div class="block">
-      <button type="button" id="submit" class="kintoneplugin-button-dialog-ok">     Save     </button>
-      <button type="button" id="cancel" class="kintoneplugin-button-dialog-cancel">     Cancel   </button>
+      <button type="button" id="submit" class="kintoneplugin-button-dialog-ok">     {{html:terms.saveButton}}     </button>
+      <button type="button" id="cancel" class="kintoneplugin-button-dialog-cancel">     {{html:terms.cancelButton}}   </button>
     </div>
   </div>
-</script>
+</div>

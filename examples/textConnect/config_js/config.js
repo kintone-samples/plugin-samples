@@ -8,26 +8,29 @@ jQuery.noConflict();
 (function($, PLUGIN_ID) {
     'use strict';
 
-    //ユーザーの使用言語によって、表示する言語を変える。
     //To switch the language used for instructions based on the user's launguage setting
     var terms = {
         'en': {
             connectTitle: 'Fields to Connect',
             connectDescription: 'Please select the fields to connect. (5 fields max)',
-            errorMessage: 'Please select a field to display the combined texts.',
             delimiterTitle: 'Delimiter',
             delimiterDescription: 'Please specify the delimiter used between connected values. If not specified, values will be connected without delimiters.',
+            errorMessage: 'Please select a field to display the combined texts.',
             resultTitle: 'Fields to display the connected result',
-            resultDescription: 'Please select the fields to display the connected result.'
+            resultDescription: 'Please select the fields to display the connected result.',
+            saveButton: 'Save',
+            cancelButton: 'Cancel'
         },
         'ja': {
             connectTitle: '結合する項目',
             connectDescription: '結合する項目を選択してください。（最大5つまで）',
-            errorMessage: '「結合された文字列を表示する項目」は必須です。',
             delimiterTitle: '項目間の記号',
             delimiterDescription: '結合される項目の間に表示される記号を入力してください。未選択の場合、各項目が直接結合されます。',
+            errorMessage: '「結合された文字列を表示する項目」は必須です。',
             resultTitle: '結合された文字列を表示する項目',
-            resultDescription: '結合された文字列を表示する項目を選択してください。'
+            resultDescription: '結合された文字列を表示する項目を選択してください。',
+            saveButton: '保存する',
+            cancelButton: 'キャンセル'
         }
     }
     var lang = kintone.getLoginUser().language;
@@ -75,19 +78,11 @@ jQuery.noConflict();
         var url = kintone.api.url('/k/v1/preview/app/form/fields', true);
         kintone.api(url, 'GET', {'app': kintone.app.getId()}, function(resp) {
 
-            //
-            var template = $.templates(document.querySelector('#plugin-template'));
-            var templateItems = {
-                connectTitle: i18n.connectTitle,
-                connectDescription: i18n.connectDescription,
-                delimiterTitle: i18n.delimiterTitle,
-                delimiterDescription: i18n.delimiterDescription,
-                resultTitle: i18n.resultTitle,
-                resultDescription: i18n.resultDescription
-            };
-            $('#plugin-container').html(template(templateItems));
-            appendEvents();
+            var configHTML = $('#cf-plugin').html();
+            var template = $.templates(configHTML);
+            $('div#cf-plugin').html(template.render({'terms': i18n}));
 
+            appendEvents();
 
             var $option = $('<option>');
 
@@ -96,7 +91,7 @@ jQuery.noConflict();
                 var prop = resp.properties[key];
 
                 switch (prop.type) {
-                    // 文字列1行の時と文字列複数行を結合フィールドと保存フィールドに適用
+                    //Display Text and Text Area fields in the "Fields to connect" and "Fields to display the connected result" drop-down lists
                     case 'SINGLE_LINE_TEXT':
                     case 'MULTI_LINE_TEXT':
                         for (var m = 1; m < 16; m++) {
@@ -109,7 +104,7 @@ jQuery.noConflict();
                         $('#copyfield3').append($option.clone());
 
                         break;
-                    // リッチエディタの時は保存フィールドのみに適用
+                    // Display the Rich Text fields in the "Fields to display the connected result" drop-down list
                     case 'RICH_TEXT':
                         for (var l = 1; l < 16; l++) {
                             $option.attr('value', escapeHtml(prop.code));
@@ -120,7 +115,7 @@ jQuery.noConflict();
                         $('#copyfield3').append($option.clone());
                         break;
 
-                    // このパターンの時は結合フィールドのみに適用
+                    // Display these types of fields in the "Fields to connect" drop-down list
                     case 'DATETIME':
                     case 'NUMBER':
                     case 'RADIO_BUTTON':
@@ -149,7 +144,7 @@ jQuery.noConflict();
     }
 
     function checkValues() {
-        // 必須項目のチェック、
+        // Check the required values
         for (var b = 1; b < 6; b++) {
             if ($('#select' + b).val() !== '' && $('#copyfield1').val() === '') {
                 swal('Error!', i18n.errorMessage, 'error');
@@ -172,7 +167,7 @@ jQuery.noConflict();
     }
 
     var appendEvents = function(){
-        // 「保存する」ボタン押下時に入力情報を設定する
+        // When hitting the save button, save inputs in the Config
         $('#submit').click(function() {
             var config = [];
             for (var i = 1; i < 16; i++) {
@@ -190,7 +185,7 @@ jQuery.noConflict();
             }
         });
 
-        // 「キャンセル」ボタン押下時の処理
+        // When hitting the cancel button
         $('#cancel').click(function() {
             window.history.back();
         });
