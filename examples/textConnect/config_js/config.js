@@ -108,7 +108,7 @@ jQuery.noConflict();
                         }
                         break;
 
-                    default :
+                    default:
                         break;
                 }
             }
