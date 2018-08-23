@@ -4,12 +4,12 @@
  *
  * Licensed under the MIT License
  */
-(function(PLUGIN_ID) {
-    'use strict';
 
+'use strict';
+(function(PLUGIN_ID) {
     // Load setting values such as target fields to connect, resolve fields, and delimiters.
     var CONF = kintone.plugin.app.getConfig(PLUGIN_ID);
-    
+
     // 設定値読み込み
     if (!CONF) {
         return false;
@@ -99,9 +99,9 @@
 
 
     function connectField(record) {
-        
+
         // 各結合項目の処理
-        // Every iteration, one resolve field is calculated based on it's delimiter and selection fields.
+        // Every iteration, one resolve field is calculated based on its delimiter and selection fields.
         for (var i = 1; i < 4; i++) {
             var cdcopyfield = CONF['copyfield' + i];
             var cdbetween = CONF['between' + i];
@@ -110,9 +110,7 @@
 
             // Filter rawTextArray to only include non empty strings
             var filteredTextArray = rawTextArray.filter(function(text) {
-                if (text != '')
-                    return true;
-                return false;
+                return text !== "";
             });
 
             // Special cases for delimiters of '&nbsp;' and '&emsp;'
