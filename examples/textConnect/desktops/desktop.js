@@ -4,9 +4,8 @@
  *
  * Licensed under the MIT License
  */
-
-'use strict';
 (function(PLUGIN_ID) {
+    'use strict';
     // Load setting values such as target fields to connect, resolve fields, and delimiters.
     var CONF = kintone.plugin.app.getConfig(PLUGIN_ID);
 
@@ -54,7 +53,7 @@
 
             // そのほかのすべてのフィールドタイプ
             // All other field types
-            default :
+            default:
                 tex_changes = tex['value'];
                 break;
         }

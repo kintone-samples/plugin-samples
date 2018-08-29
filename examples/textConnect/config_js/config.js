@@ -4,9 +4,9 @@
  *
  * Licensed under the MIT License
  */
-'use strict';
 jQuery.noConflict();
 (function($, PLUGIN_ID) {
+    'use strict';
 
     // プラグインIDの設定
     var CONF = kintone.plugin.app.getConfig(PLUGIN_ID);
