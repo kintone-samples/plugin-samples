@@ -15,7 +15,7 @@ jQuery.noConflict();
             connectDescription: 'Please select the fields to connect. (5 fields max)',
             delimiterTitle: 'Delimiter',
             delimiterDescription: 'Please specify the delimiter used between connected values. If not specified, values will be connected without delimiters.',
-            errorMessage: 'Please select a field to display the combined texts.',
+            errorMessage: '"Fields to display the connected result" is a required setting. Please select the output fields where the connected results will be inserted.',
             resultTitle: 'Fields to display the connected result',
             resultDescription: 'Please select the fields to display the connected result.',
             saveButton: 'Save',
