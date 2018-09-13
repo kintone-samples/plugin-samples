@@ -38,7 +38,6 @@
 
     function checkTexValue(tex) {
         var tex_changes = '';
-
         // Get the name from user_selection, organization_selection, or group_selection
         switch (tex['type']) {
             case 'USER_SELECT':
@@ -55,13 +54,11 @@
                     tex_changes = (tex['value']).substr(0, 10);
                 }
                 break;
-
             // In case of multiple values, only the element at the index of 0 in the array is reflected
             case 'CHECK_BOX':
             case 'MULTI_SELECT':
                 tex_changes = tex['value'][0];
                 break;
-
             // All other field types
             default :
                 tex_changes = tex['value'];
@@ -69,13 +66,16 @@
         }
         return tex_changes;
     }
-
     // Calculate joinedText field given selectionArray and record
     function fieldValues(record, selectionArry) {
         var fieldarray = [];
+
+        // For all selection fields for the current group of target fields
         for (var j = 0; j < 5; j++) {
             if (selectionArry[j] !== '') {
                 var tex = record[String(selectionArry[j])];
+
+                // If text exists then add it to the fieldarray, other wise add empty string.
                 if (tex.value !== undefined) {
                     fieldarray.push(checkTexValue(tex));
                 } else {
@@ -88,7 +88,6 @@
     }
 
     function createSelectionArry() {
-
         // Create selection array for each row
         var selectionArry = [];
         selectionArry[0] = [];
@@ -101,19 +100,18 @@
     }
 
     function connectField(record) {
-
         // Every iteration, one resolve field is calculated based on it's delimiter and selection fields.
         for (var i = 1; i < 4; i++) {
             var cdcopyfield = CONF['copyfield' + i];
             var cdbetween = CONF['between' + i];
             var selectionArry = createSelectionArry();
             var joinText = fieldValues(record, selectionArry[i - 1]);
-
             if (cdbetween === '&nbsp;') {
                 cdbetween = '\u0020';
             } else if (cdbetween === '&emsp;') {
                 cdbetween = '\u3000';
             }
+            // Input back into resolve field in the record
             if (joinText.length > 0) {
                 record[String(cdcopyfield)]['value'] = String(joinText.join(cdbetween));
             }
@@ -137,13 +135,12 @@
         }
         return changeEvent;
     }
-
     //Create/edit events
-    var events1 = ['app.record.edit.show',
-        'app.record.create.show',
-        'app.record.index.edit.show'
+    var events1 = [
+      'app.record.edit.show',
+      'app.record.create.show',
+      'app.record.index.edit.show'
     ];
-
     // Disable the resolve field (gray out)
     kintone.events.on(events1, function(event) {
         var record = event['record'];
