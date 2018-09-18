@@ -147,9 +147,7 @@ jQuery.noConflict();
     function checkTextConditionFormat(field, value, type) {
         var field_value = '';
         var condition_value = '';
-
-        // Change field value format
-        if (field.match(/^[-]?[0-9]+(\.[0-9]+)?$/) !== null) {
+        if (field && field.match(/^[-]?[0-9]+(\.[0-9]+)?$/) !== null) {
             if (type === 'match' || type === 'unmatch') {
                 field_value = field;
             } else {
@@ -160,7 +158,7 @@ jQuery.noConflict();
         }
 
         // Change condition value format
-        if (value.match(/^[-]?[0-9]+(\.[0-9]+)?$/) !== null) {
+        if (value && value.match(/^[-]?[0-9]+(\.[0-9]+)?$/) !== null) {
             if (type === 'match' || type === 'unmatch') {
                 condition_value = value;
             } else {
