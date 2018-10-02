@@ -105,15 +105,18 @@
             var cdcopyfield = CONF['copyfield' + i];
             var cdbetween = CONF['between' + i];
             var selectionArry = createSelectionArry();
-            var joinText = fieldValues(record, selectionArry[i - 1]);
+            // Filter rawTextArray to only include non empty strings
+            var filteredTextArray = rawTextArray.filter(function(text) {
+                return text !== "";
+            });
             if (cdbetween === '&nbsp;') {
                 cdbetween = '\u0020';
             } else if (cdbetween === '&emsp;') {
                 cdbetween = '\u3000';
             }
             // Input back into resolve field in the record
-            if (joinText.length > 0) {
-                record[String(cdcopyfield)]['value'] = String(joinText.join(cdbetween));
+            if (filteredTextArray.length > 0) {
+                record[String(cdcopyfield)]['value'] = String(filteredTextArray.join(cdbetween));
             }
         }
     }
