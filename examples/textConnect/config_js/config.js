@@ -48,18 +48,28 @@ jQuery.noConflict();
             for (var i = 1; i < 16; i++) {
                 $('#select' + i).val(CONF['select' + i]);
             }
-
             // get the previous plugin setting
-            $('#copyfield1').val(CONF.copyfield1);
-            $('#copyfield2').val(CONF.copyfield2);
-            $('#copyfield3').val(CONF.copyfield3);
-            for (var y = 1; y < 4; y++) {
-                if (CONF['copyfield' + y] !== '') {
-                    $('#between' + y).val(decodeSpace(CONF['between' + y]));
+            if (CONF.hasOwnProperty('line_number')) {
+                $('#copyfield1').val(CONF.copyfield);
+                if (CONF.copyfield !== '') {
+                    $('#between1').val(decodeSpace(CONF.between));
                 } else {
-                    $('#between' + y).val(CONF['between' + y]);
+                    $('#between1').val(CONF.between);
                 }
+            } else {
+               // get the previous plugin setting
+               $('#copyfield1').val(CONF.copyfield1);
+               $('#copyfield2').val(CONF.copyfield2);
+               $('#copyfield3').val(CONF.copyfield3);
+               for (var y = 1; y < 4; y++) {
+                  if (CONF['copyfield' + y] !== '') {
+                      $('#between' + y).val(decodeSpace(CONF['between' + y]));
+                  } else {
+                      $('#between' + y).val(CONF['between' + y]);
+                  }
+               }
             }
+
         }
     }
 
