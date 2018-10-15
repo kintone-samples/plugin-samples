@@ -4,7 +4,7 @@
  *
  * Licensed under the MIT License
  */
-(function(PLUGIN_ID) {
+(function (PLUGIN_ID) {
     'use strict';
 
     // Variable stores pop-up message text to be used based on language.
@@ -60,7 +60,7 @@
                 tex_changes = tex['value'][0];
                 break;
             // All other field types
-            default :
+            default:
                 tex_changes = tex['value'];
                 break;
         }
@@ -105,10 +105,13 @@
             var cdcopyfield = CONF['copyfield' + i];
             var cdbetween = CONF['between' + i];
             var selectionArry = createSelectionArry();
+            var rawTextArray = fieldValues(record, selectionArry[i - 1]); // array of text field values
+
             // Filter rawTextArray to only include non empty strings
-            var filteredTextArray = rawTextArray.filter(function(text) {
+            var filteredTextArray = rawTextArray.filter(function (text) {
                 return text !== "";
             });
+
             if (cdbetween === '&nbsp;') {
                 cdbetween = '\u0020';
             } else if (cdbetween === '&emsp;') {
@@ -140,12 +143,12 @@
     }
     //Create/edit events
     var events1 = [
-      'app.record.edit.show',
-      'app.record.create.show',
-      'app.record.index.edit.show'
+        'app.record.edit.show',
+        'app.record.create.show',
+        'app.record.index.edit.show'
     ];
     // Disable the resolve field (gray out)
-    kintone.events.on(events1, function(event) {
+    kintone.events.on(events1, function (event) {
         var record = event['record'];
         for (var i = 1; i < 4; i++) {
             if (CONF['copyfield' + i] !== '') {
@@ -171,7 +174,7 @@
     ];
 
     // Checks if there are any empty fields when saving
-    kintone.events.on(submitEvent, function(event) {
+    kintone.events.on(submitEvent, function (event) {
         var record = event.record;
         var selectionArry = createSelectionArry();
         var flag = false;
