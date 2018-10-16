@@ -10,7 +10,7 @@
     "description": {
         "ja": "新デザインに対応した条件により表示するアイテムの色、背景色等を変更するプラグインです。",
         "en": "This plug-in changes colors and styles of fields",
-        "zh": "是變更根據條件表示的條款的顏色等的插件。"
+        "zh": "根据新设计风格的条件，更改字段颜色、背景色的插件。"
     },
     "icon": "image/icon.png",
     "homepage_url": {
