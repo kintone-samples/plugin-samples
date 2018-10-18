@@ -9,8 +9,8 @@
     },
     "description": {
         "ja": "複数のフィールドの文字を連結して、特定のフィールドに代入するプラグインです。",
-        "en": "This plug-in can combine the text of one field with another field.",
-        "zh": "This plug-in can combine the text of one field with another field."
+        "en": "This plug-in can combine the text of multiple fields and place the result in a specified field.",
+        "zh": "This plug-in can combine the text of multiple fields and place the result in a specified field."
     },
     "icon": "contents/icon.png",
     "desktop": {
@@ -22,10 +22,10 @@
     "config":{
         "html": "contents/setting.html",
         "js": [
-            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+            "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
             "https://js.cybozu.com/sweetalert/v1.1.3/sweetalert.min.js",
+            "https://js.cybozu.com/jsrender/0.9.86/jsrender.min.js",
             "config_js/config.js"
-
         ],
         "css": [
                 "config_css/51-modern-default.css",
