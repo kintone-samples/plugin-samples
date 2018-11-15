@@ -107,9 +107,15 @@
             var selectionArry = createSelectionArry();
             var rawTextArray = fieldValues(record, selectionArry[i - 1]); // array of text field values
 
+            if (cdcopyfield === "" || cdbetween === "") {
+              break;
+            }
+
             // Filter rawTextArray to only include non empty strings
             var filteredTextArray = rawTextArray.filter(function (text) {
                 return text !== "";
+            }).filter(function (text) {
+                return text !== undefined;
             });
 
             if (cdbetween === '&nbsp;') {
@@ -118,9 +124,7 @@
                 cdbetween = '\u3000';
             }
             // Input back into resolve field in the record
-            if (filteredTextArray.length > 0) {
-                record[String(cdcopyfield)]['value'] = String(filteredTextArray.join(cdbetween));
-            }
+            record[String(cdcopyfield)]['value'] = String(filteredTextArray.join(cdbetween));
         }
     }
 

@@ -4,7 +4,7 @@
  *
  * Licensed under the MIT License
  */
-(function(PLUGIN_ID) {
+(function (PLUGIN_ID) {
     'use strict';
 
     // Variable stores pop-up message text to be used based on language.
@@ -60,7 +60,7 @@
                 tex_changes = tex['value'][0];
                 break;
             // All other field types
-            default :
+            default:
                 tex_changes = tex['value'];
                 break;
         }
@@ -100,21 +100,32 @@
     }
 
     function connectField(record) {
-      // Every iteration, one resolve field is calculated based on it's delimiter and selection fields.
-      for (var i = 1; i < 4; i++) {
-          var cdcopyfield = CONF['copyfield' + i];
-          var cdbetween = CONF['between' + i];
-          var selectionArry = createSelectionArry();
-          var joinText = fieldValues(record, selectionArry[i - 1]);
-          if (cdbetween === '&nbsp;') {
-              cdbetween = '\u0020';
-          } else if (cdbetween === '&emsp;') {
-              cdbetween = '\u3000';
-          }
-          if (joinText.length > 0) {
-              record[String(cdcopyfield)]['value'] = String(joinText.join(cdbetween));
-          }
-      }
+        // Every iteration, one resolve field is calculated based on it's delimiter and selection fields.
+        for (var i = 1; i < 4; i++) {
+            var cdcopyfield = CONF['copyfield' + i];
+            var cdbetween = CONF['between' + i];
+            var selectionArry = createSelectionArry();
+            var rawTextArray = fieldValues(record, selectionArry[i - 1]); // array of text field values
+
+            if (cdcopyfield === "" || cdbetween === "") {
+              break;
+            }
+
+            // Filter rawTextArray to only include non empty strings
+            var filteredTextArray = rawTextArray.filter(function (text) {
+                return text !== "";
+            }).filter(function (text) {
+                return text !== undefined;
+            });
+
+            if (cdbetween === '&nbsp;') {
+                cdbetween = '\u0020';
+            } else if (cdbetween === '&emsp;') {
+                cdbetween = '\u3000';
+            }
+            // Input back into resolve field in the record
+            record[String(cdcopyfield)]['value'] = String(filteredTextArray.join(cdbetween));
+        }
     }
 
     // Events when the value is changed and before saving
@@ -169,13 +180,13 @@
             var jointext = fieldValues(record, selectionArry[m]);
             for (var i = 0; i < jointext.length; i++) {
                 if (!jointext[i]) {
-                  var res = confirm(i18n.emptyCheck);
-                  if (res === false) {
-                      event.error = i18n.cancel;
-                      return event;
-                  }
-                  flag = true;
-                  break;
+                    var res = confirm(i18n.emptyCheck);
+                    if (res === false) {
+                        event.error = i18n.cancel;
+                        return event;
+                    }
+                    flag = true;
+                    break;
                 }
             }
             if (flag) {
