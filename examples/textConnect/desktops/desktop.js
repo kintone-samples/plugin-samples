@@ -107,7 +107,7 @@
             var selectionArry = createSelectionArry();
             var rawTextArray = fieldValues(record, selectionArry[i - 1]); // array of text field values
 
-            if (cdcopyfield === "" || cdbetween === "") {
+            if (cdcopyfield === "") {
               break;
             }
 
