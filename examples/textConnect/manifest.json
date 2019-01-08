@@ -19,6 +19,12 @@
             "desktops/desktop.js"
         ]
     },
+    "mobile": {
+        "js": [
+          "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+          "mobiles/mobile.js"
+        ]
+    },
     "config":{
         "html": "contents/setting.html",
         "js": [

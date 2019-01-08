@@ -130,29 +130,23 @@
 
     // Events when the value is changed and before saving
     function createEvents() {
-        var changeEvent = ['app.record.edit.submit',
-            'app.record.create.submit',
-            'app.record.index.edit.submit'];
-        var edit_change = 'app.record.edit.change.';
-        var create_change = 'app.record.create.change.';
-        var index_change = 'app.record.index.edit.change.';
+        var changeEvent = ['mobile.app.record.edit.submit',
+            'mobile.app.record.create.submit'];
+        var edit_change = 'mobile.app.record.edit.change.';
+        var create_change = 'mobile.app.record.create.change.';
 
         for (var a = 1; a < 16; a++) {
             var target = CONF['select' + a];
             changeEvent.push(edit_change + escapeHtml(target));
             changeEvent.push(create_change + escapeHtml(target));
-            changeEvent.push(index_change + escapeHtml(target));
         }
         return changeEvent;
     }
+
     //Create/edit events
-    var events1 = [
-        'app.record.edit.show',
-        'app.record.create.show',
-        'app.record.index.edit.show'
-    ];
+    var mobileEvents = ['mobile.app.record.edit.show', 'mobile.app.record.create.show'];
     // Disable the resolve field (gray out)
-    kintone.events.on(events1, function (event) {
+    kintone.events.on(mobileEvents, function(event) {
         var record = event['record'];
         for (var i = 1; i < 4; i++) {
             if (CONF['copyfield' + i] !== '') {
@@ -171,14 +165,13 @@
     });
 
     // Events relating to submitting
-    var submitEvent = [
-        'app.record.edit.submit',
-        'app.record.create.submit',
-        'app.record.index.edit.submit'
+    var submitMobileEvent = [
+      'mobile.app.record.edit.submit',
+      'mobile.app.record.create.submit'
     ];
 
     // Checks if there are any empty fields when saving
-    kintone.events.on(submitEvent, function (event) {
+    kintone.events.on(submitMobileEvent, function(event) {
         var record = event.record;
         var selectionArry = createSelectionArry();
         var flag = false;
