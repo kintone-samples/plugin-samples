@@ -44,7 +44,7 @@ jQuery.noConflict();
             var lat = records[i][latField].value;
             var lon = records[i][lonField].value;
             var recNo = records[i].$id.value;
-            var tooltipText = records[i][tooltipTitle].value;
+            var tooltipText = tooltipTitle !== '' ? records[i][tooltipTitle].value : '';
             var latlon = new ZDC.LatLon(lat, lon);
             if (lat && lon) {
                 latlons.push(latlon);

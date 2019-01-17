@@ -32,7 +32,7 @@ jQuery.noConflict();
     function makeMarkObject(record) {
         var lat = record[latField].value;
         var lon = record[lonField].value;
-        var tooltipText = record[tooltipTitle].value;
+        var tooltipText = tooltipTitle !== '' ? record[tooltipTitle].value : '';
         var latlonObj = new ZDC.LatLon(lat, lon);
         var markObj = new ZDC.Marker(latlonObj, {
             color: ZDC.MARKER_COLOR_ID_BLUE_S,
