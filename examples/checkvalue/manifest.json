@@ -20,7 +20,6 @@
     },
     "desktop": {
         "js": [
-            "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
             "js/check_sample.js"
         ]
     },
