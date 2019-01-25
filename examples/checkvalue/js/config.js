@@ -17,7 +17,7 @@ jQuery.noConflict();
     var MODE_OFF = '0'; // 変更後チェック未実施
     function escapeHtml(htmlstr) {
         return htmlstr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-            .replace(/'/g, '&quot;').replace(/'/g, '&#39;');
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
     function setDropdown() {
