@@ -78,10 +78,6 @@ jQuery.noConflict();
             .replace(/'/g, '&quot;').replace(/'/g, '&#39;');
     }
 
-    function encodeSpace(htmlstr1) {
-        return htmlstr1.replace(/\u0020/g, '&nbsp;').replace(/\u3000/g, '&emsp;');
-    }
-
 
     function setDropdown() {
         // get the form fields info and put them in the selection boxes
@@ -186,9 +182,9 @@ jQuery.noConflict();
             config['copyfield1'] = $('#copyfield1').val();
             config['copyfield2'] = $('#copyfield2').val();
             config['copyfield3'] = $('#copyfield3').val();
-            config['between1'] = encodeSpace($('#between1').val());
-            config['between2'] = encodeSpace($('#between2').val());
-            config['between3'] = encodeSpace($('#between3').val());
+            config['between1'] = $('#between1').val();
+            config['between2'] = $('#between2').val();
+            config['between3'] = $('#between3').val();
 
             if (checkValues()) {
                 kintone.plugin.app.setConfig(config);
