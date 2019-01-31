@@ -118,11 +118,8 @@
                 return text !== undefined;
             });
 
-            if (cdbetween === '&nbsp;') {
-                cdbetween = '\u0020';
-            } else if (cdbetween === '&emsp;') {
-                cdbetween = '\u3000';
-            }
+            cdbetween = cdbetween.replace(/&nbsp;/g, ' ').replace(/&emsp;/g, '　');
+
             // Input back into resolve field in the record
             record[String(cdcopyfield)]['value'] = String(filteredTextArray.join(cdbetween));
         }
