@@ -21,7 +21,7 @@ jQuery.noConflict();
   }
 
   function setDropdown() {
-    // 文字列型と数値型のフィールド情報を取得し、選択ボックスに代入する
+    // フィールド型が「文字列（１行）」「数値」のフィールド情報を取得し、選択ボックスに代入する
     KintoneConfigHelper.getFields(['SINGLE_LINE_TEXT', 'NUMBER']).then(function(resp) {
       for (var i = 0; i < resp.length; i++) {
         var prop = resp[i];
