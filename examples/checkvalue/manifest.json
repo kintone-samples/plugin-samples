@@ -27,6 +27,7 @@
         "html": "html/check_config.html",
         "js": [
             "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+            "js/kintone-config-helper.js",
             "js/config.js"
         ],
         "css": [

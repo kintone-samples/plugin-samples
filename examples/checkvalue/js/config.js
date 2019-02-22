@@ -21,35 +21,26 @@ jQuery.noConflict();
   }
 
   function setDropdown() {
-    // フォーム設計情報を取得し、選択ボックスに代入する
-    kintone.api(kintone.api.url('/k/v1/preview/form', true), 'GET', {'app': kintone.app.getId()}, function(resp) {
-
-      for (var i = 0; i < resp.properties.length; i++) {
-        var prop = resp.properties[i];
+    // 文字列型と数値型のフィールド情報を取得し、選択ボックスに代入する
+    KintoneConfigHelper.getFields(['SINGLE_LINE_TEXT', 'NUMBER']).then(function(resp) {
+      for (var i = 0; i < resp.length; i++) {
+        var prop = resp[i];
         var $option = $('<option>');
 
-        switch (prop.type) {
-          // 文字列と数値が対象(変更前イベントの対象、テキスト入力可能)
-          case 'SINGLE_LINE_TEXT':
-          case 'NUMBER':
-
-            $option.attr('value', escapeHtml(prop.code));
-            $option.text(escapeHtml(prop.label));
-            $('#select_checkvalue_field_zip').append($option.clone());
-            $('#select_checkvalue_field_tel').append($option.clone());
-            $('#select_checkvalue_field_fax').append($option.clone());
-            $('#select_checkvalue_field_mail').append($option.clone());
-            break;
-
-          default:
-            break;
-        }
+        $option.attr('value', escapeHtml(prop.code));
+        $option.text(escapeHtml(prop.label));
+        $('#select_checkvalue_field_zip').append($option.clone());
+        $('#select_checkvalue_field_tel').append($option.clone());
+        $('#select_checkvalue_field_fax').append($option.clone());
+        $('#select_checkvalue_field_mail').append($option.clone());
       }
       // 初期値を設定する
       $('#select_checkvalue_field_zip').val(CONF.zip);
       $('#select_checkvalue_field_tel').val(CONF.tel);
       $('#select_checkvalue_field_fax').val(CONF.fax);
       $('#select_checkvalue_field_mail').val(CONF.mail);
+    }).catch(function(err) {
+      alert(err.message);
     });
   }
 
