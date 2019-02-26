@@ -19,7 +19,9 @@ jQuery.noConflict();
             resultTitle: 'Fields to display the connected result',
             resultDescription: 'Please select the fields to display the connected result.',
             saveButton: 'Save',
-            cancelButton: 'Cancel'
+            cancelButton: 'Cancel',
+            checkFieldTitle: 'Field validation when saving a record',
+            checkFieldDescription: 'Prompt if one or more combined fields are empty'
         },
         'ja': {
             connectTitle: '結合する項目',
@@ -30,7 +32,9 @@ jQuery.noConflict();
             resultTitle: '結合された文字列を表示する項目',
             resultDescription: '結合された文字列を表示する項目を選択してください。',
             saveButton: '保存する',
-            cancelButton: 'キャンセル'
+            cancelButton: 'キャンセル',
+            checkFieldTitle: 'Field validation when saving a record',
+            checkFieldDescription: 'Prompt if one or more combined fields are empty'
         }
     };
     var lang = kintone.getLoginUser().language;
