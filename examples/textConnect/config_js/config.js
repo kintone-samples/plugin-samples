@@ -32,7 +32,7 @@ jQuery.noConflict();
             saveButton: '保存する',
             cancelButton: 'キャンセル'
         }
-    }
+    };
     var lang = kintone.getLoginUser().language;
     var i18n = (lang in terms) ? terms[lang] : terms['en'];
 
@@ -57,19 +57,22 @@ jQuery.noConflict();
                     $('#between1').val(CONF.between);
                 }
             } else {
-               // get the previous plugin setting
-               $('#copyfield1').val(CONF.copyfield1);
-               $('#copyfield2').val(CONF.copyfield2);
-               $('#copyfield3').val(CONF.copyfield3);
-               for (var y = 1; y < 4; y++) {
-                  if (CONF['copyfield' + y] !== '') {
-                      $('#between' + y).val(decodeSpace(CONF['between' + y]));
-                  } else {
-                      $('#between' + y).val(CONF['between' + y]);
-                  }
-               }
+                // get the previous plugin setting
+                $('#copyfield1').val(CONF.copyfield1);
+                $('#copyfield2').val(CONF.copyfield2);
+                $('#copyfield3').val(CONF.copyfield3);
+                for (var y = 1; y < 4; y++) {
+                    if (CONF['copyfield' + y] !== '') {
+                        $('#between' + y).val(decodeSpace(CONF['between' + y]));
+                    } else {
+                        $('#between' + y).val(CONF['between' + y]);
+                    }
+                }
             }
 
+            if (CONF.hasOwnProperty('checkField') && CONF.checkField === 'uncheck') {
+                $('#checkField').prop('checked', false);
+            }
         }
     }
 
@@ -97,7 +100,9 @@ jQuery.noConflict();
             var $option = $('<option>');
 
             for (var key in resp.properties) {
-                if (!resp.properties.hasOwnProperty(key)) {continue; }
+                if (!resp.properties.hasOwnProperty(key)) {
+                    continue;
+                }
                 var prop = resp.properties[key];
 
                 switch (prop.type) {
@@ -176,7 +181,7 @@ jQuery.noConflict();
         return true;
     }
 
-    var appendEvents = function(){
+    var appendEvents = function() {
         // When hitting the save button, save inputs in the Config
         $('#submit').click(function() {
             var config = [];
@@ -189,6 +194,7 @@ jQuery.noConflict();
             config['between1'] = encodeSpace($('#between1').val());
             config['between2'] = encodeSpace($('#between2').val());
             config['between3'] = encodeSpace($('#between3').val());
+            config['checkField'] = $('#checkField').prop('checked') ? 'check' : 'uncheck';
 
             if (checkValues()) {
                 kintone.plugin.app.setConfig(config);
@@ -199,7 +205,7 @@ jQuery.noConflict();
         $('#cancel').click(function() {
             window.history.back();
         });
-    }
+    };
 
     setDropdown();
 })(jQuery, kintone.$PLUGIN_ID);
