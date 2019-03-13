@@ -33,8 +33,8 @@ jQuery.noConflict();
             resultDescription: '結合された文字列を表示する項目を選択してください。',
             saveButton: '保存する',
             cancelButton: 'キャンセル',
-            checkFieldTitle: 'Field validation when saving a record',
-            checkFieldDescription: 'Prompt if one or more combined fields are empty'
+            checkFieldTitle: '保存時の入力値チェック',
+            checkFieldDescription: '結合するフィールドに値が入っていない場合、アラートで注意を表示する'
         }
     };
     var lang = kintone.getLoginUser().language;
