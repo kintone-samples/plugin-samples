@@ -4,7 +4,7 @@
  *
  * Licensed under the MIT License
  */
-(function (PLUGIN_ID) {
+(function(PLUGIN_ID) {
     'use strict';
 
     // Variable stores pop-up message text to be used based on language.
@@ -17,7 +17,7 @@
             emptyCheck: '結合対象のフィールドに空文字が含まれています。登録しますか？',
             cancel: 'キャンセルしました'
         }
-    }
+    };
     var lang = kintone.getLoginUser().language;
     var i18n = (lang in terms) ? terms[lang] : terms['en'];
 
@@ -66,6 +66,7 @@
         }
         return tex_changes;
     }
+
     // Calculate joinedText field given selectionArray and record
     function fieldValues(record, selectionArry) {
         var fieldarray = [];
@@ -108,13 +109,13 @@
             var rawTextArray = fieldValues(record, selectionArry[i - 1]); // array of text field values
 
             if (cdcopyfield === "") {
-              break;
+                break;
             }
 
             // Filter rawTextArray to only include non empty strings
-            var filteredTextArray = rawTextArray.filter(function (text) {
+            var filteredTextArray = rawTextArray.filter(function(text) {
                 return text !== "";
-            }).filter(function (text) {
+            }).filter(function(text) {
                 return text !== undefined;
             });
 
@@ -142,6 +143,7 @@
         }
         return changeEvent;
     }
+
     //Create/edit events
     var events1 = [
         'app.record.edit.show',
@@ -149,7 +151,7 @@
         'app.record.index.edit.show'
     ];
     // Disable the resolve field (gray out)
-    kintone.events.on(events1, function (event) {
+    kintone.events.on(events1, function(event) {
         var record = event['record'];
         for (var i = 1; i < 4; i++) {
             if (CONF['copyfield' + i] !== '') {
@@ -175,10 +177,14 @@
     ];
 
     // Checks if there are any empty fields when saving
-    kintone.events.on(submitEvent, function (event) {
+    kintone.events.on(submitEvent, function(event) {
         var record = event.record;
         var selectionArry = createSelectionArry();
         var flag = false;
+
+        if (CONF.hasOwnProperty('checkField') && CONF.checkField === 'uncheck') {
+            return event;
+        }
 
         for (var m = 0; m < 3; m++) {
             var jointext = fieldValues(record, selectionArry[m]);
