@@ -349,25 +349,10 @@ jQuery.noConflict();
         }
     }
 
-    function getRecord(offset, limit) {
-        var body = {
-            app: kintone.app.getId(),
-            query: kintone.app.getQuery()
-        };
-
-        return new kintone.Promise(function(resolve, reject) {
-            kintone.api(kintone.api.url('/k/v1/records', true), 'GET', body, function(resp) {
-                var records = resp.records;
-                resolve(records);
-            }, function(error) {
-                reject(error);
-            });
-        });
-    }
-
     kintone.events.on('app.record.index.show', function(event) {
         if (event.records.length <= 0) { return; }
         checkIndexConditionFormat(event.records);
+        RECORDS = event.records;
         return;
     });
     kintone.events.on('app.record.detail.show', function(event) {
@@ -375,16 +360,7 @@ jQuery.noConflict();
         checkDetailConditionFormat(event.record);
         return;
     });
-    kintone.events.on('app.record.index.edit.submit', function(event) {
-       if (!event.record) { return; }
 
-      return getRecord().then(function(records) {
-           RECORDS = records;
-           return event;
-        }).catch(function(err) {
-            console.log(err)
-        })
-    });
     kintone.events.on('app.record.index.edit.submit.success', function(event) {
         if (!event.record) { return; }
         var index = -1
