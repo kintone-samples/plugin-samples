@@ -357,9 +357,12 @@ jQuery.noConflict();
     });
 
     kintone.events.on('app.record.index.delete.submit', function(event) {
-        RECORDS = RECORDS.filter(record => record.$id.value != event.recordId);
+        RECORDS = RECORDS.filter(function(record) {
+            return record.$id.value != event.recordId
+        });
         return;
     });
+
     kintone.events.on('app.record.detail.show', function(event) {
         if (!event.record) { return; }
         checkDetailConditionFormat(event.record);
