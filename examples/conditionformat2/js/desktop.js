@@ -13,6 +13,8 @@ jQuery.noConflict();
     var CONFIG = kintone.plugin.app.getConfig(PLUGIN_ID);
     if (!CONFIG) { return false; }
 
+    var RECORDS = [];
+
     var TEXT_ROW_NUM;
     var DATE_ROW_NUM;
 
@@ -350,11 +352,36 @@ jQuery.noConflict();
     kintone.events.on('app.record.index.show', function(event) {
         if (event.records.length <= 0) { return; }
         checkIndexConditionFormat(event.records);
+        RECORDS = event.records;
         return;
     });
+
+    kintone.events.on('app.record.index.delete.submit', function(event) {
+        RECORDS = RECORDS.filter(function(record) {
+            return record.$id.value != event.recordId
+        });
+        return;
+    });
+
     kintone.events.on('app.record.detail.show', function(event) {
         if (!event.record) { return; }
         checkDetailConditionFormat(event.record);
         return;
+    });
+
+    kintone.events.on('app.record.index.edit.submit.success', function(event) {
+        if (!event.record) { return; }
+        var index = -1
+        RECORDS.forEach(function (record, i) {
+            if (record['$id'].value === event.record['$id'].value) {
+                 index = i;
+            }
+        })
+        RECORDS[index] = event.record;
+        setTimeout(function(){
+            checkIndexConditionFormat(RECORDS);
+         }, 10);
+        
+        return event;
     });
 })(jQuery, kintone.$PLUGIN_ID);
