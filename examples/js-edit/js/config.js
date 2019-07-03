@@ -758,9 +758,10 @@ jQuery.noConflict();
         editor.setOptions({
             enableBasicAutocompletion: false,
             enableSnippets: false,
-            enableLiveAutocompletion: true
+            enableLiveAutocompletion: true,
+            tabSize: 2,
+            useSoftTabs: true
         });
-
         var completions = kintoneCompletions();
         editor.completers.push({
             getCompletions: function(compEditor, session, pos, prefix, callback) {
