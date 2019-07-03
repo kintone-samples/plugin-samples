@@ -7,7 +7,7 @@
 /* global ace */
 jQuery.noConflict();
 
-(function($, PLUGIN_ID) {
+(function ($, PLUGIN_ID) {
     'use strict';
     var editor;
     var jsFiles = null;
@@ -108,420 +108,49 @@ jQuery.noConflict();
         hasInit: false,
         spinner: null,
         $container: null,
-        init: function() {
+        init: function () {
             if (this.hasInit) {
                 return;
             }
-            
+
             this.$container = $(this.template).hide();
             $('body').append(this.$container);
             this.spinner = new Spinner();
             this.hasInit = true;
         },
-        spin: function() {
+        spin: function () {
             this.spinner.spin(this.$container.get(0));
             this.$container.show();
         },
-        stop: function() {
+        stop: function () {
             this.spinner.stop();
             this.$container.hide();
         }
     };
-    spinner.init();
 
     var links = {
         en: [
-            {url: 'https://developer.kintone.io/hc/en-us', label: 'kintone developer network'},
-            {url: 'https://developer.kintone.io/hc/en-us/articles/213149177/', label: 'kintone CDN'},
-            {url: 'https://developer.kintone.io/hc/en-us/articles/212495178', label: 'API Docs'}
+            { url: 'https://developer.kintone.io/hc/en-us', label: 'kintone developer network' },
+            { url: 'https://developer.kintone.io/hc/en-us/articles/213149177/', label: 'kintone CDN' },
+            { url: 'https://developer.kintone.io/hc/en-us/articles/212495178', label: 'API Docs' }
         ],
         ja: [
-            {url: 'https://developer.cybozu.io/hc/ja', label: 'Cybozu developer network'},
-            {url: 'https://developer.cybozu.io/hc/ja/articles/202960194', label: 'Cybozu CDN'},
-            {url: 'https://developer.cybozu.io/hc/ja/articles/202738940', label: 'kintone API 一覧'}
+            { url: 'https://developer.cybozu.io/hc/ja', label: 'Cybozu developer network' },
+            { url: 'https://developer.cybozu.io/hc/ja/articles/202960194', label: 'Cybozu CDN' },
+            { url: 'https://developer.cybozu.io/hc/ja/articles/202738940', label: 'kintone API 一覧' }
         ],
         zh: [
-            {url: 'https://cybozudev.kf5.com/hc/', label: 'cybozu developer network'},
-            {url: 'https://cybozudev.kf5.com/hc/kb/article/206405/', label: 'Cybozu CDN'}
+            { url: 'https://cybozudev.kf5.com/hc/', label: 'cybozu developer network' },
+            { url: 'https://cybozudev.kf5.com/hc/kb/article/206405/', label: 'Cybozu CDN' }
         ],
-        init: function($container) {
-            this[lang].forEach(function(li) {
+        render: function ($container) {
+            this[lang].forEach(function (li) {
                 $container.append($('<p><a target="_blank" href="' + li.url + '">' + li.label + '</a></p>'));
             });
         }
     };
-    links.init($linksContainer);
 
-    var cdnLibsDetail = {
-        'jQuery': ['jquery', '2.2.4', 'jquery.min.js'],
-        'jQuery UI': ['jqueryui', '1.12.0', ['jquery-ui.min.js', 'themes/smoothness/jquery-ui.css']],
-        'Moment.js': ['momentjs', '2.15.1', ['moment.min.js', 'moment-with-locales.min.js']],
-        'Ace': ['ace', 'v1.2.5', 'ace.js'],
-        'AngularJS': ['angularjs', 'v1.5.8', 'angular.min.js'],
-        'Chart.JS': ['chartjs', 'v2.2.2', 'Chart.min.js'],
-        'DataTables': ['datatables', 'v1.10.12', ['js/jquery.dataTables.min.js', 'css/jquery.dataTables.min.css']],
-        'DomPurify': ['dompurify', '0.8.3', 'purify.min.js'],
-        'FontAwesome': ['font-awesome', 'v4.6.3', 'css/font-awesome.min.css'],
-        'FullCalendar': ['fullcalendar', 'v3.0.1',
-            ['fullcalendar.min.js', 'fullcalendar.min.css', 'fullcalendar.print.css']],
-        'Handsontable': ['handsontable', '0.28.3', ['handsontable.full.min.js', 'handsontable.full.min.css']],
-        'highlightjs': ['highlightjs', '9.7.0', ['highlight.js', 'styles/default.css']],
-        'jqGrid': ['jqgrid', 'v5.1.1',
-            ['js/jquery.jqGrid.min.js', 'js/i18n/grid.locale-ja.js', 'js/i18n/grid.locale-en.js',
-                'js/i18n/grid.locale-cn.js', 'css/ui.jqgrid.css']],
-        'jQuery.Gantt': ['jquerygantt', '20140623', ['jquery.fn.gantt.min.js', 'css/style.css']],
-        'JSRender': ['jsrender', '0.9.80', 'jsrender.min.js'],
-        'jsTree': ['jstree', '3.3.2', ['jstree.min.js', 'themes/default/style.min.css']],
-        'JSZip': ['jszip', 'v3.1.2', 'jszip.min.js'],
-        'Marked.js': ['markedjs', 'v0.3.6', 'marked.min.js'],
-        'OpenLayers': ['openlayers', 'v3.18.2', ['ol.js', 'ol.css']],
-        'popModal': ['popmodal', '1.23', ['popModal.min.js', 'popModal.min.css']],
-        'Spin.js': ['spinjs', '2.3.2', 'spin.min.js'],
-        'SweetAlert': ['sweetalert', 'v1.1.3', ['sweetalert.min.js', 'sweetalert.css']],
-        'UltraDate.js': ['ultradatejs', 'v2.2.1', ['UltraDate.min.js', 'UltraDate.ja.min.js']],
-        'Underscore.js': ['underscore', '1.8.3', 'underscore-min.js'],
-        'Vue.js': ['vuejs', 'v1.0.28', 'vue.min.js']
-    };
-
-    var getCurrentType = function() {
-        return $typeDropdown.val();
-    };
-
-    var maxIndex = function() {
-        if (!jsFiles) {
-            return -1;
-        }
-        return jsFiles.length - 1;
-    };
-
-    var setValue = function(data) {
-        editor.setValue(data);
-        editor.selection.moveCursorToPosition({row: 1, column: 0});
-        editor.selection.selectLine();
-        modified = false;
-    };
-
-    var setDefaultSource = function() {
-        var defaultSource;
-
-        if (getCurrentType() === 'js_pc') {
-            defaultSource = 'jQuery.noConflict();\n' +
-            '(function($) {\n' +
-                '  \'use strict\';\n' +
-                '  kintone.events.on(\'app.record.index.show\', function(e) {\n' +
-                '  });\n' +
-            '})(jQuery);\n';
-        } else if (getCurrentType() === 'js_mb') {
-            defaultSource = 'jQuery.noConflict();\n' +
-            '(function($) {\n' +
-                '  \'use strict\';\n' +
-                '  kintone.events.on(\'mobile.app.record.index.show\', function(e) {\n' +
-                '  });\n' +
-            '})(jQuery);\n';
-        } else if (getCurrentType() === 'css_pc') {
-            defaultSource = '@charset "UTF-8";';
-        }
-        setValue(defaultSource);
-    };
-
-    var confirmDiscard = function() {
-        return (window.confirm(i18n.msg_discard));
-    };
-
-    var getFile = function() {
-        if (!jsFiles) {
-            return;
-        }
-        if (currentIndex < 0) {
-            setValue('');
-            return;
-        }
-        var js = jsFiles[currentIndex];
-        if (js.type !== 'FILE') {
-            return;
-        }
-        if (!js.file.fileKey) {
-            setDefaultSource();
-        } else {
-            spinner.spin();
-            $.ajax(kintone.api.url('/k/v1/file', true), {
-                type: 'GET',
-                dataType: 'text',
-                data: {'fileKey': js.file.fileKey}
-            }).done(function(data, status, xhr) {
-                setValue(data);
-                spinner.stop();
-            }).fail(function(xhr, status, error) {
-                spinner.stop();
-                alert(i18n.msg_failed_to_get_file);
-            });
-        }
-    };
-
-    var uploadFile = function(fileName) {
-        var d = new $.Deferred();
-
-        var blob = new Blob([editor.getValue()], {type: 'text/javascript'});
-        var formData = new FormData();
-        formData.append('__REQUEST_TOKEN__', kintone.getRequestToken());
-        formData.append('file', blob, fileName);
-        $.ajax(kintone.api.url('/k/v1/file', true), {
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false
-        }).done(function(data) {
-            d.resolve(data);
-        }).fail(function(data) {
-            d.reject();
-        });
-
-        return d.promise();
-    };
-
-    var getLib = function(url) {
-        var re = new RegExp(CDN_URL_REGEX + '(.*?)\\/');
-        var m = url.match(re);
-        if (m) {
-            var libName = m[1];
-            for (var i = 0; i < libs.length; i++) {
-                var lib = libs[i];
-                if (lib.key === libName) {
-                    return lib;
-                }
-            }
-        }
-        return null;
-    };
-
-    var addNewLibs = function(tmpFiles) {
-        var i, j;
-        for (i = 0; i < libs.length; i++) {
-            var lib = libs[i];
-            var option = $librariesMultipleChoice.get(0).options[i];
-            if (option.selected) {
-                var isNewLib = true;
-                for (j = 0; j < jsFiles.length; j++) {
-                    var jsFile = jsFiles[j];
-                    if (jsFile.url) {
-                        if (getLib(jsFile.url) === lib) {
-                            isNewLib = false;
-                        }
-                    }
-                }
-                if (!isNewLib) {
-                    continue;
-                }
-                if ($.isArray(lib.url)) {
-                    for (j = 0; j < lib.url.length; j++) {
-                        tmpFiles.push({
-                            type: 'URL',
-                            url: lib.url[j]
-                        });
-                    }
-                } else {
-                    tmpFiles.push({
-                        type: 'URL',
-                        url: lib.url
-                    });
-                }
-            }
-        }
-    };
-
-    var isSelected = function(lib) {
-        for (var i = 0; i < libs.length; i++) {
-            if (lib === libs[i]) {
-                var option = $librariesMultipleChoice.get(0).options[i];
-                return (option.selected);
-            }
-        }
-        return false;
-    };
-
-    var setLibs = function(sublibs) {
-        $librariesMultipleChoice.empty();
-        for (var i = 0; i < sublibs.length; i++) {
-            var lib = sublibs[i];
-            var text;
-            if (lib.currentVersion && lib.version !== lib.currentVersion) {
-                text = lib.name + '(' + lib.currentVersion + ' -> ' + lib.version + ')';
-            } else {
-                text = lib.name + '(' + lib.version + ')';
-            }
-            var $opt = $('<OPTION>').text(text).val(lib.key);
-            if (lib.selected) {
-                $opt.prop('selected', true);
-            }
-            $librariesMultipleChoice.append($opt);
-        }
-    };
-
-    var getFiles = function(refresh) {
-
-        // get all files
-        var currentFileName;
-        var params = {app: kintone.app.getId()};
-
-        kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'GET', params, function(resp) {
-            if (refresh) {
-                currentFileName = jsFiles[currentIndex].file.name;
-            } else {
-                currentIndex = -1;
-            }
-
-            jsFiles = [];
-            var records;
-            $filesDropdown.empty();
-            if (getCurrentType() === 'js_pc') {
-                records = resp.desktop.js;
-                libs = $.extend(true, [], jsLibs);
-            } else if (getCurrentType() === 'js_mb') {
-                records = resp.mobile.js;
-                libs = $.extend(true, [], jsLibs);
-            } else if (getCurrentType() === 'css_pc') {
-                records = resp.desktop.css;
-                libs = $.extend(true, [], cssLibs);
-            }
-            var i, js;
-            // duplicate check
-            for (i = 0; i < records.length; i++) {
-                js = records[i];
-                if (js.type === 'FILE') {
-                    for (var j = i + 1; j < records.length; j++) {
-                        var js2 = records[j];
-                        if (js2.type === 'FILE') {
-                            if (js.file.name === js2.file.name) {
-                                alert(i18n.msg_file_name_is_duplicated);
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-            for (i = 0; i < records.length; i++) {
-                js = $.extend(true, {}, records[i]);
-                jsFiles.push(js);
-                if (js.type === 'FILE') {
-                    if (currentIndex < 0) {
-                        currentIndex = i;
-                    }
-                    var name = js.file.name;
-                    if (refresh && name === currentFileName) {
-                        currentIndex = i;
-                    }
-                    $filesDropdown.append($('<OPTION>').text(name).val(i));
-                } else if (js.type === 'URL') {
-                    var lib = getLib(js.url);
-                    if (lib) {
-                        lib.selected = true;
-                        var re = new RegExp(CDN_URL_REGEX + '(.*?)\\/(.*?)\\/');
-                        var m = js.url.match(re);
-                        if (m) {
-                            lib.currentVersion = m[2];
-                        }
-                    }
-                }
-            }
-            $filesDropdown.val(currentIndex);
-
-            if (!refresh) {
-                if (getCurrentType() === 'js_pc') {
-                    editor.getSession().setMode('ace/mode/javascript');
-                } else if (getCurrentType() === 'js_mb') {
-                    editor.getSession().setMode('ace/mode/javascript');
-                } else if (getCurrentType() === 'css_pc') {
-                    editor.getSession().setMode('ace/mode/css');
-                }
-                getFile();
-                setLibs(libs);
-            }
-        });
-
-    };
-
-    var saveEdit = function() {
-        var tmpFiles = [];
-        addNewLibs(tmpFiles);
-
-        for (var i = 0; i < jsFiles.length; i++) {
-            var jsFile = jsFiles[i];
-            if (jsFile.url) {
-                var lib = getLib(jsFile.url);
-                if (lib) {
-                    if (isSelected(lib)) {
-                        tmpFiles.push(jsFile);
-                    }
-                } else {
-                    tmpFiles.push(jsFile);
-                }
-            } else if (jsFile.file && jsFile.file.fileKey) {
-                tmpFiles.push(jsFile);
-            }
-        }
-        var data = {
-            app: kintone.app.getId()
-        };
-        if (getCurrentType() === 'js_pc') {
-            data.desktop = {
-                js: tmpFiles
-            };
-        } else if (getCurrentType() === 'js_mb') {
-            data.mobile = {
-                js: tmpFiles
-            };
-        } else if (getCurrentType() === 'css_pc') {
-            data.desktop = {
-                css: tmpFiles
-            };
-        }
-        kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'PUT', data,
-            function(resp) {
-                var finalize = function() {
-                    getFiles(true);
-                    modified = false;
-                    spinner.stop();
-                };
-                if ($deployConfigCheckbox.prop('checked')) {
-                    // deploy
-                    var params = {apps: [{app: kintone.app.getId()}]};
-                    kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'POST', params, function() {
-                        finalize();
-                    });
-                } else {
-                    finalize();
-                }
-            },
-            function() {
-                alert(i18n.msg_failed_to_update);
-                spinner.stop();
-            }
-        );
-    };
-
-    var save = function() {
-        if (!jsFiles) {
-            return;
-        }
-        if (currentIndex < 0) {
-            spinner.spin();
-            saveEdit();
-            return;
-        }
-        var js = jsFiles[currentIndex];
-        if (js.type !== 'FILE') {
-            return;
-        }
-        spinner.spin();
-        uploadFile(js.file.name).done(function(f) {
-            js.file.fileKey = f.fileKey;
-            // update customize.json
-            saveEdit();
-        }).fail(function(f) {
-        });
-    };
-
-    var kintoneCompletions = function() {
+    var kintoneCompletions = function () {
         var ret = [];
         var keywords = [
             'cybozu', 'kintone',
@@ -613,19 +242,390 @@ jQuery.noConflict();
             'v1/guests.json'
         ];
         for (var i = 0; i < keywords.length; i++) {
-            ret.push({value: keywords[i], score: 1000, meta: 'kintone'});
+            ret.push({ value: keywords[i], score: 1000, meta: 'kintone' });
         }
         return ret;
     };
 
-    $(function() {
-        $('[data-i18n]').each(function(elm) {
+    var cdnLibsDetail = {
+        'jQuery': ['jquery', '2.2.4', 'jquery.min.js'],
+        'jQuery UI': ['jqueryui', '1.12.0', ['jquery-ui.min.js', 'themes/smoothness/jquery-ui.css']],
+        'Moment.js': ['momentjs', '2.15.1', ['moment.min.js', 'moment-with-locales.min.js']],
+        'Ace': ['ace', 'v1.2.5', 'ace.js'],
+        'AngularJS': ['angularjs', 'v1.5.8', 'angular.min.js'],
+        'Chart.JS': ['chartjs', 'v2.2.2', 'Chart.min.js'],
+        'DataTables': ['datatables', 'v1.10.12', ['js/jquery.dataTables.min.js', 'css/jquery.dataTables.min.css']],
+        'DomPurify': ['dompurify', '0.8.3', 'purify.min.js'],
+        'FontAwesome': ['font-awesome', 'v4.6.3', 'css/font-awesome.min.css'],
+        'FullCalendar': ['fullcalendar', 'v3.0.1',
+            ['fullcalendar.min.js', 'fullcalendar.min.css', 'fullcalendar.print.css']],
+        'Handsontable': ['handsontable', '0.28.3', ['handsontable.full.min.js', 'handsontable.full.min.css']],
+        'highlightjs': ['highlightjs', '9.7.0', ['highlight.js', 'styles/default.css']],
+        'jqGrid': ['jqgrid', 'v5.1.1',
+            ['js/jquery.jqGrid.min.js', 'js/i18n/grid.locale-ja.js', 'js/i18n/grid.locale-en.js',
+                'js/i18n/grid.locale-cn.js', 'css/ui.jqgrid.css']],
+        'jQuery.Gantt': ['jquerygantt', '20140623', ['jquery.fn.gantt.min.js', 'css/style.css']],
+        'JSRender': ['jsrender', '0.9.80', 'jsrender.min.js'],
+        'jsTree': ['jstree', '3.3.2', ['jstree.min.js', 'themes/default/style.min.css']],
+        'JSZip': ['jszip', 'v3.1.2', 'jszip.min.js'],
+        'Marked.js': ['markedjs', 'v0.3.6', 'marked.min.js'],
+        'OpenLayers': ['openlayers', 'v3.18.2', ['ol.js', 'ol.css']],
+        'popModal': ['popmodal', '1.23', ['popModal.min.js', 'popModal.min.css']],
+        'Spin.js': ['spinjs', '2.3.2', 'spin.min.js'],
+        'SweetAlert': ['sweetalert', 'v1.1.3', ['sweetalert.min.js', 'sweetalert.css']],
+        'UltraDate.js': ['ultradatejs', 'v2.2.1', ['UltraDate.min.js', 'UltraDate.ja.min.js']],
+        'Underscore.js': ['underscore', '1.8.3', 'underscore-min.js'],
+        'Vue.js': ['vuejs', 'v1.0.28', 'vue.min.js']
+    };
+
+    var getCurrentType = function () {
+        return $typeDropdown.val();
+    };
+
+    var maxIndex = function () {
+        if (!jsFiles) {
+            return -1;
+        }
+        return jsFiles.length - 1;
+    };
+
+    var setValue = function (data) {
+        editor.setValue(data);
+        editor.selection.moveCursorToPosition({ row: 1, column: 0 });
+        editor.selection.selectLine();
+        modified = false;
+    };
+
+    var setDefaultSource = function () {
+        var defaultSource;
+
+        if (getCurrentType() === 'js_pc') {
+            defaultSource = 'jQuery.noConflict();\n' +
+                '(function($) {\n' +
+                '  \'use strict\';\n' +
+                '  kintone.events.on(\'app.record.index.show\', function(e) {\n' +
+                '  });\n' +
+                '})(jQuery);\n';
+        } else if (getCurrentType() === 'js_mb') {
+            defaultSource = 'jQuery.noConflict();\n' +
+                '(function($) {\n' +
+                '  \'use strict\';\n' +
+                '  kintone.events.on(\'mobile.app.record.index.show\', function(e) {\n' +
+                '  });\n' +
+                '})(jQuery);\n';
+        } else if (getCurrentType() === 'css_pc') {
+            defaultSource = '@charset "UTF-8";';
+        }
+        setValue(defaultSource);
+    };
+
+    var confirmDiscard = function () {
+        return (window.confirm(i18n.msg_discard));
+    };
+
+    var getFile = function () {
+        if (!jsFiles) {
+            return;
+        }
+        if (currentIndex < 0) {
+            setValue('');
+            return;
+        }
+        var js = jsFiles[currentIndex];
+        if (js.type !== 'FILE') {
+            return;
+        }
+        if (!js.file.fileKey) {
+            setDefaultSource();
+        } else {
+            spinner.spin();
+            $.ajax(kintone.api.url('/k/v1/file', true), {
+                type: 'GET',
+                dataType: 'text',
+                data: { 'fileKey': js.file.fileKey }
+            }).done(function (data, status, xhr) {
+                setValue(data);
+                spinner.stop();
+            }).fail(function (xhr, status, error) {
+                spinner.stop();
+                alert(i18n.msg_failed_to_get_file);
+            });
+        }
+    };
+
+    var uploadFile = function (fileName) {
+        var d = new $.Deferred();
+
+        var blob = new Blob([editor.getValue()], { type: 'text/javascript' });
+        var formData = new FormData();
+        formData.append('__REQUEST_TOKEN__', kintone.getRequestToken());
+        formData.append('file', blob, fileName);
+        $.ajax(kintone.api.url('/k/v1/file', true), {
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false
+        }).done(function (data) {
+            d.resolve(data);
+        }).fail(function (data) {
+            d.reject();
+        });
+
+        return d.promise();
+    };
+
+    var getLib = function (url) {
+        var re = new RegExp(CDN_URL_REGEX + '(.*?)\\/');
+        var m = url.match(re);
+        if (m) {
+            var libName = m[1];
+            for (var i = 0; i < libs.length; i++) {
+                var lib = libs[i];
+                if (lib.key === libName) {
+                    return lib;
+                }
+            }
+        }
+        return null;
+    };
+
+    var addNewLibs = function (tmpFiles) {
+        var i, j;
+        for (i = 0; i < libs.length; i++) {
+            var lib = libs[i];
+            var option = $librariesMultipleChoice.get(0).options[i];
+            if (option.selected) {
+                var isNewLib = true;
+                for (j = 0; j < jsFiles.length; j++) {
+                    var jsFile = jsFiles[j];
+                    if (jsFile.url) {
+                        if (getLib(jsFile.url) === lib) {
+                            isNewLib = false;
+                        }
+                    }
+                }
+                if (!isNewLib) {
+                    continue;
+                }
+                if ($.isArray(lib.url)) {
+                    for (j = 0; j < lib.url.length; j++) {
+                        tmpFiles.push({
+                            type: 'URL',
+                            url: lib.url[j]
+                        });
+                    }
+                } else {
+                    tmpFiles.push({
+                        type: 'URL',
+                        url: lib.url
+                    });
+                }
+            }
+        }
+    };
+
+    var isSelected = function (lib) {
+        for (var i = 0; i < libs.length; i++) {
+            if (lib === libs[i]) {
+                var option = $librariesMultipleChoice.get(0).options[i];
+                return (option.selected);
+            }
+        }
+        return false;
+    };
+
+    var setLibs = function (sublibs) {
+        $librariesMultipleChoice.empty();
+        for (var i = 0; i < sublibs.length; i++) {
+            var lib = sublibs[i];
+            var text;
+            if (lib.currentVersion && lib.version !== lib.currentVersion) {
+                text = lib.name + '(' + lib.currentVersion + ' -> ' + lib.version + ')';
+            } else {
+                text = lib.name + '(' + lib.version + ')';
+            }
+            var $opt = $('<OPTION>').text(text).val(lib.key);
+            if (lib.selected) {
+                $opt.prop('selected', true);
+            }
+            $librariesMultipleChoice.append($opt);
+        }
+    };
+
+    var getFiles = function (refresh) {
+
+        // get all files
+        var currentFileName;
+        var params = { app: kintone.app.getId() };
+
+        kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'GET', params, function (resp) {
+            if (refresh) {
+                currentFileName = jsFiles[currentIndex].file.name;
+            } else {
+                currentIndex = -1;
+            }
+
+            jsFiles = [];
+            var records;
+            $filesDropdown.empty();
+            if (getCurrentType() === 'js_pc') {
+                records = resp.desktop.js;
+                libs = $.extend(true, [], jsLibs);
+            } else if (getCurrentType() === 'js_mb') {
+                records = resp.mobile.js;
+                libs = $.extend(true, [], jsLibs);
+            } else if (getCurrentType() === 'css_pc') {
+                records = resp.desktop.css;
+                libs = $.extend(true, [], cssLibs);
+            }
+            var i, js;
+            // duplicate check
+            for (i = 0; i < records.length; i++) {
+                js = records[i];
+                if (js.type === 'FILE') {
+                    for (var j = i + 1; j < records.length; j++) {
+                        var js2 = records[j];
+                        if (js2.type === 'FILE') {
+                            if (js.file.name === js2.file.name) {
+                                alert(i18n.msg_file_name_is_duplicated);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            for (i = 0; i < records.length; i++) {
+                js = $.extend(true, {}, records[i]);
+                jsFiles.push(js);
+                if (js.type === 'FILE') {
+                    if (currentIndex < 0) {
+                        currentIndex = i;
+                    }
+                    var name = js.file.name;
+                    if (refresh && name === currentFileName) {
+                        currentIndex = i;
+                    }
+                    $filesDropdown.append($('<OPTION>').text(name).val(i));
+                } else if (js.type === 'URL') {
+                    var lib = getLib(js.url);
+                    if (lib) {
+                        lib.selected = true;
+                        var re = new RegExp(CDN_URL_REGEX + '(.*?)\\/(.*?)\\/');
+                        var m = js.url.match(re);
+                        if (m) {
+                            lib.currentVersion = m[2];
+                        }
+                    }
+                }
+            }
+            $filesDropdown.val(currentIndex);
+
+            if (!refresh) {
+                if (getCurrentType() === 'js_pc') {
+                    editor.getSession().setMode('ace/mode/javascript');
+                } else if (getCurrentType() === 'js_mb') {
+                    editor.getSession().setMode('ace/mode/javascript');
+                } else if (getCurrentType() === 'css_pc') {
+                    editor.getSession().setMode('ace/mode/css');
+                }
+                getFile();
+                setLibs(libs);
+            }
+        });
+
+    };
+
+    var saveEdit = function () {
+        var tmpFiles = [];
+        addNewLibs(tmpFiles);
+
+        for (var i = 0; i < jsFiles.length; i++) {
+            var jsFile = jsFiles[i];
+            if (jsFile.url) {
+                var lib = getLib(jsFile.url);
+                if (lib) {
+                    if (isSelected(lib)) {
+                        tmpFiles.push(jsFile);
+                    }
+                } else {
+                    tmpFiles.push(jsFile);
+                }
+            } else if (jsFile.file && jsFile.file.fileKey) {
+                tmpFiles.push(jsFile);
+            }
+        }
+        var data = {
+            app: kintone.app.getId()
+        };
+        if (getCurrentType() === 'js_pc') {
+            data.desktop = {
+                js: tmpFiles
+            };
+        } else if (getCurrentType() === 'js_mb') {
+            data.mobile = {
+                js: tmpFiles
+            };
+        } else if (getCurrentType() === 'css_pc') {
+            data.desktop = {
+                css: tmpFiles
+            };
+        }
+        kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'PUT', data,
+            function (resp) {
+                var finalize = function () {
+                    getFiles(true);
+                    modified = false;
+                    spinner.stop();
+                };
+                if ($deployConfigCheckbox.prop('checked')) {
+                    // deploy
+                    var params = { apps: [{ app: kintone.app.getId() }] };
+                    kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'POST', params, function () {
+                        finalize();
+                    });
+                } else {
+                    finalize();
+                }
+            },
+            function () {
+                alert(i18n.msg_failed_to_update);
+                spinner.stop();
+            }
+        );
+    };
+
+    var save = function () {
+        if (!jsFiles) {
+            return;
+        }
+        if (currentIndex < 0) {
+            spinner.spin();
+            saveEdit();
+            return;
+        }
+        var js = jsFiles[currentIndex];
+        if (js.type !== 'FILE') {
+            return;
+        }
+        spinner.spin();
+        uploadFile(js.file.name).done(function (f) {
+            js.file.fileKey = f.fileKey;
+            // update customize.json
+            saveEdit();
+        }).fail(function (f) {
+        });
+    };
+
+    function renderUIWithLocalization() {
+        $('[data-i18n]').each(function (elm) {
             var $elm = $(this);
             var name = $elm.attr('data-i18n');
             $elm.text(i18n[name]);
         });
+    }
 
-        Object.keys(cdnLibsDetail).forEach(function(libName) {
+    function renderLibrariesContent() {
+        Object.keys(cdnLibsDetail).forEach(function (libName) {
             var lib = cdnLibsDetail[libName];
             var tmpLib = {
                 name: libName,
@@ -661,42 +661,27 @@ jQuery.noConflict();
                 cssLibs.push(cssLib);
             }
         });
+    }
 
-        // get all js files
-        editor = ace.edit('jsedit-editor');
-        editor.$blockScrolling = Infinity;
-        editor.setTheme('ace/theme/monokai');
-        ace.require('ace/ext/language_tools');
-        editor.setOptions({
-            enableBasicAutocompletion: false,
-            enableSnippets: false,
-            enableLiveAutocompletion: true,
-            tabSize: 2,
-            useSoftTabs: true
-        });
-        var completions = kintoneCompletions();
-        editor.completers.push({
-            getCompletions: function(compEditor, session, pos, prefix, callback) {
-                callback(null, completions);
-            }
-        });
-        /*
-        editor.commands.on('afterExec', function(e){
-          if (e.command.name === 'insertstring'&&/^[\w.]$/.test(e.args)) {
-            editor.execCommand('startAutocomplete')
-          }
-        })
-        */
+    function initTypeSelectDropdown() {
+        $typeDropdown.val('js_pc')
+            .focus(function (e) {
+                $.data(this, 'current', $(this).val());
+            })
+            .change(function (e) {
+                if (modified) {
+                    if (!confirmDiscard()) {
+                        $(this).val($.data(this, 'current'));
+                        return false;
+                    }
+                }
+                getFiles();
+                modified = false;
+            });
+    }
 
-        $typeDropdown.val('js_pc');
-
-        editor.on('change', function() {
-            modified = true;
-        });
-
-        getFiles();
-
-        $newFileBtn.click(function(e) {
+    function initNewFileButton() {
+        $newFileBtn.click(function (e) {
             e.preventDefault();
             if (modified) {
                 if (!confirmDiscard()) {
@@ -744,12 +729,13 @@ jQuery.noConflict();
             setDefaultSource();
             modified = false;
         });
+    }
 
-        $filesDropdown.focus(function(e) {
+    function initFilesDropdwon() {
+        getFiles();
+        $filesDropdown.focus(function (e) {
             $.data(this, 'current', $(this).val());
-        });
-
-        $filesDropdown.change(function(e) {
+        }).change(function (e) {
             if (modified) {
                 if (!confirmDiscard()) {
                     $(this).val($.data(this, 'current'));
@@ -761,29 +747,18 @@ jQuery.noConflict();
             getFile();
             modified = false;
         });
+    }
 
-        $typeDropdown.focus(function(e) {
-            $.data(this, 'current', $(this).val());
-        });
-
-        $typeDropdown.change(function(e) {
-            if (modified) {
-                if (!confirmDiscard()) {
-                    $(this).val($.data(this, 'current'));
-                    return false;
-                }
-            }
-            getFiles();
-            modified = false;
-        });
-
-        $submitBtn.click(function(e) {
+    function initSubmitBtn() {
+        $submitBtn.click(function (e) {
             // submit event
             e.preventDefault();
             save();
         });
+    }
 
-        $cancelBtn.click(function(e) {
+    function initCancelBtn() {
+        $cancelBtn.click(function (e) {
             // discard event
             e.preventDefault();
             if (!confirmDiscard()) {
@@ -791,8 +766,10 @@ jQuery.noConflict();
             }
             getFile();
         });
+    }
 
-        $backBtn.click(function(e) {
+    function initBackBtn() {
+        $backBtn.click(function (e) {
             // back event
             e.preventDefault();
             if (modified) {
@@ -802,8 +779,11 @@ jQuery.noConflict();
             }
             history.back();
         });
+    }
 
-        $librariesMultipleChoice.mousedown(function(e) {
+    function initLibrariesMultipleChoice() {
+        renderLibrariesContent();
+        $librariesMultipleChoice.mousedown(function (e) {
             e.preventDefault();
 
             var select = this;
@@ -811,10 +791,52 @@ jQuery.noConflict();
 
             e.target.selected = !e.target.selected;
 
-            setTimeout(function() {select.scrollTop = scroll;}, 0);
+            setTimeout(function () { select.scrollTop = scroll; }, 0);
 
             $(select).focus();
-        }).mousemove(function(e) {e.preventDefault();});
+        }).mousemove(function (e) { e.preventDefault(); });
+    }
+
+    function initEditor() {
+        editor = ace.edit('jsedit-editor');
+        editor.$blockScrolling = Infinity;
+        editor.setTheme('ace/theme/monokai');
+        ace.require('ace/ext/language_tools');
+        editor.setOptions({
+            enableBasicAutocompletion: false,
+            enableSnippets: false,
+            enableLiveAutocompletion: true,
+            tabSize: 2,
+            useSoftTabs: true
+        });
+        var completions = kintoneCompletions();
+        editor.completers.push({
+            getCompletions: function (compEditor, session, pos, prefix, callback) {
+                callback(null, completions);
+            }
+        });
+        editor.on('change', function () {
+            modified = true;
+        });
+    };
+
+    $(function () {
+        spinner.init();
+        renderUIWithLocalization();
+
+        initNewFileButton();
+        initTypeSelectDropdown();
+        initFilesDropdwon();
+
+        initEditor();
+
+        initSubmitBtn();
+        initCancelBtn();
+        initBackBtn();
+
+        initLibrariesMultipleChoice();
+
+        links.render($linksContainer);
     });
 
 })(jQuery, kintone.$PLUGIN_ID);
