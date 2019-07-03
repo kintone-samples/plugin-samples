@@ -48,6 +48,8 @@
 
 .new-file {
   margin-right: 8px;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .jsedit-plugin-libraries-wrapper select {
