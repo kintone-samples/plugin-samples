@@ -285,9 +285,9 @@ jQuery.noConflict();
         } else if (getCurrentType() === 'js_mb') {
             defaultSource = 'jQuery.noConflict();\n' +
             '(function($) {\n' +
-                '   "use strict";\n' +
-                '   kintone.events.on("mobile.app.record.index.show", function(e) {\n' +
-                '   });\n' +
+                '  \'use strict\';\n' +
+                '  kintone.events.on(\'mobile.app.record.index.show\', function(e) {\n' +
+                '  });\n' +
             '})(jQuery);\n';
         } else if (getCurrentType() === 'css_pc') {
             defaultSource = '@charset "UTF-8";';
