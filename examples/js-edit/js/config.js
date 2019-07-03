@@ -16,32 +16,6 @@ jQuery.noConflict();
     var currentIndex = -1;
     var modified = false;
 
-    var spinner = {
-        template: '<div class="spinner-backdrop"></div>',
-        hasInit: false,
-        spinner: null,
-        $container: null,
-        init: function() {
-            if (this.hasInit) {
-                return;
-            }
-            
-            this.$container = $(this.template).hide();
-            $('body').append(this.$container);
-            this.spinner = new Spinner();
-            this.hasInit = true;
-        },
-        spin: function() {
-            this.spinner.spin(this.$container.get(0));
-            this.$container.show();
-        },
-        stop: function() {
-            this.spinner.stop();
-            this.$container.hide();
-        }
-    };
-    spinner.init();
-
     var $newFileBtn = $('#jsedit-plugin-new-file');
     var $typeDropdown = $('#jsedit-plugin-type');
     var $filesDropdown = $('#jsedit-plugin-files');
@@ -52,7 +26,7 @@ jQuery.noConflict();
     var $linksContainer = $('#jsedit-plugin-links');
     var $deployConfigCheckbox = $('#jsedit-plugin-deploy');
 
-    var terms = {
+    var localization = {
         en: {
             js_for_pc: 'JavaScript Files for PC',
             js_for_mobile: 'JavaScript Files for Mobile',
@@ -119,7 +93,41 @@ jQuery.noConflict();
             cdn_url: 'https://js.cybozu.cn/',
             cdn_url_regex: '^https:\\/\\/js\\.cybozu\\.cn\\/'
         }
+    }
+    var lang = kintone.getLoginUser().language;
+    if (!localization[lang]) {
+        lang = 'en';
+    }
+    var i18n = localization[lang];
+
+    var CDN_URL = i18n.cdn_url;
+    var CDN_URL_REGEX = i18n.cdn_url_regex;
+
+    var spinner = {
+        template: '<div class="spinner-backdrop"></div>',
+        hasInit: false,
+        spinner: null,
+        $container: null,
+        init: function() {
+            if (this.hasInit) {
+                return;
+            }
+            
+            this.$container = $(this.template).hide();
+            $('body').append(this.$container);
+            this.spinner = new Spinner();
+            this.hasInit = true;
+        },
+        spin: function() {
+            this.spinner.spin(this.$container.get(0));
+            this.$container.show();
+        },
+        stop: function() {
+            this.spinner.stop();
+            this.$container.hide();
+        }
     };
+    spinner.init();
 
     var links = {
         en: [
@@ -135,8 +143,14 @@ jQuery.noConflict();
         zh: [
             {url: 'https://cybozudev.kf5.com/hc/', label: 'cybozu developer network'},
             {url: 'https://cybozudev.kf5.com/hc/kb/article/206405/', label: 'Cybozu CDN'}
-        ]
+        ],
+        init: function($container) {
+            this[lang].forEach(function(li) {
+                $container.append($('<p><a target="_blank" href="' + li.url + '">' + li.label + '</a></p>'));
+            });
+        }
     };
+    links.init($linksContainer);
 
     var cdnLibsDetail = {
         'jQuery': ['jquery', '2.2.4', 'jquery.min.js'],
@@ -168,15 +182,6 @@ jQuery.noConflict();
         'Underscore.js': ['underscore', '1.8.3', 'underscore-min.js'],
         'Vue.js': ['vuejs', 'v1.0.28', 'vue.min.js']
     };
-
-    var lang = kintone.getLoginUser().language;
-    if (!terms[lang]) {
-        lang = 'en';
-    }
-    var i18n = terms[lang];
-
-    var CDN_URL = i18n.cdn_url;
-    var CDN_URL_REGEX = i18n.cdn_url_regex;
 
     var getCurrentType = function() {
         return $typeDropdown.val();
@@ -618,9 +623,6 @@ jQuery.noConflict();
             var $elm = $(this);
             var name = $elm.attr('data-i18n');
             $elm.text(i18n[name]);
-        });
-        links[lang].forEach(function(li) {
-            $linksContainer.append($('<p><a target="_blank" href="' + li.url + '">' + li.label + '</a></p>'));
         });
 
         Object.keys(cdnLibsDetail).forEach(function(libName) {
