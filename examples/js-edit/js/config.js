@@ -104,89 +104,6 @@ jQuery.noConflict();
         ]
     };
 
-    var cdnLibs = {
-        en: [
-            'jQuery',
-            'jQuery UI',
-            'Moment.js',
-            'Ace',
-            'AngularJS',
-            'Chart.JS',
-            'DataTables',
-            'DomPurify',
-            'FontAwesome',
-            'FullCalendar',
-            'Handsontable',
-            'highlightjs',
-            'jqGrid',
-            'jQuery.Gantt',
-            'JSRender',
-            'jsTree',
-            'JSZip',
-            'Marked.js',
-            'OpenLayers',
-            'popModal',
-            'Spin.js',
-            'SweetAlert',
-            'Underscore.js',
-            'Vue.js'
-        ],
-        ja: [
-            'jQuery',
-            'jQuery UI',
-            'Moment.js',
-            'Ace',
-            'AngularJS',
-            'Chart.JS',
-            'DataTables',
-            'DomPurify',
-            'FontAwesome',
-            'FullCalendar',
-            'Handsontable',
-            'highlightjs',
-            'jqGrid',
-            'jQuery.Gantt',
-            'JSRender',
-            'jsTree',
-            'JSZip',
-            'Marked.js',
-            'OpenLayers',
-            'popModal',
-            'Spin.js',
-            'SweetAlert',
-            'UltraDate.js',
-            'Underscore.js',
-            'Vue.js'
-        ],
-        zh: [
-            'jQuery',
-            'jQuery UI',
-            'Moment.js',
-            'Ace',
-            'AngularJS',
-            'Chart.JS',
-            'DataTables',
-            'DomPurify',
-            'FontAwesome',
-            'FullCalendar',
-            'Handsontable',
-            'highlightjs',
-            'jqGrid',
-            'jQuery.Gantt',
-            'JSRender',
-            'jsTree',
-            'JSZip',
-            'Marked.js',
-            'OpenLayers',
-            'popModal',
-            'Spin.js',
-            'SweetAlert',
-            'UltraDate.js',
-            'Underscore.js',
-            'Vue.js'
-        ]
-    };
-
     var cdnLibsDetail = {
         'jQuery': ['jquery', '2.2.4', 'jquery.min.js'],
         'jQuery UI': ['jqueryui', '1.12.0', ['jquery-ui.min.js', 'themes/smoothness/jquery-ui.css']],
@@ -711,7 +628,7 @@ jQuery.noConflict();
             $id('links').append($('<p><a target="_blank" href="' + li.url + '">' + li.label + '</a></p>'));
         });
 
-        cdnLibs[lang].forEach(function(libName) {
+        Object.keys(cdnLibsDetail).forEach(function(libName) {
             var lib = cdnLibsDetail[libName];
             var tmpLib = {
                 name: libName,
