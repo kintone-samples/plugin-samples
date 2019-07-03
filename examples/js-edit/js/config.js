@@ -13,10 +13,44 @@ jQuery.noConflict();
     var jsFiles = null;
     var libs = null;
     var jsLibs = [], cssLibs = [];
-    var spinner;
     var currentIndex = -1;
     var modified = false;
-    var PREFIX = 'jsedit-plugin-';
+
+    var spinner = {
+        template: '<div class="spinner-backdrop"></div>',
+        hasInit: false,
+        spinner: null,
+        $container: null,
+        init: function() {
+            if (this.hasInit) {
+                return;
+            }
+            
+            this.$container = $(this.template).hide();
+            $('body').append(this.$container);
+            this.spinner = new Spinner();
+            this.hasInit = true;
+        },
+        spin: function() {
+            this.spinner.spin(this.$container.get(0));
+            this.$container.show();
+        },
+        stop: function() {
+            this.spinner.stop();
+            this.$container.hide();
+        }
+    };
+    spinner.init();
+
+    var $newFileBtn = $('#jsedit-plugin-new-file');
+    var $typeDropdown = $('#jsedit-plugin-type');
+    var $filesDropdown = $('#jsedit-plugin-files');
+    var $librariesMultipleChoice = $('#jsedit-plugin-libraries');
+    var $submitBtn = $('#jsedit-plugin-submit');
+    var $cancelBtn = $('#jsedit-plugin-cancel');
+    var $backBtn = $('#jsedit-plugin-back');
+    var $linksContainer = $('#jsedit-plugin-links');
+    var $deployConfigCheckbox = $('#jsedit-plugin-deploy');
 
     var terms = {
         en: {
@@ -135,10 +169,6 @@ jQuery.noConflict();
         'Vue.js': ['vuejs', 'v1.0.28', 'vue.min.js']
     };
 
-    var $id = function(name) {
-        return $('#' + PREFIX + name);
-    };
-
     var lang = kintone.getLoginUser().language;
     if (!terms[lang]) {
         lang = 'en';
@@ -149,7 +179,7 @@ jQuery.noConflict();
     var CDN_URL_REGEX = i18n.cdn_url_regex;
 
     var getCurrentType = function() {
-        return $id('type').val();
+        return $typeDropdown.val();
     };
 
     var maxIndex = function() {
@@ -157,29 +187,6 @@ jQuery.noConflict();
             return -1;
         }
         return jsFiles.length - 1;
-    };
-
-    var app = {};
-    $.fn.spinner = function() {
-        var component = new app.Spinner(this);
-        return component;
-    };
-
-    app.Spinner = function($element) {
-        var opts = {};
-        var tmpElement = $element;
-        if (!tmpElement) {
-            tmpElement = $('<div id="spinner-backdrop" class="spinner-backdrop"></div>');
-            $('body').append(tmpElement);
-        }
-        this.spinner2 = new Spinner(opts).spin(tmpElement.get(0));
-    };
-
-    app.Spinner.prototype = {
-        stop: function() {
-            this.spinner2.stop();
-            $('#spinner-backdrop').remove();
-        }
     };
 
     var setValue = function(data) {
@@ -231,10 +238,7 @@ jQuery.noConflict();
         if (!js.file.fileKey) {
             setDefaultSource();
         } else {
-            if (spinner) {
-                return;
-            }
-            spinner = new app.Spinner();
+            spinner.spin();
             $.ajax(kintone.api.url('/k/v1/file', true), {
                 type: 'GET',
                 dataType: 'text',
@@ -242,10 +246,8 @@ jQuery.noConflict();
             }).done(function(data, status, xhr) {
                 setValue(data);
                 spinner.stop();
-                spinner = null;
             }).fail(function(xhr, status, error) {
                 spinner.stop();
-                spinner = null;
                 alert(i18n.msg_failed_to_get_file);
             });
         }
@@ -291,7 +293,7 @@ jQuery.noConflict();
         var i, j;
         for (i = 0; i < libs.length; i++) {
             var lib = libs[i];
-            var option = $id('libraries').get(0).options[i];
+            var option = $librariesMultipleChoice.get(0).options[i];
             if (option.selected) {
                 var isNewLib = true;
                 for (j = 0; j < jsFiles.length; j++) {
@@ -325,7 +327,7 @@ jQuery.noConflict();
     var isSelected = function(lib) {
         for (var i = 0; i < libs.length; i++) {
             if (lib === libs[i]) {
-                var option = $id('libraries').get(0).options[i];
+                var option = $librariesMultipleChoice.get(0).options[i];
                 return (option.selected);
             }
         }
@@ -333,8 +335,7 @@ jQuery.noConflict();
     };
 
     var setLibs = function(sublibs) {
-        var $container = $id('libraries');
-        $container.empty();
+        $librariesMultipleChoice.empty();
         for (var i = 0; i < sublibs.length; i++) {
             var lib = sublibs[i];
             var text;
@@ -347,14 +348,13 @@ jQuery.noConflict();
             if (lib.selected) {
                 $opt.prop('selected', true);
             }
-            $container.append($opt);
+            $librariesMultipleChoice.append($opt);
         }
     };
 
     var getFiles = function(refresh) {
 
         // get all files
-        var $files = $id('files');
         var currentFileName;
         var params = {app: kintone.app.getId()};
 
@@ -367,7 +367,7 @@ jQuery.noConflict();
 
             jsFiles = [];
             var records;
-            $files.empty();
+            $filesDropdown.empty();
             if (getCurrentType() === 'js_pc') {
                 records = resp.desktop.js;
                 libs = $.extend(true, [], jsLibs);
@@ -405,7 +405,7 @@ jQuery.noConflict();
                     if (refresh && name === currentFileName) {
                         currentIndex = i;
                     }
-                    $files.append($('<OPTION>').text(name).val(i));
+                    $filesDropdown.append($('<OPTION>').text(name).val(i));
                 } else if (js.type === 'URL') {
                     var lib = getLib(js.url);
                     if (lib) {
@@ -418,7 +418,7 @@ jQuery.noConflict();
                     }
                 }
             }
-            $files.val(currentIndex);
+            $filesDropdown.val(currentIndex);
 
             if (!refresh) {
                 if (getCurrentType() === 'js_pc') {
@@ -476,9 +476,8 @@ jQuery.noConflict();
                     getFiles(true);
                     modified = false;
                     spinner.stop();
-                    spinner = null;
                 };
-                if ($id('deploy').prop('checked')) {
+                if ($deployConfigCheckbox.prop('checked')) {
                     // deploy
                     var params = {apps: [{app: kintone.app.getId()}]};
                     kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'POST', params, function() {
@@ -491,20 +490,16 @@ jQuery.noConflict();
             function() {
                 alert(i18n.msg_failed_to_update);
                 spinner.stop();
-                spinner = null;
             }
         );
     };
 
     var save = function() {
-        if (spinner) {
-            return;
-        }
         if (!jsFiles) {
             return;
         }
         if (currentIndex < 0) {
-            spinner = new app.Spinner();
+            spinner.spin();
             saveEdit();
             return;
         }
@@ -512,7 +507,7 @@ jQuery.noConflict();
         if (js.type !== 'FILE') {
             return;
         }
-        spinner = new app.Spinner();
+        spinner.spin();
         uploadFile(js.file.name).done(function(f) {
             js.file.fileKey = f.fileKey;
             // update customize.json
@@ -625,7 +620,7 @@ jQuery.noConflict();
             $elm.text(i18n[name]);
         });
         links[lang].forEach(function(li) {
-            $id('links').append($('<p><a target="_blank" href="' + li.url + '">' + li.label + '</a></p>'));
+            $linksContainer.append($('<p><a target="_blank" href="' + li.url + '">' + li.label + '</a></p>'));
         });
 
         Object.keys(cdnLibsDetail).forEach(function(libName) {
@@ -666,8 +661,6 @@ jQuery.noConflict();
         });
 
         // get all js files
-        var $files = $id('files');
-
         editor = ace.edit('jsedit-editor');
         editor.$blockScrolling = Infinity;
         editor.setTheme('ace/theme/monokai');
@@ -693,7 +686,7 @@ jQuery.noConflict();
         })
         */
 
-        $id('type').val('js_pc');
+        $typeDropdown.val('js_pc');
 
         editor.on('change', function() {
             modified = true;
@@ -701,7 +694,7 @@ jQuery.noConflict();
 
         getFiles();
 
-        $id('new-file').click(function(e) {
+        $newFileBtn.click(function(e) {
             e.preventDefault();
             if (modified) {
                 if (!confirmDiscard()) {
@@ -744,17 +737,17 @@ jQuery.noConflict();
             };
             jsFiles.push(jsFile);
             currentIndex = maxIndex();
-            $files.append($('<OPTION>').text(fileName).val(currentIndex));
-            $files.val(currentIndex);
+            $filesDropdown.append($('<OPTION>').text(fileName).val(currentIndex));
+            $filesDropdown.val(currentIndex);
             setDefaultSource();
             modified = false;
         });
 
-        $id('files').focus(function(e) {
+        $filesDropdown.focus(function(e) {
             $.data(this, 'current', $(this).val());
         });
 
-        $id('files').change(function(e) {
+        $filesDropdown.change(function(e) {
             if (modified) {
                 if (!confirmDiscard()) {
                     $(this).val($.data(this, 'current'));
@@ -767,11 +760,11 @@ jQuery.noConflict();
             modified = false;
         });
 
-        $id('type').focus(function(e) {
+        $typeDropdown.focus(function(e) {
             $.data(this, 'current', $(this).val());
         });
 
-        $id('type').change(function(e) {
+        $typeDropdown.change(function(e) {
             if (modified) {
                 if (!confirmDiscard()) {
                     $(this).val($.data(this, 'current'));
@@ -782,13 +775,13 @@ jQuery.noConflict();
             modified = false;
         });
 
-        $id('submit').click(function(e) {
+        $submitBtn.click(function(e) {
             // submit event
             e.preventDefault();
             save();
         });
 
-        $id('cancel').click(function(e) {
+        $cancelBtn.click(function(e) {
             // discard event
             e.preventDefault();
             if (!confirmDiscard()) {
@@ -797,7 +790,7 @@ jQuery.noConflict();
             getFile();
         });
 
-        $id('back').click(function(e) {
+        $backBtn.click(function(e) {
             // back event
             e.preventDefault();
             if (modified) {
@@ -808,7 +801,7 @@ jQuery.noConflict();
             history.back();
         });
 
-        $id('libraries').mousedown(function(e) {
+        $librariesMultipleChoice.mousedown(function(e) {
             e.preventDefault();
 
             var select = this;
