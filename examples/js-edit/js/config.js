@@ -278,9 +278,9 @@ jQuery.noConflict();
         if (getCurrentType() === 'js_pc') {
             defaultSource = 'jQuery.noConflict();\n' +
             '(function($) {\n' +
-                '   "use strict";\n' +
-                '   kintone.events.on("app.record.index.show", function(e) {\n' +
-                '   });\n' +
+                '  \'use strict\';\n' +
+                '  kintone.events.on(\'app.record.index.show\', function(e) {\n' +
+                '  });\n' +
             '})(jQuery);\n';
         } else if (getCurrentType() === 'js_mb') {
             defaultSource = 'jQuery.noConflict();\n' +
