@@ -665,6 +665,7 @@ jQuery.noConflict();
             return service.getFile(app.currentFileKey);
         }).then(function (fileData) {
             _setEditorContent(fileData);
+            _renderLibrariesMultipleChoice();
             spinner.stop();
         }).catch(function (err) {
             spinner.stop();
@@ -971,7 +972,6 @@ jQuery.noConflict();
     $(function () {
         spinner.init();
         _renderUIWithLocalization();
-        _renderLibrariesMultipleChoice();
         _initEditor();
 
         _refresh();
