@@ -9,12 +9,18 @@ jQuery.noConflict();
 
 (function ($, PLUGIN_ID) {
     'use strict';
+    var NO_FILE_KEY = '-1';
     var editor;
-    var jsFiles = null;
-    var libs = null;
-    var jsLibs = [], cssLibs = [];
-    var currentIndex = -1;
-    var modified = false;
+    var app = {
+        customization: {
+            desktop: { css: [], js: [] },
+            mobile: { css: [], js: [] }
+        },
+        removingLibs: [],
+        currentType: 'js_pc',
+        currentFileKey: '',
+        modeifiedFile: false
+    };
 
     var $newFileBtn = $('#jsedit-plugin-new-file');
     var $typeDropdown = $('#jsedit-plugin-type');
@@ -248,15 +254,15 @@ jQuery.noConflict();
     };
 
     var cdnLibsDetail = {
-        'jQuery': ['jquery', '2.2.4', 'jquery.min.js'],
+        'jQuery': ['jquery', '2.2.4', ['jquery.min.js']],
         'jQuery UI': ['jqueryui', '1.12.0', ['jquery-ui.min.js', 'themes/smoothness/jquery-ui.css']],
         'Moment.js': ['momentjs', '2.15.1', ['moment.min.js', 'moment-with-locales.min.js']],
-        'Ace': ['ace', 'v1.2.5', 'ace.js'],
-        'AngularJS': ['angularjs', 'v1.5.8', 'angular.min.js'],
-        'Chart.JS': ['chartjs', 'v2.2.2', 'Chart.min.js'],
+        'Ace': ['ace', 'v1.2.5', ['ace.js']],
+        'AngularJS': ['angularjs', 'v1.5.8', ['angular.min.js']],
+        'Chart.JS': ['chartjs', 'v2.2.2', ['Chart.min.js']],
         'DataTables': ['datatables', 'v1.10.12', ['js/jquery.dataTables.min.js', 'css/jquery.dataTables.min.css']],
-        'DomPurify': ['dompurify', '0.8.3', 'purify.min.js'],
-        'FontAwesome': ['font-awesome', 'v4.6.3', 'css/font-awesome.min.css'],
+        'DomPurify': ['dompurify', '0.8.3', ['purify.min.js']],
+        'FontAwesome': ['font-awesome', 'v4.6.3', ['css/font-awesome.min.css']],
         'FullCalendar': ['fullcalendar', 'v3.0.1',
             ['fullcalendar.min.js', 'fullcalendar.min.css', 'fullcalendar.print.css']],
         'Handsontable': ['handsontable', '0.28.3', ['handsontable.full.min.js', 'handsontable.full.min.css']],
@@ -265,98 +271,31 @@ jQuery.noConflict();
             ['js/jquery.jqGrid.min.js', 'js/i18n/grid.locale-ja.js', 'js/i18n/grid.locale-en.js',
                 'js/i18n/grid.locale-cn.js', 'css/ui.jqgrid.css']],
         'jQuery.Gantt': ['jquerygantt', '20140623', ['jquery.fn.gantt.min.js', 'css/style.css']],
-        'JSRender': ['jsrender', '0.9.80', 'jsrender.min.js'],
+        'JSRender': ['jsrender', '0.9.80', ['jsrender.min.js']],
         'jsTree': ['jstree', '3.3.2', ['jstree.min.js', 'themes/default/style.min.css']],
-        'JSZip': ['jszip', 'v3.1.2', 'jszip.min.js'],
-        'Marked.js': ['markedjs', 'v0.3.6', 'marked.min.js'],
+        'JSZip': ['jszip', 'v3.1.2', ['jszip.min.js']],
+        'Marked.js': ['markedjs', 'v0.3.6', ['marked.min.js']],
         'OpenLayers': ['openlayers', 'v3.18.2', ['ol.js', 'ol.css']],
         'popModal': ['popmodal', '1.23', ['popModal.min.js', 'popModal.min.css']],
-        'Spin.js': ['spinjs', '2.3.2', 'spin.min.js'],
+        'Spin.js': ['spinjs', '2.3.2', ['spin.min.js']],
         'SweetAlert': ['sweetalert', 'v1.1.3', ['sweetalert.min.js', 'sweetalert.css']],
         'UltraDate.js': ['ultradatejs', 'v2.2.1', ['UltraDate.min.js', 'UltraDate.ja.min.js']],
-        'Underscore.js': ['underscore', '1.8.3', 'underscore-min.js'],
-        'Vue.js': ['vuejs', 'v1.0.28', 'vue.min.js']
+        'Underscore.js': ['underscore', '1.8.3', ['underscore-min.js']],
+        'Vue.js': ['vuejs', 'v1.0.28', ['vue.min.js']]
     };
 
     var getCurrentType = function () {
         return $typeDropdown.val();
     };
 
-    var maxIndex = function () {
-        if (!jsFiles) {
-            return -1;
-        }
-        return jsFiles.length - 1;
-    };
-
-    var setValue = function (data) {
-        editor.setValue(data);
-        editor.selection.moveCursorToPosition({ row: 1, column: 0 });
-        editor.selection.selectLine();
-        modified = false;
-    };
-
-    var setDefaultSource = function () {
-        var defaultSource;
-
-        if (getCurrentType() === 'js_pc') {
-            defaultSource = 'jQuery.noConflict();\n' +
-                '(function($) {\n' +
-                '  \'use strict\';\n' +
-                '  kintone.events.on(\'app.record.index.show\', function(e) {\n' +
-                '  });\n' +
-                '})(jQuery);\n';
-        } else if (getCurrentType() === 'js_mb') {
-            defaultSource = 'jQuery.noConflict();\n' +
-                '(function($) {\n' +
-                '  \'use strict\';\n' +
-                '  kintone.events.on(\'mobile.app.record.index.show\', function(e) {\n' +
-                '  });\n' +
-                '})(jQuery);\n';
-        } else if (getCurrentType() === 'css_pc') {
-            defaultSource = '@charset "UTF-8";';
-        }
-        setValue(defaultSource);
-    };
-
-    var confirmDiscard = function () {
+    var _confirmDiscard = function () {
         return (window.confirm(i18n.msg_discard));
     };
 
-    var getFile = function () {
-        if (!jsFiles) {
-            return;
-        }
-        if (currentIndex < 0) {
-            setValue('');
-            return;
-        }
-        var js = jsFiles[currentIndex];
-        if (js.type !== 'FILE') {
-            return;
-        }
-        if (!js.file.fileKey) {
-            setDefaultSource();
-        } else {
-            spinner.spin();
-            $.ajax(kintone.api.url('/k/v1/file', true), {
-                type: 'GET',
-                dataType: 'text',
-                data: { 'fileKey': js.file.fileKey }
-            }).done(function (data, status, xhr) {
-                setValue(data);
-                spinner.stop();
-            }).fail(function (xhr, status, error) {
-                spinner.stop();
-                alert(i18n.msg_failed_to_get_file);
-            });
-        }
-    };
-
     var service = {
-        uploadFile: function (fileName) {
+        uploadFile: function (fileName, fileValue) {
             return new kintone.Promise(function (resolve, reject) {
-                var blob = new Blob([editor.getValue()], { type: 'text/javascript' });
+                var blob = new Blob([fileValue], { type: 'text/javascript' });
                 var formData = new FormData();
                 formData.append('__REQUEST_TOKEN__', kintone.getRequestToken());
                 formData.append('file', blob, fileName);
@@ -372,11 +311,29 @@ jQuery.noConflict();
                 });
             });
         },
-        updateCustomization: function(data) {
+        getFile: function (fileKey) {
+            return new kintone.Promise(function (resolve, reject) {
+                $.ajax(kintone.api.url('/k/v1/file', true), {
+                    type: 'GET',
+                    dataType: 'text',
+                    data: { 'fileKey': fileKey }
+                }).done(function (data, status, xhr) {
+                    resolve(data);
+                }).fail(function (xhr, status, error) {
+                    alert(i18n.msg_failed_to_get_file);
+                    reject();
+                });
+            });
+        },
+        getCustomization: function () {
+            var params = { app: kintone.app.getId() };
+            return kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'GET', params);
+        },
+        updateCustomization: function (data) {
             data.app = kintone.app.getId();
             return kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'PUT', data);
         },
-        deployApp: function() {
+        deployApp: function () {
             var params = { apps: [{ app: kintone.app.getId() }] };
             return kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'POST', params);
         }
@@ -397,108 +354,7 @@ jQuery.noConflict();
         return null;
     };
 
-    var setLibs = function (sublibs) {
-        $librariesMultipleChoice.empty();
-        for (var i = 0; i < sublibs.length; i++) {
-            var lib = sublibs[i];
-            var text;
-            if (lib.currentVersion && lib.version !== lib.currentVersion) {
-                text = lib.name + '(' + lib.currentVersion + ' -> ' + lib.version + ')';
-            } else {
-                text = lib.name + '(' + lib.version + ')';
-            }
-            var $opt = $('<OPTION>').text(text).val(lib.key);
-            if (lib.selected) {
-                $opt.prop('selected', true);
-            }
-            $librariesMultipleChoice.append($opt);
-        }
-    };
-
-    var getFiles = function (refresh) {
-
-        // get all files
-        var currentFileName;
-        var params = { app: kintone.app.getId() };
-
-        kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'GET', params, function (resp) {
-            if (refresh) {
-                currentFileName = jsFiles[currentIndex].file.name;
-            } else {
-                currentIndex = -1;
-            }
-
-            jsFiles = [];
-            var records;
-            $filesDropdown.empty();
-            if (getCurrentType() === 'js_pc') {
-                records = resp.desktop.js;
-                libs = $.extend(true, [], jsLibs);
-            } else if (getCurrentType() === 'js_mb') {
-                records = resp.mobile.js;
-                libs = $.extend(true, [], jsLibs);
-            } else if (getCurrentType() === 'css_pc') {
-                records = resp.desktop.css;
-                libs = $.extend(true, [], cssLibs);
-            }
-            var i, js;
-            // duplicate check
-            for (i = 0; i < records.length; i++) {
-                js = records[i];
-                if (js.type === 'FILE') {
-                    for (var j = i + 1; j < records.length; j++) {
-                        var js2 = records[j];
-                        if (js2.type === 'FILE') {
-                            if (js.file.name === js2.file.name) {
-                                alert(i18n.msg_file_name_is_duplicated);
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-            for (i = 0; i < records.length; i++) {
-                js = $.extend(true, {}, records[i]);
-                jsFiles.push(js);
-                if (js.type === 'FILE') {
-                    if (currentIndex < 0) {
-                        currentIndex = i;
-                    }
-                    var name = js.file.name;
-                    if (refresh && name === currentFileName) {
-                        currentIndex = i;
-                    }
-                    $filesDropdown.append($('<OPTION>').text(name).val(i));
-                } else if (js.type === 'URL') {
-                    var lib = getLib(js.url);
-                    if (lib) {
-                        lib.selected = true;
-                        var re = new RegExp(CDN_URL_REGEX + '(.*?)\\/(.*?)\\/');
-                        var m = js.url.match(re);
-                        if (m) {
-                            lib.currentVersion = m[2];
-                        }
-                    }
-                }
-            }
-            $filesDropdown.val(currentIndex);
-
-            if (!refresh) {
-                if (getCurrentType() === 'js_pc') {
-                    editor.getSession().setMode('ace/mode/javascript');
-                } else if (getCurrentType() === 'js_mb') {
-                    editor.getSession().setMode('ace/mode/javascript');
-                } else if (getCurrentType() === 'css_pc') {
-                    editor.getSession().setMode('ace/mode/css');
-                }
-                getFile();
-                setLibs(libs);
-            }
-        });
-
-    };
-
-    function renderUIWithLocalization() {
+    function _renderUIWithLocalization() {
         $('[data-i18n]').each(function (elm) {
             var $elm = $(this);
             var name = $elm.attr('data-i18n');
@@ -506,7 +362,8 @@ jQuery.noConflict();
         });
     }
 
-    function renderLibrariesContent() {
+    function _getLibsInfo() {
+        var infos = { jsLibs: [], cssLibs: [] };
         Object.keys(cdnLibsDetail).forEach(function (libName) {
             var lib = cdnLibsDetail[libName];
             var tmpLib = {
@@ -537,98 +394,33 @@ jQuery.noConflict();
                 }
             }
             if (jsLib) {
-                jsLibs.push(jsLib);
+                infos.jsLibs.push(jsLib);
             }
             if (cssLib) {
-                cssLibs.push(cssLib);
+                infos.cssLibs.push(cssLib);
             }
         });
+
+        return infos;
     }
 
-    function initTypeSelectDropdown() {
-        $typeDropdown.val('js_pc')
-            .focus(function (e) {
-                $.data(this, 'current', $(this).val());
-            })
-            .change(function (e) {
-                if (modified) {
-                    if (!confirmDiscard()) {
-                        $(this).val($.data(this, 'current'));
-                        return false;
-                    }
-                }
-                getFiles();
-                modified = false;
-            });
-    }
+    function _renderLibrariesMultipleChoice() {
+        var infos = _getLibsInfo();
+        var libs;
+        switch (app.currentType) {
+            case 'js_pc':
+            case 'js_mb':
+                libs = infos.jsLibs;
+                break;
+            case 'css_pc':
+                libs = infos.cssLibs;
+                break;
+        }
 
-    function initNewFileButton() {
-        $newFileBtn.click(function (e) {
-            e.preventDefault();
-            if (modified) {
-                if (!confirmDiscard()) {
-                    return;
-                }
-            }
-            var fileName = window.prompt(i18n.msg_input_file_name);
-            if (!fileName) {
-                return;
-            }
-            switch (getCurrentType()) {
-                case 'js_pc':
-                case 'js_mb':
-                    if (!fileName.match(/\.js$/)) {
-                        fileName = fileName + '.js';
-                    }
-                    break;
-                case 'css_pc':
-                    if (!fileName.match(/\.css$/)) {
-                        fileName = fileName + '.css';
-                    }
-                    break;
-            }
-
-            for (var i = 0; i < jsFiles.length; i++) {
-                var js = jsFiles[i];
-                if (js.type === 'FILE') {
-                    if (js.file.name === fileName) {
-                        alert(i18n.msg_file_name_is_duplicated);
-                        return;
-                    }
-                }
-            }
-
-            var jsFile = {
-                type: 'FILE',
-                file: {
-                    name: fileName
-                }
-            };
-            jsFiles.push(jsFile);
-            currentIndex = maxIndex();
-            $filesDropdown.append($('<OPTION>').text(fileName).val(currentIndex));
-            $filesDropdown.val(currentIndex);
-            setDefaultSource();
-            modified = false;
-        });
-    }
-
-    function initFilesDropdwon() {
-        getFiles();
-        $filesDropdown.focus(function (e) {
-            $.data(this, 'current', $(this).val());
-        }).change(function (e) {
-            if (modified) {
-                if (!confirmDiscard()) {
-                    $(this).val($.data(this, 'current'));
-                    return false;
-                }
-            }
-            var val = $(e.target).val();
-            currentIndex = Number(val);
-            getFile();
-            modified = false;
-        });
+        $librariesMultipleChoice.empty();
+        libs.forEach(function (lib) {
+            $librariesMultipleChoice.append('<option value=' + lib.key + '>' + lib.name + '</option>');
+        })
     }
 
     function initSubmitBtn() {
@@ -734,7 +526,7 @@ jQuery.noConflict();
             }
 
             spinner.spin();
-            _uploadFile().then(function(f) {
+            _uploadFile().then(function (f) {
                 return _updateCustomization(f);
             }).then(function (f) {
                 if ($deployConfigCheckbox.prop('checked')) {
@@ -742,9 +534,9 @@ jQuery.noConflict();
                 } else {
                     return kintone.Promise.resolve();
                 }
-            }).then(function() {
+            }).then(function () {
                 getFiles(true);
-                modified = false;
+                app.modeifiedFile = false;
                 spinner.stop();
             }).catch(function (err) {
                 alert(i18n.msg_failed_to_update);
@@ -755,47 +547,25 @@ jQuery.noConflict();
         $submitBtn.click(_handleSubmitClick);
     }
 
-    function initCancelBtn() {
-        $cancelBtn.click(function (e) {
-            // discard event
-            e.preventDefault();
-            if (!confirmDiscard()) {
-                return;
-            }
-            getFile();
-        });
+    function _handleLibsMultipleChoiceMouseDown(e) {
+        e.preventDefault();
+        var select = this;
+        var scroll = select.scrollTop;
+        e.target.selected = !e.target.selected;
+        if (e.target.selected) {
+            app.removingLibs = app.removingLibs.filter(function(item) {
+                return item !== e.target.textContent;
+            });
+        } else {
+            app.removingLibs.push(e.target.textContent);
+        }
+
+        setTimeout(function () { select.scrollTop = scroll; }, 0);
+        $(select).focus();
+        app.modeifiedFile = true;
     }
 
-    function initBackBtn() {
-        $backBtn.click(function (e) {
-            // back event
-            e.preventDefault();
-            if (modified) {
-                if (!confirmDiscard()) {
-                    return;
-                }
-            }
-            history.back();
-        });
-    }
-
-    function initLibrariesMultipleChoice() {
-        renderLibrariesContent();
-        $librariesMultipleChoice.mousedown(function (e) {
-            e.preventDefault();
-
-            var select = this;
-            var scroll = select.scrollTop;
-
-            e.target.selected = !e.target.selected;
-
-            setTimeout(function () { select.scrollTop = scroll; }, 0);
-
-            $(select).focus();
-        }).mousemove(function (e) { e.preventDefault(); });
-    }
-
-    function initEditor() {
+    function _initEditor() {
         editor = ace.edit('jsedit-editor');
         editor.$blockScrolling = Infinity;
         editor.setTheme('ace/theme/monokai');
@@ -814,27 +584,408 @@ jQuery.noConflict();
             }
         });
         editor.on('change', function () {
-            modified = true;
+            app.modeifiedFile = true;
         });
+    };
+
+    function _getCustomizationInfo(customization) {
+        app.customization.desktop = $.extend(true, {}, customization.desktop);
+        app.customization.mobile = $.extend(true, {}, customization.mobile);
+    }
+
+    function _getFilesByType(type) {
+        var customizationInfo = _getCustomizationPart(app.customization);
+        return customizationInfo.filter(function (item) {
+            return item.type === 'FILE'
+        }).map(function (item) {
+            return { fileKey: item.file.fileKey, name: item.file.name }
+        });
+    }
+
+    function _getLibLinksByType(type) {
+        var customizationInfo = _getCustomizationPart(app.customization);
+        return customizationInfo.filter(function (item) {
+            return item.type === 'URL'
+        }).map(function (item) {
+            return item.url;
+        });
+    }
+
+    function _renderFilesDropdown(defaultValue) {
+        $filesDropdown.empty();
+        var files = _getFilesByType(app.currentType);
+        files.forEach(function (file) {
+            $filesDropdown.append('<option value=' + file.fileKey + '> ' + file.name + '</option>')
+        });
+
+        if (typeof defaultValue !== 'undefined') {
+            $filesDropdown.val(defaultValue);
+        }
+
+        app.currentFileKey = $filesDropdown.val();
+    }
+
+    function _setEditorContent(value) {
+        switch (app.currentType) {
+            case 'js_pc':
+            case 'js_mb':
+                editor.getSession().setMode('ace/mode/javascript');
+                break;
+            case 'css_pc':
+                editor.getSession().setMode('ace/mode/css');
+                break;
+        }
+
+        editor.setValue(value);
+        editor.selection.moveCursorToPosition({ row: 1, column: 0 });
+        editor.selection.selectLine();
+        app.modeifiedFile = false;
+    }
+
+    function _setUsedLibsMultipleChoice() {
+        var libLinks = _getLibLinksByType(app.currentType);
+        var usedLibs = libLinks.map(function (link) {
+            return link.split('/')[3];
+        });
+
+        $librariesMultipleChoice.val(usedLibs);
+    }
+
+    function _refresh() {
+        spinner.spin();
+        service.getCustomization().then(function (customization) {
+            _getCustomizationInfo(customization);
+            _renderFilesDropdown();
+            _setUsedLibsMultipleChoice();
+
+            if (app.currentFileKey === null) {
+                return kintone.Promise.resolve(null);
+            }
+
+            return service.getFile(app.currentFileKey);
+        }).then(function (fileData) {
+            _setEditorContent(fileData);
+            spinner.stop();
+        }).catch(function (err) {
+            spinner.stop();
+        });
+    }
+
+    function _handelTypeDropdownChange() {
+        if (app.modeifiedFile) {
+            if (!_confirmDiscard()) {
+                $(this).val($.data(this, 'current'));
+                return false;
+            }
+        }
+
+        app.currentType = $typeDropdown.val();
+        _refresh();
+        app.modeifiedFile = false;
+    }
+
+    function _handelFilesDropdownChange() {
+        if (app.modeifiedFile) {
+            if (!_confirmDiscard()) {
+                $(this).val($.data(this, 'current'));
+                return false;
+            }
+        }
+
+        app.currentFileKey = $filesDropdown.val();
+
+        spinner.spin();
+        service.getFile(app.currentFileKey).then(function (fileData) {
+            _setEditorContent(fileData);
+            spinner.stop();
+        });
+
+        app.modeifiedFile = false;
+    }
+
+    function _createNameForNewFile(name) {
+        var fileName = name;
+        switch (app.currentType) {
+            case 'js_pc':
+            case 'js_mb':
+                if (!fileName.match(/\.js$/)) {
+                    fileName = fileName + '.js';
+                }
+                break;
+            case 'css_pc':
+                if (!fileName.match(/\.css$/)) {
+                    fileName = fileName + '.css';
+                }
+                break;
+        }
+
+        return fileName;
+    }
+
+    function _isDuplicatedFileName(fileName) {
+        var checkFiles = _getFilesByType(app.currentType);
+        var dupplicatedFiles = checkFiles.filter(function (item) {
+            return item.name === fileName;
+        });
+
+        if (dupplicatedFiles.length > 0) {
+            return true;
+        }
+
+        false;
+    }
+
+    function _addNewTempFile(fileName) {
+        var newFileInfo = {
+            type: 'FILE',
+            file: {
+                fileKey: NO_FILE_KEY,
+                name: fileName
+            }
+        };
+
+        switch (app.currentType) {
+            case 'js_pc':
+                app.customization.desktop.js.push(newFileInfo);
+                break;
+            case 'js_mb':
+                app.customization.mobile.js.push(newFileInfo);
+                break;
+            case 'css_pc':
+                app.customization.desktop.css.push(newFileInfo);
+                break;
+        }
+
+        return newFileInfo;
+    }
+
+    function _getDefaultSourceForNewFile() {
+        var defaultSource;
+        switch (app.currentType) {
+            case 'js_pc':
+                defaultSource = 'jQuery.noConflict();\n' +
+                    '(function($) {\n' +
+                    '  \'use strict\';\n' +
+                    '  kintone.events.on(\'app.record.index.show\', function(e) {\n' +
+                    '  });\n' +
+                    '})(jQuery);\n';
+                break;
+            case 'js_mb':
+                defaultSource = 'jQuery.noConflict();\n' +
+                    '(function($) {\n' +
+                    '  \'use strict\';\n' +
+                    '  kintone.events.on(\'mobile.app.record.index.show\', function(e) {\n' +
+                    '  });\n' +
+                    '})(jQuery);\n';
+                break;
+            case 'css_pc':
+                defaultSource = '@charset "UTF-8";';
+                break;
+        }
+
+        return defaultSource;
+    }
+
+    function _handleNewFileBtnClick() {
+        if (app.modeifiedFile) {
+            if (!_confirmDiscard()) {
+                return;
+            }
+        }
+
+        var fileName = window.prompt(i18n.msg_input_file_name);
+        if (!fileName) {
+            return;
+        }
+
+        fileName = _createNameForNewFile(fileName);
+        if (_isDuplicatedFileName(fileName)) {
+            alert(i18n.msg_file_name_is_duplicated);
+            return;
+        }
+
+        var newFileInfo = _addNewTempFile(fileName);
+        _renderFilesDropdown(newFileInfo.file.fileKey);
+
+        var defaultSource = _getDefaultSourceForNewFile();
+        _setEditorContent(defaultSource);
+        app.modeifiedFile = false;
+    };
+
+    function _getCustomizationPart(customization) {
+        var customizationPart = [];
+        switch (app.currentType) {
+            case 'js_pc':
+                customizationPart = customization.desktop.js;
+                break;
+            case 'js_mb':
+                customizationPart = customization.mobile.js;
+                break;
+            case 'css_pc':
+                customizationPart = customization.desktop.css;
+                break;
+        }
+
+        return customizationPart;
+    }
+
+    function _createLibLinks(libInfo) {
+        return libInfo[2].map(function (urlName) {
+            return CDN_URL + libInfo[0] + '/' + libInfo[1] + '/' + urlName;
+        });
+    }
+
+    function _createUpdatingLinks(customizationInfos) {
+        var fileType = '';
+        switch (app.currentType) {
+            case 'js_pc':
+            case 'js_mb':
+                fileType = '.js';
+                break;
+            case 'css_pc':
+                fileType = '.css';
+                break;
+        }
+
+        var selectedLibs = $librariesMultipleChoice.find('option:selected')
+            .map(function (index, option) {
+                var libName = option.textContent;
+                return _createLibLinks(cdnLibsDetail[libName]);
+            }).filter(function(index, url) {
+                return url.indexOf(fileType) !== -1;
+            }).toArray();
+
+        var removingLibs = $(app.removingLibs).map(function(index, libName) {
+                return _createLibLinks(cdnLibsDetail[libName]);
+            }).toArray();
+
+        customizationInfos.filter(function(item) {
+            return item.type === 'URL';
+        }).forEach(function(item) {
+            if (selectedLibs.indexOf(item.url) === -1 && removingLibs.indexOf(item.url) === -1) {
+                selectedLibs.push(item.url);
+            }
+        });
+
+        var newCustomizationInfo = selectedLibs.map(function(libUrl) {
+            return {type: 'URL', url: libUrl}
+        });
+
+        newCustomizationInfo = newCustomizationInfo.concat(customizationInfos.filter(function(item) {
+            return item.type === 'FILE';
+        }));
+
+        return newCustomizationInfo;
+    }
+
+    function _createUpdatingFiles(customizationInfos, newFileKey) {
+        if (app.currentFileKey === NO_FILE_KEY) {
+            // Creating new file
+            customizationInfos.push({
+                file: { fileKey: newFileKey },
+                type: 'FILE'
+            });
+        } else {
+            // Updating old file
+            customizationInfos.forEach(function (item, index) {
+                if (item.type === 'FILE' && item.file.fileKey === app.currentFileKey) {
+                    customizationInfos[index].file = { fileKey: newFileKey }
+                    return false;
+                }
+            });
+        }
+
+        return customizationInfos;
+    }
+
+    function _createUpdatingContent(customization, newFileKey) {
+        var customizationInfos = _getCustomizationPart(customization);
+        customizationInfos = _createUpdatingFiles(customizationInfos, newFileKey);
+        customizationInfos = _createUpdatingLinks(customizationInfos);
+
+        return customizationInfos;
+    }
+
+    function _createUpdatingCustomization(customization, content) {
+        var newCustomization = customization;
+        switch (app.currentType) {
+            case 'js_pc':
+                newCustomization.desktop.js = content;
+                break;
+            case 'js_mb':
+                newCustomization.mobile.js = content;
+                break;
+            case 'css_pc':
+                newCustomization.desktop.css = content;
+                break;
+        }
+
+        return newCustomization;
+    }
+
+    function _handleSubmitBtn(e) {
+        // submit event
+        e.preventDefault();
+
+        var fileName = $filesDropdown.find('option:selected').text();
+        var newFileKey = '';
+        service.uploadFile(fileName, editor.getValue()).then(function (file) {
+            newFileKey = file.fileKey;
+
+            return service.getCustomization();
+        }).then(function (customization) {
+            var content = _createUpdatingContent(customization, newFileKey);
+            var newCustomization = _createUpdatingCustomization(customization, content);
+
+            return service.updateCustomization(newCustomization);
+        }).then(function(resp) {
+            // TODO check for deploy
+            // refresh data
+
+            console.log(resp);
+        }).catch(function (err) {
+
+        });
+    }
+
+    function _handleBackBtn(e) {
+        // back event
+        e.preventDefault();
+        if (app.modeifiedFile) {
+            if (!_confirmDiscard()) {
+                return;
+            }
+        }
+        history.back();
+    };
+
+    function _handleCancelBtn(e) {
+        // discard event
+        e.preventDefault();
+        if (!_confirmDiscard()) {
+            return;
+        }
+        _refresh();
     };
 
     $(function () {
         spinner.init();
-        renderUIWithLocalization();
+        _renderUIWithLocalization();
+        _renderLibrariesMultipleChoice();
+        _initEditor();
 
-        initNewFileButton();
-        initTypeSelectDropdown();
-        initFilesDropdwon();
+        _refresh();
 
-        initEditor();
-
-        initSubmitBtn();
-        initCancelBtn();
-        initBackBtn();
-
-        initLibrariesMultipleChoice();
+        $typeDropdown.change(_handelTypeDropdownChange);
+        $filesDropdown.change(_handelFilesDropdownChange);
+        $newFileBtn.click(_handleNewFileBtnClick);
+        $librariesMultipleChoice.mousedown(_handleLibsMultipleChoiceMouseDown);
 
         links.render($linksContainer);
+
+        $submitBtn.click(_handleSubmitBtn);
+        $cancelBtn.click(_handleCancelBtn);
+        $backBtn.click(_handleBackBtn);
     });
 
 })(jQuery, kintone.$PLUGIN_ID);
