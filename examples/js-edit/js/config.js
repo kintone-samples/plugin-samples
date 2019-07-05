@@ -7,7 +7,7 @@
 /* global ace */
 jQuery.noConflict();
 
-(function ($, PLUGIN_ID) {
+(function($, PLUGIN_ID) {
     'use strict';
     var NO_FILE_KEY = '-1';
     var editor;
@@ -52,8 +52,7 @@ jQuery.noConflict();
             msg_failed_to_update: 'Failed to update!',
             msg_file_name_is_duplicated: 'This file name is duplicated. Please set a unique file name.',
             msg_input_file_name: 'Input file name',
-            cdn_url: 'https://js.kintone.com/',
-            cdn_url_regex: '^https:\\/\\/js\\.kintone\\.com\\/'
+            cdn_url: 'https://js.kintone.com/'
         },
         ja: {
             js_for_pc: 'PC用のJavaScriptファイル',
@@ -74,8 +73,7 @@ jQuery.noConflict();
             msg_failed_to_update: '更新に失敗しました。',
             msg_file_name_is_duplicated: 'ファイル名が重複しています。重複のないように設定してください。',
             msg_input_file_name: 'ファイル名を入力してください。',
-            cdn_url: 'https://js.cybozu.com/',
-            cdn_url_regex: '^https:\\/\\/js\\.cybozu\\.com\\/'
+            cdn_url: 'https://js.cybozu.com/'
         },
         zh: {
             js_for_pc: 'JavaScript Files for PC',
@@ -96,10 +94,9 @@ jQuery.noConflict();
             msg_failed_to_update: 'Failed to update!',
             msg_file_name_is_duplicated: 'This file name is duplicated. Please set a unique file name.',
             msg_input_file_name: 'Input file name',
-            cdn_url: 'https://js.cybozu.cn/',
-            cdn_url_regex: '^https:\\/\\/js\\.cybozu\\.cn\\/'
+            cdn_url: 'https://js.cybozu.cn/'
         }
-    }
+    };
     var lang = kintone.getLoginUser().language;
     if (!localization[lang]) {
         lang = 'en';
@@ -107,14 +104,13 @@ jQuery.noConflict();
     var i18n = localization[lang];
 
     var CDN_URL = i18n.cdn_url;
-    var CDN_URL_REGEX = i18n.cdn_url_regex;
 
     var spinner = {
         template: '<div class="spinner-backdrop"></div>',
         hasInit: false,
         spinner: null,
         $container: null,
-        init: function () {
+        init: function() {
             if (this.hasInit) {
                 return;
             }
@@ -124,11 +120,11 @@ jQuery.noConflict();
             this.spinner = new Spinner();
             this.hasInit = true;
         },
-        spin: function () {
+        spin: function() {
             this.spinner.spin(this.$container.get(0));
             this.$container.show();
         },
-        stop: function () {
+        stop: function() {
             this.spinner.stop();
             this.$container.hide();
         }
@@ -149,14 +145,14 @@ jQuery.noConflict();
             { url: 'https://cybozudev.kf5.com/hc/', label: 'cybozu developer network' },
             { url: 'https://cybozudev.kf5.com/hc/kb/article/206405/', label: 'Cybozu CDN' }
         ],
-        render: function ($container) {
-            this[lang].forEach(function (li) {
+        render: function($container) {
+            this[lang].forEach(function(li) {
                 $container.append($('<p><a target="_blank" href="' + li.url + '">' + li.label + '</a></p>'));
             });
         }
     };
 
-    var kintoneCompletions = function () {
+    var kintoneCompletions = function() {
         var ret = [];
         var keywords = [
             'cybozu', 'kintone',
@@ -285,8 +281,8 @@ jQuery.noConflict();
     };
 
     var service = {
-        uploadFile: function (fileName, fileValue) {
-            return new kintone.Promise(function (resolve, reject) {
+        uploadFile: function(fileName, fileValue) {
+            return new kintone.Promise(function(resolve, reject) {
                 var blob = new Blob([fileValue], { type: 'text/javascript' });
                 var formData = new FormData();
                 formData.append('__REQUEST_TOKEN__', kintone.getRequestToken());
@@ -296,67 +292,52 @@ jQuery.noConflict();
                     data: formData,
                     processData: false,
                     contentType: false
-                }).done(function (data) {
+                }).done(function(data) {
                     resolve(data);
-                }).fail(function (err) {
+                }).fail(function(err) {
                     reject(err);
                 });
             });
         },
-        getFile: function (fileKey) {
-            return new kintone.Promise(function (resolve, reject) {
+        getFile: function(fileKey) {
+            return new kintone.Promise(function(resolve, reject) {
                 $.ajax(kintone.api.url('/k/v1/file', true), {
                     type: 'GET',
                     dataType: 'text',
                     data: { 'fileKey': fileKey }
-                }).done(function (data, status, xhr) {
+                }).done(function(data, status, xhr) {
                     resolve(data);
-                }).fail(function (xhr, status, error) {
+                }).fail(function(xhr, status, error) {
                     alert(i18n.msg_failed_to_get_file);
                     reject();
                 });
             });
         },
-        getCustomization: function () {
+        getCustomization: function() {
             var params = { app: kintone.app.getId() };
             return kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'GET', params);
         },
-        updateCustomization: function (data) {
+        updateCustomization: function(data) {
             data.app = kintone.app.getId();
             return kintone.api(kintone.api.url('/k/v1/preview/app/customize', true), 'PUT', data);
         },
-        deployApp: function () {
+        deployApp: function() {
             var params = { apps: [{ app: kintone.app.getId() }] };
             return kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'POST', params);
         }
-    }
-
-    var getLib = function (url) {
-        var re = new RegExp(CDN_URL_REGEX + '(.*?)\\/');
-        var m = url.match(re);
-        if (m) {
-            var libName = m[1];
-            for (var i = 0; i < libs.length; i++) {
-                var lib = libs[i];
-                if (lib.key === libName) {
-                    return lib;
-                }
-            }
-        }
-        return null;
     };
 
-    function _renderUIWithLocalization() {
-        $('[data-i18n]').each(function (elm) {
+    function renderUIWithLocalization() {
+        $('[data-i18n]').each(function(elm) {
             var $elm = $(this);
             var name = $elm.attr('data-i18n');
             $elm.text(i18n[name]);
         });
     }
 
-    function _getLibsInfo() {
+    function getLibsInfo() {
         var infos = { jsLibs: [], cssLibs: [] };
-        Object.keys(cdnLibsDetail).forEach(function (libName) {
+        Object.keys(cdnLibsDetail).forEach(function(libName) {
             var lib = cdnLibsDetail[libName];
             var tmpLib = {
                 name: libName,
@@ -396,8 +377,8 @@ jQuery.noConflict();
         return infos;
     }
 
-    function _renderLibrariesMultipleChoice() {
-        var infos = _getLibsInfo();
+    function renderLibrariesMultipleChoice() {
+        var infos = getLibsInfo();
         var libs;
         switch (app.currentType) {
             case 'js_pc':
@@ -410,12 +391,12 @@ jQuery.noConflict();
         }
 
         $librariesMultipleChoice.empty();
-        libs.forEach(function (lib) {
+        libs.forEach(function(lib) {
             $librariesMultipleChoice.append('<option value=' + lib.key + '>' + lib.name + '</option>');
-        })
+        });
     }
 
-    function _initEditor() {
+    function initEditor() {
         editor = ace.edit('jsedit-editor');
         editor.$blockScrolling = Infinity;
         editor.setTheme('ace/theme/monokai');
@@ -429,43 +410,60 @@ jQuery.noConflict();
         });
         var completions = kintoneCompletions();
         editor.completers.push({
-            getCompletions: function (compEditor, session, pos, prefix, callback) {
+            getCompletions: function(compEditor, session, pos, prefix, callback) {
                 callback(null, completions);
             }
         });
-        editor.on('change', function () {
+        editor.on('change', function() {
             app.modeifiedFile = true;
         });
-    };
+    }
 
-    function _getCustomizationInfo(customization) {
+    function getCustomizationPart(customization) {
+        var customizationPart = [];
+        switch (app.currentType) {
+            case 'js_pc':
+                customizationPart = customization.desktop.js;
+                break;
+            case 'js_mb':
+                customizationPart = customization.mobile.js;
+                break;
+            case 'css_pc':
+                customizationPart = customization.desktop.css;
+                break;
+        }
+
+        return customizationPart;
+    }
+
+    function getCustomizationInfo(customization) {
         app.customization.desktop = $.extend(true, {}, customization.desktop);
         app.customization.mobile = $.extend(true, {}, customization.mobile);
     }
 
-    function _getFilesByType(type) {
-        var customizationInfo = _getCustomizationPart(app.customization);
-        return customizationInfo.filter(function (item) {
-            return item.type === 'FILE'
-        }).map(function (item) {
-            return { fileKey: item.file.fileKey, name: item.file.name }
+    function getFilesByType(type) {
+        var customizationInfo = getCustomizationPart(app.customization);
+        return customizationInfo.filter(function(item) {
+            return item.type === 'FILE';
+        }).map(function(item) {
+            return { fileKey: item.file.fileKey, name: item.file.name };
         });
     }
 
-    function _getLibLinksByType(type) {
-        var customizationInfo = _getCustomizationPart(app.customization);
-        return customizationInfo.filter(function (item) {
-            return item.type === 'URL'
-        }).map(function (item) {
+    function getLibLinksByType(type) {
+        var customizationInfo = getCustomizationPart(app.customization);
+        return customizationInfo.filter(function(item) {
+            return item.type === 'URL';
+        }).map(function(item) {
             return item.url;
         });
     }
 
-    function _renderFilesDropdown(defaultValue) {
+    function renderFilesDropdown(defaultValue) {
         $filesDropdown.empty();
-        var files = _getFilesByType(app.currentType);
-        files.forEach(function (file) {
-            $filesDropdown.append('<option value=' + file.fileKey + '> ' + file.name + '</option>')
+        var files = getFilesByType(app.currentType);
+        files.forEach(function(file) {
+            $filesDropdown.append('<option value=' + file.fileKey + '> ' + file.name + '</option>');
         });
 
         if (typeof defaultValue !== 'undefined') {
@@ -475,7 +473,7 @@ jQuery.noConflict();
         app.currentFileKey = $filesDropdown.val();
     }
 
-    function _setEditorContent(value) {
+    function setEditorContent(value) {
         var editorValue = value ? value : '';
         switch (app.currentType) {
             case 'js_pc':
@@ -493,37 +491,37 @@ jQuery.noConflict();
         app.modeifiedFile = false;
     }
 
-    function _setUsedLibsMultipleChoice() {
-        var libLinks = _getLibLinksByType(app.currentType);
-        var usedLibs = libLinks.map(function (link) {
+    function setUsedLibsMultipleChoice() {
+        var libLinks = getLibLinksByType(app.currentType);
+        var usedLibs = libLinks.map(function(link) {
             return link.split('/')[3];
         });
 
         $librariesMultipleChoice.val(usedLibs);
     }
 
-    function _refreshFilesDropdown() {
-        return service.getCustomization().then(function (customization) {
-            _getCustomizationInfo(customization);
-            _renderFilesDropdown();
+    function refreshFilesDropdown() {
+        return service.getCustomization().then(function(customization) {
+            getCustomizationInfo(customization);
+            renderFilesDropdown();
         });
     }
 
-    function _refresh() {
-        return _refreshFilesDropdown().then(function () {
-            _setUsedLibsMultipleChoice();
+    function refresh() {
+        return refreshFilesDropdown().then(function() {
+            setUsedLibsMultipleChoice();
 
             if (app.currentFileKey === null) {
                 return kintone.Promise.resolve(null);
             }
 
             return service.getFile(app.currentFileKey);
-        }).then(function (fileData) {
-            _setEditorContent(fileData);
+        }).then(function(fileData) {
+            setEditorContent(fileData);
         });
     }
 
-    function _createNameForNewFile(name) {
+    function createNameForNewFile(name) {
         var fileName = name;
         switch (app.currentType) {
             case 'js_pc':
@@ -542,9 +540,9 @@ jQuery.noConflict();
         return fileName;
     }
 
-    function _isDuplicatedFileName(fileName) {
-        var checkFiles = _getFilesByType(app.currentType);
-        var dupplicatedFiles = checkFiles.filter(function (item) {
+    function isDuplicatedFileName(fileName) {
+        var checkFiles = getFilesByType(app.currentType);
+        var dupplicatedFiles = checkFiles.filter(function(item) {
             return item.name === fileName;
         });
 
@@ -552,10 +550,10 @@ jQuery.noConflict();
             return true;
         }
 
-        false;
+        return false;
     }
 
-    function _addNewTempFile(fileName) {
+    function addNewTempFile(fileName) {
         var newFileInfo = {
             type: 'FILE',
             file: {
@@ -579,7 +577,7 @@ jQuery.noConflict();
         return newFileInfo;
     }
 
-    function _getDefaultSourceForNewFile() {
+    function getDefaultSourceForNewFile() {
         var defaultSource;
         switch (app.currentType) {
             case 'js_pc':
@@ -606,30 +604,13 @@ jQuery.noConflict();
         return defaultSource;
     }
 
-    function _getCustomizationPart(customization) {
-        var customizationPart = [];
-        switch (app.currentType) {
-            case 'js_pc':
-                customizationPart = customization.desktop.js;
-                break;
-            case 'js_mb':
-                customizationPart = customization.mobile.js;
-                break;
-            case 'css_pc':
-                customizationPart = customization.desktop.css;
-                break;
-        }
-
-        return customizationPart;
-    }
-
-    function _createLibLinks(libInfo) {
-        return libInfo[2].map(function (urlName) {
+    function createLibLinks(libInfo) {
+        return libInfo[2].map(function(urlName) {
             return CDN_URL + libInfo[0] + '/' + libInfo[1] + '/' + urlName;
         });
     }
 
-    function _createUpdatingLinks(customizationInfos) {
+    function createUpdatingLinks(customizationInfos) {
         var fileTypeRegex = '';
         switch (app.currentType) {
             case 'js_pc':
@@ -642,37 +623,37 @@ jQuery.noConflict();
         }
 
         var selectedLibs = $librariesMultipleChoice.find('option:selected')
-            .map(function (index, option) {
+            .map(function(index, option) {
                 var libName = option.textContent;
-                return _createLibLinks(cdnLibsDetail[libName]);
-            }).filter(function (index, url) {
+                return createLibLinks(cdnLibsDetail[libName]);
+            }).filter(function(index, url) {
                 return url.match(fileTypeRegex) !== null;
             }).toArray();
 
-        var removingLibs = $(app.removingLibs).map(function (index, libName) {
-            return _createLibLinks(cdnLibsDetail[libName]);
+        var removingLibs = $(app.removingLibs).map(function(index, libName) {
+            return createLibLinks(cdnLibsDetail[libName]);
         }).toArray();
 
-        customizationInfos.filter(function (item) {
+        customizationInfos.filter(function(item) {
             return item.type === 'URL';
-        }).forEach(function (item) {
+        }).forEach(function(item) {
             if (selectedLibs.indexOf(item.url) === -1 && removingLibs.indexOf(item.url) === -1) {
                 selectedLibs.push(item.url);
             }
         });
 
-        var newCustomizationInfo = selectedLibs.map(function (libUrl) {
-            return { type: 'URL', url: libUrl }
+        var newCustomizationInfo = selectedLibs.map(function(libUrl) {
+            return { type: 'URL', url: libUrl };
         });
 
-        newCustomizationInfo = newCustomizationInfo.concat(customizationInfos.filter(function (item) {
+        newCustomizationInfo = newCustomizationInfo.concat(customizationInfos.filter(function(item) {
             return item.type === 'FILE';
         }));
 
         return newCustomizationInfo;
     }
 
-    function _createUpdatingFiles(customizationInfos, newFileKey) {
+    function createUpdatingFiles(customizationInfos, newFileKey) {
         if (app.currentFileKey === NO_FILE_KEY) {
             // Creating new file
             customizationInfos.push({
@@ -681,9 +662,9 @@ jQuery.noConflict();
             });
         } else {
             // Updating old file
-            customizationInfos.forEach(function (item, index) {
+            customizationInfos.forEach(function(item, index) {
                 if (item.type === 'FILE' && item.file.fileKey === app.currentFileKey) {
-                    customizationInfos[index].file = { fileKey: newFileKey }
+                    customizationInfos[index].file = { fileKey: newFileKey };
                     return false;
                 }
             });
@@ -692,15 +673,15 @@ jQuery.noConflict();
         return customizationInfos;
     }
 
-    function _createUpdatingContent(customization, newFileKey) {
-        var customizationInfos = _getCustomizationPart(customization);
-        customizationInfos = _createUpdatingFiles(customizationInfos, newFileKey);
-        customizationInfos = _createUpdatingLinks(customizationInfos);
+    function createUpdatingContent(customization, newFileKey) {
+        var customizationInfos = getCustomizationPart(customization);
+        customizationInfos = createUpdatingFiles(customizationInfos, newFileKey);
+        customizationInfos = createUpdatingLinks(customizationInfos);
 
         return customizationInfos;
     }
 
-    function _createUpdatingCustomization(customization, content) {
+    function createUpdatingCustomization(customization, content) {
         var newCustomization = customization;
         switch (app.currentType) {
             case 'js_pc':
@@ -717,7 +698,7 @@ jQuery.noConflict();
         return newCustomization;
     }
 
-    function _selectFile(fileName) {
+    function selectFile(fileName) {
         var fileKey = $filesDropdown.children().filter(function(index, $option) {
             return $($option).text().trim() === fileName;
         }).val();
@@ -726,80 +707,80 @@ jQuery.noConflict();
         app.currentFileKey = fileKey;
     }
 
-    function _disabledEditor() {
+    function disabledEditor() {
         var el = editor.container;
         el.classList.add('disabled');
-        editor.setOptions({readOnly: true});
+        editor.setOptions({ readOnly: true });
     }
 
-    function _enabledEditor() {
+    function enabledEditor() {
         var el = editor.container;
         el.classList.remove('disabled');
-        editor.setOptions({readOnly: false});
+        editor.setOptions({ readOnly: false });
     }
 
-    function _disabledSubmitBtn() {
+    function disabledSubmitBtn() {
         $submitBtn.removeClass('kintoneplugin-button-dialog-ok')
-        .addClass('kintoneplugin-button-disabled')
-        .prop('disabled', true);
+            .addClass('kintoneplugin-button-disabled')
+            .prop('disabled', true);
     }
 
-    function _enabledSubmitBtn() {
+    function enabledSubmitBtn() {
         $submitBtn.removeClass('kintoneplugin-button-disabled')
-        .addClass('kintoneplugin-button-dialog-ok')
-        .prop('disabled', false);
+            .addClass('kintoneplugin-button-dialog-ok')
+            .prop('disabled', false);
     }
 
-    function _disabledCancelBtn() {
+    function disabledCancelBtn() {
         $cancelBtn.removeClass('kintoneplugin-button-dialog-cancel')
-        .addClass('kintoneplugin-button-disabled')
-        .prop('disabled', true);
+            .addClass('kintoneplugin-button-disabled')
+            .prop('disabled', true);
     }
 
-    function _enabledCancelBtn() {
+    function enabledCancelBtn() {
         $cancelBtn.removeClass('kintoneplugin-button-disabled')
-        .addClass('kintoneplugin-button-dialog-cancel')
-        .prop('disabled', false);
-    }    
-
-    function _makeComponentDisabled() {
-        _disabledEditor();
-        _disabledSubmitBtn();
-        _disabledCancelBtn();
+            .addClass('kintoneplugin-button-dialog-cancel')
+            .prop('disabled', false);
     }
 
-    function _makeComponentEnabled() {
-        _enabledEditor();
-        _enabledSubmitBtn();
-        _enabledCancelBtn();
+    function makeComponentDisabled() {
+        disabledEditor();
+        disabledSubmitBtn();
+        disabledCancelBtn();
     }
 
-    function _confirmDiscard() {
+    function makeComponentEnabled() {
+        enabledEditor();
+        enabledSubmitBtn();
+        enabledCancelBtn();
+    }
+
+    function confirmDiscard() {
         return (window.confirm(i18n.msg_discard));
-    };
+    }
 
-    function _handelTypeDropdownChange() {
-        if (app.modeifiedFile && !_confirmDiscard()) {
+    function handelTypeDropdownChange() {
+        if (app.modeifiedFile && !confirmDiscard()) {
             $(this).val($.data(this, 'current'));
             return false;
         }
 
         app.currentType = $typeDropdown.val();
-        spinner.spin()
-        _refresh().then(function () {
+        spinner.spin();
+        refresh().then(function() {
             if (!app.currentFileKey) {
-                _makeComponentDisabled();
+                makeComponentDisabled();
             } else {
-                _makeComponentEnabled();
+                makeComponentEnabled();
             }
-            
+
             app.modeifiedFile = false;
             spinner.stop();
         });
     }
 
-    function _handelFilesDropdownChange() {
-        if (app.modeifiedFile && !_confirmDiscard()) {
+    function handelFilesDropdownChange() {
+        if (app.modeifiedFile && !confirmDiscard()) {
             $(this).val($.data(this, 'current'));
             return false;
         }
@@ -807,16 +788,16 @@ jQuery.noConflict();
         app.currentFileKey = $filesDropdown.val();
 
         spinner.spin();
-        service.getFile(app.currentFileKey).then(function (fileData) {
-            _setEditorContent(fileData);
+        service.getFile(app.currentFileKey).then(function(fileData) {
+            setEditorContent(fileData);
             spinner.stop();
         });
 
         app.modeifiedFile = false;
     }
 
-    function _handleNewFileBtnClick() {
-        if (app.modeifiedFile && !_confirmDiscard()) {
+    function handleNewFileBtnClick() {
+        if (app.modeifiedFile && !confirmDiscard()) {
             return;
         }
 
@@ -825,28 +806,28 @@ jQuery.noConflict();
             return;
         }
 
-        fileName = _createNameForNewFile(fileName.trim());
-        if (_isDuplicatedFileName(fileName)) {
+        fileName = createNameForNewFile(fileName.trim());
+        if (isDuplicatedFileName(fileName)) {
             alert(i18n.msg_file_name_is_duplicated);
             return;
         }
 
-        var newFileInfo = _addNewTempFile(fileName);
-        _renderFilesDropdown(newFileInfo.file.fileKey);
+        var newFileInfo = addNewTempFile(fileName);
+        renderFilesDropdown(newFileInfo.file.fileKey);
 
-        var defaultSource = _getDefaultSourceForNewFile();
-        _setEditorContent(defaultSource);
+        var defaultSource = getDefaultSourceForNewFile();
+        setEditorContent(defaultSource);
         app.modeifiedFile = false;
 
-        _refreshFilesDropdown();
-    };
+        refreshFilesDropdown();
+    }
 
-    function _handleLibsMultipleChoiceMouseDown(e) {
+    function handleLibsMultipleChoiceMouseDown(e) {
         e.preventDefault();
 
         e.target.selected = !e.target.selected;
         if (e.target.selected) {
-            app.removingLibs = app.removingLibs.filter(function (item) {
+            app.removingLibs = app.removingLibs.filter(function(item) {
                 return item !== e.target.textContent;
             });
         } else {
@@ -854,11 +835,11 @@ jQuery.noConflict();
         }
 
         var scroll = $librariesMultipleChoice.scrollTop();
-        setTimeout(function () { $librariesMultipleChoice.scrollTop(scroll); }, 0);
+        setTimeout(function() { $librariesMultipleChoice.scrollTop(scroll); }, 0);
         $librariesMultipleChoice.focus();
     }
 
-    function _handleSubmitBtn(e) {
+    function handleSubmitBtn(e) {
         // submit event
         e.preventDefault();
 
@@ -866,74 +847,74 @@ jQuery.noConflict();
         var fileName = $filesDropdown.find('option:selected').text();
         var selectingFileName = $filesDropdown.find('option:selected').text().trim();
         var newFileKey = '';
-        service.uploadFile(fileName, editor.getValue()).then(function (file) {
+        service.uploadFile(fileName, editor.getValue()).then(function(file) {
             newFileKey = file.fileKey;
 
             return service.getCustomization();
-        }).then(function (customization) {
-            var content = _createUpdatingContent(customization, newFileKey);
-            var newCustomization = _createUpdatingCustomization(customization, content);
+        }).then(function(customization) {
+            var content = createUpdatingContent(customization, newFileKey);
+            var newCustomization = createUpdatingCustomization(customization, content);
 
             return service.updateCustomization(newCustomization).catch(function() {
                 alert(i18n.msg_failed_to_update);
                 spinner.stop();
             });
-        }).then(function (resp) {
+        }).then(function(resp) {
             if (!$deployConfigCheckbox.prop('checked')) {
                 return kintone.Promise.resolve();
-            } else {
-                return service.deployApp();
             }
-        }).then(function () {
-            return _refreshFilesDropdown();
-        }).then(function () {
-            _selectFile(selectingFileName);
+
+            return service.deployApp();
+        }).then(function() {
+            return refreshFilesDropdown();
+        }).then(function() {
+            selectFile(selectingFileName);
             app.modeifiedFile = false;
             spinner.stop();
-        }).catch(function (err) {
+        }).catch(function(err) {
             spinner.stop();
         });
     }
 
-    function _handleBackBtn(e) {
+    function handleBackBtn(e) {
         // back event
         e.preventDefault();
-        if (app.modeifiedFile && !_confirmDiscard()) {
+        if (app.modeifiedFile && !confirmDiscard()) {
             return;
         }
         history.back();
-    };
+    }
 
-    function _handleCancelBtn(e) {
+    function handleCancelBtn(e) {
         // discard event
         e.preventDefault();
-        if (!_confirmDiscard()) {
+        if (!confirmDiscard()) {
             return;
         }
         spinner.spin();
-        _refresh().then(function () {
+        refresh().then(function() {
             spinner.stop();
         });
-    };
+    }
 
-    $(function () {
+    $(function() {
         spinner.init();
-        _renderUIWithLocalization();
-        _initEditor();
-        _renderLibrariesMultipleChoice();
+        renderUIWithLocalization();
+        initEditor();
+        renderLibrariesMultipleChoice();
 
         spinner.spin();
-        _refresh().then(function () {
-            $typeDropdown.change(_handelTypeDropdownChange);
-            $filesDropdown.change(_handelFilesDropdownChange);
-            $newFileBtn.click(_handleNewFileBtnClick);
-            $librariesMultipleChoice.mousedown(_handleLibsMultipleChoiceMouseDown);
-    
+        refresh().then(function() {
+            $typeDropdown.change(handelTypeDropdownChange);
+            $filesDropdown.change(handelFilesDropdownChange);
+            $newFileBtn.click(handleNewFileBtnClick);
+            $librariesMultipleChoice.mousedown(handleLibsMultipleChoiceMouseDown);
+
             links.render($linksContainer);
-    
-            $submitBtn.click(_handleSubmitBtn);
-            $cancelBtn.click(_handleCancelBtn);
-            $backBtn.click(_handleBackBtn);
+
+            $submitBtn.click(handleSubmitBtn);
+            $cancelBtn.click(handleCancelBtn);
+            $backBtn.click(handleBackBtn);
 
             spinner.stop();
         });
