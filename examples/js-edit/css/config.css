@@ -33,6 +33,14 @@
     width: 100%;
 }
 
+#jsedit-editor.disabled .ace_content:hover {
+  cursor: not-allowed;
+}
+
+#jsedit-editor.disabled .ace_cursor {
+  display: none;
+}
+
 .jsedit-config-wrapper {
   margin-top: 16px;
 }
