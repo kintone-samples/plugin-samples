@@ -523,41 +523,6 @@ jQuery.noConflict();
         });
     }
 
-    function _handelTypeDropdownChange() {
-        if (app.modeifiedFile) {
-            if (!_confirmDiscard()) {
-                $(this).val($.data(this, 'current'));
-                return false;
-            }
-        }
-
-        app.currentType = $typeDropdown.val();
-        spinner.spin()
-        _refresh().then(function () {
-            app.modeifiedFile = false;
-            spinner.stop();
-        });
-    }
-
-    function _handelFilesDropdownChange() {
-        if (app.modeifiedFile) {
-            if (!_confirmDiscard()) {
-                $(this).val($.data(this, 'current'));
-                return false;
-            }
-        }
-
-        app.currentFileKey = $filesDropdown.val();
-
-        spinner.spin();
-        service.getFile(app.currentFileKey).then(function (fileData) {
-            _setEditorContent(fileData);
-            spinner.stop();
-        });
-
-        app.modeifiedFile = false;
-    }
-
     function _createNameForNewFile(name) {
         var fileName = name;
         switch (app.currentType) {
@@ -761,9 +726,98 @@ jQuery.noConflict();
         app.currentFileKey = fileKey;
     }
 
+    function _disabledEditor() {
+        var el = editor.container;
+        el.classList.add('disabled');
+        editor.setOptions({readOnly: true});
+    }
+
+    function _enabledEditor() {
+        var el = editor.container;
+        el.classList.remove('disabled');
+        editor.setOptions({readOnly: false});
+    }
+
+    function _disabledSubmitBtn() {
+        $submitBtn.removeClass('kintoneplugin-button-dialog-ok')
+        .addClass('kintoneplugin-button-disabled')
+        .prop('disabled', true);
+    }
+
+    function _enabledSubmitBtn() {
+        $submitBtn.removeClass('kintoneplugin-button-disabled')
+        .addClass('kintoneplugin-button-dialog-ok')
+        .prop('disabled', false);
+    }
+
+    function _disabledCancelBtn() {
+        $cancelBtn.removeClass('kintoneplugin-button-dialog-cancel')
+        .addClass('kintoneplugin-button-disabled')
+        .prop('disabled', true);
+    }
+
+    function _enabledCancelBtn() {
+        $cancelBtn.removeClass('kintoneplugin-button-disabled')
+        .addClass('kintoneplugin-button-dialog-cancel')
+        .prop('disabled', false);
+    }    
+
+    function _makeComponentDisabled() {
+        _disabledEditor();
+        _disabledSubmitBtn();
+        _disabledCancelBtn();
+    }
+
+    function _makeComponentEnabled() {
+        _enabledEditor();
+        _enabledSubmitBtn();
+        _enabledCancelBtn();
+    }
+
     function _confirmDiscard() {
         return (window.confirm(i18n.msg_discard));
     };
+
+    function _handelTypeDropdownChange() {
+        if (app.modeifiedFile) {
+            if (!_confirmDiscard()) {
+                $(this).val($.data(this, 'current'));
+                return false;
+            }
+        }
+
+        app.currentType = $typeDropdown.val();
+        spinner.spin()
+        _refresh().then(function () {
+            if (!app.currentFileKey) {
+                _makeComponentDisabled();
+            } else {
+                _makeComponentEnabled();
+            }
+            
+            app.modeifiedFile = false;
+            spinner.stop();
+        });
+    }
+
+    function _handelFilesDropdownChange() {
+        if (app.modeifiedFile) {
+            if (!_confirmDiscard()) {
+                $(this).val($.data(this, 'current'));
+                return false;
+            }
+        }
+
+        app.currentFileKey = $filesDropdown.val();
+
+        spinner.spin();
+        service.getFile(app.currentFileKey).then(function (fileData) {
+            _setEditorContent(fileData);
+            spinner.stop();
+        });
+
+        app.modeifiedFile = false;
+    }
 
     function _handleNewFileBtnClick() {
         if (app.modeifiedFile) {
