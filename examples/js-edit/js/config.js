@@ -876,19 +876,19 @@ jQuery.noConflict();
 
         spinner.spin();
         _refresh().then(function () {
+            $typeDropdown.change(_handelTypeDropdownChange);
+            $filesDropdown.change(_handelFilesDropdownChange);
+            $newFileBtn.click(_handleNewFileBtnClick);
+            $librariesMultipleChoice.mousedown(_handleLibsMultipleChoiceMouseDown);
+    
+            links.render($linksContainer);
+    
+            $submitBtn.click(_handleSubmitBtn);
+            $cancelBtn.click(_handleCancelBtn);
+            $backBtn.click(_handleBackBtn);
+
             spinner.stop();
         });
-
-        $typeDropdown.change(_handelTypeDropdownChange);
-        $filesDropdown.change(_handelFilesDropdownChange);
-        $newFileBtn.click(_handleNewFileBtnClick);
-        $librariesMultipleChoice.mousedown(_handleLibsMultipleChoiceMouseDown);
-
-        links.render($linksContainer);
-
-        $submitBtn.click(_handleSubmitBtn);
-        $cancelBtn.click(_handleCancelBtn);
-        $backBtn.click(_handleBackBtn);
     });
 
 })(jQuery, kintone.$PLUGIN_ID);
