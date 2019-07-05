@@ -423,137 +423,13 @@ jQuery.noConflict();
         })
     }
 
-    function initSubmitBtn() {
-        function _addNewLibs(tmpFiles) {
-            var i, j;
-            for (i = 0; i < libs.length; i++) {
-                var lib = libs[i];
-                var option = $librariesMultipleChoice.get(0).options[i];
-                if (option.selected) {
-                    var isNewLib = true;
-                    for (j = 0; j < jsFiles.length; j++) {
-                        var jsFile = jsFiles[j];
-                        if (jsFile.url) {
-                            if (getLib(jsFile.url) === lib) {
-                                isNewLib = false;
-                            }
-                        }
-                    }
-                    if (!isNewLib) {
-                        continue;
-                    }
-                    if ($.isArray(lib.url)) {
-                        for (j = 0; j < lib.url.length; j++) {
-                            tmpFiles.push({
-                                type: 'URL',
-                                url: lib.url[j]
-                            });
-                        }
-                    } else {
-                        tmpFiles.push({
-                            type: 'URL',
-                            url: lib.url
-                        });
-                    }
-                }
-            }
-        };
-
-        function _isSelected(lib) {
-            for (var i = 0; i < libs.length; i++) {
-                if (lib === libs[i]) {
-                    var option = $librariesMultipleChoice.get(0).options[i];
-                    return (option.selected);
-                }
-            }
-            return false;
-        };
-
-        function _uploadFile() {
-            if (currentIndex < 0) {
-                return kintone.Promise.resolve();
-            } else {
-                if (jsFiles[currentIndex].type !== 'FILE') {
-                    return kintone.Promise.reject();
-                }
-                return service.uploadFile(jsFiles[currentIndex].file.name);
-            }
-        }
-
-        function _updateCustomization(f) {
-            jsFiles[currentIndex].file.fileKey = f.fileKey;
-
-            var tmpFiles = [];
-            _addNewLibs(tmpFiles);
-
-            for (var i = 0; i < jsFiles.length; i++) {
-                var jsFile = jsFiles[i];
-                if (jsFile.url) {
-                    var lib = getLib(jsFile.url);
-                    if (lib) {
-                        if (_isSelected(lib)) {
-                            tmpFiles.push(jsFile);
-                        }
-                    } else {
-                        tmpFiles.push(jsFile);
-                    }
-                } else if (jsFile.file && jsFile.file.fileKey) {
-                    tmpFiles.push(jsFile);
-                }
-            }
-
-            var data = {};
-            if (getCurrentType() === 'js_pc') {
-                data.desktop = {
-                    js: tmpFiles
-                };
-            } else if (getCurrentType() === 'js_mb') {
-                data.mobile = {
-                    js: tmpFiles
-                };
-            } else if (getCurrentType() === 'css_pc') {
-                data.desktop = {
-                    css: tmpFiles
-                };
-            }
-            return service.updateCustomization(data);
-        };
-
-        function _handleSubmitClick(e) {
-            e.preventDefault();
-            if (!jsFiles) {
-                return;
-            }
-
-            spinner.spin();
-            _uploadFile().then(function (f) {
-                return _updateCustomization(f);
-            }).then(function (f) {
-                if ($deployConfigCheckbox.prop('checked')) {
-                    return service.deployApp();
-                } else {
-                    return kintone.Promise.resolve();
-                }
-            }).then(function () {
-                getFiles(true);
-                app.modeifiedFile = false;
-                spinner.stop();
-            }).catch(function (err) {
-                alert(i18n.msg_failed_to_update);
-                spinner.stop();
-            });
-        }
-
-        $submitBtn.click(_handleSubmitClick);
-    }
-
     function _handleLibsMultipleChoiceMouseDown(e) {
         e.preventDefault();
         var select = this;
         var scroll = select.scrollTop;
         e.target.selected = !e.target.selected;
         if (e.target.selected) {
-            app.removingLibs = app.removingLibs.filter(function(item) {
+            app.removingLibs = app.removingLibs.filter(function (item) {
                 return item !== e.target.textContent;
             });
         } else {
@@ -562,7 +438,6 @@ jQuery.noConflict();
 
         setTimeout(function () { select.scrollTop = scroll; }, 0);
         $(select).focus();
-        app.modeifiedFile = true;
     }
 
     function _initEditor() {
@@ -651,11 +526,15 @@ jQuery.noConflict();
         $librariesMultipleChoice.val(usedLibs);
     }
 
-    function _refresh() {
-        spinner.spin();
-        service.getCustomization().then(function (customization) {
+    function _refreshFilesDropdown() {
+        return service.getCustomization().then(function (customization) {
             _getCustomizationInfo(customization);
             _renderFilesDropdown();
+        });
+    }
+
+    function _refresh() {
+        return _refreshFilesDropdown().then(function () {
             _setUsedLibsMultipleChoice();
 
             if (app.currentFileKey === null) {
@@ -665,10 +544,6 @@ jQuery.noConflict();
             return service.getFile(app.currentFileKey);
         }).then(function (fileData) {
             _setEditorContent(fileData);
-            _renderLibrariesMultipleChoice();
-            spinner.stop();
-        }).catch(function (err) {
-            spinner.stop();
         });
     }
 
@@ -681,8 +556,11 @@ jQuery.noConflict();
         }
 
         app.currentType = $typeDropdown.val();
-        _refresh();
-        app.modeifiedFile = false;
+        spinner.spin()
+        _refresh().then(function () {
+            app.modeifiedFile = false;
+            spinner.stop();
+        });
     }
 
     function _handelFilesDropdownChange() {
@@ -799,7 +677,7 @@ jQuery.noConflict();
             return;
         }
 
-        fileName = _createNameForNewFile(fileName);
+        fileName = _createNameForNewFile(fileName.trim());
         if (_isDuplicatedFileName(fileName)) {
             alert(i18n.msg_file_name_is_duplicated);
             return;
@@ -852,27 +730,27 @@ jQuery.noConflict();
             .map(function (index, option) {
                 var libName = option.textContent;
                 return _createLibLinks(cdnLibsDetail[libName]);
-            }).filter(function(index, url) {
+            }).filter(function (index, url) {
                 return url.indexOf(fileType) !== -1;
             }).toArray();
 
-        var removingLibs = $(app.removingLibs).map(function(index, libName) {
-                return _createLibLinks(cdnLibsDetail[libName]);
-            }).toArray();
+        var removingLibs = $(app.removingLibs).map(function (index, libName) {
+            return _createLibLinks(cdnLibsDetail[libName]);
+        }).toArray();
 
-        customizationInfos.filter(function(item) {
+        customizationInfos.filter(function (item) {
             return item.type === 'URL';
-        }).forEach(function(item) {
+        }).forEach(function (item) {
             if (selectedLibs.indexOf(item.url) === -1 && removingLibs.indexOf(item.url) === -1) {
                 selectedLibs.push(item.url);
             }
         });
 
-        var newCustomizationInfo = selectedLibs.map(function(libUrl) {
-            return {type: 'URL', url: libUrl}
+        var newCustomizationInfo = selectedLibs.map(function (libUrl) {
+            return { type: 'URL', url: libUrl }
         });
 
-        newCustomizationInfo = newCustomizationInfo.concat(customizationInfos.filter(function(item) {
+        newCustomizationInfo = newCustomizationInfo.concat(customizationInfos.filter(function (item) {
             return item.type === 'FILE';
         }));
 
@@ -924,11 +802,22 @@ jQuery.noConflict();
         return newCustomization;
     }
 
+    function _selectFile(fileName) {
+        var fileKey = $filesDropdown.children().filter(function(index, $option) {
+            return $($option).text().trim() === fileName;
+        }).val();
+
+        $filesDropdown.val(fileKey);
+        app.currentFileKey = fileKey;
+    }
+
     function _handleSubmitBtn(e) {
         // submit event
         e.preventDefault();
 
+        spinner.spin();
         var fileName = $filesDropdown.find('option:selected').text();
+        var selectingFileName = $filesDropdown.find('option:selected').text().trim();
         var newFileKey = '';
         service.uploadFile(fileName, editor.getValue()).then(function (file) {
             newFileKey = file.fileKey;
@@ -939,13 +828,20 @@ jQuery.noConflict();
             var newCustomization = _createUpdatingCustomization(customization, content);
 
             return service.updateCustomization(newCustomization);
-        }).then(function(resp) {
-            // TODO check for deploy
-            // refresh data
-
-            console.log(resp);
+        }).then(function (resp) {
+            if (!$deployConfigCheckbox.prop('checked')) {
+                return kintone.Promise.resolve();
+            } else {
+                return service.deployApp();
+            }
+        }).then(function () {
+            return _refreshFilesDropdown();
+        }).then(function () {
+            _selectFile(selectingFileName);
+            app.modeifiedFile = false;
+            spinner.stop();
         }).catch(function (err) {
-
+            spinner.stop();
         });
     }
 
@@ -966,15 +862,22 @@ jQuery.noConflict();
         if (!_confirmDiscard()) {
             return;
         }
-        _refresh();
+        spinner.spin();
+        _refresh().then(function () {
+            spinner.stop();
+        });
     };
 
     $(function () {
         spinner.init();
         _renderUIWithLocalization();
         _initEditor();
+        _renderLibrariesMultipleChoice();
 
-        _refresh();
+        spinner.spin();
+        _refresh().then(function () {
+            spinner.stop();
+        });
 
         $typeDropdown.change(_handelTypeDropdownChange);
         $filesDropdown.change(_handelFilesDropdownChange);
