@@ -824,7 +824,10 @@ jQuery.noConflict();
             var content = _createUpdatingContent(customization, newFileKey);
             var newCustomization = _createUpdatingCustomization(customization, content);
 
-            return service.updateCustomization(newCustomization);
+            return service.updateCustomization(newCustomization).catch(function() {
+                alert(i18n.msg_failed_to_update);
+                spinner.stop();
+            });
         }).then(function (resp) {
             if (!$deployConfigCheckbox.prop('checked')) {
                 return kintone.Promise.resolve();
