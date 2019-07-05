@@ -284,14 +284,6 @@ jQuery.noConflict();
         'Vue.js': ['vuejs', 'v1.0.28', ['vue.min.js']]
     };
 
-    var getCurrentType = function () {
-        return $typeDropdown.val();
-    };
-
-    var _confirmDiscard = function () {
-        return (window.confirm(i18n.msg_discard));
-    };
-
     var service = {
         uploadFile: function (fileName, fileValue) {
             return new kintone.Promise(function (resolve, reject) {
@@ -423,23 +415,6 @@ jQuery.noConflict();
         })
     }
 
-    function _handleLibsMultipleChoiceMouseDown(e) {
-        e.preventDefault();
-        var select = this;
-        var scroll = select.scrollTop;
-        e.target.selected = !e.target.selected;
-        if (e.target.selected) {
-            app.removingLibs = app.removingLibs.filter(function (item) {
-                return item !== e.target.textContent;
-            });
-        } else {
-            app.removingLibs.push(e.target.textContent);
-        }
-
-        setTimeout(function () { select.scrollTop = scroll; }, 0);
-        $(select).focus();
-    }
-
     function _initEditor() {
         editor = ace.edit('jsedit-editor');
         editor.$blockScrolling = Infinity;
@@ -501,6 +476,7 @@ jQuery.noConflict();
     }
 
     function _setEditorContent(value) {
+        var editorValue = value ? value : '';
         switch (app.currentType) {
             case 'js_pc':
             case 'js_mb':
@@ -511,7 +487,7 @@ jQuery.noConflict();
                 break;
         }
 
-        editor.setValue(value);
+        editor.setValue(editorValue);
         editor.selection.moveCursorToPosition({ row: 1, column: 0 });
         editor.selection.selectLine();
         app.modeifiedFile = false;
@@ -665,32 +641,6 @@ jQuery.noConflict();
         return defaultSource;
     }
 
-    function _handleNewFileBtnClick() {
-        if (app.modeifiedFile) {
-            if (!_confirmDiscard()) {
-                return;
-            }
-        }
-
-        var fileName = window.prompt(i18n.msg_input_file_name);
-        if (!fileName) {
-            return;
-        }
-
-        fileName = _createNameForNewFile(fileName.trim());
-        if (_isDuplicatedFileName(fileName)) {
-            alert(i18n.msg_file_name_is_duplicated);
-            return;
-        }
-
-        var newFileInfo = _addNewTempFile(fileName);
-        _renderFilesDropdown(newFileInfo.file.fileKey);
-
-        var defaultSource = _getDefaultSourceForNewFile();
-        _setEditorContent(defaultSource);
-        app.modeifiedFile = false;
-    };
-
     function _getCustomizationPart(customization) {
         var customizationPart = [];
         switch (app.currentType) {
@@ -809,6 +759,53 @@ jQuery.noConflict();
 
         $filesDropdown.val(fileKey);
         app.currentFileKey = fileKey;
+    }
+
+    function _confirmDiscard() {
+        return (window.confirm(i18n.msg_discard));
+    };
+
+    function _handleNewFileBtnClick() {
+        if (app.modeifiedFile) {
+            if (!_confirmDiscard()) {
+                return;
+            }
+        }
+
+        var fileName = window.prompt(i18n.msg_input_file_name);
+        if (!fileName) {
+            return;
+        }
+
+        fileName = _createNameForNewFile(fileName.trim());
+        if (_isDuplicatedFileName(fileName)) {
+            alert(i18n.msg_file_name_is_duplicated);
+            return;
+        }
+
+        var newFileInfo = _addNewTempFile(fileName);
+        _renderFilesDropdown(newFileInfo.file.fileKey);
+
+        var defaultSource = _getDefaultSourceForNewFile();
+        _setEditorContent(defaultSource);
+        app.modeifiedFile = false;
+    };
+
+    function _handleLibsMultipleChoiceMouseDown(e) {
+        e.preventDefault();
+        var select = this;
+        var scroll = select.scrollTop;
+        e.target.selected = !e.target.selected;
+        if (e.target.selected) {
+            app.removingLibs = app.removingLibs.filter(function (item) {
+                return item !== e.target.textContent;
+            });
+        } else {
+            app.removingLibs.push(e.target.textContent);
+        }
+
+        setTimeout(function () { select.scrollTop = scroll; }, 0);
+        $(select).focus();
     }
 
     function _handleSubmitBtn(e) {
