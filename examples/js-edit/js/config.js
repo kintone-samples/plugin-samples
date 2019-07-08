@@ -813,16 +813,16 @@ jQuery.noConflict();
             if (!fileName) {
                 return;
             }
-    
+
             fileName = createNameForNewFile(fileName.trim());
             if (isDuplicatedFileName(fileName)) {
                 alert(i18n.msg_file_name_is_duplicated);
                 return;
             }
-    
+
             var newFileInfo = addNewTempFile(fileName);
             renderFilesDropdown(newFileInfo.file.fileKey);
-    
+
             var defaultSource = getDefaultSourceForNewFile();
             setEditorContent(defaultSource);
             app.modeifiedFile = true;
