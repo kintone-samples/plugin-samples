@@ -466,7 +466,10 @@ jQuery.noConflict();
         $filesDropdown.empty();
         var files = getFilesByType(app.currentType);
         files.forEach(function(file) {
-            $filesDropdown.append('<option value=' + file.fileKey + '> ' + file.name + '</option>');
+            $('<option></option>').text(file.name)
+                .val(file.fileKey)
+                .data('file-name', file.name)
+                .appendTo($filesDropdown);
         });
 
         if (typeof defaultValue !== 'undefined') {
@@ -705,7 +708,7 @@ jQuery.noConflict();
 
     function selectFile(fileName) {
         var fileKey = $filesDropdown.children().filter(function(index, $option) {
-            return $($option).text().trim() === fileName;
+            return $($option).data('file-name') === fileName;
         }).val();
 
         $filesDropdown.val(fileKey);
@@ -851,8 +854,8 @@ jQuery.noConflict();
         e.preventDefault();
 
         spinner.spin();
-        var fileName = $filesDropdown.find('option:selected').text();
-        var selectingFileName = $filesDropdown.find('option:selected').text().trim();
+        var fileName = $filesDropdown.find('option:selected').data('file-name');
+        var selectingFileName = $filesDropdown.find('option:selected').data('file-name');
         var newFileKey = '';
         service.uploadFile(fileName, editor.getValue()).then(function(file) {
             newFileKey = file.fileKey;
