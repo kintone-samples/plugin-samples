@@ -504,6 +504,8 @@ jQuery.noConflict();
         return service.getCustomization().then(function(customization) {
             getCustomizationInfo(customization);
             renderFilesDropdown();
+
+            return kintone.Promise.resolve();
         });
     }
 
@@ -781,8 +783,8 @@ jQuery.noConflict();
 
     function handelFilesDropdownChange() {
         if (app.modeifiedFile && !confirmDiscard()) {
-            $(this).val($.data(this, 'current'));
-            return false;
+            $filesDropdown.val(app.currentFileKey);
+            return;
         }
 
         app.currentFileKey = $filesDropdown.val();
@@ -793,6 +795,8 @@ jQuery.noConflict();
             spinner.stop();
         });
 
+        $filesDropdown.find('option[value="' + NO_FILE_KEY + '"]').remove();
+
         app.modeifiedFile = false;
     }
 
@@ -801,25 +805,25 @@ jQuery.noConflict();
             return;
         }
 
-        var fileName = window.prompt(i18n.msg_input_file_name);
-        if (!fileName) {
-            return;
-        }
-
-        fileName = createNameForNewFile(fileName.trim());
-        if (isDuplicatedFileName(fileName)) {
-            alert(i18n.msg_file_name_is_duplicated);
-            return;
-        }
-
-        var newFileInfo = addNewTempFile(fileName);
-        renderFilesDropdown(newFileInfo.file.fileKey);
-
-        var defaultSource = getDefaultSourceForNewFile();
-        setEditorContent(defaultSource);
-        app.modeifiedFile = false;
-
-        refreshFilesDropdown();
+        refreshFilesDropdown().then(function() {
+            var fileName = window.prompt(i18n.msg_input_file_name);
+            if (!fileName) {
+                return;
+            }
+    
+            fileName = createNameForNewFile(fileName.trim());
+            if (isDuplicatedFileName(fileName)) {
+                alert(i18n.msg_file_name_is_duplicated);
+                return;
+            }
+    
+            var newFileInfo = addNewTempFile(fileName);
+            renderFilesDropdown(newFileInfo.file.fileKey);
+    
+            var defaultSource = getDefaultSourceForNewFile();
+            setEditorContent(defaultSource);
+            app.modeifiedFile = true;
+        });
     }
 
     function handleLibsMultipleChoiceMouseDown(e) {
