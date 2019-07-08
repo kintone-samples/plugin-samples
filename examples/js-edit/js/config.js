@@ -392,7 +392,10 @@ jQuery.noConflict();
 
         $librariesMultipleChoice.empty();
         libs.forEach(function(lib) {
-            $librariesMultipleChoice.append('<option value=' + lib.key + '>' + lib.name + '</option>');
+            $('<option></option>').text(lib.name + '(' + lib.version + ')')
+                .val(lib.key)
+                .data('lib-name', lib.name)
+                .appendTo($librariesMultipleChoice);
         });
     }
 
@@ -626,7 +629,7 @@ jQuery.noConflict();
 
         var selectedLibs = $librariesMultipleChoice.find('option:selected')
             .map(function(index, option) {
-                var libName = option.textContent;
+                var libName = $(option).data('lib-name');
                 return createLibLinks(cdnLibsDetail[libName]);
             }).filter(function(index, url) {
                 return url.match(fileTypeRegex) !== null;
@@ -832,10 +835,10 @@ jQuery.noConflict();
         e.target.selected = !e.target.selected;
         if (e.target.selected) {
             app.removingLibs = app.removingLibs.filter(function(item) {
-                return item !== e.target.textContent;
+                return item !== $(e.target).data('lib-name');
             });
         } else {
-            app.removingLibs.push(e.target.textContent);
+            app.removingLibs.push($(e.target).data('lib-name'));
         }
 
         var scroll = $librariesMultipleChoice.scrollTop();
