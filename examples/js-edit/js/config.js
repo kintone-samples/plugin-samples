@@ -444,7 +444,7 @@ jQuery.noConflict();
         app.customization.mobile = $.extend(true, {}, customization.mobile);
     }
 
-    function getFilesByType() {
+    function getCustomizationFiles() {
         var customizationInfo = getCustomizationPart(app.customization);
         return customizationInfo.filter(function(item) {
             return item.type === 'FILE';
@@ -453,7 +453,7 @@ jQuery.noConflict();
         });
     }
 
-    function getLibLinksByType() {
+    function getCustomizationLinks() {
         var customizationInfo = getCustomizationPart(app.customization);
         return customizationInfo.filter(function(item) {
             return item.type === 'URL';
@@ -464,7 +464,7 @@ jQuery.noConflict();
 
     function renderFilesDropdown(defaultValue) {
         $filesDropdown.empty();
-        var files = getFilesByType();
+        var files = getCustomizationFiles();
         files.forEach(function(file) {
             $('<option></option>').text(file.name)
                 .val(file.fileKey)
@@ -498,7 +498,7 @@ jQuery.noConflict();
     }
 
     function setUsedLibsMultipleChoice() {
-        var libLinks = getLibLinksByType();
+        var libLinks = getCustomizationLinks();
         var usedLibs = libLinks.map(function(link) {
             return link.split('/')[3];
         });
@@ -549,7 +549,7 @@ jQuery.noConflict();
     }
 
     function isDuplicatedFileName(fileName) {
-        var checkFiles = getFilesByType();
+        var checkFiles = getCustomizationFiles();
         var dupplicatedFiles = checkFiles.filter(function(item) {
             return item.name === fileName;
         });
