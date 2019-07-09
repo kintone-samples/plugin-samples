@@ -909,6 +909,11 @@ jQuery.noConflict();
         }
         spinner.spin();
         refresh().then(function() {
+            if (!app.currentFileKey) {
+                makeComponentDisabled();
+            } else {
+                makeComponentEnabled();
+            }
             spinner.stop();
         });
     }
