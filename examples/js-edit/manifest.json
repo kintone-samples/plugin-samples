@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "version": 4,
+  "version": 5,
   "type": "APP",
   "name": {
     "ja": "JSEdit for kintone",
