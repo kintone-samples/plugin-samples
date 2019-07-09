@@ -829,6 +829,12 @@ jQuery.noConflict();
             var defaultSource = getDefaultSourceForNewFile();
             setEditorContent(defaultSource);
             app.modeifiedFile = true;
+
+            if (!app.currentFileKey) {
+                makeComponentDisabled();
+            } else {
+                makeComponentEnabled();
+            }
         });
     }
 
@@ -925,6 +931,12 @@ jQuery.noConflict();
             $submitBtn.click(handleSubmitBtn);
             $cancelBtn.click(handleCancelBtn);
             $backBtn.click(handleBackBtn);
+
+            if (!app.currentFileKey) {
+                makeComponentDisabled();
+            } else {
+                makeComponentEnabled();
+            }
 
             spinner.stop();
         });
