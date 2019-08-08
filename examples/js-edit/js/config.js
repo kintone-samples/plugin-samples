@@ -596,7 +596,7 @@ jQuery.noConflict();
                     '})();\n';
                 break;
             case 'js_mb':
-                defaultSource = '(function($) {\n' +
+                defaultSource = '(function() {\n' +
                     '  \'use strict\';\n' +
                     '  kintone.events.on(\'mobile.app.record.index.show\', function(e) {\n' +
                     '  });\n' +
