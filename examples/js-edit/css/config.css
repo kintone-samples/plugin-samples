@@ -54,10 +54,14 @@
   margin-right: 8px;
 }
 
-.new-file {
+.jsedit-plugin-container .new-file,
+.jsedit-plugin-container .kintoneplugin-select-outer {
+  vertical-align: top;
+}
+
+.jsedit-plugin-container .new-file {
   margin-right: 8px;
   display: inline-block;
-  vertical-align: top;
 }
 
 .jsedit-plugin-libraries-wrapper select {
