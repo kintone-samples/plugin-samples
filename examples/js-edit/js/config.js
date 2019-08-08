@@ -589,12 +589,11 @@ jQuery.noConflict();
         var defaultSource;
         switch (app.currentType) {
             case 'js_pc':
-                defaultSource = 'jQuery.noConflict();\n' +
-                    '(function($) {\n' +
+                defaultSource = '(function() {\n' +
                     '  \'use strict\';\n' +
                     '  kintone.events.on(\'app.record.index.show\', function(e) {\n' +
                     '  });\n' +
-                    '})(jQuery);\n';
+                    '})();\n';
                 break;
             case 'js_mb':
                 defaultSource = 'jQuery.noConflict();\n' +
