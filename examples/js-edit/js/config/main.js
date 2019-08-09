@@ -477,12 +477,14 @@
         }
 
         refreshFilesDropdown().then(function () {
+            ui.showSpinner();
             var fileName = window.prompt(i18n.msg_input_file_name);
             if (!fileName) {
-                return;
+                return refresh();
             }
+
             if (!isValidFileName(fileName)) {
-                return;
+                return kintone.Promise.resolve();
             }
 
             fileName = createNameForNewFile(fileName.trim());
@@ -493,11 +495,15 @@
             setEditorContent(defaultSource);
             app.modeifiedFile = true;
 
+            return kintone.Promise.resolve();
+        }).then(function() {
             if (!app.currentFileKey) {
                 makeComponentDisabled();
             } else {
                 makeComponentEnabled();
             }
+
+            ui.hideSpinner();
         });
     }
 
