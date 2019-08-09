@@ -13,6 +13,7 @@
 
     var CDN_URL = i18n.cdn_url;
     var NO_FILE_KEY = '-1';
+    var MAX_LENGHT_FILE_NAME = 255;
 
     var app = {
         customization: {
@@ -284,6 +285,21 @@
         return fileName;
     }
 
+    function isValidFileName(fileName) {
+        if (fileName.length > MAX_LENGHT_FILE_NAME) {
+            alert(i18n.msg_max_file_name_length_limit)
+            return false;
+        }
+
+        var specialCharRegex = /[\\/:\?\*\|"<>\.]/
+        if (fileName.match(specialCharRegex) !== null) {
+            alert(i18n.msg_file_name_includ_special_character)
+            return false;
+        }
+
+        return true;
+    }
+
     function addNewTempFile(fileName) {
         var newFileInfo = {
             type: 'FILE',
@@ -334,7 +350,7 @@
     }
 
     function createLibLinks(libKey, libInfo) {
-        return libInfo[2].map(function(urlName) {
+        return libInfo[2].map(function (urlName) {
             return CDN_URL + libKey + '/' + libInfo[1] + '/' + urlName;
         });
     }
@@ -352,29 +368,29 @@
         }
 
         var selectedLibs = [];
-        libsMultipleChoice.getValue().map(function(libKey) {
+        libsMultipleChoice.getValue().map(function (libKey) {
             return createLibLinks(libKey, cdnLibsDetail[libKey]);
-        }).forEach(function(liblinks) {
-            liblinks.forEach(function(link) {
+        }).forEach(function (liblinks) {
+            liblinks.forEach(function (link) {
                 if (link.match(fileTypeRegex) && selectedLibs.indexOf(link) === -1) {
-                    selectedLibs.push(link); 
+                    selectedLibs.push(link);
                 }
             });
         });
 
-        var userLinks = customizationInfos.filter(function(item) {
+        var userLinks = customizationInfos.filter(function (item) {
             return item.type === 'URL' && item.url.match(CDN_URL) === null;
         });
 
-        userLinks.forEach(function(link) {
+        userLinks.forEach(function (link) {
             selectedLibs.push(link);
         })
 
-        var newCustomizationInfo = selectedLibs.map(function(libUrl) {
+        var newCustomizationInfo = selectedLibs.map(function (libUrl) {
             return { type: 'URL', url: libUrl };
         });
 
-        newCustomizationInfo = newCustomizationInfo.concat(customizationInfos.filter(function(item) {
+        newCustomizationInfo = newCustomizationInfo.concat(customizationInfos.filter(function (item) {
             return item.type === 'FILE';
         }));
 
@@ -390,7 +406,7 @@
             });
         } else {
             // Updating old file
-            customizationInfos.forEach(function(item, index) {
+            customizationInfos.forEach(function (item, index) {
                 if (item.type === 'FILE' && item.file.fileKey === app.currentFileKey) {
                     customizationInfos[index].file = { fileKey: newFileKey };
                     return false;
@@ -455,7 +471,7 @@
         app.currentFileKey = value;
 
         ui.showSpinner();
-        service.getFile(app.currentFileKey).then(function(fileData) {
+        service.getFile(app.currentFileKey).then(function (fileData) {
             setEditorContent(fileData);
             ui.hideSpinner();
         });
@@ -468,14 +484,16 @@
             return;
         }
 
-        refreshFilesDropdown().then(function() {
+        refreshFilesDropdown().then(function () {
             var fileName = window.prompt(i18n.msg_input_file_name);
             if (!fileName) {
                 return;
             }
+            if (!isValidFileName(fileName)) {
+                return;
+            }
 
             fileName = createNameForNewFile(fileName.trim());
-
             var newFileInfo = addNewTempFile(fileName);
             renderFilesDropdown(newFileInfo.file.fileKey);
 
@@ -495,46 +513,46 @@
         ui.showSpinner();
 
         var lastFileKey = filesDropdown.getValue();
-        var lastFileIndex = filesDropdown.getItems().map(function(item, i) {
-            return { fileKey: item.value, index: i};
-        }).filter(function(item) {
+        var lastFileIndex = filesDropdown.getItems().map(function (item, i) {
+            return { fileKey: item.value, index: i };
+        }).filter(function (item) {
             return item.fileKey === lastFileKey;
         })[0].index;
 
         var selectedFileKey = filesDropdown.getValue();
-        var selectedFile = filesDropdown.getItems().filter(function(item) {
+        var selectedFile = filesDropdown.getItems().filter(function (item) {
             return item.value === selectedFileKey;
         });
 
         var newFileKey = '';
-        service.uploadFile(selectedFile[0].label, editor.editor.getValue()).then(function(file) {
+        service.uploadFile(selectedFile[0].label, editor.editor.getValue()).then(function (file) {
             newFileKey = file.fileKey;
 
             return service.getCustomization();
-        }).then(function(customization) {
+        }).then(function (customization) {
             var content = createUpdatingContent(customization, newFileKey);
             var newCustomization = createUpdatingCustomization(customization, content);
 
-            return service.updateCustomization(newCustomization).catch(function() {
+            return service.updateCustomization(newCustomization).catch(function () {
                 alert(i18n.msg_failed_to_update);
                 ui.hideSpinner();
             });
-        }).then(function(resp) {
+        }).then(function (resp) {
             var notDeployApp = deployConfigCheckbox.getValue().length === 0;
             if (notDeployApp) {
                 return kintone.Promise.resolve();
             }
 
             return service.deployApp();
-        }).then(function() {
+        }).then(function () {
             return refreshFilesDropdown();
-        }).then(function() {
+        }).then(function () {
             var fileToSelect = filesDropdown.getItems()[lastFileIndex].value;
             filesDropdown.setValue(fileToSelect);
 
             app.modeifiedFile = false;
             ui.hideSpinner();
-        }).catch(function(err) {
+        }).catch(function (err) {
             ui.hideSpinner();
         });
     }
@@ -544,7 +562,7 @@
             return;
         }
         ui.showSpinner();
-        refresh().then(function() {
+        refresh().then(function () {
             if (!app.currentFileKey) {
                 makeComponentDisabled();
             } else {

@@ -38,6 +38,8 @@
                 msg_discard: 'Your changes will be discarded. Are you sure you want to continue?',
                 msg_failed_to_get_file: 'Failed to retrieve files!',
                 msg_failed_to_update: 'Failed to update!',
+                msg_max_file_name_length_limit: 'The max file name length is 255 characters',
+                msg_file_name_includ_special_character: 'The file name must not include \/:?*|""<>.',
                 msg_file_name_is_duplicated: 'This file name is duplicated. Please set a unique file name.',
                 msg_input_file_name: 'Input file name',
                 cdn_url: 'https://js.kintone.com/'
@@ -59,6 +61,8 @@
                 msg_discard: '変更は破棄されます。よろしいですか？',
                 msg_failed_to_get_file: 'ファイルの取得に失敗しました。',
                 msg_failed_to_update: '更新に失敗しました。',
+                msg_max_file_name_length_limit: 'ファイル名の入力制限は255文字となります。',
+                msg_file_name_includ_special_character: 'ファイル名は必ず \/:?*|""<>のような文字が含まないです。',
                 msg_file_name_is_duplicated: 'ファイル名が重複しています。重複のないように設定してください。',
                 msg_input_file_name: 'ファイル名を入力してください。',
                 cdn_url: 'https://js.cybozu.com/'
@@ -80,6 +84,8 @@
                 msg_discard: 'Your changes will be discarded. Are you sure you want to continue?',
                 msg_failed_to_get_file: 'Failed to retrieve files!',
                 msg_failed_to_update: 'Failed to update!',
+                msg_max_file_name_length_limit: 'The max file name length is 255 characters',
+                msg_file_name_includ_special_character: 'The file name must not include \/:?*|""<>.',
                 msg_file_name_is_duplicated: 'This file name is duplicated. Please set a unique file name.',
                 msg_input_file_name: 'Input file name',
                 cdn_url: 'https://js.cybozu.cn/'
