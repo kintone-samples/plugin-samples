@@ -12,6 +12,19 @@
   margin-right: 10px;
 }
 
+#jsedit-config .kuc-dropdown-selected {
+  width: 182px;
+  height: 46px;
+}
+
+#jsedit-config .kuc-dropdown-selected-name {
+  line-height: 46px;
+}
+
+#jsedit-config .kuc-dropdown-selected-label {
+  width: 158px;
+}
+
 #jsedit-config .jsedit-back-link {
   vertical-align: middle;
   line-height: 48px;
