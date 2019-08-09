@@ -24,14 +24,14 @@
       "https://js.cybozu.com/ace/v1.2.0/ext-language_tools.js",
       "https://js.cybozu.com/jquery/1.11.3/jquery.min.js",
       "https://unpkg.com/@kintone/kintone-ui-component@0.3.4/dist/kintone-ui-component.min.js",
-      "https://pc-300059-3.local:8000/examples/js-edit/js/config/common.js",
-      "https://pc-300059-3.local:8000/examples/js-edit/js/config/ui.js",
-      "https://pc-300059-3.local:8000/examples/js-edit/js/config/service.js",
-      "https://pc-300059-3.local:8000/examples/js-edit/js/config/main.js"
+      "js/config/common.js",
+      "js/config/ui.js",
+      "js/config/service.js",
+      "js/config/main.js"
     ],
     "css": [
       "https://unpkg.com/@kintone/kintone-ui-component@0.3.4/dist/kintone-ui-component.min.css",
-      "https://pc-300059-3.local:8000/examples/js-edit/css/config.css"
+      "css/config.css"
     ],
     "required_params": []
   }
