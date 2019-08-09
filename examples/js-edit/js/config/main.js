@@ -301,7 +301,7 @@
             return false;
         }
 
-        var specialCharRegex = /[\\/:\?\*\|"<>\.]/
+        var specialCharRegex = /[\\/:\?\*\|"<>]/
         if (fileName.match(specialCharRegex) !== null) {
             alert(i18n.msg_file_name_includ_special_character)
             return false;
