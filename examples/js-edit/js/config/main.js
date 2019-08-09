@@ -284,19 +284,6 @@
         return fileName;
     }
 
-    function isDuplicatedFileName(fileName) {
-        var checkFiles = getCustomizationFiles();
-        var dupplicatedFiles = checkFiles.filter(function(item) {
-            return item.name === fileName;
-        });
-
-        if (dupplicatedFiles.length > 0) {
-            return true;
-        }
-
-        return false;
-    }
-
     function addNewTempFile(fileName) {
         var newFileInfo = {
             type: 'FILE',
@@ -488,10 +475,6 @@
             }
 
             fileName = createNameForNewFile(fileName.trim());
-            if (isDuplicatedFileName(fileName)) {
-                alert(i18n.msg_file_name_is_duplicated);
-                return;
-            }
 
             var newFileInfo = addNewTempFile(fileName);
             renderFilesDropdown(newFileInfo.file.fileKey);
