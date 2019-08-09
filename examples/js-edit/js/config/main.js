@@ -335,27 +335,7 @@
     }
 
     function getDefaultSourceForNewFile() {
-        var defaultSource;
-        switch (app.currentType) {
-            case 'js_pc':
-                defaultSource = '(function() {\n' +
-                    '  \'use strict\';\n' +
-                    '  kintone.events.on(\'app.record.index.show\', function(e) {\n' +
-                    '  });\n' +
-                    '})();\n';
-                break;
-            case 'js_mb':
-                defaultSource = '(function() {\n' +
-                    '  \'use strict\';\n' +
-                    '  kintone.events.on(\'mobile.app.record.index.show\', function(e) {\n' +
-                    '  });\n' +
-                    '})();\n';
-                break;
-            case 'css_pc':
-                defaultSource = '@charset "UTF-8";';
-                break;
-        }
-
+        var defaultSource = jsEditKintonePlugin.defaultSource[app.currentType];
         return defaultSource;
     }
 

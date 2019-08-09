@@ -11,6 +11,19 @@
             resource: {},
             service: {},
             ui: {},
+            defaultSource: {
+                js_pc: '(function() {\n' +
+                '  \'use strict\';\n' +
+                '  kintone.events.on(\'app.record.index.show\', function(event) {\n' +
+                '  });\n' +
+                '})();\n',
+                js_mb: '(function() {\n' +
+                '  \'use strict\';\n' +
+                '  kintone.events.on(\'mobile.app.record.index.show\', function(event) {\n' +
+                '  });\n' +
+                '})();\n',
+                css_pc: '@charset "UTF-8";'
+            },
             lang: null,
             i18n: null
         };
