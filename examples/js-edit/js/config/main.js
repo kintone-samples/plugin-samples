@@ -70,7 +70,16 @@
         mainContainerEl.appendChild(saveOptionsEl);
     }
 
-    function renderLibsMultipleChoice() {
+    function clearLibsMultipleChoice() {
+        libsMultipleChoice.setValue([])
+
+        var items = libsMultipleChoice.getItems();
+        for (var i = items.length - 1; i >= 0; i--) {
+            libsMultipleChoice.removeItem(i)
+        }
+    }
+
+    function refreshLibsMultipleChoice() {
         var infos = getLibsInfo();
         var libs;
         switch (app.currentType) {
@@ -83,6 +92,7 @@
                 break;
         }
 
+        clearLibsMultipleChoice();
         libs.forEach(function (lib, index) {
             libsMultipleChoice.addItem({
                 label: lib.name + '(' + lib.version + ')',
@@ -449,6 +459,8 @@
         }
 
         app.currentType = value;
+        refreshLibsMultipleChoice();
+
         ui.showSpinner();
         refresh().then(function () {
             if (!app.currentFileKey) {
@@ -585,7 +597,7 @@
 
     (function () {
         renderUi();
-        renderLibsMultipleChoice();
+        refreshLibsMultipleChoice();
 
         ui.showSpinner();
         refresh().then(function () {
