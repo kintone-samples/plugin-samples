@@ -461,14 +461,17 @@
         }
 
         app.currentFileKey = value;
+        app.modeifiedFile = false;
+
+        if (NO_FILE_KEY === app.currentFileKey) {
+            return;
+        }
 
         ui.showSpinner();
         service.getFile(app.currentFileKey).then(function (fileData) {
             setEditorContent(fileData);
             ui.hideSpinner();
         });
-
-        app.modeifiedFile = false;
     }
 
     function handleNewFileBtnClick() {
