@@ -480,6 +480,10 @@
             ui.showSpinner();
             var fileName = window.prompt(i18n.msg_input_file_name);
             fileName = createNameForNewFile(fileName.trim());
+
+            var replaceSpacesRegex = /  +/g;
+            fileName.replace(replaceSpacesRegex, ' ');
+
             if (!fileName) {
                 return refresh();
             }
