@@ -479,6 +479,7 @@
         refreshFilesDropdown().then(function () {
             ui.showSpinner();
             var fileName = window.prompt(i18n.msg_input_file_name);
+            fileName = createNameForNewFile(fileName.trim());
             if (!fileName) {
                 return refresh();
             }
@@ -487,7 +488,6 @@
                 return kintone.Promise.resolve();
             }
 
-            fileName = createNameForNewFile(fileName.trim());
             var newFileInfo = addNewTempFile(fileName);
             renderFilesDropdown(newFileInfo.file.fileKey);
 
