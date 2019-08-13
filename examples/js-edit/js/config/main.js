@@ -478,15 +478,14 @@
 
         refreshFilesDropdown().then(function () {
             ui.showSpinner();
-            var fileName = window.prompt(i18n.msg_input_file_name);
-            fileName = createNameForNewFile(fileName.trim());
-
-            var replaceSpacesRegex = /  +/g;
-            fileName.replace(replaceSpacesRegex, ' ');
-
+            var fileName = window.prompt(i18n.msg_input_file_name, '');
             if (!fileName) {
                 return refresh();
             }
+
+            fileName = createNameForNewFile(fileName.trim());
+            var replaceSpacesRegex = /  +/g;
+            fileName = fileName.replace(replaceSpacesRegex, ' ');
 
             if (!isValidFileName(fileName)) {
                 return kintone.Promise.resolve();
