@@ -9,6 +9,7 @@
     var ui = window.jsEditKintonePlugin.ui;
     var service = window.jsEditKintonePlugin.service;
     var cdnLibsDetail = window.jsEditKintonePlugin.resource.cdnLibsDetail;
+    var lang = window.jsEditKintonePlugin.lang;
     var i18n = window.jsEditKintonePlugin.i18n;
 
     var CDN_URL = i18n.cdn_url;
@@ -137,6 +138,11 @@
     function getLibsInfo() {
         var infos = { jsLibs: [], cssLibs: [] };
         Object.keys(cdnLibsDetail).forEach(function (libKey) {
+            if (libKey === 'ultradatejs' && lang === 'en') {
+                // skip this lib with users using English
+                return;
+            } 
+
             var lib = cdnLibsDetail[libKey];
             var tmpLib = {
                 name: lib[0],
