@@ -81,15 +81,15 @@
         var dropdown = new kuc.Dropdown({
             items: [
                 {
-                    label: i18n.js_for_pc,
+                    label: i18n.js_pc,
                     value: 'js_pc',
                 },
                 {
-                    label: i18n.js_for_mobile,
+                    label: i18n.js_mb,
                     value: 'js_mb',
                 },
                 {
-                    label: i18n.css_for_pc,
+                    label: i18n.css_pc,
                     value: 'css_pc',
                 }
             ],

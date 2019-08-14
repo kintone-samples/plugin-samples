@@ -14,6 +14,7 @@
     var CDN_URL = i18n.cdn_url;
     var NO_FILE_KEY = '-1';
     var MAX_LENGHT_FILE_NAME = 255;
+    var MAX_CUSTOMIZATION = 30;
 
     var app = {
         customization: {
@@ -310,6 +311,23 @@
         return true;
     }
 
+    function checkValidCustomizationLimit(customizaions) {
+        var invalidCustomization = [];
+        if (customizaions.desktop.js.length > MAX_CUSTOMIZATION) {
+            invalidCustomization.push('js_pc');
+        }
+
+        if (customizaions.desktop.css.length > MAX_CUSTOMIZATION) {
+            invalidCustomization.push('css_pc');
+        }
+
+        if (customizaions.mobile.js.length > MAX_CUSTOMIZATION) {
+            invalidCustomization.push('js_mb');
+        }
+
+        return invalidCustomization;
+    }
+
     function addNewTempFile(fileName) {
         var newFileInfo = {
             type: 'FILE',
@@ -502,7 +520,7 @@
             app.modeifiedFile = true;
 
             return kintone.Promise.resolve();
-        }).then(function() {
+        }).then(function () {
             if (!app.currentFileKey) {
                 makeComponentDisabled();
             } else {
@@ -537,9 +555,17 @@
             var content = createUpdatingContent(customization, newFileKey);
             var newCustomization = createUpdatingCustomization(customization, content);
 
+            var invalidCustomizationsLimit = checkValidCustomizationLimit(newCustomization);
+            if (invalidCustomizationsLimit.length > 0) {
+                var errMsg = invalidCustomizationsLimit.map(function (type) {
+                    return i18n.msg_max_customizations_limit.replace('<LIMIT_NUMBER>', MAX_CUSTOMIZATION)
+                        .replace('<CUSTOMIZATION_TYPE>', i18n[type]);
+                }).join('\n');
+                return kintone.Promise.reject(errMsg);
+            }
+
             return service.updateCustomization(newCustomization).catch(function () {
-                alert(i18n.msg_failed_to_update);
-                ui.hideSpinner();
+                throw i18n.msg_failed_to_update
             });
         }).then(function (resp) {
             var notDeployApp = deployConfigCheckbox.getValue().length === 0;
@@ -557,6 +583,10 @@
             app.modeifiedFile = false;
             ui.hideSpinner();
         }).catch(function (err) {
+            if (typeof err === 'string') {
+                alert(err);
+            }
+
             ui.hideSpinner();
         });
     }

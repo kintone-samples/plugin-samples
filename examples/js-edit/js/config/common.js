@@ -35,9 +35,9 @@
     jsEditKintonePlugin.resource = {
         localization: {
             en: {
-                js_for_pc: 'JavaScript Files for PC',
-                js_for_mobile: 'JavaScript Files for Mobile',
-                css_for_pc: 'CSS Files for PC',
+                js_pc: 'JavaScript Files for PC',
+                js_mb: 'JavaScript Files for Mobile',
+                css_pc: 'CSS Files for PC',
                 new_file: 'New File',
                 discard: 'Discard',
                 back: 'Back to Plug-ins',
@@ -51,6 +51,7 @@
                 msg_discard: 'Your changes will be discarded. Are you sure you want to continue?',
                 msg_failed_to_get_file: 'Failed to retrieve files!',
                 msg_failed_to_update: 'Failed to update!',
+                msg_max_customizations_limit: 'The file was not saved because no more than <LIMIT_NUMBER> files can be saved for the <CUSTOMIZATION_TYPE> settings.',
                 msg_max_file_name_length_limit: 'The max file name length is 255 characters',
                 msg_file_name_includ_special_character: 'The file name must not include \/:?*|"<>',
                 msg_file_name_is_duplicated: 'This file name is duplicated. Please set a unique file name.',
@@ -58,9 +59,9 @@
                 cdn_url: 'https://js.kintone.com/'
             },
             ja: {
-                js_for_pc: 'PC用のJavaScriptファイル',
-                js_for_mobile: 'スマートフォン用のJavaScriptファイル',
-                css_for_pc: 'PC用のCSSファイル',
+                js_pc: 'PC用のJavaScriptファイル',
+                js_mb: 'スマートフォン用のJavaScriptファイル',
+                css_pc: 'PC用のCSSファイル',
                 new_file: '新規作成',
                 discard: '破棄',
                 back: 'プラグインへ戻る',
@@ -74,6 +75,7 @@
                 msg_discard: '変更は破棄されます。よろしいですか？',
                 msg_failed_to_get_file: 'ファイルの取得に失敗しました。',
                 msg_failed_to_update: '更新に失敗しました。',
+                msg_max_customizations_limit: 'ファイルの保存に失敗しました。<CUSTOMIZATION_TYPE>の設定に保存出来るファイルは<LIMIT_NUMBER>個までです。',
                 msg_max_file_name_length_limit: 'ファイル名の入力制限は255文字となります。',
                 msg_file_name_includ_special_character: 'ファイル名は必ず \/:?*|"<>のような文字が含まないです。',
                 msg_file_name_is_duplicated: 'ファイル名が重複しています。重複のないように設定してください。',
@@ -81,9 +83,9 @@
                 cdn_url: 'https://js.cybozu.com/'
             },
             zh: {
-                js_for_pc: 'JavaScript Files for PC',
-                js_for_mobile: 'JavaScript Files for Mobile',
-                css_for_pc: 'CSS Files for PC',
+                js_pc: 'JavaScript Files for PC',
+                js_mb: 'JavaScript Files for Mobile',
+                css_pc: 'CSS Files for PC',
                 new_file: 'New File',
                 discard: '   Discard   ',
                 back: 'Back to Plug-ins',
@@ -97,6 +99,7 @@
                 msg_discard: 'Your changes will be discarded. Are you sure you want to continue?',
                 msg_failed_to_get_file: 'Failed to retrieve files!',
                 msg_failed_to_update: 'Failed to update!',
+                msg_max_customizations_limit: 'The file was not saved because no more than <LIMIT_NUMBER> files can be saved for the <CUSTOMIZATION_TYPE> settings.',
                 msg_max_file_name_length_limit: 'The max file name length is 255 characters',
                 msg_file_name_includ_special_character: 'The file name must not include \/:?*|"<>',
                 msg_file_name_is_duplicated: 'This file name is duplicated. Please set a unique file name.',
