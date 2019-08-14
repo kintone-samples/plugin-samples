@@ -394,6 +394,8 @@
 
         var userLinks = customizationInfos.filter(function (item) {
             return item.type === 'URL' && item.url.match(CDN_URL) === null;
+        }).map(function(item) {
+            return item.url;
         });
 
         userLinks.forEach(function (link) {
