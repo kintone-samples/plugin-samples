@@ -141,7 +141,7 @@
             if (libKey === 'ultradatejs' && lang === 'en') {
                 // skip this lib with users using English
                 return;
-            } 
+            }
 
             var lib = cdnLibsDetail[libKey];
             var tmpLib = {
@@ -255,6 +255,12 @@
         var usedLibs = libLinks.map(function (link) {
             return link.split('/')[3];
         });
+
+        if (lang === 'en') {
+            usedLibs = usedLibs.filter(function (lib) {
+                return lib !== 'ultradatejs';
+            });
+        }
 
         libsMultipleChoice.setValue(usedLibs);
     }
@@ -394,7 +400,7 @@
 
         var userLinks = customizationInfos.filter(function (item) {
             return item.type === 'URL' && item.url.match(CDN_URL) === null;
-        }).map(function(item) {
+        }).map(function (item) {
             return item.url;
         });
 
