@@ -265,6 +265,20 @@
         libsMultipleChoice.setValue(usedLibs);
     }
 
+    function removeNewFileInFilesDropdown() {
+        var items = filesDropdown.getItems();
+        var newFilesIndex = [];
+        items.forEach(function(item, i) {
+            if (item.value === NO_FILE_KEY) {
+                newFilesIndex.push(i);
+            }
+        });
+
+        newFilesIndex.forEach(function(index) {
+            filesDropdown.removeItem(index);
+        });
+    }
+
     function refreshFilesDropdown() {
         return service.getCustomization().then(function (customization) {
             getCustomizationInfo(customization);
@@ -492,6 +506,7 @@
             return;
         }
 
+        removeNewFileInFilesDropdown();
         app.currentFileKey = value;
         app.modeifiedFile = false;
 
