@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "version": 4,
+  "version": 5,
   "type": "APP",
   "name": {
     "ja": "JSEdit for kintone",
@@ -23,11 +23,14 @@
       "https://js.cybozu.com/ace/v1.2.0/ace.js",
       "https://js.cybozu.com/ace/v1.2.0/ext-language_tools.js",
       "https://js.cybozu.com/jquery/1.11.3/jquery.min.js",
-      "https://js.cybozu.com/spinjs/2.0.1/spin.min.js",
-      "js/config.js"
+      "https://unpkg.com/@kintone/kintone-ui-component@0.3.4/dist/kintone-ui-component.min.js",
+      "js/config/common.js",
+      "js/config/ui.js",
+      "js/config/service.js",
+      "js/config/main.js"
     ],
     "css": [
-      "css/51-modern-default.css",
+      "https://unpkg.com/@kintone/kintone-ui-component@0.3.4/dist/kintone-ui-component.min.css",
       "css/config.css"
     ],
     "required_params": []

@@ -1,56 +1,59 @@
-@charset "UTF-8";
 /*
  * js-edit Plug-in
  * Copyright (c) 2016 Cybozu
  *
  * Licensed under the MIT License
  */
-.spinner-backdrop {
-  position: fixed;
-  opacity: 0.5;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1100;
-  background-color: #fff;
+
+#jsedit-config .kuc-btn,
+#jsedit-config .kuc-dropdown-container {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 10px;
 }
 
-.clearfix:after {
-  content: '';
-  display: table;
-  clear: both;
+#jsedit-config .kuc-dropdown-selected {
+  width: 182px;
+  height: 46px;
 }
 
-.column {
-  float: left;
-  width: 50%;
+#jsedit-config .kuc-dropdown-selected-name {
+  line-height: 46px;
 }
 
-#jsedit-editor {
-    height: 500px;
-    margin-bottom: 24px;
-    width: 100%;
+#jsedit-config .kuc-dropdown-selected-label {
+  width: 158px;
 }
 
-.jsedit-config-wrapper {
+#jsedit-config .jsedit-back-link {
+  vertical-align: middle;
+  line-height: 48px;
+}
+
+#jsedit-config .jsedit-container-flex,
+#jsedit-config .jsedit-item-flex {
+  display: flex;
+}
+
+#jsedit-config .jsedit-item-flex {
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+#jsedit-config .jsedit-editor-wrapper {
   margin-top: 16px;
 }
 
-.form-submit {
-  padding: 0 0 16px 0;
+#jsedit-config .jsedit-editor {
+  height: 500px;
+  margin-bottom: 24px;
+  width: 100%;
 }
 
-
-.form-submit button {
-  margin-right: 8px;
+#jsedit-config .jsedit-editor.disabled .ace_content:hover {
+cursor: not-allowed;
 }
 
-.new-file {
-  margin-right: 8px;
-}
-
-.jsedit-plugin-libraries-wrapper select {
-  width: 300px;
-  padding-left: 8px;
+#jsedit-config .jsedit-editor.disabled .ace_cursor {
+  display: none;
 }
