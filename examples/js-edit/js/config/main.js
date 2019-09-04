@@ -608,7 +608,7 @@
         }).then(function () {
             var fileToSelect = filesDropdown.getItems()[lastFileIndex].value;
             filesDropdown.setValue(fileToSelect);
-			app.currentFileKey = fileToSelect;
+            app.currentFileKey = fileToSelect;
 
             app.modeifiedFile = false;
             ui.hideSpinner();
