@@ -52,6 +52,10 @@ jQuery.noConflict();
         deployApp: function() {
             var params = { apps: [{ app: kintone.app.getId() }] };
             return kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'POST', params);
+        },
+        deployStatus: function() {
+            var params = { apps: [kintone.app.getId()] };
+            return kintone.api(kintone.api.url('/k/v1/preview/app/deploy', true), 'GET', params);
         }
     };
 

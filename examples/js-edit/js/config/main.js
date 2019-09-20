@@ -616,13 +616,35 @@
             app.currentFileKey = fileToSelect;
 
             app.modeifiedFile = false;
-            ui.hideSpinner();
+        }).then(function () {
+            deployStatusRecursive().then(function() {
+                ui.hideSpinner();
+            });
         }).catch(function (err) {
             if (typeof err === 'string') {
                 alert(err);
             }
 
             ui.hideSpinner();
+        });
+    }
+
+    function deployStatusRecursive() {
+        return service.deployStatus().then(function (response) {
+            if (response && response.apps.length > 0){
+                var app = response.apps[0];
+                if (kintone.app.getId() !== parseInt(app.app)) {
+                    return false;
+                }
+
+                if (app.status === 'PROCESSING') {
+                    return deployStatusRecursive();
+                }
+                else {
+                    return (app.status === 'SUCCESS');
+                }
+            }
+            return false;
         });
     }
 
