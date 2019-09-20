@@ -118,7 +118,12 @@
             filesDropdown.setValue(defaultValue);
         }
 
-        app.currentFileKey = filesDropdown.getValue();
+        if (app.currentFileKey === null || app.currentFileKey === '') {
+            app.currentFileKey = filesDropdown.getValue();
+        }
+        else {
+            filesDropdown.setValue(app.currentFileKey);
+        }
     }
 
     function makeComponentDisabled() {
