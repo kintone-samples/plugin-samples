@@ -114,11 +114,12 @@
             filesDropdown.setValue(files[0].fileKey);
         }
 
-        if (typeof defaultValue !== 'undefined') {
+        var defaultValueIsValid = typeof defaultValue !== 'undefined';
+        if (defaultValueIsValid) {
             filesDropdown.setValue(defaultValue);
         }
 
-        if (app.currentFileKey === null || app.currentFileKey === '') {
+        if (app.currentFileKey === null || app.currentFileKey === '' || defaultValueIsValid) {
             app.currentFileKey = filesDropdown.getValue();
         }
         else {
@@ -659,6 +660,12 @@
             } else {
                 makeComponentEnabled();
             }
+            ui.hideSpinner();
+        }).catch(function (err) {
+            if (typeof err === 'string') {
+                alert(err);
+            }
+
             ui.hideSpinner();
         });
     }
