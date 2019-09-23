@@ -279,17 +279,22 @@
         });
     }
 
-    function refreshFilesDropdown() {
+    function refreshFilesDropdown(defaultValue) {
         return service.getCustomization().then(function (customization) {
             getCustomizationInfo(customization);
-            renderFilesDropdown();
+            renderFilesDropdown(defaultValue);
 
             return kintone.Promise.resolve();
         });
     }
 
-    function refresh() {
-        return refreshFilesDropdown().then(function () {
+    function refresh(currentFileKey) {
+        var defaultValue;
+        if (typeof currentFileKey !== 'undefined') {
+            defaultValue = currentFileKey;
+        }
+
+        return refreshFilesDropdown(defaultValue).then(function () {
             setUsedLibsMultipleChoice();
 
             if (app.currentFileKey === null || app.currentFileKey === '') {
@@ -648,7 +653,8 @@
             return;
         }
         ui.showSpinner();
-        refresh().then(function () {
+        var currentFileKey = app.currentFileKey;
+        refresh(currentFileKey).then(function () {
             if (!app.currentFileKey) {
                 makeComponentDisabled();
             } else {
