@@ -114,17 +114,11 @@
             filesDropdown.setValue(files[0].fileKey);
         }
 
-        var defaultValueIsValid = typeof defaultValue !== 'undefined';
-        if (defaultValueIsValid) {
+        if (typeof defaultValue !== 'undefined') {
             filesDropdown.setValue(defaultValue);
         }
 
-        if (app.currentFileKey === null || app.currentFileKey === '' || defaultValueIsValid) {
-            app.currentFileKey = filesDropdown.getValue();
-        }
-        else {
-            filesDropdown.setValue(app.currentFileKey);
-        }
+        app.currentFileKey = filesDropdown.getValue();
     }
 
     function makeComponentDisabled() {
@@ -660,12 +654,6 @@
             } else {
                 makeComponentEnabled();
             }
-            ui.hideSpinner();
-        }).catch(function (err) {
-            if (typeof err === 'string') {
-                alert(err);
-            }
-
             ui.hideSpinner();
         });
     }
