@@ -17,7 +17,6 @@
     var MAX_LENGHT_FILE_NAME = 255;
     var MAX_CUSTOMIZATION = 30;
     var DEPLOYMENT_TIMEOUT = 1000;
-    var DEPLOYMENT_PROCESSING = 'PROCESSING';
 
     var app = {
         customization: {
@@ -619,10 +618,14 @@
 
             app.modeifiedFile = false;
         }).then(function () {
-            return checkDeployStatus().then(function () {
-                ui.hideSpinner();
-            });
+            return checkDeployStatus();
+        }).then(function () {
+            ui.hideSpinner();
         }).catch(function (err) {
+            if (err.deployStatus && err.deployStatus === 'FAIL') {
+                alert(i18n.msg_failed_to_update);
+            }
+
             if (typeof err === 'string') {
                 alert(err);
             }
@@ -632,28 +635,29 @@
     }
 
     function checkDeployStatus() {
-        return new kintone.Promise(function (resolve) {
-            (function waitForDeployment(){
-                return getDeployStatus().then(function (status) {
-                    if (status !== DEPLOYMENT_PROCESSING) {
-                        return resolve({status});
-                    }
-                    setTimeout(waitForDeployment, DEPLOYMENT_TIMEOUT);
-                });
-            })();
-        });
-    }
-
-    function getDeployStatus() {
-        return service.deployStatus().then(function (response) {
-            if (response && response.apps.length > 0){
+        function waitForDeployment(resolve, reject) {
+            return service.deployStatus().then(function (response) {
                 var app = response.apps[0];
-                if (kintone.app.getId() !== parseInt(app.app)) {
-                    return '';
+                switch (app.status) {
+                    case 'FAIL':
+                        reject({ deployStatus: app.status });
+                        break;
+                    case 'PROCESSING':
+                        setTimeout(function () {
+                            waitForDeployment(resolve, reject);
+                        }, DEPLOYMENT_TIMEOUT);
+                        break;
+                    case 'SUCCESS':
+                    case 'CANCEL':
+                        resolve();
                 }
-                return app.status;
-            }
-            return '';
+            }).catch(function (error) {
+                reject(error);
+            });
+        }
+
+        return new kintone.Promise(function (resolve, reject) {
+            waitForDeployment(resolve, reject);
         });
     }
 
