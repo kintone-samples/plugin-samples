@@ -16,6 +16,8 @@
     var NO_FILE_KEY = '-1';
     var MAX_LENGHT_FILE_NAME = 255;
     var MAX_CUSTOMIZATION = 30;
+    var DEPLOYMENT_TIMEOUT = 1000;
+    var DEPLOYMENT_PROCESSING = 'PROCESSING';
 
     var app = {
         customization: {
@@ -617,7 +619,7 @@
 
             app.modeifiedFile = false;
         }).then(function () {
-            deployStatusRecursive().then(function() {
+            return checkDeployStatus().then(function () {
                 ui.hideSpinner();
             });
         }).catch(function (err) {
@@ -629,22 +631,29 @@
         });
     }
 
-    function deployStatusRecursive() {
+    function checkDeployStatus() {
+        return new kintone.Promise(function (resolve) {
+            (function waitForDeployment(){
+                return getDeployStatus().then(function (status) {
+                    if (status !== DEPLOYMENT_PROCESSING) {
+                        return resolve({status});
+                    }
+                    setTimeout(waitForDeployment, DEPLOYMENT_TIMEOUT);
+                });
+            })();
+        });
+    }
+
+    function getDeployStatus() {
         return service.deployStatus().then(function (response) {
             if (response && response.apps.length > 0){
                 var app = response.apps[0];
                 if (kintone.app.getId() !== parseInt(app.app)) {
-                    return false;
+                    return '';
                 }
-
-                if (app.status === 'PROCESSING') {
-                    return deployStatusRecursive();
-                }
-                else {
-                    return (app.status === 'SUCCESS');
-                }
+                return app.status;
             }
-            return false;
+            return '';
         });
     }
 
