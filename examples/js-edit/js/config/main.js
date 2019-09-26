@@ -16,6 +16,7 @@
     var NO_FILE_KEY = '-1';
     var MAX_LENGHT_FILE_NAME = 255;
     var MAX_CUSTOMIZATION = 30;
+    var DEPLOYMENT_TIMEOUT = 1000;
 
     var app = {
         customization: {
@@ -279,17 +280,22 @@
         });
     }
 
-    function refreshFilesDropdown() {
+    function refreshFilesDropdown(defaultValue) {
         return service.getCustomization().then(function (customization) {
             getCustomizationInfo(customization);
-            renderFilesDropdown();
+            renderFilesDropdown(defaultValue);
 
             return kintone.Promise.resolve();
         });
     }
 
-    function refresh() {
-        return refreshFilesDropdown().then(function () {
+    function refresh(currentFileKey) {
+        var defaultValue;
+        if (typeof currentFileKey !== 'undefined') {
+            defaultValue = currentFileKey;
+        }
+
+        return refreshFilesDropdown(defaultValue).then(function () {
             setUsedLibsMultipleChoice();
 
             if (app.currentFileKey === null || app.currentFileKey === '') {
@@ -608,10 +614,18 @@
         }).then(function () {
             var fileToSelect = filesDropdown.getItems()[lastFileIndex].value;
             filesDropdown.setValue(fileToSelect);
+            app.currentFileKey = fileToSelect;
 
             app.modeifiedFile = false;
+        }).then(function () {
+            return checkDeployStatus();
+        }).then(function () {
             ui.hideSpinner();
         }).catch(function (err) {
+            if (err.deployStatus && err.deployStatus === 'FAIL') {
+                alert(i18n.msg_failed_to_update);
+            }
+
             if (typeof err === 'string') {
                 alert(err);
             }
@@ -620,12 +634,40 @@
         });
     }
 
+    function checkDeployStatus() {
+        function waitForDeployment(resolve, reject) {
+            return service.deployStatus().then(function (response) {
+                var app = response.apps[0];
+                switch (app.status) {
+                    case 'FAIL':
+                        reject({ deployStatus: app.status });
+                        break;
+                    case 'PROCESSING':
+                        setTimeout(function () {
+                            waitForDeployment(resolve, reject);
+                        }, DEPLOYMENT_TIMEOUT);
+                        break;
+                    case 'SUCCESS':
+                    case 'CANCEL':
+                        resolve();
+                }
+            }).catch(function (error) {
+                reject(error);
+            });
+        }
+
+        return new kintone.Promise(function (resolve, reject) {
+            waitForDeployment(resolve, reject);
+        });
+    }
+
     function handleCancelBtn(e) {
         if (!confirmDiscard()) {
             return;
         }
         ui.showSpinner();
-        refresh().then(function () {
+        var currentFileKey = app.currentFileKey;
+        refresh(currentFileKey).then(function () {
             if (!app.currentFileKey) {
                 makeComponentDisabled();
             } else {
