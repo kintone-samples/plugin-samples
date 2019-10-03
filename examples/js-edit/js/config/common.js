@@ -109,8 +109,8 @@
         },
         links: {
             en: [
-                { url: 'https://developer.kintone.io/hc/en-us', label: 'kintone developer network' },
-                { url: 'https://developer.kintone.io/hc/en-us/articles/213149177/', label: 'kintone CDN' },
+                { url: 'https://developer.kintone.io/hc/en-us', label: 'Kintone Developer Program' },
+                { url: 'https://developer.kintone.io/hc/en-us/articles/213149177', label: 'Kintone CDN' },
                 { url: 'https://developer.kintone.io/hc/en-us/articles/212495178', label: 'API Docs' }
             ],
             ja: [
