@@ -1,7 +1,7 @@
-kintone Plug-in Examples
+Kintone Plug-in Examples
 ==========================
 
-This is a repository for kintone plugin-in examples.
+This is a repository for Kintone plugin-in examples.
 
 ## package.sh is now deprecated!
 
