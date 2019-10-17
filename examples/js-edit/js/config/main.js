@@ -252,6 +252,16 @@
     }
 
     function setUsedLibsMultipleChoice() {
+        var unifyItems = function (items) {
+            var unifiedItems = [];
+            items.forEach(function (item) {
+                if (unifiedItems.indexOf(item) === -1) {
+                    unifiedItems.push(item);
+                }
+            });
+            return unifiedItems;
+        }
+
         var libLinks = getCustomizationLinks();
         var usedLibs = libLinks.map(function (link) {
             return link.split('/')[3];
@@ -263,7 +273,10 @@
             });
         }
 
-        libsMultipleChoice.setValue(usedLibs);
+        // unifyItems use to cheat for passing kintone-ui-component bug.
+        var unifiedUsedLibs = unifyItems(usedLibs);
+
+        libsMultipleChoice.setValue(unifiedUsedLibs);
     }
 
     function removeNewFileInFilesDropdown() {
