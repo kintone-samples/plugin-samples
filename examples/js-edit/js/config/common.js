@@ -246,7 +246,9 @@
 
     function initI18n() {
         var localization = jsEditKintonePlugin.resource.localization;
-        jsEditKintonePlugin.lang = kintone.getLoginUser().language;
+        var language = kintone.getLoginUser().language;
+
+        jsEditKintonePlugin.lang = (language in localization) ? language : 'en';
         jsEditKintonePlugin.i18n = localization[jsEditKintonePlugin.lang] ? localization[jsEditKintonePlugin.lang] : localization['en'];
     }
     initI18n();
