@@ -23,14 +23,14 @@
       "https://js.cybozu.com/ace/v1.2.0/ace.js",
       "https://js.cybozu.com/ace/v1.2.0/ext-language_tools.js",
       "https://js.cybozu.com/jquery/1.11.3/jquery.min.js",
-      "https://unpkg.com/@kintone/kintone-ui-component@0.3.4/dist/kintone-ui-component.min.js",
+      "https://unpkg.com/@kintone/kintone-ui-component@0.4.2/dist/kintone-ui-component.min.js",
       "js/config/common.js",
       "js/config/ui.js",
       "js/config/service.js",
       "js/config/main.js"
     ],
     "css": [
-      "https://unpkg.com/@kintone/kintone-ui-component@0.3.4/dist/kintone-ui-component.min.css",
+      "https://unpkg.com/@kintone/kintone-ui-component@0.4.2/dist/kintone-ui-component.min.css",
       "css/config.css"
     ],
     "required_params": []

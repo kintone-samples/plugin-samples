@@ -55,7 +55,6 @@
         submitContainerEl.appendChild(backLinkEl);
 
         var libsContainerEl = ui.createLibsContainerEl();
-        libsContainerEl.appendChild(libsMultipleChoice.render());
 
         var libsLinksContainerEl = ui.createLibsLinksContainerEl();
         libsLinksContainerEl.className = 'jsedit-container-flex ';
@@ -73,15 +72,6 @@
         mainContainerEl.appendChild(saveOptionsEl);
     }
 
-    function clearLibsMultipleChoice() {
-        libsMultipleChoice.setValue([])
-
-        var items = libsMultipleChoice.getItems();
-        for (var i = items.length - 1; i >= 0; i--) {
-            libsMultipleChoice.removeItem(i)
-        }
-    }
-
     function refreshLibsMultipleChoice() {
         var infos = getLibsInfo();
         var libs;
@@ -95,31 +85,41 @@
                 break;
         }
 
-        clearLibsMultipleChoice();
-        libs.forEach(function (lib, index) {
-            libsMultipleChoice.addItem({
+        var items = libs.map(function (lib, index) {
+            return {
                 label: lib.name + '(' + lib.version + ')',
                 value: lib.key
-            });
-        })
+            };
+        });
+
+        libsMultipleChoice.setItems(items);
+        ui.renderLibsContainerEl(libsMultipleChoice.render());
     }
 
     function renderFilesDropdown(defaultValue) {
-        clearFilesDropdown();
         var files = getCustomizationFiles();
-        files.forEach(function (file) {
-            filesDropdown.addItem({ label: file.name, value: file.fileKey });
-        });
+        var items = [{ label: '', value: '' }];
+        var fileKey = '';
 
-        if (files[0]) {
-            filesDropdown.setValue(files[0].fileKey);
+        if (files.length > 0 && files[0]) {
+            items = files.map(function (file) {
+                return {
+                    label: file.name,
+                    value: file.fileKey
+                };
+            });
+            fileKey = files[0].fileKey;
         }
+
+        filesDropdown.setItems(items);
+        filesDropdown.setValue(fileKey);
 
         if (typeof defaultValue !== 'undefined') {
             filesDropdown.setValue(defaultValue);
         }
 
-        app.currentFileKey = filesDropdown.getValue();
+        var value = filesDropdown.getValue();
+        app.currentFileKey = value ? value : '';
     }
 
     function makeComponentDisabled() {
@@ -241,17 +241,17 @@
         app.customization.mobile = JSON.parse(JSON.stringify(customization.mobile));
     }
 
-    function clearFilesDropdown() {
-        filesDropdown.addItem({ label: '', value: '' });
-        filesDropdown.setValue('')
-
-        var items = filesDropdown.getItems();
-        for (var i = items.length - 1; i >= 0; i--) {
-            filesDropdown.removeItem(i)
-        }
-    }
-
     function setUsedLibsMultipleChoice() {
+        var unifyItems = function (items) {
+            var unifiedItems = [];
+            items.forEach(function (item) {
+                if (unifiedItems.indexOf(item) === -1) {
+                    unifiedItems.push(item);
+                }
+            });
+            return unifiedItems;
+        }
+
         var libLinks = getCustomizationLinks();
         var usedLibs = libLinks.map(function (link) {
             return link.split('/')[3];
@@ -263,7 +263,10 @@
             });
         }
 
-        libsMultipleChoice.setValue(usedLibs);
+        // unifyItems use to cheat for passing kintone-ui-component bug.
+        var unifiedUsedLibs = unifyItems(usedLibs);
+
+        libsMultipleChoice.setValue(unifiedUsedLibs);
     }
 
     function removeNewFileInFilesDropdown() {

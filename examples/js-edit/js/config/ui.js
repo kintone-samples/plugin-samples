@@ -105,7 +105,7 @@
 
     ui.createLibsContainerEl = function () {
         var libsContainerEl = document.createElement('div');
-        libsContainerEl.className = 'jsedit-item-flex ';
+        libsContainerEl.className = 'jsedit-item-flex jsedit-libraries ';
 
         var libsTitle = new kuc.Label({ text: i18n.libraries });
         libsContainerEl.appendChild(libsTitle.render());
@@ -198,6 +198,18 @@
                 editor.setOptions({ readOnly: false });
             }
         }
+    }
+
+    ui.renderLibsContainerEl = function (multipleChoiceEl) {
+        var newLibsContainerEl = this.createLibsContainerEl();
+        var mainContainerEl = this.getMainContainerEl();
+        var libsContainerEl = mainContainerEl.querySelector('.jsedit-libraries');
+        
+        while (libsContainerEl.firstChild) libsContainerEl.removeChild(libsContainerEl.firstChild);
+
+        libsContainerEl.appendChild(newLibsContainerEl.firstChild);
+        libsContainerEl.appendChild(multipleChoiceEl);
+
     }
 
     window.jsEditKintonePlugin.ui = ui;
