@@ -521,7 +521,7 @@
     }
 
     function handelFilesDropdownChange(value) {
-        if (app.modeifiedFile && !confirmDiscard()) {
+        if ((value == app.currentFileKey) || (app.modeifiedFile && !confirmDiscard())) {
             filesDropdown.setValue(app.currentFileKey);
             return;
         }
