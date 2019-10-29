@@ -243,9 +243,27 @@
 
     function setUsedLibsMultipleChoice() {
         var unifyItems = function (items) {
+            var existedInLibs = function (item) {
+                var infos = getLibsInfo();
+                var libs;
+                switch (app.currentType) {
+                    case 'js_pc':
+                    case 'js_mb':
+                        libs = infos.jsLibs;
+                        break;
+                    case 'css_pc':
+                        libs = infos.cssLibs;
+                        break;
+                }
+    
+                return libs.some(function (lib) {
+                    return lib.key === item;
+                });
+            };
+
             var unifiedItems = [];
             items.forEach(function (item) {
-                if (unifiedItems.indexOf(item) === -1) {
+                if (unifiedItems.indexOf(item) === -1 && existedInLibs(item)) {
                     unifiedItems.push(item);
                 }
             });
