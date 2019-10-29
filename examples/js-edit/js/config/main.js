@@ -114,7 +114,10 @@
         filesDropdown.setItems(items);
         filesDropdown.setValue(fileKey);
 
-        if (typeof defaultValue !== 'undefined') {
+        var defaultValueExisted = items.some(function (item) {
+            return item.value === defaultValue;
+        });
+        if (typeof defaultValue !== 'undefined' && defaultValueExisted) {
             filesDropdown.setValue(defaultValue);
         }
 
