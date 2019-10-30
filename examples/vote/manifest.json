@@ -22,6 +22,15 @@
             "css/vote.css"
         ]
     },
+    "mobile": {
+        "js": [
+            "https://js.cybozu.com/jquery/jquery-1.11.0.min.js",
+            "js/mobile-vote.js"
+        ],
+        "css": [
+            "css/mobile-vote.css"
+        ]
+    },
     "config": {
         "html": "html/config.html",
         "js": [
