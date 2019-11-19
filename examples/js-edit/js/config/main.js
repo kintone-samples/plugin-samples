@@ -114,7 +114,10 @@
         filesDropdown.setItems(items);
         filesDropdown.setValue(fileKey);
 
-        if (typeof defaultValue !== 'undefined') {
+        var defaultValueExisted = items.some(function (item) {
+            return item.value === defaultValue;
+        });
+        if (typeof defaultValue !== 'undefined' && defaultValueExisted) {
             filesDropdown.setValue(defaultValue);
         }
 
@@ -243,9 +246,17 @@
 
     function setUsedLibsMultipleChoice() {
         var unifyItems = function (items) {
+            var existedInLibItems = function (item) {
+                var libItems = libsMultipleChoice.getItems();
+
+                return libItems.some(function (libItem) {
+                    return libItem.value === item;
+                });
+            };
+
             var unifiedItems = [];
             items.forEach(function (item) {
-                if (unifiedItems.indexOf(item) === -1) {
+                if (unifiedItems.indexOf(item) === -1 && existedInLibItems(item)) {
                     unifiedItems.push(item);
                 }
             });
@@ -510,7 +521,7 @@
     }
 
     function handelFilesDropdownChange(value) {
-        if (app.modeifiedFile && !confirmDiscard()) {
+        if ((value == app.currentFileKey) || (app.modeifiedFile && !confirmDiscard())) {
             filesDropdown.setValue(app.currentFileKey);
             return;
         }
