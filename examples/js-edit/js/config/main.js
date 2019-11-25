@@ -264,7 +264,9 @@
         }
 
         var libLinks = getCustomizationLinks();
-        var usedLibs = libLinks.map(function (link) {
+        var usedLibs = libLinks.filter(function (link) {
+            return isValidLibVersion(link);
+        }).map(function (link) {
             return link.split('/')[3];
         });
 
@@ -278,6 +280,26 @@
         var unifiedUsedLibs = unifyItems(usedLibs);
 
         libsMultipleChoice.setValue(unifiedUsedLibs);
+    }
+
+    function isValidLibVersion(libUrl) {
+        var libVersion = libUrl.split('/')[4];
+
+        var infos = getLibsInfo();
+        var libs;
+        switch (app.currentType) {
+            case 'js_pc':
+            case 'js_mb':
+                libs = infos.jsLibs;
+                break;
+            case 'css_pc':
+                libs = infos.cssLibs;
+                break;
+        }
+
+        return libs.some(function (lib) {
+            return lib.version === libVersion;
+        });
     }
 
     function removeNewFileInFilesDropdown() {
@@ -433,7 +455,7 @@
         });
 
         var userLinks = customizationInfos.filter(function (item) {
-            return item.type === 'URL' && item.url.match(CDN_URL) === null;
+            return item.type === 'URL' && !isValidLibVersion(item.url);
         }).map(function (item) {
             return item.url;
         });
