@@ -118,7 +118,60 @@
                     canNotUseHTMLCharactersForTextFormat: '&, <, >, \', " cannot be used for Text format',
                     apiTokenInvalid: 'The API token does not have the correct permission'
                 }
-            }
+            },
+            zh: {
+                preview: '编号预览',
+                targetField: '显示自动编号的字段',
+                selectFormat: '自动编号的格式',
+                typeOfFormat: {
+                  numbering: '编号',
+                  dateNumbering: '日期 + 编号',
+                  dateTextNumbering: '日期 + 文本 + 编号',
+                  textNumbering: '文本 + 编号',
+                  textDateNumbering: '文本 + 日期 + 编号'
+                },
+                dateFormat: '日期格式 (当选择的自动编号格式内包含了日期时可设置此项)',
+                typeOfDateFormat: {
+                  YYYYMMDD: '年月日(YYYYMMDD)',
+                  YYYYMM: '年月(YYYYMM)',
+                  MMDD: '月日(MMDD)',
+                  MMDDYYYY: '月日年[阳历4位](MMDDYYYY)',
+                  MMDDYY: '月日年[阳历2位](MMDDYY)',
+                  MMYYYY: '月年[阳历4位](MMYYYY)',
+                  MMYY: '月年[阳历2位](MMYY)',
+                  YYYY: '年[阳历4位](YYYY)',
+                  YY: '年[阳历2位](YY)'
+                },
+                textFormat: '文本格式 (当选择的自动编号格式内包含了文本时可设置此项)',
+                connective: '连接符号',
+                typeOfConnective: {
+                  hyphen: {'value': '-', 'text': '连字符 ( - )'},
+                  underscore: {'value': '_', 'text': '下划线 ( _ )'}
+                },
+                numberingOfDigits: '自动编号的长度',
+                resetTiming: '何时重置编号',
+                typeOfResetTiming: {
+                  none: '从不',
+                  yearly: '每年',
+                  monthly: '每月',
+                  daily: '每天'
+                },
+                apiToken: 'API令牌(如需记录的访问权限)',
+                saveButton: '保存',
+                cancelButton: '取消',
+                alertMessage: {
+                  failedAutoNumbering: '自动编号获取失败\n',
+                  notSelectedNumberingField: '未选择[显示自动编号的字段]',
+                  notSelectedFormat: '未选择格式',
+                  notSelectedConnectionChar: '未选择连接符号',
+                  notSelectedDateFormat: '未选择日期格式',
+                  notInputTextFormat: '未输入文本',
+                  invalidNumberingOfDigits: '自动编号的长度请输入正整数',
+                  canNotUseConnectionCharForTextFormat: '文本不得含有连接符号(-, _)',
+                  canNotUseHTMLCharactersForTextFormat: '文本中不可输入HTML的特殊符号(&, <, >, \', ")',
+                  apiTokenInvalid: 'API令牌的权限设置不正确'
+                }
+              }
         },
         settings: {
             lang: 'en',
@@ -166,7 +219,7 @@
             kintone.api(this.settings.apiURL.formField, 'GET', { 'app': kintone.app.getId() },
                 function(respone) {
                     for (var key in respone.properties) {
-                        if (!respone.properties.hasOwnProperty(key)) {
+                        if (!Object.prototype.hasOwnProperty.call(respone.properties, key)) {
                             continue;
                         }
 

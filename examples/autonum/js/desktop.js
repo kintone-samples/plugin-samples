@@ -22,7 +22,13 @@
                     failedAutoNumbering: 'Failed to retrieve number for Autonumbering\n',
                     apiTokenInvalid: 'The API token does not have the correct permission'
                 }
-            }
+            },
+            zh: {
+                alertMessage: {
+                  failedAutoNumbering: '自动编号获取失败\n',
+                  apiTokenInvalid: 'API令牌的权限设置不正确'
+                }
+              }
         },
         settings: {
             lang: 'en',
