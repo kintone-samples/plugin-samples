@@ -82,6 +82,40 @@ jQuery.noConflict();
                     requiredField: '必須項目が入力されていません。',
                     subTableField: 'タイトルをテーブルフィールドにすることはできません。',
                     mixedField: '[Table]フィールドと通常のフィールドを混在させることはできません。'
+                },
+                zh: {
+                    ganttchartTitle: '标题',
+                    ganttchartTitleLabel: '(A).要作为标题的字段',
+                    ganttchartTitleDescription: '选择甘特图纵轴第一分类要显示的字段。',
+                    ganttchartDesc: '副标题',
+                    ganttchartDescLabel: '(B).要作为副标题的字段',
+                    ganttchartDescDescription: '选择甘特图纵轴第二分类要显示的字段',
+                    ganttchartFrom: '开始日',
+                    ganttchartFromLabel: '(C).作为开始日(开始日期与时间)的字段',
+                    ganttchartFromDescription: '',
+                    ganttchartTo: '结束日',
+                    ganttchartToLabel: '(D).作为结束日(结束日期与时间)的字段',
+                    ganttchartToDescription: '',
+                    ganttchartColor: '色板',
+                    ganttchartColorLabel: '(E).要设置颜色的字段',
+                    ganttchartColorLabelName: '颜色',
+                    ganttchartColorLabelSetting: '设置值',
+                    ganttchartColorDescription: '请输入显示颜色的条件。（多个条件时的例子：[A,B,C]） 条件值重复时，上面的条件优先。',
+                    ganttchartScall: '单位',
+                    ganttchartScallLabel: '默认显示单位',
+                    ganttchartScallDescription: '',
+                    ganttchartScallOption: {
+                        hours: '小时',
+                        days: '天',
+                        weeks: '周',
+                        months: '月'
+                    },
+                    error: '错误: ',
+                    pluginSubmit: '保存',
+                    pluginCancel: '取消',
+                    requiredField: '有必填项未输入。',
+                    subTableField: '不可选择表格字段作为标题。',
+                    mixedField: '[Table]字段和一般字段不可同时存在。'
                 }
             },
             settings: {
@@ -131,7 +165,7 @@ jQuery.noConflict();
                 }));
                 // Set in the item selection box retrieves the form information design
                 for (var key in this.settings.form) {
-                    if (!this.settings.form.hasOwnProperty(key)) {
+                    if (!Object.prototype.hasOwnProperty.call(this.settings.form,key)) {
                         continue;
                     }
                     var prop = this.settings.form[key];
@@ -175,7 +209,7 @@ jQuery.noConflict();
                                 continue;
                             }
                             for (var key2 in this.settings.form[prop.code].fields) {
-                                if (!this.settings.form[prop.code].fields.hasOwnProperty(key2)) {
+                                if (!Object.prototype.hasOwnProperty.call(this.settings.form[prop.code].fields,key2)) {
                                     continue;
                                 }
                                 var prop2 = this.settings.form[prop.code].fields[key2];
@@ -376,7 +410,7 @@ jQuery.noConflict();
                 var tableColor = $(this.settings.element.gantt + ' table > tbody');
                 var settingColorRow = tableColor.find('tr');
                 for (var valueColor in this.settings.config.settingColors) {
-                    if (!this.settings.config.settingColors.hasOwnProperty(valueColor)) {
+                    if (!Object.prototype.hasOwnProperty.call(this.settings.config.settingColors,valueColor)) {
                         continue;
                     }
                     var settingColorRowClone = settingColorRow.clone();
@@ -430,7 +464,7 @@ jQuery.noConflict();
             },
             validateFormquarter: function(kintoneFormConfig) {
                 for (var optionIndex in this.settings.formCode[kintoneFormConfig].options) {
-                    if (!this.settings.formCode[kintoneFormConfig].options.hasOwnProperty(optionIndex)) {
+                    if (!Object.prototype.hasOwnProperty.call(this.settings.formCode[kintoneFormConfig].options,optionIndex)) {
                         continue;
                     }
                     if (!this.parseQuarter(this.settings.formCode[kintoneFormConfig].options[optionIndex])) {
