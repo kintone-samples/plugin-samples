@@ -4,11 +4,13 @@
     "type": "APP",
     "name": {
         "ja": "自動採番プラグイン",
-        "en": "Auto-numbering plug-in"
+        "en": "Auto-numbering plug-in",
+        "zh": "自动编号插件"
     },
     "description": {
         "ja": "保存時に自動採番するプラグインです。",
-        "en": "Auto-numbering plug-in"
+        "en": "Auto-numbering plug-in",
+        "zh": "此插件可在保存记录时自动生成编号。"
     },
     "icon": "img/icon.png",
     "desktop": {
