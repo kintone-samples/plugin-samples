@@ -271,14 +271,14 @@ function closeButton() {
             },
             zh: {
                 months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-                dow: ['日', '一', '二', '三', '四', '五', '六'],
-                wait: '请等待显示屏',
-                plzEnterStartDate: '请输入开始日期。',
-                plzEnterEndDate: '请输入结束日期。',
+                dow: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+                wait: '请稍等',
+                plzEnterStartDate: '请输入开始日。',
+                plzEnterEndDate: '请输入结束日。',
                 update: '更新',
-                detailPage: '进入详细页面',
+                detailPage: '前往详情页面',
                 emptyAlert: '请输入日期',
-                authAlert: '不能更新记录了。请确认是否有编辑权限。'
+                authAlert: '记录更新失败。请确认是否有编辑权限。'
             }
         },
         settings: {
@@ -330,7 +330,7 @@ function closeButton() {
                 });
             }
             for (var fieldColor in settingColors) {
-                if (!settingColors.hasOwnProperty(fieldColor)) {
+                if (!Object.prototype.hasOwnProperty.call(settingColors,fieldColor)) {
                     continue;
                 }
                 var fieldColorArray = fieldColor.split(',');
@@ -563,7 +563,7 @@ function closeButton() {
         uiSetStyleProcessBar: function(styles) {
             var styleRule = '';
             for (var className in styles) {
-                if (!styles.hasOwnProperty(className)) {
+                if (!Object.prototype.hasOwnProperty.call(styles,className)) {
                     continue;
                 }
                 styleRule += '.' + className + '{background-color:' + styles[className] + '!important}';

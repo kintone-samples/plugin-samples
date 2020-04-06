@@ -10,7 +10,7 @@
    "description":{
       "ja":"これはガントチャートを表示するサンプルのプラグインです。",
       "en":"This is sample Gantt chart plugin.",
-      "zh":"这是插件的例子"
+      "zh":"此插件是以甘特图为例示范插件的开发方法"
    },
    "icon":"img/icon.png",
    "homepage_url":{
