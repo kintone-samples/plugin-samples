@@ -5,12 +5,12 @@
   "name": {
     "ja": "MTG効率化プラグイン",
     "en": "Colorful Weekly Report Plugin",
-    "zh": "Colorful Weekly Report Plugin"
+    "zh": "高效率会议插件"
   },
   "description": {
     "ja": "週報をカラフルに使いやすくするプラグインです",
     "en": "This plugin can change your weekly report app colorful.",
-    "zh": "This plugin can change your weekly report app colorful."
+    "zh": "此插件可使您的周报变得更加绚丽多彩。"
   },
   "icon": "img/colorful-weekly.png",
   "homepage_url": {
@@ -32,6 +32,7 @@
     "html": "html/config.html",
     "js": [
       "https://js.cybozu.com/jquery/1.12.3/jquery.min.js",
+      "https://js.cybozu.com/jsrender/1.0.5/jsrender.min.js",
       "js/colorful-weekly-config.js"
     ],
     "css": [
