@@ -25,6 +25,28 @@
   // 変更後チェック実施:1、 未実施:0
   var MODE_CONFIG = CONFIG.mode;
 
+  function creatErrorMessage(num) {
+    var lang = kintone.getLoginUser().language;
+    var message = {
+      'ja': {
+        '1': '郵便番号は7桁の半角数字で入力して下さい。',
+        '2': '電話番号は10桁 または 11桁の半角数字で入力して下さい。',
+        '3': 'FAX番号は10桁 または 11桁の半角数字で入力して下さい。',
+        '4': 'メールアドレスとして認識されませんでした。値を確認して下さい。'
+      },
+      'zh': {
+        '1': '请输入7位邮政编码。',
+        '2': '请输入10位或11位半角数字的电话号码。',
+        '3': '请输入10位或11位半角数字的传真号码。',
+        '4': '非法邮箱。请确认输入值。'
+      }
+    }
+    if(!message[lang]) {
+      lang = 'ja';
+    }
+    return message[lang][num];
+  }
+
   // 郵便番号の入力チェック
   function zipCheck(event) {
     // 郵便番号の定義(7桁の半角数字)
@@ -40,7 +62,7 @@
         // 定義したパターンにマッチするか確認します
         if (!(zip_value.match(zip_pattern))) {
           // マッチしない場合は、郵便番号フィールドにエラーの内容を表示するようにします
-          rec[CONFIG_ZIP].error = '郵便番号は7桁の半角数字で入力して下さい。';
+          rec[CONFIG_ZIP].error = creatErrorMessage(1);
         }
       }
     }
@@ -62,7 +84,7 @@
         // 定義したパターンにマッチするか確認します
         if (!(tel_value.match(tel_pattern))) {
           // マッチしない場合は、TEL に対してエラーの内容を記載します
-          rec[CONFIG_TEL].error = '電話番号は10桁 または 11桁の半角数字で入力して下さい。';
+          rec[CONFIG_TEL].error = creatErrorMessage(2);
         }
       }
     }
@@ -83,7 +105,7 @@
         // 定義したパターンにマッチするか確認します
         if (!(fax_value.match(fax_pattern))) {
           // マッチしない場合は、FAX に対してエラーの内容を記載します
-          rec[CONFIG_FAX].error = 'FAX番号は10桁 または 11桁の半角数字で入力して下さい。';
+          rec[CONFIG_FAX].error = creatErrorMessage(3);
         }
       }
     }
@@ -104,7 +126,7 @@
         // 定義したパターンにマッチするか確認します
         if (!(mail_value.match(mail_pattern))) {
           // マッチしない場合は、メールアドレスに対してエラーの内容を記載します
-          rec[CONFIG_MAIL].error = 'メールアドレスとして認識されませんでした。値を確認して下さい。';
+          rec[CONFIG_MAIL].error = creatErrorMessage(4);
         }
       }
     }
