@@ -10,7 +10,7 @@
     "description": {
         "ja": "kintoneとFullCalendarを連携するプラグインです。",
         "en": "This plugin cooperate with FullCalendar",
-        "zh": "这个插件是连接kintone和FullCalendar的"
+        "zh": "这个插件整合了kintone和FullCalendar"
     },
     "icon": "image/icon.png",
     "desktop": {
@@ -29,6 +29,7 @@
         "html": "html/config.html",
         "js": [
             "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
+            "https://js.cybozu.com/jsrender/1.0.5/jsrender.min.js",
             "js/config.js"
         ],
         "css": [

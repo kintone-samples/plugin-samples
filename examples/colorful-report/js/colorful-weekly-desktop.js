@@ -7,6 +7,19 @@
 jQuery.noConflict();
 (function($, PLUGIN_ID) {
     'use strict';
+
+    function createErrorMessage(){
+        var lang = kintone.getLoginUser().language;
+        var message = {
+            'ja': 'このビューは「開催日」項目を配置する必要があります。',
+            'zh': '此列表必须包含[开会日期]字段。'
+        }
+        if (!message[lang]) {
+            lang = 'ja';
+        }
+        return message[lang];
+    }
+
     // read config.
     var config = kintone.plugin.app.getConfig(PLUGIN_ID);
     var titleField = config['titleField'];
@@ -100,7 +113,7 @@ jQuery.noConflict();
                 }
             }
         } else {
-            alert('このビューは「開催日」項目を配置する必要があります。');
+            alert(createErrorMessage());
         }
         return event;
     });

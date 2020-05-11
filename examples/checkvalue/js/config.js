@@ -9,6 +9,42 @@ jQuery.noConflict();
 (function($, PLUGIN_ID) {
   'use strict';
 
+  var terms = {
+    'ja': {
+      'checkValue_label': '値変更後入力チェック',
+      'checkValue_checkbox': '値変更後に入力チェックを行う場合はチェックしてください。',
+      'checkValue_zip_label': '郵便番号をチェックするフィールド',
+      'checkValue_zip_field': '郵便番号のチェックを行うフィールドを選択してください。',
+      'checkValue_tel_label': '電話番号をチェックするフィールド',
+      'checkValue_tel_field': '電話番号のチェックを行うフィールドを選択してください。',
+      'checkValue_fax_label': 'FAX番号をチェックするフィールド',
+      'checkValue_fax_field': 'FAX番号のチェックを行うフィールドを選択してください。',
+      'checkValue_mail_label': 'メールアドレスをチェックするフィールド',
+      'checkValue_mail_field': 'メールアドレスのチェックを行うフィールドを選択してください。',
+      'checkValue_save': '保存する',
+      'checkValue_cancel': 'キャンセル'
+    },
+    'zh': {
+      'checkValue_label': '校验输入值',
+      'checkValue_checkbox': '如需在输入值之后进行校验请勾选。',
+      'checkValue_zip_label': '检验邮政编码',
+      'checkValue_zip_field': '请选择需要对邮政编码进行校验的字段。',
+      'checkValue_tel_label': '校验电话号码',
+      'checkValue_tel_field': '请选择需要对电话号码进行校验的字段。',
+      'checkValue_fax_label': '校验传真号码',
+      'checkValue_fax_field': '请选择需要对传真号码进行校验的字段。',
+      'checkValue_mail_label': '校验邮箱地址',
+      'checkValue_mail_field': '请选择需要对邮箱地址进行校验的字段。',
+      'checkValue_save': '保存',
+      'checkValue_cancel': '取消'
+    }
+  }
+  var lang = kintone.getLoginUser().language;
+  var i18n = (lang in terms) ? terms[lang]: terms['ja'];
+  var configHtml = $('#checkValue_plugin').html();
+  var tmpl = $.templates(configHtml);
+  $('#checkValue_plugin').html(tmpl.render({'terms':i18n}));
+
   // プラグインIDの設定
   var KEY = PLUGIN_ID;
   var CONF = kintone.plugin.app.getConfig(KEY);
@@ -44,6 +80,23 @@ jQuery.noConflict();
     });
   }
 
+  function createErrorMessage(num) {
+    var message = {
+      'ja': {
+        '1': '必須項目が入力されていません',
+        '2': '選択肢が重複しています'
+      },
+      'zh': {
+        '1': '有必填项未填写',
+        '2': '选项重复'
+      }
+    }
+    if(!message[lang]) {
+      lang = 'ja';
+    }
+    return message[lang][num];
+  }
+
   $(document).ready(function() {
 
     // 既に値が設定されている場合はフィールドに値を設定する
@@ -67,7 +120,7 @@ jQuery.noConflict();
       var mode = $('#check-plugin-change_mode').prop('checked');
       // 必須チェック
       if (zip === '' || tel === '' || fax === '' || mail === '') {
-        alert('必須項目が入力されていません');
+        alert(createErrorMessage(1));
         return;
       }
       config.zip = zip;
@@ -80,7 +133,7 @@ jQuery.noConflict();
         return self.indexOf(value) === index;
       });
       if (Object.keys(config).length !== uniqueConfig2.length) {
-        alert('選択肢が重複しています');
+        alert(createErrorMessage(2));
         return;
       }
 

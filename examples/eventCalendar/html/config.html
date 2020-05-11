@@ -4,13 +4,13 @@
  *
  * Licensed under the MIT License
 -->
-<div>
+<div id="EventCalendarPlugin">
     <div class="block">
         <label class="kintoneplugin-label">
-        <span id ="container_label">イベント名フィールド</span>
+        <span id ="container_label">{{html:terms.event_title}}</span>
         <span class="kintoneplugin-require">*</span>
     </label>
-        <div class="kintoneplugin-row">イベント名として使用する文字列フィールドのフィールド名を選択して下さい。</div>
+        <div class="kintoneplugin-row">{{html:terms.event_title_description}}</div>
         <div class="kintoneplugin-select-outer">
             <div class="kintoneplugin-select">
                 <select id="name_code">
@@ -20,10 +20,10 @@
     </div>
     <div class="block">
         <label class="kintoneplugin-label">
-        <span id ="container_label">開始日時フィールド</span>
+        <span id ="container_label">{{html:terms.start_dateTime}}</span>
         <span class="kintoneplugin-require">*</span>
     </label>
-        <div class="kintoneplugin-row">イベント開始日時として使用する日時フィールドのフィールド名を選択して下さい。</div>
+        <div class="kintoneplugin-row">{{html:terms.start_dateTime_description}}</div>
         <div class="kintoneplugin-select-outer">
             <div class="kintoneplugin-select">
                 <select id="start_datetime_code">
@@ -33,10 +33,10 @@
     </div>
     <div class="block">
         <label class="kintoneplugin-label">
-        <span id ="container_label">終了日時フィールド</span>
+        <span id ="container_label">{{html:terms.end_dateTime}}</span>
         <span class="kintoneplugin-require">*</span>
     </label>
-        <div class="kintoneplugin-row">イベント終了日時として使用する日時フィールドのフィールド名を選択して下さい。</div>
+        <div class="kintoneplugin-row">{{html:terms.end_dateTime_description}}</div>
         <div class="kintoneplugin-select-outer">
             <div class="kintoneplugin-select">
                 <select id="end_datetime_code">
@@ -46,15 +46,15 @@
     </div>
     <div class="block">
         <label class="kintoneplugin-label">
-        <span id ="container_label">ステータス（任意）</span>
+        <span id ="container_label">{{html:terms.background}}</span>
     </label>
-        <div class="kintoneplugin-row">プロセス管理のステータスと対応する背景色を指定可能です。<br> ※背景色は英語、16進数、RGBのいずれも可。　赤：red, #ff0000, rgb(255,0,0)　緑：green, #008000, rgb(0,128,0)</div>
+        <div class="kintoneplugin-row">{{html:terms.background_description}}</div>
         <div class="kintoneplugin-input-outer">
             <table>
                 <tr style="background:#ccccff">
                     <th>No.</th>
-                    <th>ステータス</th>
-                    <th>背景色</th>
+                    <th>{{html:terms.background_status}}</th>
+                    <th>{{html:terms.background_color}}</th>
                 </tr>
                 <tr>
                     <td>1</td>
@@ -96,7 +96,7 @@
         </div>
     </div>
     <div class="block">
-        <button type="button" id="submit" class="kintoneplugin-button-dialog-ok">     保存する     </button>
-        <button type="button" id="cancel" class="kintoneplugin-button-dialog-cancel">     キャンセル   </button>
+        <button type="button" id="submit" class="kintoneplugin-button-dialog-ok">{{html:terms.save_button}}</button>
+        <button type="button" id="cancel" class="kintoneplugin-button-dialog-cancel">{{html:terms.cancel_button}}</button>
     </div>
 </div>
