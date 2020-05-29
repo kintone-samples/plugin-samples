@@ -35,6 +35,19 @@ jQuery.noConflict();
             cancelButton: 'キャンセル',
             checkFieldTitle: '保存時の入力値チェック',
             checkFieldDescription: '結合するフィールドに値が入っていない場合、アラートで注意を表示する'
+        },
+        'zh': {
+            connectTitle: '要结合的字段',
+            connectDescription: '请选择需要结合的字段。（最多5个）',
+            delimiterTitle: '连接各字段的符号',
+            delimiterDescription: '请输入各字段之间的连接符号。如未输入，各字段直接结合。',
+            errorMessage: '“用于显示结合后字符的字段”为必填项。',
+            resultTitle: '用于显示结合后字符的字段',
+            resultDescription: '请选择一个字段用于显示结合后的字符。',
+            saveButton: '保存',
+            cancelButton: '取消',
+            checkFieldTitle: '保存时输入内容的检查',
+            checkFieldDescription: '如要结合的字段中有字段的值为空，提示警告'
         }
     };
     var lang = kintone.getLoginUser().language;
@@ -53,7 +66,7 @@ jQuery.noConflict();
                 $('#select' + i).val(CONF['select' + i]);
             }
             // get the previous plugin setting
-            if (CONF.hasOwnProperty('line_number')) {
+            if (Object.prototype.hasOwnProperty.call(CONF, 'line_number')) {
                 $('#copyfield1').val(CONF.copyfield);
                 if (CONF.copyfield !== '') {
                     $('#between1').val(decodeSpace(CONF.between));
@@ -74,7 +87,7 @@ jQuery.noConflict();
                 }
             }
 
-            if (CONF.hasOwnProperty('checkField') && CONF.checkField === 'uncheck') {
+            if (Object.prototype.hasOwnProperty.call(CONF, 'checkField') && CONF.checkField === 'uncheck') {
                 $('#checkField').prop('checked', false);
             }
         }
@@ -104,7 +117,7 @@ jQuery.noConflict();
             var $option = $('<option>');
 
             for (var key in resp.properties) {
-                if (!resp.properties.hasOwnProperty(key)) {
+                if (!Object.prototype.hasOwnProperty.call(resp.properties, key)) {
                     continue;
                 }
                 var prop = resp.properties[key];
