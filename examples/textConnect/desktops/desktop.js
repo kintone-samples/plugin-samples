@@ -16,6 +16,10 @@
         'ja': {
             emptyCheck: '結合対象のフィールドに空文字が含まれています。登録しますか？',
             cancel: 'キャンセルしました'
+        },
+        'zh': {
+            emptyCheck: '要结合的字段中有字段的值为空，确定要保存吗？',
+            cancel: '已取消'
         }
     };
     var lang = kintone.getLoginUser().language;
@@ -182,7 +186,7 @@
         var selectionArry = createSelectionArry();
         var flag = false;
 
-        if (CONF.hasOwnProperty('checkField') && CONF.checkField === 'uncheck') {
+        if (Object.prototype.hasOwnProperty.call(CONF, 'checkField') && CONF.checkField === 'uncheck') {
             return event;
         }
 

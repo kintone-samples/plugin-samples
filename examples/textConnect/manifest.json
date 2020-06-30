@@ -5,12 +5,12 @@
     "name": {
         "ja": "文字結合プラグイン",
         "en": "Text Connect",
-        "zh": "Text Connect"
+        "zh": "字符结合插件"
     },
     "description": {
         "ja": "複数のフィールドの文字を連結して、特定のフィールドに代入するプラグインです。",
         "en": "This plug-in can combine the text of multiple fields and place the result in a specified field.",
-        "zh": "This plug-in can combine the text of multiple fields and place the result in a specified field."
+        "zh": "此插件可将多个字段的字符结合在一起显示到其他指定的字段中。"
     },
     "icon": "contents/icon.png",
     "desktop": {
