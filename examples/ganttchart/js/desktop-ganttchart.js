@@ -365,6 +365,9 @@ function closeButton() {
                     var subTable = records[i2].Table.value;
 
                     for (var j = 0; j < subTable.length; j++) {
+                        var fromValue = subTable[j].value[GANTT_FROM]['value'];
+                        var toValue = subTable[j].value[GANTT_TO]['value'];
+                        if (!fromValue || !toValue) continue;
                         var colorGantt = self.settings.element.classColorGanttDefault;
                         var descGantt = '<b>' + self.escapeHtml(records[i2][GANTT_NAME].value) + '</b>';
 
@@ -381,8 +384,6 @@ function closeButton() {
                         }
 
                         var colorValue = subTable[j].value[GANTT_COLOR]['value'] || '';
-                        var fromValue = subTable[j].value[GANTT_FROM]['value'];
-                        var toValue = subTable[j].value[GANTT_TO]['value'];
                         if (colorValue && self.settings.config.settingColors[colorValue]) {
                             var styleRecordClass = self.settings.element.prefixColorGantt + 'class-' + i2 + '-' + j;
                             colorGantt = styleRecordClass;
@@ -436,6 +437,9 @@ function closeButton() {
             }
             function createRecords2() {
                 for (var i3 = 0; i3 < records.length; i3++) {
+                    var fromValue2 = records[i3][GANTT_FROM]['value'];
+                    var toValue2 = records[i3][GANTT_TO]['value'];
+                    if (!fromValue2 || !toValue2) continue;
                     var colorGantt2 = self.settings.element.classColorGanttDefault;
 
                     var colorValue2 = records[i3][GANTT_COLOR]['value'] || '';
@@ -452,14 +456,12 @@ function closeButton() {
                             '</div>';
                     }
 
-                    var fromValue2 = records[i3][GANTT_FROM]['value'];
                     if (fromValue2) {
                         descGantt2 += '<div>' + conf.fieldNameFrom + ': ' +
                             self.escapeHtml(self.convertDateTimeWithTimezone(fromValue2)) +
                             '</div>';
                     }
 
-                    var toValue2 = records[i3][GANTT_TO]['value'];
                     if (toValue2) {
                         descGantt2 += '<div>' + conf.fieldNameTo + ': ' +
                             self.escapeHtml(self.convertDateTimeWithTimezone(toValue2)) +
