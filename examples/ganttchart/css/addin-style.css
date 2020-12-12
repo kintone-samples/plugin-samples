@@ -64,6 +64,18 @@ h3 {
     text-overflow: ellipsis; 
 }
 
+#header h3 {
+    margin-bottom: 0;
+}
+
+#header h4 {
+    font-size: x-large;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-top: 0;
+}
+
 .content {
 	text-align:center;
 }
