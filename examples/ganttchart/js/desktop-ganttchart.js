@@ -405,7 +405,7 @@ function closeButton() {
 
                         var sDate = subTable[j].value[GANTT_FROM].value ? subTable[j].value[GANTT_FROM].value : subTable[j].value[GANTT_TO].value;
                         var eDate = subTable[j].value[GANTT_TO].value ? subTable[j].value[GANTT_TO].value : subTable[j].value[GANTT_FROM].value;
-                        var isStartDateEndDateInvalid = (!sDate && !eDate);
+                        var isStartDateEndDateInvalid = (!sDate && !eDate) || !self.isStartDateEndDateValid(sDate, eDate);
                         var ganttRecordData = {
                             id: self.escapeHtml(records[i2]['$id'].value),
                             name: (j !== 0) ? '' : self.escapeHtml(records[i2][GANTT_NAME].value),
@@ -474,7 +474,7 @@ function closeButton() {
                     }
                     var sDate = records[i3][GANTT_FROM].value ? records[i3][GANTT_FROM].value : records[i3][GANTT_TO].value
                     var eDate = records[i3][GANTT_TO].value ? records[i3][GANTT_TO].value : records[i3][GANTT_FROM].value
-                    var isStartDateEndDateInvalid = (!sDate && !eDate);
+                    var isStartDateEndDateInvalid = (!sDate && !eDate) || !self.isStartDateEndDateValid(sDate, eDate);
                     var ganttRecordData2 = {
                         id: self.escapeHtml(records[i3]['$id'].value),
                         name: records[i3][GANTT_NAME] ? self.escapeHtml(records[i3][GANTT_NAME].value) : '',
@@ -608,6 +608,23 @@ function closeButton() {
         convertDateTimeWithTimezone: function(date) {
             var dateWithTimezone = moment.tz(date, this.settings.user.timezone);
             return dateWithTimezone.format('YYYY-MM-DD H:mm');
+        },
+        isStartDateEndDateValid: function(fromDate, toDate) {
+            var fromDateWithTimezone = moment.tz(fromDate, this.settings.user.timezone);
+            var fromDate = new Date(fromDateWithTimezone.year(),
+            fromDateWithTimezone.month(),
+            fromDateWithTimezone.date(),
+            fromDateWithTimezone.hours(),
+            fromDateWithTimezone.minutes());
+
+            var toDateWithTimezone = moment.tz(toDate, this.settings.user.timezone);
+            var toDate = new Date(toDateWithTimezone.year(),
+            toDateWithTimezone.month(),
+            toDateWithTimezone.date(),
+            toDateWithTimezone.hours(),
+            toDateWithTimezone.minutes());
+            
+            return fromDate.getTime() <= toDate.getTime();
         }
     };
     $(document).ready(function() {
