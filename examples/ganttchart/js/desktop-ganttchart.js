@@ -405,13 +405,14 @@ function closeButton() {
 
                         var sDate = subTable[j].value[GANTT_FROM].value ? subTable[j].value[GANTT_FROM].value : subTable[j].value[GANTT_TO].value;
                         var eDate = subTable[j].value[GANTT_TO].value ? subTable[j].value[GANTT_TO].value : subTable[j].value[GANTT_FROM].value;
+                        var isStartDateEndDateInvalid = (!sDate && !eDate);
                         var ganttRecordData = {
                             id: self.escapeHtml(records[i2]['$id'].value),
                             name: (j !== 0) ? '' : self.escapeHtml(records[i2][GANTT_NAME].value),
                             desc:
                                 subTable[j].value[GANTT_DESC] ?
                                     self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
-                            values: [{
+                            values: isStartDateEndDateInvalid ? [] : [{
                                 from: self.convertDateTime(sDate),
                                 to: self.convertDateTime(eDate),
                                 desc: descGantt,
@@ -473,11 +474,12 @@ function closeButton() {
                     }
                     var sDate = records[i3][GANTT_FROM].value ? records[i3][GANTT_FROM].value : records[i3][GANTT_TO].value
                     var eDate = records[i3][GANTT_TO].value ? records[i3][GANTT_TO].value : records[i3][GANTT_FROM].value
+                    var isStartDateEndDateInvalid = (!sDate && !eDate);
                     var ganttRecordData2 = {
                         id: self.escapeHtml(records[i3]['$id'].value),
                         name: records[i3][GANTT_NAME] ? self.escapeHtml(records[i3][GANTT_NAME].value) : '',
                         desc: records[i3][GANTT_DESC] ? self.escapeHtml(records[i3][GANTT_DESC].value) : '',
-                        values: [{
+                        values: isStartDateEndDateInvalid ? [] : [{
                             from: self.convertDateTime(sDate),
                             to: self.convertDateTime(eDate),
                             desc: descGantt2,
