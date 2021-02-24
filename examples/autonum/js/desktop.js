@@ -45,6 +45,13 @@
                 plugin: kintone.plugin.app.getConfig(PLUGIN_ID)
             }
         },
+        CONSTANT: {
+            NUMBERING_DEFAULT: 1,
+            MAX_RESET_TIMES: 12,
+            MAX_LENGTH_OF_DIGIT_NUMBER: 10,
+            MIN_LENGTH_OF_DIGIT_NUMBER: 1,
+          },
+        getLastNumberTimes: 0,
         init: function() {
             if (!this.settings.config.plugin) {
                 return false;
@@ -81,39 +88,12 @@
             // Get last record, parse id and increased 1
             kintone.events.on(this.settings.events.onSubmit, function(event) {
 
-                var record = event.record;
-                var NUMBERING_DEFAULT = 1;
 
                 var query = 'order by $id desc limit 1';
                 return self.apiRequest(query).then(function(respdata) {
-                    if (!respdata.records[0] ||
-                        respdata['records'][0][self.settings.config.FIELD_CODE]['value'] === ''
-                    ) {
-                        record[self.settings.config.FIELD_CODE]['value'] =
-                            self.createWithNumberOfDigit(NUMBERING_DEFAULT);
-                        return self.createFormat(self.createWithNumberOfDigit(NUMBERING_DEFAULT));
-                    }
-                    var lastNumberingResponse = respdata['records'][0][self.settings.config.FIELD_CODE]['value'];
-
-                    var numbering;
-                    if (self.isResetNumber(respdata)) {
-                        numbering = NUMBERING_DEFAULT;
-                    } else {
-                        // handle case NUM_OF_DIGIT was changed
-                        var lastIdArray = lastNumberingResponse.split(self.settings.config.CONNECTIVE);
-                        var lastIdInt = lastIdArray[lastIdArray.length - 1];
-
-                        numbering = parseInt(lastIdInt, 10) + 1;
-                    }
-
-                    var numberingWithNumberOfDigit = self.createWithNumberOfDigit(numbering);
-                    var numberingWithFormat = self.createFormat(numberingWithNumberOfDigit);
-                    numberingWithFormat = self.countupNumber(numberingWithFormat, numbering);
-
-                    return numberingWithFormat;
-
+                    return self.getFormatNumberBy(respdata);
                 }).then(function(numberingWithFormat) {
-                    record[self.settings.config.FIELD_CODE]['value'] = numberingWithFormat;
+                    event.record[self.settings.config.FIELD_CODE]['value'] = numberingWithFormat;
                     return event;
 
                 }).catch(function(error) {
@@ -122,56 +102,242 @@
                 });
             });
         },
-        createFormat: function(number) {
-            var date = '';
-            if (this.settings.config.DATE_SELECT_FORMAT !== 'null') {
-                date = moment(new Date()).format(this.settings.config.DATE_SELECT_FORMAT);
+        getFormatNumberBy: function (resp) {
+            var newNumberWithDigit, formatWithOutNumber, lastRecordFormatWithNumber;
+            var self = this;
+            return new kintone.Promise(function (resolve, _reject) {
+                if (
+                    !resp.records[0] ||
+                    resp.records[0][self.settings.config.FIELD_CODE].value === ""
+                ) {
+                    resolve(
+                        self.getFormatWithOutNumber() +
+                          self.createWithNumberOfDigit(self.CONSTANT.NUMBERING_DEFAULT)
+                    );
+                    return;
+                }
+                formatWithOutNumber = self.getFormatWithOutNumber();
+                lastRecordFormatWithNumber =
+                    resp.records[0][self.settings.config.FIELD_CODE].value;
+                if (!self.checkNeedReset(resp)) {
+                    newNumberWithDigit = self.createWithNumberOfDigit(
+                        self.getNumberBy(lastRecordFormatWithNumber) + 1
+                    );
+                    resolve(formatWithOutNumber + newNumberWithDigit);
+                    return;
+                }
+                // setting format only has number
+                if (
+                    self.settings.config.SELECT_FORMAT === 'numbering'
+                ) {
+                    newNumberWithDigit = self.createWithNumberOfDigit(
+                        self.CONSTANT.NUMBERING_DEFAULT
+                    );
+                    resolve(formatWithOutNumber + newNumberWithDigit);
+                    return;
+                }
+                self.getLastNumberTimes = self.CONSTANT.MAX_RESET_TIMES;
+                self.getLastNumberBy(formatWithOutNumber, []).then(function (number) {
+                    newNumberWithDigit = self.createWithNumberOfDigit(number);
+                    resolve(formatWithOutNumber + newNumberWithDigit);
+                });
+            });
+        },
+        /**
+         * params:{targetFormat: string, notLikeFormats: string[]}
+         */
+        getLastNumberBy: function (targetFormat, notLikeFormats) {
+            var query;
+            var self = this;
+            var formatResult;
+            var lastFormatWithNumber;
+            return new kintone.Promise(function (resolve, _reject) {
+                query = self.createQueryForRecordsApi(targetFormat, notLikeFormats);
+                self.apiRequest(query).then(function (resp) {
+                    if (!resp.records || !resp.records[0]) {
+                        resolve(self.CONSTANT.NUMBERING_DEFAULT);
+                        return;
+                    }
+                    lastFormatWithNumber =
+                        resp.records[0][self.settings.config.FIELD_CODE].value;
+                    formatResult = self.getFormatBy(lastFormatWithNumber);
+                    if (formatResult === targetFormat) {
+                        resolve(self.getNumberBy(lastFormatWithNumber) + 1);
+                        return;
+                    }
+                    self.getLastNumberTimes--;
+                    if (self.getLastNumberTimes === 0) {
+                        resolve(self.getLastNumberByFromAllRecords(targetFormat));
+                        return;
+                    }
+                    notLikeFormats.push(formatResult);
+                    resolve(self.getLastNumberBy(targetFormat, notLikeFormats));
+                });
+            });
+        },
+        createQueryForRecordsApi: function (targetFormat, notLikeFormats) {
+            var self = this;
+            var query =
+                this.settings.config.FIELD_CODE + ' like "' + targetFormat + '"';
+              notLikeFormats.forEach(function (notLikeFormat) {
+                query =
+                  query +
+                  " and " +
+                  self.settings.config.FIELD_CODE +
+                  ' not like "' +
+                  notLikeFormat +
+                  '"';
+                });
+            query += "order by $id desc limit 1";
+            return query;
+        },
+        getFormatBy: function (formatWithNumber) {
+            var index = formatWithNumber.lastIndexOf(this.settings.config.CONNECTIVE);
+            if (index === -1) {
+                return "";
+            }
+            return formatWithNumber.substr(0, index + 1);
+          },
+        getNumberBy: function (formatWithNumber) {
+            var index = formatWithNumber.lastIndexOf(this.settings.config.CONNECTIVE);
+            var result = formatWithNumber.substr(index + 1);
+            return parseInt(result, 10);
+        },
+        getFormatWithOutNumber: function () {
+            var date = "";
+            if (this.settings.config.DATE_SELECT_FORMAT !== "null") {
+                date = moment(new Date()).format(
+                    this.settings.config.DATE_SELECT_FORMAT
+                );
             }
             switch (this.settings.config.SELECT_FORMAT) {
-                case 'numbering':
-                    return (number);
-
-                case 'dateNumbering':
-                    return (date + this.settings.config.CONNECTIVE + number);
-
-                case 'dateTextNumbering':
-                    return (date + this.settings.config.CONNECTIVE +
-                            this.settings.config.TEXT +
-                            this.settings.config.CONNECTIVE + number);
-
-                case 'textNumbering':
-                    return (this.settings.config.TEXT + this.settings.config.CONNECTIVE + number);
-
-                case 'textDateNumbering':
-                    return (this.settings.config.TEXT +
-                            this.settings.config.CONNECTIVE + date +
-                            this.settings.config.CONNECTIVE + number);
-
+                case "dateNumbering":
+                    return date + this.settings.config.CONNECTIVE;
+      
+                case "dateTextNumbering":
+                    return (
+                        date +
+                        this.settings.config.CONNECTIVE +
+                        this.settings.config.TEXT +
+                        this.settings.config.CONNECTIVE
+                    );
+      
+                case "textNumbering":
+                    return this.settings.config.TEXT + this.settings.config.CONNECTIVE;
+      
+                case "textDateNumbering":
+                    return (
+                      this.settings.config.TEXT +
+                      this.settings.config.CONNECTIVE +
+                      date +
+                      this.settings.config.CONNECTIVE
+                    );
+      
                 default:
-                    return ('');
+                    return "";
             }
         },
-        countupNumber: function(numberingWithFormat, countNumber) {
+        checkNeedReset: function (respdata) {
+            var lastAutonum =
+              respdata.records[0][this.settings.config.FIELD_CODE].value;
+            var index = 0;
+            var formats = this.settings.config.FORMAT;
             var self = this;
-
-            var newCountNumber = countNumber;
-            var newlayout2 = numberingWithFormat;
-            var zerono = this.createWithNumberOfDigit(countNumber);
-            var query = self.settings.config.FIELD_CODE + '="' + newlayout2 + '"';
-
-            return this.apiRequest(query).then(function(respdata) {
-                // レコードを取得できた場合、重複のため番号を振りなおす
-                if (respdata.records.length > 0) {
-                    newCountNumber += 1;
-                    zerono = self.createWithNumberOfDigit(newCountNumber);
-                    newlayout2 = self.createFormat(zerono);
-                    return self.countupNumber(newlayout2, newCountNumber);
+            var reg = this.createRegExpBySettingFormat();
+            if (!reg.test(lastAutonum)) {
+                return true;
+            }
+            for (index; index < formats.length; index++) {
+                if (
+                    formats[index] === "date" &&
+                    self.checkDateFormat(
+                      lastAutonum.split(self.settings.config.CONNECTIVE)[index]
+                    )
+                ) {
+                    return true;
                 }
-                return newlayout2;
-
-            }, function() {
-                self.alertMessage(self.settings.i18n.alertMessage.failedAutoNumbering);
-                throw (self.settings.i18n.alertMessage.failedAutoNumbering);
+            }
+            return false;
+        },
+        createRegExpBySettingFormat: function () {
+            var self = this;
+            var regStr = "^";
+            var formats = this.settings.config.FORMAT;
+            formats.forEach(function (format, index) {
+                if (index !== 0 && format !== "") {
+                    regStr += self.settings.config.CONNECTIVE;
+                }
+                switch (format) {
+                    case "date":
+                      regStr =
+                        regStr +
+                        "\\d{" +
+                        self.settings.config.DATE_SELECT_FORMAT.length +
+                        "}";
+                    break;
+                    case "text":
+                        regStr += self.settings.config.TEXT;
+                    break;
+                    case "number":
+                      regStr +=
+                        "\\d{" +
+                        self.CONSTANT.MIN_LENGTH_OF_DIGIT_NUMBER +
+                        "," +
+                        self.CONSTANT.MAX_LENGTH_OF_DIGIT_NUMBER +
+                        "}";
+                    break;
+                }
+            });
+            regStr += "$";
+            return new RegExp(regStr);
+        },
+        getLastNumberByFromAllRecords: function (targetFormat) {
+            var self = this;
+            return new kintone.Promise(function (resolve, _reject) {
+                var query =
+                  self.settings.config.FIELD_CODE + ' like "' + targetFormat + '"';
+                self.getAllRecordsByApi(query)
+                .then(function (resp) {
+                    var reg;
+                    var index = 0;
+                    if (!resp || resp.length === 0) {
+                        resolve(self.CONSTANT.NUMBERING_DEFAULT);
+                        return;
+                    }
+                    reg = self.createRegExpBySettingFormat();
+                    for (index; index < resp.length; index++) {
+                        if (
+                          reg.test(resp[index][self.settings.config.FIELD_CODE].value)
+                        ) {
+                            resolve(
+                              self.getNumberBy(
+                                resp[index][self.settings.config.FIELD_CODE].value
+                              ) + 1
+                            );
+                        return;
+                        }
+                    }
+                });
+            });
+        },
+        getAllRecordsByApi: function(query){
+            return this.getAllRecordsWithOffset(query, 0, []);
+        },
+        getAllRecordsWithOffset: function(query, offset, records){
+            var self = this;
+            return new kintone.Promise(function(resolve, reject){
+                var GET_RECORDS_LIMIT = 500;
+                var conditionQuery = query + 'order by $id desc limit ' + GET_RECORDS_LIMIT + ' offset ' + offset;
+                self.apiRequest(conditionQuery).then(function(resp){
+                    var allRecords = records.concat(resp.records);
+                    if (resp.records.length < GET_RECORDS_LIMIT) {
+                        resolve(allRecords);
+                        return;
+                    }
+                    resolve(self.getAllRecordsWithOffset(query, offset + GET_RECORDS_LIMIT,allRecords));
+                }).catch(function(error){
+                    reject(error);
+                });
             });
         },
         apiRequest: function(query) {
@@ -216,6 +382,26 @@
             }
             return (new Array(this.settings.config.NUM_OF_DIGIT).join('0') + number)
                 .slice(-1 * this.settings.config.NUM_OF_DIGIT);
+        },
+        checkDateFormat: function (dateFormatOfLastRecordAutonum) {
+            var currentDateFormat = moment().format(
+              this.settings.config.DATE_SELECT_FORMAT
+            );
+            // 頭1文字で比較(桁数が同じ場合の制御で「西暦(4桁)」「月日(4桁)」、「テキスト設定」「日付」の比較用)
+            if (
+              dateFormatOfLastRecordAutonum.substr(0, 1) !==
+              currentDateFormat.substr(0, 1)
+            ) {
+                return true;
+            }
+      
+            // 日付によるリセットタイミングの確認
+            if (
+              this.timingIsDateReset(dateFormatOfLastRecordAutonum, currentDateFormat)
+            ) {
+                return true;
+            }
+            return false;
         },
         timingIsDateReset: function(before, after) {
             switch (this.settings.config.RESET_TIMING) {
@@ -267,102 +453,6 @@
                 position.start = 4; // Year with 4 characters
             }
             return stringDate.substr(position.start, position.end);
-        },
-        countupStartPoint: function(startPoint, format) {
-            var formatDate = moment().format(this.settings.config.DATE_SELECT_FORMAT);
-
-            if (format === 'date') {
-                var datelen = formatDate.length + 1;
-                return (startPoint + datelen);
-
-            } else if (format === 'text') {
-                var textLength = this.settings.config.TEXT.length + 1;
-                return (startPoint + textLength);
-            }
-        },
-        checkFormat: function(startPoint, autonum, format) {
-
-            var formatDate = moment().format(this.settings.config.DATE_SELECT_FORMAT); // 書式で「日付」が選択されている場合、日付情報作成
-            var before;
-            var after;
-
-            // 書式で「日付」が選択されている場合の形式チェック
-            if (format === 'date') {
-                // 日付+接続語の長さを取得
-                var datelen = formatDate.length + 1;
-                before = autonum.substr(startPoint, datelen);
-                after = formatDate + this.settings.config.CONNECTIVE;
-
-                // 接続語の位置が一致しているかの確認
-                if (before.indexOf(this.settings.config.CONNECTIVE) !==
-                    after.indexOf(this.settings.config.CONNECTIVE)) {
-                    return true;
-                }
-
-                // 頭1文字で比較(桁数が同じ場合の制御で「西暦(4桁)」「月日(4桁)」、「テキスト設定」「日付」の比較用)
-                if (before.substr(0, 1) !== after.substr(0, 1)) {
-                    return true;
-                }
-
-                // 日付によるリセットタイミングの確認
-                if (this.timingIsDateReset(before, after)) {
-                    return true;
-                }
-                return false;
-
-                // 書式で「テキスト」が選択されている場合の形式チェック
-            } else if (format === 'text') {
-                // テキスト設定+接続語の長さを取得
-
-                var textLength = this.settings.config.TEXT.length + 1;
-
-                before = autonum.substr(startPoint, textLength);
-                after = this.settings.config.TEXT + this.settings.config.CONNECTIVE;
-
-                // 設定文書のテキスト設定と前採番の形式チェック
-                if (before !== after) {
-                    return true;
-                }
-                return false;
-            }
-        },
-        isResetNumber: function(respdata) {
-
-            var loopNumber;
-
-            // 書式の連番位置からループ回数の取得
-            if (this.settings.config.FORMAT[0] === 'number') {
-                loopNumber = 0;
-            } else if (this.settings.config.FORMAT[1] === 'number') {
-                loopNumber = 1;
-            } else if (this.settings.config.FORMAT[2] === 'number') {
-                loopNumber = 2;
-            }
-
-            // 検索にヒットした最新の採番取得
-            var autonum = respdata['records'][0][this.settings.config.FIELD_CODE]['value'];
-            var count = 0;
-            var pos = autonum.indexOf(this.settings.config.CONNECTIVE);
-
-            while (pos !== -1) {
-                count++;
-                pos = autonum.indexOf(this.settings.config.CONNECTIVE, pos + 1);
-            }
-
-            // 直近に採番された書式と新しく採番する書式の接続語の個数比較
-            if (loopNumber !== count) {
-                return true;
-            }
-            var startPoint = 0;
-
-            // 書式で「日付」「テキスト」が選択されている場合のみ形式チェックを行う
-            for (var i = 0; i < loopNumber; i++) {
-                if (this.checkFormat(startPoint, autonum, this.settings.config.FORMAT[i])) {
-                    return true;
-                }
-                startPoint = this.countupStartPoint(startPoint, this.settings.config.FORMAT[i]);
-            }
-            return false;
         },
         alertMessage: function(message) {
             var alertButtonClose = $('<span class="close"></span>'),
