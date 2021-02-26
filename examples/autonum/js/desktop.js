@@ -108,7 +108,7 @@
             return new kintone.Promise(function (resolve, _reject) {
                 if (
                     !resp.records[0] ||
-                    resp.records[0][self.settings.config.FIELD_CODE].value === ""
+                    resp.records[0][self.settings.config.FIELD_CODE].value === ''
                 ) {
                     resolve(
                         self.getFormatWithOutNumber() +
@@ -182,19 +182,19 @@
               notLikeFormats.forEach(function (notLikeFormat) {
                 query =
                   query +
-                  " and " +
+                  ' and ' +
                   self.settings.config.FIELD_CODE +
                   ' not like "' +
                   notLikeFormat +
                   '"';
                 });
-            query += "order by $id desc limit 1";
+            query += 'order by $id desc limit 1';
             return query;
         },
         getFormatBy: function (formatWithNumber) {
             var index = formatWithNumber.lastIndexOf(this.settings.config.CONNECTIVE);
             if (index === -1) {
-                return "";
+                return '';
             }
             return formatWithNumber.substr(0, index + 1);
           },
@@ -204,17 +204,17 @@
             return parseInt(result, 10);
         },
         getFormatWithOutNumber: function () {
-            var date = "";
-            if (this.settings.config.DATE_SELECT_FORMAT !== "null") {
+            var date = '';
+            if (this.settings.config.DATE_SELECT_FORMAT !== 'null') {
                 date = moment(new Date()).format(
                     this.settings.config.DATE_SELECT_FORMAT
                 );
             }
             switch (this.settings.config.SELECT_FORMAT) {
-                case "dateNumbering":
+                case 'dateNumbering':
                     return date + this.settings.config.CONNECTIVE;
       
-                case "dateTextNumbering":
+                case 'dateTextNumbering':
                     return (
                         date +
                         this.settings.config.CONNECTIVE +
@@ -222,10 +222,10 @@
                         this.settings.config.CONNECTIVE
                     );
       
-                case "textNumbering":
+                case 'textNumbering':
                     return this.settings.config.TEXT + this.settings.config.CONNECTIVE;
       
-                case "textDateNumbering":
+                case 'textDateNumbering':
                     return (
                       this.settings.config.TEXT +
                       this.settings.config.CONNECTIVE +
@@ -234,7 +234,7 @@
                     );
       
                 default:
-                    return "";
+                    return '';
             }
         },
         checkNeedReset: function (respdata) {
@@ -249,7 +249,7 @@
             }
             for (index; index < formats.length; index++) {
                 if (
-                    formats[index] === "date" &&
+                    formats[index] === 'date' &&
                     self.checkDateFormat(
                       lastAutonum.split(self.settings.config.CONNECTIVE)[index]
                     )
@@ -261,34 +261,34 @@
         },
         createRegExpBySettingFormat: function () {
             var self = this;
-            var regStr = "^";
+            var regStr = '^';
             var formats = this.settings.config.FORMAT;
             formats.forEach(function (format, index) {
-                if (index !== 0 && format !== "") {
+                if (index !== 0 && format !== '') {
                     regStr += self.settings.config.CONNECTIVE;
                 }
                 switch (format) {
-                    case "date":
+                    case 'date':
                       regStr =
                         regStr +
-                        "\\d{" +
+                        '\\d{' +
                         self.settings.config.DATE_SELECT_FORMAT.length +
-                        "}";
+                        '}';
                     break;
-                    case "text":
+                    case 'text':
                         regStr += self.settings.config.TEXT;
                     break;
-                    case "number":
+                    case 'number':
                       regStr +=
-                        "\\d{" +
+                        '\\d{' +
                         self.CONSTANT.MIN_LENGTH_OF_DIGIT_NUMBER +
-                        "," +
+                        ',' +
                         self.CONSTANT.MAX_LENGTH_OF_DIGIT_NUMBER +
-                        "}";
+                        '}';
                     break;
                 }
             });
-            regStr += "$";
+            regStr += '$';
             return new RegExp(regStr);
         },
         getLastNumberByFromAllRecords: function (targetFormat) {
@@ -334,7 +334,7 @@
                         resolve(allRecords);
                         return;
                     }
-                    resolve(self.getAllRecordsWithOffset(query, offset + GET_RECORDS_LIMIT,allRecords));
+                    resolve(self.getAllRecordsWithOffset(query, offset + GET_RECORDS_LIMIT, allRecords));
                 }).catch(function(error){
                     reject(error);
                 });
