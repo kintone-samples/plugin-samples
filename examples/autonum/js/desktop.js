@@ -8,6 +8,7 @@
 (function(PLUGIN_ID, $) {
     'use strict';
 
+    var DEFAULT_NUM_OF_DIGIT = 5;
     var kintonePluginAutonum = {
         lang: {
             ja: {
@@ -54,9 +55,9 @@
             this.settings.i18n = this.settings.lang in this.lang ? this.lang[this.settings.lang] : this.lang['en'];
 
             this.settings.config.TEXT = this.settings.config.plugin['text'];
-            this.settings.config.FIELD_CODE = this.settings.config.plugin['autoNumberingFieldcode'];
+            this.settings.config.FIELD_CODE = this.settings.config.plugin['autofield'];
             this.settings.config.SELECT_FORMAT = this.settings.config.plugin['format'];
-            this.settings.config.DATE_SELECT_FORMAT = this.settings.config.plugin['dateFormat'];
+            this.settings.config.DATE_SELECT_FORMAT = this.settings.config.plugin['dateformat'];
             this.settings.config.CONNECTIVE = this.settings.config.plugin['connective'];
             this.settings.config.RESET_TIMING = this.settings.config.plugin['timing'];
             this.settings.config.FORMAT = [
@@ -64,7 +65,8 @@
                 this.settings.config.plugin['format2'],
                 this.settings.config.plugin['format3']
             ];
-            this.settings.config.NUM_OF_DIGIT = parseInt(this.settings.config.plugin['numOfDigit'], 10);
+            var numOfDigit = parseInt(this.settings.config.plugin['numOfDigit'], 10);
+            this.settings.config.NUM_OF_DIGIT = isNaN(numOfDigit) ? DEFAULT_NUM_OF_DIGIT : numOfDigit;
 
             this.kintoneEvents();
         },
@@ -128,21 +130,21 @@
                 date = moment(new Date()).format(this.settings.config.DATE_SELECT_FORMAT);
             }
             switch (this.settings.config.SELECT_FORMAT) {
-                case 'numbering':
+                case 'format1':
                     return (number);
 
-                case 'dateNumbering':
+                case 'format2':
                     return (date + this.settings.config.CONNECTIVE + number);
 
-                case 'dateTextNumbering':
+                case 'format3':
                     return (date + this.settings.config.CONNECTIVE +
                             this.settings.config.TEXT +
                             this.settings.config.CONNECTIVE + number);
 
-                case 'textNumbering':
+                case 'format4':
                     return (this.settings.config.TEXT + this.settings.config.CONNECTIVE + number);
 
-                case 'textDateNumbering':
+                case 'format5':
                     return (this.settings.config.TEXT +
                             this.settings.config.CONNECTIVE + date +
                             this.settings.config.CONNECTIVE + number);
@@ -219,19 +221,19 @@
         },
         timingIsDateReset: function(before, after) {
             switch (this.settings.config.RESET_TIMING) {
-                case 'yearly':
+                case '1': // yearly
                     if (this.timingGetYear(before) !== this.timingGetYear(after)) {
                         return true;
                     }
                     return false;
 
-                case 'monthly':
+                case '2': // monthly
                     if (this.timingGetYear(before) + this.timingGetMonth(before) !==
                             this.timingGetYear(after) + this.timingGetMonth(after)) {
                         return true;
                     }
                     return false;
-                case 'daily':
+                case '3': // daily
                     if (before !== after) {
                         return true;
                     }

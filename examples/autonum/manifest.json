@@ -37,6 +37,6 @@
             "css/51-modern-default.css",
             "css/config.css"
         ],
-        "required_params": ["autoNumberingFieldcode", "format", "connective"]
+        "required_params": ["autofield", "format", "connective"]
     }
 }

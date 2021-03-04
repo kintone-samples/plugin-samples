@@ -7,6 +7,7 @@
 
 (function(PLUGIN_ID, $) {
     'use strict';
+    var DEFAULT_NUM_OF_DIGIT = 5;
     var kintonePluginConfigAutonum = {
         lang: {
             ja: {
@@ -14,11 +15,11 @@
                 targetField: '自動採番フィールド選択',
                 selectFormat: '採番書式選択',
                 typeOfFormat: {
-                    numbering: '連番',
-                    dateNumbering: '日付 + 連番',
-                    dateTextNumbering: '日付 + テキスト + 連番',
-                    textNumbering: 'テキスト + 連番',
-                    textDateNumbering: 'テキスト + 日付 + 連番'
+                    format1: '連番',
+                    format2: '日付 + 連番',
+                    format3: '日付 + テキスト + 連番',
+                    format4: 'テキスト + 連番',
+                    format5: 'テキスト + 日付 + 連番'
                 },
                 dateFormat: '日付書式選択（採番書式に日付が含まれる場合のみ）',
                 typeOfDateFormat: {
@@ -43,10 +44,10 @@
                 numberingOfDigits: '採番の桁数',
                 resetTiming: '連番リセットタイミング選択',
                 typeOfResetTiming: {
-                    none: 'なし',
-                    yearly: '年毎',
-                    monthly: '月毎',
-                    daily: '日毎'
+                    none: { 'value': '0', 'text': 'なし' },
+                    yearly: { 'value': '1', 'text': '年毎' },
+                    monthly: { 'value': '2', 'text': '月毎' },
+                    daily: { 'value': '3', 'text': '日毎' }
                 },
                 apiToken: 'APIトークン (レコードにアクセス権設定を行う場合)',
                 saveButton: '保存',
@@ -69,11 +70,11 @@
                 targetField: 'Field to display Autonumber',
                 selectFormat: 'Autonumber format',
                 typeOfFormat: {
-                    numbering: 'Numbering',
-                    dateNumbering: 'Date + Numbering',
-                    dateTextNumbering: 'Date + Text + Numbering',
-                    textNumbering: 'Text + Numbering',
-                    textDateNumbering: 'Text + Date + Numbering'
+                    format1: 'Numbering',
+                    format2: 'Date + Numbering',
+                    format3: 'Date + Text + Numbering',
+                    format4: 'Text + Numbering',
+                    format5: 'Text + Date + Numbering'
                 },
                 dateFormat: 'Date format (if included in Autonumber format)',
                 typeOfDateFormat: {
@@ -98,10 +99,10 @@
                 numberingOfDigits: 'Number of digits for Numbering',
                 resetTiming: 'Reset timing for Numbering',
                 typeOfResetTiming: {
-                    none: 'Never',
-                    yearly: 'Yearly',
-                    monthly: 'Monthly',
-                    daily: 'Daily'
+                    none: { 'value': '0', 'text': 'Never' },
+                    yearly: { 'value': '1', 'text': 'Yearly' },
+                    monthly: { 'value': '2', 'text': 'Monthly' },
+                    daily: { 'value': '3', 'text': 'Daily' }
                 },
                 apiToken: 'API Token (recommended if records have access permissions)',
                 saveButton: 'Save',
@@ -124,11 +125,11 @@
                 targetField: '显示自动编号的字段',
                 selectFormat: '自动编号的格式',
                 typeOfFormat: {
-                  numbering: '编号',
-                  dateNumbering: '日期 + 编号',
-                  dateTextNumbering: '日期 + 文本 + 编号',
-                  textNumbering: '文本 + 编号',
-                  textDateNumbering: '文本 + 日期 + 编号'
+                  format1: '编号',
+                  format2: '日期 + 编号',
+                  format3: '日期 + 文本 + 编号',
+                  format4: '文本 + 编号',
+                  format5: '文本 + 日期 + 编号'
                 },
                 dateFormat: '日期格式 (当选择的自动编号格式内包含了日期时可设置此项)',
                 typeOfDateFormat: {
@@ -151,10 +152,10 @@
                 numberingOfDigits: '自动编号的长度',
                 resetTiming: '何时重置编号',
                 typeOfResetTiming: {
-                  none: '从不',
-                  yearly: '每年',
-                  monthly: '每月',
-                  daily: '每天'
+                  none: { 'value': '0', 'text': '从不' },
+                  yearly: { 'value': '1', 'text': '每年' },
+                  monthly: { 'value': '2', 'text': '每月' },
+                  daily: { 'value': '3', 'text': '每天' }
                 },
                 apiToken: 'API令牌(如需记录的访问权限)',
                 saveButton: '保存',
@@ -211,7 +212,7 @@
             if (this.settings.config.plugin.useProxy > 0) {
                 var params = {
                     app: kintone.app.getId(),
-                    fields: this.settings.config.plugin.autoNumberingFieldcode
+                    fields: this.settings.config.plugin.autofield
                 };
                 var appUrl = kintone.api.urlForGet('/k/v1/records', params, true);
                 this.settings.config.proxy = kintone.plugin.app.getProxyConfig(appUrl, 'GET');
@@ -263,15 +264,15 @@
             if (Object.keys(conf).length === 0) {
                 return false;
             }
-            $(this.settings.element.input.fieldCode).val(conf['autoNumberingFieldcode']);
+            $(this.settings.element.input.fieldCode).val(conf['autofield']);
             $(this.settings.element.input.textFormatSelect).val(conf['format']);
-            $(this.settings.element.input.dateFormatSelect).val(conf['dateFormat']);
+            $(this.settings.element.input.dateFormatSelect).val(conf['dateformat']);
             $(this.settings.element.input.connectiveSelect).val(conf['connective']);
             $(this.settings.element.input.prefix).val(conf['text']);
-            $(this.settings.element.input.preview).text(conf['preview']);
+            $(this.settings.element.input.preview).text(conf['image']);
             $(this.settings.element.input.timing).val([conf['timing']]);
             $(this.settings.element.input.apiToken).val(apiToken);
-            $(this.settings.element.input.numberOfDigit).val(conf['numOfDigit']);
+            $(this.settings.element.input.numberOfDigit).val(conf['numOfDigit'] ? conf['numOfDigit'] : DEFAULT_NUM_OF_DIGIT);
             this.checkAutonumFormat();
         },
         listenAction: function() {
@@ -311,19 +312,19 @@
             var date = dateVal !== 'null' ? moment().format(dateVal) : '';
 
             switch (selectFormat) {
-                case 'numbering':
+                case 'format1':
                     return (number);
 
-                case 'dateNumbering':
+                case 'format2':
                     return (date + connective + number);
 
-                case 'dateTextNumbering':
+                case 'format3':
                     return (date + connective + text + connective + number);
 
-                case 'textNumbering':
+                case 'format4':
                     return (text + connective + number);
 
-                case 'textDateNumbering':
+                case 'format5':
                     return (text + connective + date + connective + number);
 
                 default:
@@ -388,7 +389,7 @@
             var prefix = $(this.settings.element.input.prefix).val();
             var dateformat = $(this.settings.element.input.dateFormatSelect).val();
 
-            var timing = $(this.settings.element.input.timing + ':checked').val() || 'none';
+            var timing = $(this.settings.element.input.timing + ':checked').val() || '0';
 
             var connective = $(this.settings.element.input.connectiveSelect).val();
             var numOfDigit = $(this.settings.element.input.numberOfDigit).val();
@@ -447,14 +448,14 @@
             }
 
             // 設定文書の値を返す
-            config['autoNumberingFieldcode'] = autoNumberingFieldcode;
+            config['autofield'] = autoNumberingFieldcode;
             config['format'] = $(this.settings.element.input.textFormatSelect).val();
             config['format1'] = format[0]; // date
             config['format2'] = format[1]; // number
             config['format3'] = format[2]; // textの何れかが入る。
-            config['dateFormat'] = dateformat;
+            config['dateformat'] = dateformat;
             config['text'] = prefix;
-            config['preview'] = preview;
+            config['image'] = preview;
             config['timing'] = timing;
             config['connective'] = connective;
             config['useProxy'] = $(this.settings.element.input.apiToken).val() !== '' ? '1' : '0';
@@ -472,19 +473,19 @@
         formatType: function(selectformat) {
 
             switch (selectformat) {
-                case 'numbering':
+                case 'format1':
                     return ['number', '', ''];
 
-                case 'dateNumbering':
+                case 'format2':
                     return ['date', 'number', ''];
 
-                case 'dateTextNumbering':
+                case 'format3':
                     return ['date', 'text', 'number'];
 
-                case 'textNumbering':
+                case 'format4':
                     return ['text', 'number', ''];
 
-                case 'textDateNumbering':
+                case 'format5':
                     return ['text', 'date', 'number'];
 
                 default:
@@ -496,31 +497,31 @@
             var autonumFormat = $(this.settings.element.input.textFormatSelect).val();
             switch (autonumFormat) {
 
-                case 'numbering':
+                case 'format1':
                     $(this.settings.element.input.dateFormatSelect).val(['null']);
                     $(this.settings.element.input.prefix).val('');
                     this.propElement(this.settings.element.input.dateFormatSelect, true);
                     this.propElement(this.settings.element.input.prefix, true);
                     break;
 
-                case 'dateNumbering':
+                case 'format2':
                     $(this.settings.element.input.prefix).val('');
                     this.propElement(this.settings.element.input.dateFormatSelect, false);
                     this.propElement(this.settings.element.input.prefix, true);
                     break;
 
-                case 'dateTextNumbering':
+                case 'format3':
                     this.propElement(this.settings.element.input.dateFormatSelect, false);
                     this.propElement(this.settings.element.input.prefix, false);
                     break;
 
-                case 'textNumbering':
+                case 'format4':
                     $(this.settings.element.input.dateFormatSelect).val(['null']);
                     this.propElement(this.settings.element.input.dateFormatSelect, true);
                     this.propElement(this.settings.element.input.prefix, false);
                     break;
 
-                case 'textDateNumbering':
+                case 'format5':
                     this.propElement(this.settings.element.input.dateFormatSelect, false);
                     this.propElement(this.settings.element.input.prefix, false);
                     break;
@@ -534,7 +535,7 @@
         },
         propRadioTiming: function() {
             var dateformat = $(this.settings.element.input.dateFormatSelect).val();
-            var timing = $(this.settings.element.input.timing + ':checked').val() || 'none';
+            var timing = $(this.settings.element.input.timing + ':checked').val() || '0';
             switch (dateformat) {
                 case 'MMDDYYYY':
                 case 'MMDDYY':
@@ -549,15 +550,15 @@
                     this.propElement('#autonum-resetTiming-yearly', false);
                     this.propElement('#autonum-resetTiming-monthly', false);
                     this.propElement('#autonum-resetTiming-daily', true);
-                    if (timing === 'daily') {
-                        $(this.settings.element.input.timing).val(['none']);
+                    if (timing === '3') {
+                        $(this.settings.element.input.timing).val(['0']);
                     }
                     break;
 
                 case 'MMDD':
                     this.propElement('#autonum-resetTiming-yearly', true);
-                    if (timing === 'yearly') {
-                        $(this.settings.element.input.timing).val(['none']);
+                    if (timing === '1') {
+                        $(this.settings.element.input.timing).val(['0']);
                     }
 
                     this.propElement('#autonum-resetTiming-monthly', false);
@@ -570,15 +571,15 @@
 
                     this.propElement('#autonum-resetTiming-monthly', true);
                     this.propElement('#autonum-resetTiming-daily', true);
-                    if (timing !== 'yearly') {
-                        $(this.settings.element.input.timing).val(['none']);
+                    if (timing !== '1') {
+                        $(this.settings.element.input.timing).val(['0']);
                     }
                     break;
                 default:
                     this.propElement('#autonum-resetTiming-yearly', true);
                     this.propElement('#autonum-resetTiming-monthly', true);
                     this.propElement('#autonum-resetTiming-daily', true);
-                    $(this.settings.element.input.timing).val(['none']);
+                    $(this.settings.element.input.timing).val(['0']);
                     break;
             }
         },
