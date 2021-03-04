@@ -155,6 +155,8 @@ function closeButton() {
 
     // モーダルウィンドウの表示
     function createModalWindow(data) {
+        var startDate = data.start ? moment(data.start).format('YYYY/MM/DD') : ''
+        var endDate = data.end ? moment(data.end).format('YYYY/MM/DD') : ''
 
         var $body = $('body');
         $body.css('width', '100%');
@@ -171,9 +173,9 @@ function closeButton() {
         '<h3>' + data.name + '　' + data.desc + '</h3>' +
         '</div><button type="button" class="modal-close" onclick="closeButton()">×</button><div class="content">' +
         '<p>' + data.lang.plzEnterStartDate + '</p><input type="text" id="start" value="' +
-        moment(data.start).format('YYYY/MM/DD') + '">' +
+        startDate + '">' +
         '<p>' + data.lang.plzEnterEndDate + '</p>' +
-        '<input type="text" name="end" id="end" value="' + moment(data.end).format('YYYY/MM/DD') + '">' +
+        '<input type="text" name="end" id="end" value="' + endDate + '">' +
         '<br><br><button id="goButton" class="gaia-ui-actionmenu-save">　' + data.lang.update + '　</button>' +
         '<a href="' + data.url + '" target="_blank">　　' + data.lang.detailPage + '</a></div></div></div>');
 
@@ -190,7 +192,6 @@ function closeButton() {
         // 登録処理
         $('#goButton').click(function() {
             setLoading();
-
             var startDate = $('#start').datepicker('getDate');
             var endDate = $('#end').datepicker('getDate');
 
@@ -402,15 +403,18 @@ function closeButton() {
                             ': ' + self.escapeHtml(colorValue);
                         }
 
+                        var sDate = subTable[j].value[GANTT_FROM].value ? subTable[j].value[GANTT_FROM].value : subTable[j].value[GANTT_TO].value;
+                        var eDate = subTable[j].value[GANTT_TO].value ? subTable[j].value[GANTT_TO].value : subTable[j].value[GANTT_FROM].value;
+                        var isStartDateEndDateInvalid = (!sDate && !eDate) || !self.isStartDateEndDateValid(sDate, eDate);
                         var ganttRecordData = {
                             id: self.escapeHtml(records[i2]['$id'].value),
                             name: (j !== 0) ? '' : self.escapeHtml(records[i2][GANTT_NAME].value),
                             desc:
                                 subTable[j].value[GANTT_DESC] ?
                                     self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
-                            values: [{
-                                from: self.convertDateTime(subTable[j].value[GANTT_FROM].value),
-                                to: self.convertDateTime(subTable[j].value[GANTT_TO].value),
+                            values: isStartDateEndDateInvalid ? [] : [{
+                                from: self.convertDateTime(sDate),
+                                to: self.convertDateTime(eDate),
                                 desc: descGantt,
                                 label: deskFlg ? self.escapeHtml(subTable[j].value[GANTT_DESC].value)
                                     : self.escapeHtml(records[i2][GANTT_NAME].value),
@@ -468,13 +472,16 @@ function closeButton() {
                     if (colorValue2) {
                         descGantt2 += conf.fieldNameColor + ': ' + self.escapeHtml(colorValue2);
                     }
+                    var sDate = records[i3][GANTT_FROM].value ? records[i3][GANTT_FROM].value : records[i3][GANTT_TO].value
+                    var eDate = records[i3][GANTT_TO].value ? records[i3][GANTT_TO].value : records[i3][GANTT_FROM].value
+                    var isStartDateEndDateInvalid = (!sDate && !eDate) || !self.isStartDateEndDateValid(sDate, eDate);
                     var ganttRecordData2 = {
                         id: self.escapeHtml(records[i3]['$id'].value),
                         name: records[i3][GANTT_NAME] ? self.escapeHtml(records[i3][GANTT_NAME].value) : '',
                         desc: records[i3][GANTT_DESC] ? self.escapeHtml(records[i3][GANTT_DESC].value) : '',
-                        values: [{
-                            from: self.convertDateTime(records[i3][GANTT_FROM].value),
-                            to: self.convertDateTime(records[i3][GANTT_TO].value),
+                        values: isStartDateEndDateInvalid ? [] : [{
+                            from: self.convertDateTime(sDate),
+                            to: self.convertDateTime(eDate),
                             desc: descGantt2,
                             label: (records[i3][GANTT_DESC] && records[i3][GANTT_DESC].value !== '') ?
                                 self.escapeHtml(records[i3][GANTT_DESC]['value'])
@@ -591,7 +598,7 @@ function closeButton() {
                 dateWithTimezone.date(),
                 dateWithTimezone.hours(),
                 dateWithTimezone.minutes());
-            if (str !== '') {
+            if (str) {
                 dt = '/Date(' + date.getTime() + ')/';
             } else {
                 dt = '';
@@ -601,6 +608,23 @@ function closeButton() {
         convertDateTimeWithTimezone: function(date) {
             var dateWithTimezone = moment.tz(date, this.settings.user.timezone);
             return dateWithTimezone.format('YYYY-MM-DD H:mm');
+        },
+        isStartDateEndDateValid: function(fromDate, toDate) {
+            var fromDateWithTimezone = moment.tz(fromDate, this.settings.user.timezone);
+            var fromDate = new Date(fromDateWithTimezone.year(),
+            fromDateWithTimezone.month(),
+            fromDateWithTimezone.date(),
+            fromDateWithTimezone.hours(),
+            fromDateWithTimezone.minutes());
+
+            var toDateWithTimezone = moment.tz(toDate, this.settings.user.timezone);
+            var toDate = new Date(toDateWithTimezone.year(),
+            toDateWithTimezone.month(),
+            toDateWithTimezone.date(),
+            toDateWithTimezone.hours(),
+            toDateWithTimezone.minutes());
+            
+            return fromDate.getTime() <= toDate.getTime();
         }
     };
     $(document).ready(function() {
