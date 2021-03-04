@@ -130,7 +130,7 @@
                 }
                 // setting format only has number
                 if (
-                    self.settings.config.SELECT_FORMAT === 'numbering'
+                    self.settings.config.SELECT_FORMAT === 'format1'
                 ) {
                     newNumberWithDigit = self.createWithNumberOfDigit(
                         self.CONSTANT.NUMBERING_DEFAULT
@@ -399,7 +399,7 @@
             ) {
                 return true;
             }
-      
+
             // 日付によるリセットタイミングの確認
             if (
               this.timingIsDateReset(dateFormatOfLastRecordAutonum, currentDateFormat)
