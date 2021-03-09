@@ -213,9 +213,6 @@
                 );
             }
             switch (this.settings.config.SELECT_FORMAT) {
-                case 'format1':
-                    return (number);
-
                 case 'format2':
                     return date + this.settings.config.CONNECTIVE;
 
