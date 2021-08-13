@@ -63,7 +63,6 @@
 
 .color-paint-brush {
     color: #676767;
-    padding-bottom: 2px;
     border-bottom: 3px solid #000000;
 }
 
@@ -76,7 +75,7 @@
 }
 
 /* color picker */
-i.color-paint-brush:hover {
+.color-paint-brush:hover {
     cursor: pointer;
 }
 
