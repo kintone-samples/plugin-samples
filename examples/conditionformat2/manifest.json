@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": 3,
+    "version": "3.2.4",
     "type": "APP",
     "name": {
         "ja": "新条件書式プラグイン",
@@ -20,8 +20,8 @@
     },
     "desktop": {
         "js": [
-            "https://js.cybozu.com/momentjs/2.10.6/moment.min.js",
-            "https://js.cybozu.com/jquery/2.1.4/jquery.min.js",
+            "thirdparties/moment.min.js",
+            "thirdparties/jquery.min.js",
             "js/desktop.js"
         ],
         "css": [
@@ -30,13 +30,12 @@
     "config": {
         "html": "html/config.html",
         "js": [
-            "https://js.cybozu.com/jquery/2.1.4/jquery.min.js",
-            "https://js.cybozu.com/jsrender/0.9.83/jsrender.min.js",
+            "thirdparties/jquery.min.js",
+            "thirdparties/jsrender.min.js",
             "thirdparties/jqColorPicker.min.js",
             "js/config.js"
         ],
         "css": [
-            "https://js.cybozu.com/font-awesome/v4.7.0/css/font-awesome.min.css",
             "css/51-modern-default.css",
             "css/config.css"
         ]
