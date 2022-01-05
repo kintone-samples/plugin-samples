@@ -106,11 +106,12 @@ jQuery.noConflict();
             var evTitle = config.name;
             var evStart = config.start_datetime;
             var evEnd = config.end_datetime;
+            var query = kintone.app.getQueryCondition();
 
             var startDate;
             var endDate;
 
-            fetchRecords(kintone.app.getId(), '').then(function(calRecords) {
+            fetchRecords(kintone.app.getId(), query).then(function(calRecords) {
 
                 var records = calRecords;
                 var recEvents = [];
