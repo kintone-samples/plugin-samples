@@ -170,7 +170,8 @@ function closeButton() {
 
         // モーダルウィンドウのHTMLを格納
         var $weather = $('<div id=' + divid + ' class="box"><div id="box-min"><div id="header">' +
-        '<h3>' + data.name + '　' + data.desc + '</h3>' +
+        '<h3>' + data.name + '</h3>' +
+        '<h4>' + data.desc + '</h4>' +
         '</div><button type="button" class="modal-close" onclick="closeButton()">×</button><div class="content">' +
         '<p>' + data.lang.plzEnterStartDate + '</p><input type="text" id="start" value="' +
         startDate + '">' +
