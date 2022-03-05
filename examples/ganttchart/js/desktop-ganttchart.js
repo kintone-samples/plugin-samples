@@ -364,6 +364,7 @@ function closeButton() {
             function createRecords1() {
                 for (var i2 = 0; i2 < records.length; i2++) {
                     var subTable = records[i2].Table.value;
+                    var record_url_path = '/k/' + kintone.app.getId() + '/show#record=' + records[i2]['$id']['value'];
 
                     for (var j = 0; j < subTable.length; j++) {
                         var colorGantt = self.settings.element.classColorGanttDefault;
@@ -408,7 +409,7 @@ function closeButton() {
                         var isStartDateEndDateInvalid = (!sDate && !eDate) || !self.isStartDateEndDateValid(sDate, eDate);
                         var ganttRecordData = {
                             id: self.escapeHtml(records[i2]['$id'].value),
-                            name: (j !== 0) ? '' : self.escapeHtml(records[i2][GANTT_NAME].value),
+                            name: (j !== 0) ? '' : '<a href="' + record_url_path + '">' + self.escapeHtml(records[i2][GANTT_NAME].value) + '</a>',
                             desc:
                                 subTable[j].value[GANTT_DESC] ?
                                     self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
@@ -420,7 +421,7 @@ function closeButton() {
                                     : self.escapeHtml(records[i2][GANTT_NAME].value),
                                 customClass: self.escapeHtml(colorGantt),
                                 dataObj: {
-                                    'url': '/k/' + kintone.app.getId() + '/show#record=' + records[i2]['$id']['value'],
+                                    'url': record_url_path,
                                     'name': records[i2][GANTT_NAME].value,
                                     'desc': deskFlg ? self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
                                     'start': subTable[j].value[GANTT_FROM].value,
@@ -441,6 +442,7 @@ function closeButton() {
             function createRecords2() {
                 for (var i3 = 0; i3 < records.length; i3++) {
                     var colorGantt2 = self.settings.element.classColorGanttDefault;
+                    var record_url_path = '/k/' + kintone.app.getId() + '/show#record=' + records[i3]['$id']['value'];
 
                     var colorValue2 = records[i3][GANTT_COLOR]['value'] || '';
                     if (colorValue2 && self.settings.config.settingColors[colorValue2]) {
@@ -477,7 +479,7 @@ function closeButton() {
                     var isStartDateEndDateInvalid = (!sDate && !eDate) || !self.isStartDateEndDateValid(sDate, eDate);
                     var ganttRecordData2 = {
                         id: self.escapeHtml(records[i3]['$id'].value),
-                        name: records[i3][GANTT_NAME] ? self.escapeHtml(records[i3][GANTT_NAME].value) : '',
+                        name: records[i3][GANTT_NAME] ? '<a href="' + record_url_path + '">' + self.escapeHtml(records[i3][GANTT_NAME].value) + '</a>' : '',
                         desc: records[i3][GANTT_DESC] ? self.escapeHtml(records[i3][GANTT_DESC].value) : '',
                         values: isStartDateEndDateInvalid ? [] : [{
                             from: self.convertDateTime(sDate),
