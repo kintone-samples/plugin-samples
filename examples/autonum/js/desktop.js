@@ -89,7 +89,7 @@
             kintone.events.on(this.settings.events.onSubmit, function(event) {
 
 
-                var query = 'order by $id desc limit 1';
+                var query = `${self.settings.config.FIELD_CODE} != "" order by $id desc limit 1`;
                 return self.apiRequest(query).then(function(respdata) {
                     return self.getFormatNumberBy(respdata);
                 }).then(function(numberingWithFormat) {
