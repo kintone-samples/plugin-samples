@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/kintone-samples/plugin-samples/issues"
   },
-  "homepage": "https://github.com/kintone-samples/plugin-samples#readme"
+  "homepage": "https://github.com/kintone-samples/plugin-samples#readme",
+  "devDependencies": {
+    "eslint": "^8.18.0"
+  }
 }
