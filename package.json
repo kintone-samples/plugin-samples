@@ -1,0 +1,30 @@
+{
+  "name": "plugin-samples",
+  "private": true,
+  "version": "1.0.0",
+  "description": "kintone Plug-in Examples ==========================",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint",
+    "fix": "eslint --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kintone-samples/plugin-samples.git"
+  },
+  "keywords": [],
+  "author": "Cybozu, Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kintone-samples/plugin-samples/issues"
+  },
+  "homepage": "https://github.com/kintone-samples/plugin-samples#readme",
+  "devDependencies": {
+    "@cybozu/eslint-config": "^17.0.1",
+    "eslint": "^8.18.0"
+  }
+}
