@@ -12,7 +12,7 @@ It requires [Node.js](https://nodejs.org/).
 
 ## Requirement
 
-* Node.js v6 or later
+* Node.js v12 or later
 
 ## How to Use
 
@@ -65,6 +65,32 @@ https://help.cybozu.com/en/k/admin/plugin.html
 ja
 
 https://help.cybozu.com/ja/k/admin/plugin.html
+
+## How to Lint
+
+The source code of some plugins applies ESLint.
+Please run ESLint manually as below after making changes.
+The Ignored files are see `.eslintignore`.
+
+Run ESLint:
+
+```shell
+npm install
+npm run lint -- examples/<plug-in dir>
+
+# Example
+# npm run eslint -- examples/autonum
+```
+
+Run ESLint with `--fix` option to fix some wrong styles automatically:
+
+```shell
+npm install
+npm run fix -- examples/<plug-in dir>
+
+# Example
+# npm run fix -- examples/autonum
+```
 
 ## Licence
 
