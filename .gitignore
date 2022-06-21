@@ -1,2 +1,4 @@
 plugin.zip
 *.ppk
+
+node_modules/
