@@ -1,5 +1,7 @@
 # thirdparties
 examples/**/thirdparties/*.js
+kintone-config-helper.js
+jquery.ui.datepicker-ja.min.js
 
 # plugins
 examples/appIndex/**/*.js
@@ -13,4 +15,3 @@ examples/mandrill/**/*.js
 examples/sansan/**/*.js
 examples/textConnect/**/*.js
 examples/vote/**/*.js
-
