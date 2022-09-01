@@ -12,4 +12,6 @@
   MIT License https://opensource.org/licenses/MIT
 * color-paint-brush in config.html  
   @fontawesome - https://fontawesome.com  
-  CC BY 4.0 License (https://creativecommons.org/licenses/by/4.0/)
+  CC BY 4.0 License https://creativecommons.org/licenses/by/4.0/
+* 51-modern-default - https://developer.cybozu.io/hc/ja/articles/203302214  
+  MIT License https://opensource.org/licenses/MIT
