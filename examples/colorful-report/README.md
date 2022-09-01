@@ -1,1 +1,10 @@
 # Colorful Weekly Report Plug-in
+
+## License
+
+* jQuery - https://jquery.com/  
+  MIT License https://opensource.org/licenses/MIT
+* JsRender - https://www.jsviews.com/  
+  MIT License https://opensource.org/licenses/MIT
+* 51-modern-default - https://developer.cybozu.io/hc/ja/articles/203302214  
+  MIT License https://opensource.org/licenses/MIT
