@@ -54,7 +54,7 @@ jQuery.noConflict();
   const escapeHtml = (htmlstr) => {
     return htmlstr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
+  };
 
   const setDropdown = () => {
     // フィールド型が「文字列（１行）」「数値」のフィールド情報を取得し、選択ボックスに代入する
@@ -78,7 +78,7 @@ jQuery.noConflict();
     }).catch((err) => {
       alert(err.message);
     });
-  }
+  };
 
   const createErrorMessage = (num) => {
     const message = {
@@ -95,7 +95,7 @@ jQuery.noConflict();
       lang = 'ja';
     }
     return message[lang][num];
-  }
+  };
 
   $(document).ready(() => {
 
