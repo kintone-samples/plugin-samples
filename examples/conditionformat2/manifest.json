@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "3.2.4",
+    "version": "3.2.5",
     "type": "APP",
     "name": {
         "ja": "新条件書式プラグイン",
