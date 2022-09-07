@@ -8,16 +8,16 @@ jQuery.noConflict();
 document.write('<script type="text/javascript" src="https://js.cybozu.com/jquery/2.1.3/jquery.min.js"></script>');
 
 // ローディング画面を出す関数
-function setLoading() {
-    'use strict';
-    var $body = $('body');
-    $body.css('width', '100%');
+const setLoading = () => {
+  'use strict';
+  const $body = $('body');
+  $body.css('width', '100%');
 
-    var $loading = $('<div>').attr('id', 'loading').attr('class', 'loading')
-        .attr('style', 'width: 100%; height: 100%; position:absolute;' +
+  const $loading = $('<div>').attr('id', 'loading').attr('class', 'loading')
+    .attr('style', 'width: 100%; height: 100%; position:absolute;' +
                         ' top:0; left:0; text-align:center; background-color:#666666; opacity:0.6; z-index: 10000;');
-    var $div = $('<div>').attr('id', 'imgBox').attr('style', 'width: 100%; height: 100%;');
-    var $img = $('<img>').attr('src', 'data:image/gif;base64,R0lGODlhZABkAPQAAAAAAP///3BwcJaWlsjIyMLCwqKiouLi4uzs7NLS' +
+  const $div = $('<div>').attr('id', 'imgBox').attr('style', 'width: 100%; height: 100%;');
+  const $img = $('<img>').attr('src', 'data:image/gif;base64,R0lGODlhZABkAPQAAAAAAP///3BwcJaWlsjIyMLCwqKiouLi4uzs7NLS' +
     '0qqqqrKysoCAgHh4eNra2v///4iIiLq6uvT09AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH+GkNyZWF0ZWQgd2l0aCBh' +
     'amF4bG9hZC5pbmZvACH5BAAHAAAAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAZABkAAAF/yAgjmRpnmiqrmzrvnAsz3Rt33iu73zfMgoDw0csAgSE' +
     'h/JBEBifucRymYBaaYzpdHjtuhba5cJLXoHDj3HZBykkIpDWAP0YrHsDiV5faB3CB3c8EHuFdisNDlMHTi4NEI2CJwWFewQuAwtBMAIKQZGSJAmV' +
@@ -116,60 +116,60 @@ function setLoading() {
     'LFdgDKF0AgUUybB+/YB6XiO7Sz9+QkAE8cEREPh+y8B5hjbYtxxU6kDQAH3I7XEgnG4MNujggxBGCAVvt2XhwIUK8JfEIX3YYsCFB2CoRwEJJEQA' +
     'gkM0ANyFLL7HgwElxphdGhCwCKIDLu4QXYwEUEeJAAnc6EACOeowAI8n1TKAjQ74uIIAo9Bnn4kRoDgElEEmQIULNWY54wkMjAKSLQq+IMCQQwZp' +
     '5UVdZpnkbBC4OeSXqCXnJpG1qahQc7c1wAADGkoo6KCEFrpCCAA7AAAAAAAAAAAA');
-    $loading.append($div.append($img));
-    $body.append($loading);
+  $loading.append($div.append($img));
+  $body.append($loading);
 
-    $('#imgBox').attr('style', 'margin-top: ' + Math.floor($('#loading').height() / 2) + 'px;');
+  $('#imgBox').attr('style', 'margin-top: ' + Math.floor($('#loading').height() / 2) + 'px;');
 
-    $body.css('position', 'fixed');
-}
+  $body.css('position', 'fixed');
+};
 
 // ローディング画面を消す関数
-function removeLoading() {
-    'use strict';
-    var $loading = $('.loading');
-    $loading.remove();
+const removeLoading = () => {
+  'use strict';
+  const $loading = $('.loading');
+  $loading.remove();
 
-    var $body = $('body');
-    $body.css('position', '');
-}
+  const $body = $('body');
+  $body.css('position', '');
+};
 
 // ×ボタンでモーダルウィンドウを消すときの処理
 // eslint-disable-next-line no-unused-vars
-function closeButton() {
-    'use strict';
-    $('#modal').fadeOut(250);
-    $('#blackOut').remove();
-    $('body').css('position', 'relative');
-}
+const closeButton = () => {
+  'use strict';
+  $('#modal').fadeOut(250);
+  $('#blackOut').remove();
+  $('body').css('position', 'relative');
+};
 
-(function($, moment, PLUGIN_ID) {
-    'use strict';
+(($, moment, PLUGIN_ID) => {
+  'use strict';
 
-    // モーダルウィンドウをセンターに寄せる
-    function adjustCenter() {
-        var marginTop = ($(window).height() - $('#box-min').height()) / 2;
-        var marginLeft = ($(window).width() - $('#box-min').width()) / 2;
-        $('#box-min').css({top: marginTop + 'px', left: marginLeft + 'px'});
-    }
+  // モーダルウィンドウをセンターに寄せる
+  function adjustCenter() {
+    const marginTop = ($(window).height() - $('#box-min').height()) / 2;
+    const marginLeft = ($(window).width() - $('#box-min').width()) / 2;
+    $('#box-min').css({top: marginTop + 'px', left: marginLeft + 'px'});
+  }
 
-    // モーダルウィンドウの表示
-    function createModalWindow(data) {
-        var startDate = data.start ? moment(data.start).format('YYYY/MM/DD') : ''
-        var endDate = data.end ? moment(data.end).format('YYYY/MM/DD') : ''
+  // モーダルウィンドウの表示
+  const createModalWindow = (data) => {
+    let startDate = data.start ? moment(data.start).format('YYYY/MM/DD') : '';
+    let endDate = data.end ? moment(data.end).format('YYYY/MM/DD') : '';
 
-        var $body = $('body');
-        $body.css('width', '100%');
-        var $black = $('<div>').attr('id', 'blackOut').attr('style', 'width: 100%; height: 100%;' +
+    const $body = $('body');
+    $body.css('width', '100%');
+    const $black = $('<div>').attr('id', 'blackOut').attr('style', 'width: 100%; height: 100%;' +
         'position:absolute; top:0; left:0; text-align:center; background-color:#666666; opacity:0.6; z-index: 10;');
-        $body.append($black);
-        $body.css('position', 'fixed');
+    $body.append($black);
+    $body.css('position', 'fixed');
 
-        // モーダルウィンドウの基礎部分を作成
-        var divid = 'modal';
+    // モーダルウィンドウの基礎部分を作成
+    const divid = 'modal';
 
-        // モーダルウィンドウのHTMLを格納
-        var $weather = $('<div id=' + divid + ' class="box"><div id="box-min"><div id="header">' +
+    // モーダルウィンドウのHTMLを格納
+    const $weather = $('<div id=' + divid + ' class="box"><div id="box-min"><div id="header">' +
         '<h3>' + data.name + '　' + data.desc + '</h3>' +
         '</div><button type="button" class="modal-close" onclick="closeButton()">×</button><div class="content">' +
         '<p>' + data.lang.plzEnterStartDate + '</p><input type="text" id="start" value="' +
@@ -179,456 +179,456 @@ function closeButton() {
         '<br><br><button id="goButton" class="gaia-ui-actionmenu-save">　' + data.lang.update + '　</button>' +
         '<a href="' + data.url + '" target="_blank">　　' + data.lang.detailPage + '</a></div></div></div>');
 
-        $('#' + divid).remove();
-        // モーダルウィンドウをHTMLに配置
-        $('body').append($weather);
+    $('#' + divid).remove();
+    // モーダルウィンドウをHTMLに配置
+    $('body').append($weather);
 
-        // モーダルウィンドウをセンターに
-        adjustCenter();
+    // モーダルウィンドウをセンターに
+    adjustCenter();
 
-        $('#start').datepicker();
-        $('#end').datepicker();
+    $('#start').datepicker();
+    $('#end').datepicker();
 
-        // 登録処理
-        $('#goButton').click(function() {
-            setLoading();
-            var startDate = $('#start').datepicker('getDate');
-            var endDate = $('#end').datepicker('getDate');
+    // 登録処理
+    $('#goButton').click(() => {
+      setLoading();
+      startDate = $('#start').datepicker('getDate');
+      endDate = $('#end').datepicker('getDate');
 
-            if (!startDate || !endDate) {
-                alert(data.lang.emptyAlert);
-                removeLoading();
-                return;
-            }
+      if (!startDate || !endDate) {
+        alert(data.lang.emptyAlert);
+        removeLoading();
+        return;
+      }
 
-            startDate = moment(startDate).format('YYYY-MM-DD');
-            endDate = moment(endDate).format('YYYY-MM-DD');
+      startDate = moment(startDate).format('YYYY-MM-DD');
+      endDate = moment(endDate).format('YYYY-MM-DD');
 
-            var confs = kintone.plugin.app.getConfig(PLUGIN_ID);
-            var tableFlgs = false;
-            if (confs.fieldNameColor.indexOf('[Table]') === 0) {
-                tableFlgs = true;
-            }
-            if (tableFlgs) {
-                for (var key2 in data.record) {
-                    if (key2 !== 'Table') {
-                        delete data.record[key2];
-                    }
-                }
+      const confs = kintone.plugin.app.getConfig(PLUGIN_ID);
+      let tableFlgs = false;
+      if (confs.fieldNameColor.indexOf('[Table]') === 0) {
+        tableFlgs = true;
+      }
+      if (tableFlgs) {
+        for (const key2 in data.record) {
+          if (key2 !== 'Table') {
+            delete data.record[key2];
+          }
+        }
 
-                for (var i = 0; i < data.record.Table.value.length; i++) {
-                    if (data.record.Table.value[i].id === data.tableId) {
-                        data.record.Table.value[i].value[data.GANTT_FROM].value = startDate;
-                        data.record.Table.value[i].value[data.GANTT_TO].value = endDate;
-                    }
-                }
-            } else {
-                for (var key in data.record) {
-                    if (key !== data.GANTT_FROM && key !== data.GANTT_TO) {
-                        delete data.record[key];
-                    }
-                }
-                data.record[data.GANTT_FROM].value = startDate;
-                data.record[data.GANTT_TO].value = endDate;
-            }
-            var body = {
-                'app': kintone.app.getId(),
-                'id': data.recId,
-                'record': data.record
-            };
+        for (let i = 0; i < data.record.Table.value.length; i++) {
+          if (data.record.Table.value[i].id === data.tableId) {
+            data.record.Table.value[i].value[data.GANTT_FROM].value = startDate;
+            data.record.Table.value[i].value[data.GANTT_TO].value = endDate;
+          }
+        }
+      } else {
+        for (const key in data.record) {
+          if (key !== data.GANTT_FROM && key !== data.GANTT_TO) {
+            delete data.record[key];
+          }
+        }
+        data.record[data.GANTT_FROM].value = startDate;
+        data.record[data.GANTT_TO].value = endDate;
+      }
+      const body = {
+        'app': kintone.app.getId(),
+        'id': data.recId,
+        'record': data.record
+      };
 
-            kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', body, function(resp) {
-                location.reload();
-            }, function() {
-                alert(data.lang.authAlert);
-                removeLoading();
-            });
+      kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', body, (resp) => {
+        location.reload();
+      }, () => {
+        alert(data.lang.authAlert);
+        removeLoading();
+      });
+    });
+  };
+
+  const kintonePluginGranttChart = {
+    lang: {
+      ja: {
+        months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+        dow: ['日', '月', '火', '水', '木', '金', '土'],
+        wait: '表示するまでお待ちください。',
+        plzEnterStartDate: '開始日を入力して下さい。',
+        plzEnterEndDate: '終了日を入力して下さい。',
+        update: '更新',
+        detailPage: '詳細画面へ',
+        emptyAlert: '日付を入力してください。',
+        authAlert: 'レコードを更新できませんでした。編集権限があるかご確認ください。'
+      },
+      en: {
+        months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        dow: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        wait: 'Please Wait...',
+        plzEnterStartDate: 'Please input start date.',
+        plzEnterEndDate: 'Please input end date.',
+        update: 'Update',
+        detailPage: 'Go to detail page',
+        emptyAlert: 'Please input date field.',
+        authAlert: 'The record could not be updated. Please check if you have edit permission.'
+      },
+      zh: {
+        months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+        dow: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+        wait: '请稍等',
+        plzEnterStartDate: '请输入开始日。',
+        plzEnterEndDate: '请输入结束日。',
+        update: '更新',
+        detailPage: '前往详情页面',
+        emptyAlert: '请输入日期',
+        authAlert: '记录更新失败。请确认是否有编辑权限。'
+      }
+    },
+    settings: {
+      lang: 'en',
+      i18n: 'en',
+      config: kintone.plugin.app.getConfig(PLUGIN_ID),
+      quarter: {},
+      element: {
+        classColorGanttDefault: 'ganttGray',
+        prefixColorGantt: 'kintone-plugin-gantt-'
+      }
+    },
+    data: [],
+    init: function() {
+      const self = this;
+      kintone.events.on('app.record.index.show', (event) => {
+        if (!self.settings.config) {
+          return;
+        }
+        if (typeof self.settings.config.settingColors === 'string') {
+          self.initSetting();
+        }
+        const ganttBox = self.uiCreateGanttBox();
+        self.data = [];
+        self.getRecordsData(event.records, ganttBox, () => {
+          // Put to jquery gantt and render
+          self.gantt(ganttBox);
         });
-    }
+      });
 
-    var kintonePluginGranttChart = {
-        lang: {
-            ja: {
-                months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-                dow: ['日', '月', '火', '水', '木', '金', '土'],
-                wait: '表示するまでお待ちください。',
-                plzEnterStartDate: '開始日を入力して下さい。',
-                plzEnterEndDate: '終了日を入力して下さい。',
-                update: '更新',
-                detailPage: '詳細画面へ',
-                emptyAlert: '日付を入力してください。',
-                authAlert: 'レコードを更新できませんでした。編集権限があるかご確認ください。'
-            },
-            en: {
-                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                dow: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                wait: 'Please Wait...',
-                plzEnterStartDate: 'Please input start date.',
-                plzEnterEndDate: 'Please input end date.',
-                update: 'Update',
-                detailPage: 'Go to detail page',
-                emptyAlert: 'Please input date field.',
-                authAlert: 'The record could not be updated. Please check if you have edit permission.'
-            },
-            zh: {
-                months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-                dow: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-                wait: '请稍等',
-                plzEnterStartDate: '请输入开始日。',
-                plzEnterEndDate: '请输入结束日。',
-                update: '更新',
-                detailPage: '前往详情页面',
-                emptyAlert: '请输入日期',
-                authAlert: '记录更新失败。请确认是否有编辑权限。'
-            }
-        },
-        settings: {
-            lang: 'en',
-            i18n: 'en',
-            config: kintone.plugin.app.getConfig(PLUGIN_ID),
-            quarter: {},
-            element: {
-                classColorGanttDefault: 'ganttGray',
-                prefixColorGantt: 'kintone-plugin-gantt-'
-            }
-        },
-        data: [],
-        init: function() {
-            var self = this;
-            kintone.events.on('app.record.index.show', function(event) {
-                if (!self.settings.config) {
-                    return;
-                }
-                if (typeof self.settings.config.settingColors === 'string') {
-                    self.initSetting();
-                }
-                var ganttBox = self.uiCreateGanttBox();
-                self.data = [];
-                self.getRecordsData(event.records, ganttBox, function() {
-                    // Put to jquery gantt and render
-                    self.gantt(ganttBox);
-                });
-            });
+      kintone.events.on('app.record.index.edit.submit.success', (event) => {
+        window.location.reload();
+      });
+    },
+    initSetting: function() {
+      const self = this;
+      this.settings.user = kintone.getLoginUser();
+      this.settings.lang = this.settings.user.language;
+      this.settings.i18n = (this.settings.lang in this.lang) ? this.settings.lang : 'en';
 
-            kintone.events.on('app.record.index.edit.submit.success', function(event) {
-                window.location.reload();
-            });
-        },
-        initSetting: function() {
-            var self = this;
-            this.settings.user = kintone.getLoginUser();
-            this.settings.lang = this.settings.user['language'];
-            this.settings.i18n = (this.settings.lang in this.lang) ? this.settings.lang : 'en';
+      const settingColors = JSON.parse(this.settings.config.settingColors || '{}');
+      // Check multi field corlor and overide settingColors
+      this.settings.config.settingColors = {};
 
-            var settingColors = JSON.parse(this.settings.config.settingColors || '{}');
-            // Check multi field corlor and overide settingColors
-            this.settings.config.settingColors = {};
+      function settingFieldClors(fieldColorArray, fieldColor) {
+        fieldColorArray.forEach((item) => {
+          const fieldColorOuput = item.trim();
+          self.settings.config.settingColors[fieldColorOuput] = settingColors[fieldColor];
+        });
+      }
+      for (const fieldColor in settingColors) {
+        if (!Object.prototype.hasOwnProperty.call(settingColors, fieldColor)) {
+          continue;
+        }
+        const fieldColorArray = fieldColor.split(',');
+        settingFieldClors(fieldColorArray, fieldColor);
+      }
+    },
+    getRecordsData: function(records, ganttBox, callbackFnc) {
+      const self = this;
+      const ganttStylesRecord = {};
+      if (ganttBox.className === 'loaded') {
+        return;
+      }
+      if (records.length === 0) {
+        return;
+      }
+      const GANTT_COLOR = self.settings.config.ganttchartColor || '',
+        GANTT_NAME = self.settings.config.ganttchartTitle || '',
+        GANTT_DESC = self.settings.config.ganttchartDesc || '',
+        GANTT_FROM = self.settings.config.ganttchartFrom || '',
+        GANTT_TO = self.settings.config.ganttchartTo || '';
 
-            function settingFieldClors(fieldColorArray, fieldColor) {
-                fieldColorArray.forEach(function(item) {
-                    var fieldColorOuput = item.trim();
-                    self.settings.config.settingColors[fieldColorOuput] = settingColors[fieldColor];
-                });
-            }
-            for (var fieldColor in settingColors) {
-                if (!Object.prototype.hasOwnProperty.call(settingColors,fieldColor)) {
-                    continue;
-                }
-                var fieldColorArray = fieldColor.split(',');
-                settingFieldClors(fieldColorArray, fieldColor);
-            }
-        },
-        getRecordsData: function(records, ganttBox, callbackFnc) {
-            var self = this;
-            var ganttStylesRecord = {};
-            if (ganttBox.className === 'loaded') {
-                return;
-            }
-            if (records.length === 0) {
-                return;
-            }
-            var GANTT_COLOR = self.settings.config['ganttchartColor'] || '',
-                GANTT_NAME = self.settings.config['ganttchartTitle'] || '',
-                GANTT_DESC = self.settings.config['ganttchartDesc'] || '',
-                GANTT_FROM = self.settings.config['ganttchartFrom'] || '',
-                GANTT_TO = self.settings.config['ganttchartTo'] || '';
+      // Set the record.
+      const conf = kintone.plugin.app.getConfig(PLUGIN_ID);
+      let tableFlg = false;
+      if (conf.fieldNameColor.indexOf('[Table]') === 0) {
+        tableFlg = true;
+      }
 
-            // Set the record.
-            var conf = kintone.plugin.app.getConfig(PLUGIN_ID);
-            var tableFlg = false;
-            if (conf.fieldNameColor.indexOf('[Table]') === 0) {
-                tableFlg = true;
-            }
+      // Create the record.
+      function createRecords1() {
+        for (let i2 = 0; i2 < records.length; i2++) {
+          const subTable = records[i2].Table.value;
 
-            // Create the record.
-            function createRecords1() {
-                for (var i2 = 0; i2 < records.length; i2++) {
-                    var subTable = records[i2].Table.value;
+          for (let j = 0; j < subTable.length; j++) {
+            let colorGantt = self.settings.element.classColorGanttDefault;
+            let descGantt = '<b>' + self.escapeHtml(records[i2][GANTT_NAME].value) + '</b>';
 
-                    for (var j = 0; j < subTable.length; j++) {
-                        var colorGantt = self.settings.element.classColorGanttDefault;
-                        var descGantt = '<b>' + self.escapeHtml(records[i2][GANTT_NAME].value) + '</b>';
-
-                        var deskFlg = true;
-                        if (subTable[j].value[GANTT_DESC]) {
-                            if (subTable[j].value[GANTT_DESC].value === '') {
-                                deskFlg = false;
-                            }
-                            descGantt += '<div>' +
-                                self.escapeHtml(subTable[j].value[GANTT_DESC]['value']) +
+            let deskFlg = true;
+            if (subTable[j].value[GANTT_DESC]) {
+              if (subTable[j].value[GANTT_DESC].value === '') {
+                deskFlg = false;
+              }
+              descGantt += '<div>' +
+                                self.escapeHtml(subTable[j].value[GANTT_DESC].value) +
                                 '</div>';
-                        } else {
-                            deskFlg = false;
-                        }
-
-                        var colorValue = subTable[j].value[GANTT_COLOR]['value'] || '';
-                        var fromValue = subTable[j].value[GANTT_FROM]['value'];
-                        var toValue = subTable[j].value[GANTT_TO]['value'];
-                        if (colorValue && self.settings.config.settingColors[colorValue]) {
-                            var styleRecordClass = self.settings.element.prefixColorGantt + 'class-' + i2 + '-' + j;
-                            colorGantt = styleRecordClass;
-                            ganttStylesRecord[styleRecordClass] = self.settings.config.settingColors[colorValue];
-                        }
-
-                        if (fromValue) {
-                            descGantt += '<div>' + conf.fieldNameFrom.slice(conf.fieldNameFrom.indexOf('[Table]') + 7) +
-                                ': ' + self.escapeHtml(self.convertDateTimeWithTimezone(fromValue)) + '</div>';
-                        }
-                        if (toValue) {
-                            descGantt += '<div>' + conf.fieldNameTo.slice(conf.fieldNameTo.indexOf('[Table]') + 7) +
-                                ': ' + self.escapeHtml(self.convertDateTimeWithTimezone(toValue)) + '</div>';
-                        }
-                        if (colorValue) {
-                            descGantt += conf.fieldNameColor.slice(conf.fieldNameColor.indexOf('[Table]') + 7) +
-                            ': ' + self.escapeHtml(colorValue);
-                        }
-
-                        var sDate = subTable[j].value[GANTT_FROM].value ? subTable[j].value[GANTT_FROM].value : subTable[j].value[GANTT_TO].value;
-                        var eDate = subTable[j].value[GANTT_TO].value ? subTable[j].value[GANTT_TO].value : subTable[j].value[GANTT_FROM].value;
-                        var isStartDateEndDateInvalid = (!sDate && !eDate) || !self.isStartDateEndDateValid(sDate, eDate);
-                        var ganttRecordData = {
-                            id: self.escapeHtml(records[i2]['$id'].value),
-                            name: (j !== 0) ? '' : self.escapeHtml(records[i2][GANTT_NAME].value),
-                            desc:
-                                subTable[j].value[GANTT_DESC] ?
-                                    self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
-                            values: isStartDateEndDateInvalid ? [] : [{
-                                from: self.convertDateTime(sDate),
-                                to: self.convertDateTime(eDate),
-                                desc: descGantt,
-                                label: deskFlg ? self.escapeHtml(subTable[j].value[GANTT_DESC].value)
-                                    : self.escapeHtml(records[i2][GANTT_NAME].value),
-                                customClass: self.escapeHtml(colorGantt),
-                                dataObj: {
-                                    'url': '/k/' + kintone.app.getId() + '/show#record=' + records[i2]['$id']['value'],
-                                    'name': records[i2][GANTT_NAME].value,
-                                    'desc': deskFlg ? self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
-                                    'start': subTable[j].value[GANTT_FROM].value,
-                                    'end': subTable[j].value[GANTT_TO].value,
-                                    'recId': records[i2]['$id'].value,
-                                    'tableId': subTable[j].id,
-                                    'record': records[i2],
-                                    'GANTT_FROM': GANTT_FROM,
-                                    'GANTT_TO': GANTT_TO,
-                                    'lang': self.lang[self.settings.i18n]
-                                }
-                            }]
-                        };
-                        self.data.push(ganttRecordData);
-                    }
-                }
+            } else {
+              deskFlg = false;
             }
-            function createRecords2() {
-                for (var i3 = 0; i3 < records.length; i3++) {
-                    var colorGantt2 = self.settings.element.classColorGanttDefault;
 
-                    var colorValue2 = records[i3][GANTT_COLOR]['value'] || '';
-                    if (colorValue2 && self.settings.config.settingColors[colorValue2]) {
-                        var styleRecordClass2 = self.settings.element.prefixColorGantt + 'class-' + i3;
-                        colorGantt2 = styleRecordClass2;
-                        ganttStylesRecord[styleRecordClass2] = self.settings.config.settingColors[colorValue2];
-                    }
+            const colorValue = subTable[j].value[GANTT_COLOR].value || '';
+            const fromValue = subTable[j].value[GANTT_FROM].value;
+            const toValue = subTable[j].value[GANTT_TO].value;
+            if (colorValue && self.settings.config.settingColors[colorValue]) {
+              const styleRecordClass = self.settings.element.prefixColorGantt + 'class-' + i2 + '-' + j;
+              colorGantt = styleRecordClass;
+              ganttStylesRecord[styleRecordClass] = self.settings.config.settingColors[colorValue];
+            }
 
-                    var descGantt2 = '<b>' + self.escapeHtml(records[i3][GANTT_NAME].value) + '</b>';
-                    if (records[i3][GANTT_DESC]) {
-                        descGantt2 += '<div>' +
-                            self.escapeHtml(records[i3][GANTT_DESC]['value']) +
+            if (fromValue) {
+              descGantt += '<div>' + conf.fieldNameFrom.slice(conf.fieldNameFrom.indexOf('[Table]') + 7) +
+                                ': ' + self.escapeHtml(self.convertDateTimeWithTimezone(fromValue)) + '</div>';
+            }
+            if (toValue) {
+              descGantt += '<div>' + conf.fieldNameTo.slice(conf.fieldNameTo.indexOf('[Table]') + 7) +
+                                ': ' + self.escapeHtml(self.convertDateTimeWithTimezone(toValue)) + '</div>';
+            }
+            if (colorValue) {
+              descGantt += conf.fieldNameColor.slice(conf.fieldNameColor.indexOf('[Table]') + 7) +
+                            ': ' + self.escapeHtml(colorValue);
+            }
+
+            const sDate = subTable[j].value[GANTT_FROM].value ? subTable[j].value[GANTT_FROM].value : subTable[j].value[GANTT_TO].value;
+            const eDate = subTable[j].value[GANTT_TO].value ? subTable[j].value[GANTT_TO].value : subTable[j].value[GANTT_FROM].value;
+            const isStartDateEndDateInvalid = (!sDate && !eDate) || !self.isStartDateEndDateValid(sDate, eDate);
+            const ganttRecordData = {
+              id: self.escapeHtml(records[i2].$id.value),
+              name: (j !== 0) ? '' : self.escapeHtml(records[i2][GANTT_NAME].value),
+              desc:
+                                subTable[j].value[GANTT_DESC] ?
+                                  self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
+              values: isStartDateEndDateInvalid ? [] : [{
+                from: self.convertDateTime(sDate),
+                to: self.convertDateTime(eDate),
+                desc: descGantt,
+                label: deskFlg ? self.escapeHtml(subTable[j].value[GANTT_DESC].value)
+                  : self.escapeHtml(records[i2][GANTT_NAME].value),
+                customClass: self.escapeHtml(colorGantt),
+                dataObj: {
+                  'url': '/k/' + kintone.app.getId() + '/show#record=' + records[i2].$id.value,
+                  'name': records[i2][GANTT_NAME].value,
+                  'desc': deskFlg ? self.escapeHtml(subTable[j].value[GANTT_DESC].value) : '',
+                  'start': subTable[j].value[GANTT_FROM].value,
+                  'end': subTable[j].value[GANTT_TO].value,
+                  'recId': records[i2].$id.value,
+                  'tableId': subTable[j].id,
+                  'record': records[i2],
+                  'GANTT_FROM': GANTT_FROM,
+                  'GANTT_TO': GANTT_TO,
+                  'lang': self.lang[self.settings.i18n]
+                }
+              }]
+            };
+            self.data.push(ganttRecordData);
+          }
+        }
+      }
+      function createRecords2() {
+        for (let i3 = 0; i3 < records.length; i3++) {
+          let colorGantt2 = self.settings.element.classColorGanttDefault;
+
+          const colorValue2 = records[i3][GANTT_COLOR].value || '';
+          if (colorValue2 && self.settings.config.settingColors[colorValue2]) {
+            const styleRecordClass2 = self.settings.element.prefixColorGantt + 'class-' + i3;
+            colorGantt2 = styleRecordClass2;
+            ganttStylesRecord[styleRecordClass2] = self.settings.config.settingColors[colorValue2];
+          }
+
+          let descGantt2 = '<b>' + self.escapeHtml(records[i3][GANTT_NAME].value) + '</b>';
+          if (records[i3][GANTT_DESC]) {
+            descGantt2 += '<div>' +
+                            self.escapeHtml(records[i3][GANTT_DESC].value) +
                             '</div>';
-                    }
+          }
 
-                    var fromValue2 = records[i3][GANTT_FROM]['value'];
-                    if (fromValue2) {
-                        descGantt2 += '<div>' + conf.fieldNameFrom + ': ' +
+          const fromValue2 = records[i3][GANTT_FROM].value;
+          if (fromValue2) {
+            descGantt2 += '<div>' + conf.fieldNameFrom + ': ' +
                             self.escapeHtml(self.convertDateTimeWithTimezone(fromValue2)) +
                             '</div>';
-                    }
+          }
 
-                    var toValue2 = records[i3][GANTT_TO]['value'];
-                    if (toValue2) {
-                        descGantt2 += '<div>' + conf.fieldNameTo + ': ' +
+          const toValue2 = records[i3][GANTT_TO].value;
+          if (toValue2) {
+            descGantt2 += '<div>' + conf.fieldNameTo + ': ' +
                             self.escapeHtml(self.convertDateTimeWithTimezone(toValue2)) +
                             '</div>';
-                    }
-                    if (colorValue2) {
-                        descGantt2 += conf.fieldNameColor + ': ' + self.escapeHtml(colorValue2);
-                    }
-                    var sDate = records[i3][GANTT_FROM].value ? records[i3][GANTT_FROM].value : records[i3][GANTT_TO].value
-                    var eDate = records[i3][GANTT_TO].value ? records[i3][GANTT_TO].value : records[i3][GANTT_FROM].value
-                    var isStartDateEndDateInvalid = (!sDate && !eDate) || !self.isStartDateEndDateValid(sDate, eDate);
-                    var ganttRecordData2 = {
-                        id: self.escapeHtml(records[i3]['$id'].value),
-                        name: records[i3][GANTT_NAME] ? self.escapeHtml(records[i3][GANTT_NAME].value) : '',
-                        desc: records[i3][GANTT_DESC] ? self.escapeHtml(records[i3][GANTT_DESC].value) : '',
-                        values: isStartDateEndDateInvalid ? [] : [{
-                            from: self.convertDateTime(sDate),
-                            to: self.convertDateTime(eDate),
-                            desc: descGantt2,
-                            label: (records[i3][GANTT_DESC] && records[i3][GANTT_DESC].value !== '') ?
-                                self.escapeHtml(records[i3][GANTT_DESC]['value'])
-                                : self.escapeHtml(records[i3][GANTT_NAME].value),
-                            customClass: self.escapeHtml(colorGantt2),
-                            dataObj: {
-                                'url': '/k/' + kintone.app.getId() + '/show#record=' + records[i3]['$id']['value'],
-                                'name': records[i3][GANTT_NAME].value,
-                                'desc': records[i3][GANTT_DESC] ? records[i3][GANTT_DESC].value : '',
-                                'start': records[i3][GANTT_FROM].value,
-                                'end': records[i3][GANTT_TO].value,
-                                'recId': records[i3]['$id'].value,
-                                'tableId': '',
-                                'record': records[i3],
-                                'GANTT_FROM': GANTT_FROM,
-                                'GANTT_TO': GANTT_TO,
-                                'lang': self.lang[self.settings.i18n]
-                            }
-                        }]
-                    };
-                    self.data.push(ganttRecordData2);
-                }
-            }
-            if (tableFlg) {
-                createRecords1();
-            } else {
-                createRecords2();
-            }
-            if (typeof callbackFnc === 'function') {
-                callbackFnc();
-            }
-            self.uiSetStyleProcessBar(ganttStylesRecord);
-        },
-        gantt: function(elGantt) {
-            elGantt.className = 'loaded';
+          }
+          if (colorValue2) {
+            descGantt2 += conf.fieldNameColor + ': ' + self.escapeHtml(colorValue2);
+          }
+          const sDate = records[i3][GANTT_FROM].value ? records[i3][GANTT_FROM].value : records[i3][GANTT_TO].value;
+          const eDate = records[i3][GANTT_TO].value ? records[i3][GANTT_TO].value : records[i3][GANTT_FROM].value;
+          const isStartDateEndDateInvalid = (!sDate && !eDate) || !self.isStartDateEndDateValid(sDate, eDate);
+          const ganttRecordData2 = {
+            id: self.escapeHtml(records[i3].$id.value),
+            name: records[i3][GANTT_NAME] ? self.escapeHtml(records[i3][GANTT_NAME].value) : '',
+            desc: records[i3][GANTT_DESC] ? self.escapeHtml(records[i3][GANTT_DESC].value) : '',
+            values: isStartDateEndDateInvalid ? [] : [{
+              from: self.convertDateTime(sDate),
+              to: self.convertDateTime(eDate),
+              desc: descGantt2,
+              label: (records[i3][GANTT_DESC] && records[i3][GANTT_DESC].value !== '') ?
+                self.escapeHtml(records[i3][GANTT_DESC].value)
+                : self.escapeHtml(records[i3][GANTT_NAME].value),
+              customClass: self.escapeHtml(colorGantt2),
+              dataObj: {
+                'url': '/k/' + kintone.app.getId() + '/show#record=' + records[i3].$id.value,
+                'name': records[i3][GANTT_NAME].value,
+                'desc': records[i3][GANTT_DESC] ? records[i3][GANTT_DESC].value : '',
+                'start': records[i3][GANTT_FROM].value,
+                'end': records[i3][GANTT_TO].value,
+                'recId': records[i3].$id.value,
+                'tableId': '',
+                'record': records[i3],
+                'GANTT_FROM': GANTT_FROM,
+                'GANTT_TO': GANTT_TO,
+                'lang': self.lang[self.settings.i18n]
+              }
+            }]
+          };
+          self.data.push(ganttRecordData2);
+        }
+      }
+      if (tableFlg) {
+        createRecords1();
+      } else {
+        createRecords2();
+      }
+      if (typeof callbackFnc === 'function') {
+        callbackFnc();
+      }
+      self.uiSetStyleProcessBar(ganttStylesRecord);
+    },
+    gantt: function(elGantt) {
+      elGantt.className = 'loaded';
 
-            var GANTT_SCALL = this.settings.config['ganttchartScall'] || 'days';
-            // Execute jquery gantt
-            $(elGantt).gantt({
-                source: this.data,
-                navigate: 'scroll',
-                scale: GANTT_SCALL,
-                maxScale: 'months',
-                minScale: 'hours',
-                months: this.lang[this.settings.i18n].months,
-                dow: this.lang[this.settings.i18n].dow,
-                left: '70px',
-                itemsPerPage: 100,
-                waitText: this.lang[this.settings.i18n].wait,
-                scrollToToday: true,
-                onItemClick: function(dataRecord) {
-                    $('.leftPanel').css('z-index', 'inherit');
-                    createModalWindow(dataRecord);
-                }
-            });
-        },
-        uiCreateGanttBox: function() {
-            /*             var elGantt = document.getElementById('gantt');
+      const GANTT_SCALL = this.settings.config.ganttchartScall || 'days';
+      // Execute jquery gantt
+      $(elGantt).gantt({
+        source: this.data,
+        navigate: 'scroll',
+        scale: GANTT_SCALL,
+        maxScale: 'months',
+        minScale: 'hours',
+        months: this.lang[this.settings.i18n].months,
+        dow: this.lang[this.settings.i18n].dow,
+        left: '70px',
+        itemsPerPage: 100,
+        waitText: this.lang[this.settings.i18n].wait,
+        scrollToToday: true,
+        onItemClick: function(dataRecord) {
+          $('.leftPanel').css('z-index', 'inherit');
+          createModalWindow(dataRecord);
+        }
+      });
+    },
+    uiCreateGanttBox: function() {
+      /*             var elGantt = document.getElementById('gantt');
            if (elGantt !== null) {
                 return elGantt;
             }*/
-            if ($('#gantt').length > 0) {
-                $('#gantt').remove();
-            }
+      if ($('#gantt').length > 0) {
+        $('#gantt').remove();
+      }
 
-            var elSpace = kintone.app.getHeaderSpaceElement();
-            // I will adjust the style depending on the version of the design
-            var uiVer = kintone.getUiVersion();
-            switch (uiVer) {
-                case 1:
-                    elSpace.style.margin = '10px 5px';
-                    elSpace.style.border = 'solid 1px #ccc';
-                    break;
-                default:
-                    elSpace.style.margin = '20px 10px';
-                    elSpace.style.border = 'solid 1px #ccc';
-                    break;
-            }
+      const elSpace = kintone.app.getHeaderSpaceElement();
+      // I will adjust the style depending on the version of the design
+      const uiVer = kintone.getUiVersion();
+      switch (uiVer) {
+        case 1:
+          elSpace.style.margin = '10px 5px';
+          elSpace.style.border = 'solid 1px #ccc';
+          break;
+        default:
+          elSpace.style.margin = '20px 10px';
+          elSpace.style.border = 'solid 1px #ccc';
+          break;
+      }
 
-            // I create an element of Gantt chart.
-            var elGantt = document.createElement('div');
-            elGantt.id = 'gantt';
-            elSpace.appendChild(elGantt);
-            return elGantt;
-        },
-        uiSetStyleProcessBar: function(styles) {
-            var styleRule = '';
-            for (var className in styles) {
-                if (!Object.prototype.hasOwnProperty.call(styles,className)) {
-                    continue;
-                }
-                styleRule += '.' + className + '{background-color:' + styles[className] + '!important}';
-            }
-            // Change cursor progress bar to pointer
-            styleRule += '.fn-gantt .bar .fn-label{cursor: pointer!important;}';
-            $('html > head').append($('<style>' + styleRule + '</style>'));
-        },
-        escapeHtml: function(str) {
-            if (typeof str !== 'string') {
-                return '';
-            }
-            return str
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/'/g, '&quot;')
-                .replace(/'/g, '&#39;');
-        },
-        convertDateTime: function(str) {
-            var dt;
-            var dateWithTimezone = moment.tz(str, this.settings.user.timezone);
-            var date = new Date(dateWithTimezone.year(),
-                dateWithTimezone.month(),
-                dateWithTimezone.date(),
-                dateWithTimezone.hours(),
-                dateWithTimezone.minutes());
-            if (str) {
-                dt = '/Date(' + date.getTime() + ')/';
-            } else {
-                dt = '';
-            }
-            return dt;
-        },
-        convertDateTimeWithTimezone: function(date) {
-            var dateWithTimezone = moment.tz(date, this.settings.user.timezone);
-            return dateWithTimezone.format('YYYY-MM-DD H:mm');
-        },
-        isStartDateEndDateValid: function(fromDate, toDate) {
-            var fromDateWithTimezone = moment.tz(fromDate, this.settings.user.timezone);
-            var fromDate = new Date(fromDateWithTimezone.year(),
-            fromDateWithTimezone.month(),
-            fromDateWithTimezone.date(),
-            fromDateWithTimezone.hours(),
-            fromDateWithTimezone.minutes());
-
-            var toDateWithTimezone = moment.tz(toDate, this.settings.user.timezone);
-            var toDate = new Date(toDateWithTimezone.year(),
-            toDateWithTimezone.month(),
-            toDateWithTimezone.date(),
-            toDateWithTimezone.hours(),
-            toDateWithTimezone.minutes());
-            
-            return fromDate.getTime() <= toDate.getTime();
+      // I create an element of Gantt chart.
+      const elGantt = document.createElement('div');
+      elGantt.id = 'gantt';
+      elSpace.appendChild(elGantt);
+      return elGantt;
+    },
+    uiSetStyleProcessBar: function(styles) {
+      let styleRule = '';
+      for (const className in styles) {
+        if (!Object.prototype.hasOwnProperty.call(styles, className)) {
+          continue;
         }
-    };
-    $(document).ready(function() {
-        kintonePluginGranttChart.init();
-    });
+        styleRule += '.' + className + '{background-color:' + styles[className] + '!important}';
+      }
+      // Change cursor progress bar to pointer
+      styleRule += '.fn-gantt .bar .fn-label{cursor: pointer!important;}';
+      $('html > head').append($('<style>' + styleRule + '</style>'));
+    },
+    escapeHtml: function(str) {
+      if (typeof str !== 'string') {
+        return '';
+      }
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/'/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    },
+    convertDateTime: function(str) {
+      let dt;
+      const dateWithTimezone = moment.tz(str, this.settings.user.timezone);
+      const date = new Date(dateWithTimezone.year(),
+        dateWithTimezone.month(),
+        dateWithTimezone.date(),
+        dateWithTimezone.hours(),
+        dateWithTimezone.minutes());
+      if (str) {
+        dt = '/Date(' + date.getTime() + ')/';
+      } else {
+        dt = '';
+      }
+      return dt;
+    },
+    convertDateTimeWithTimezone: function(date) {
+      const dateWithTimezone = moment.tz(date, this.settings.user.timezone);
+      return dateWithTimezone.format('YYYY-MM-DD H:mm');
+    },
+    isStartDateEndDateValid: function(fromDate, toDate) {
+      const fromDateWithTimezone = moment.tz(fromDate, this.settings.user.timezone);
+      fromDate = new Date(fromDateWithTimezone.year(),
+        fromDateWithTimezone.month(),
+        fromDateWithTimezone.date(),
+        fromDateWithTimezone.hours(),
+        fromDateWithTimezone.minutes());
+
+      const toDateWithTimezone = moment.tz(toDate, this.settings.user.timezone);
+      toDate = new Date(toDateWithTimezone.year(),
+        toDateWithTimezone.month(),
+        toDateWithTimezone.date(),
+        toDateWithTimezone.hours(),
+        toDateWithTimezone.minutes());
+
+      return fromDate.getTime() <= toDate.getTime();
+    }
+  };
+  $(document).ready(() => {
+    kintonePluginGranttChart.init();
+  });
 
 })(jQuery, moment, kintone.$PLUGIN_ID);

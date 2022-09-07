@@ -6,10 +6,10 @@
  */
 jQuery.noConflict();
 
-(function($, PLUGIN_ID) {
+(($, PLUGIN_ID) => {
   'use strict';
 
-  var terms = {
+  const terms = {
     'ja': {
       'checkValue_label': '値変更後入力チェック',
       'checkValue_checkbox': '値変更後に入力チェックを行う場合はチェックしてください。',
@@ -38,30 +38,30 @@ jQuery.noConflict();
       'checkValue_save': '保存',
       'checkValue_cancel': '取消'
     }
-  }
-  var lang = kintone.getLoginUser().language;
-  var i18n = (lang in terms) ? terms[lang]: terms['ja'];
-  var configHtml = $('#checkValue_plugin').html();
-  var tmpl = $.templates(configHtml);
-  $('#checkValue_plugin').html(tmpl.render({'terms':i18n}));
+  };
+  let lang = kintone.getLoginUser().language;
+  const i18n = (lang in terms) ? terms[lang] : terms.ja;
+  const configHtml = $('#checkValue_plugin').html();
+  const tmpl = $.templates(configHtml);
+  $('#checkValue_plugin').html(tmpl.render({'terms': i18n}));
 
   // プラグインIDの設定
-  var KEY = PLUGIN_ID;
-  var CONF = kintone.plugin.app.getConfig(KEY);
+  const KEY = PLUGIN_ID;
+  const CONF = kintone.plugin.app.getConfig(KEY);
   // 入力モード
-  var MODE_ON = '1'; // 変更後チェック実施
-  var MODE_OFF = '0'; // 変更後チェック未実施
-  function escapeHtml(htmlstr) {
+  const MODE_ON = '1'; // 変更後チェック実施
+  const MODE_OFF = '0'; // 変更後チェック未実施
+  const escapeHtml = (htmlstr) => {
     return htmlstr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
+  };
 
-  function setDropdown() {
+  const setDropdown = () => {
     // フィールド型が「文字列（１行）」「数値」のフィールド情報を取得し、選択ボックスに代入する
-    KintoneConfigHelper.getFields(['SINGLE_LINE_TEXT', 'NUMBER']).then(function(resp) {
-      for (var i = 0; i < resp.length; i++) {
-        var prop = resp[i];
-        var $option = $('<option>');
+    KintoneConfigHelper.getFields(['SINGLE_LINE_TEXT', 'NUMBER']).then((resp) => {
+      for (let i = 0; i < resp.length; i++) {
+        const prop = resp[i];
+        const $option = $('<option>');
 
         $option.attr('value', escapeHtml(prop.code));
         $option.text(escapeHtml(prop.label));
@@ -75,13 +75,13 @@ jQuery.noConflict();
       $('#select_checkvalue_field_tel').val(CONF.tel);
       $('#select_checkvalue_field_fax').val(CONF.fax);
       $('#select_checkvalue_field_mail').val(CONF.mail);
-    }).catch(function(err) {
+    }).catch((err) => {
       alert(err.message);
     });
-  }
+  };
 
-  function createErrorMessage(num) {
-    var message = {
+  const createErrorMessage = (num) => {
+    const message = {
       'ja': {
         '1': '必須項目が入力されていません',
         '2': '選択肢が重複しています'
@@ -90,14 +90,14 @@ jQuery.noConflict();
         '1': '有必填项未填写',
         '2': '选项重复'
       }
-    }
-    if(!message[lang]) {
+    };
+    if (!message[lang]) {
       lang = 'ja';
     }
     return message[lang][num];
-  }
+  };
 
-  $(document).ready(function() {
+  $(document).ready(() => {
 
     // 既に値が設定されている場合はフィールドに値を設定する
     if (CONF) {
@@ -111,13 +111,13 @@ jQuery.noConflict();
     }
 
     // 「保存する」ボタン押下時に入力情報を設定する
-    $('#check-plugin-submit').click(function() {
-      var config = [];
-      var zip = $('#select_checkvalue_field_zip').val();
-      var tel = $('#select_checkvalue_field_tel').val();
-      var fax = $('#select_checkvalue_field_fax').val();
-      var mail = $('#select_checkvalue_field_mail').val();
-      var mode = $('#check-plugin-change_mode').prop('checked');
+    $('#check-plugin-submit').click(() => {
+      const config = [];
+      const zip = $('#select_checkvalue_field_zip').val();
+      const tel = $('#select_checkvalue_field_tel').val();
+      const fax = $('#select_checkvalue_field_fax').val();
+      const mail = $('#select_checkvalue_field_mail').val();
+      const mode = $('#check-plugin-change_mode').prop('checked');
       // 必須チェック
       if (zip === '' || tel === '' || fax === '' || mail === '') {
         alert(createErrorMessage(1));
@@ -128,8 +128,8 @@ jQuery.noConflict();
       config.fax = fax;
       config.mail = mail;
       // 重複チェック
-      var uniqueConfig = [zip, tel, fax, mail];
-      var uniqueConfig2 = uniqueConfig.filter(function(value, index, self) {
+      const uniqueConfig = [zip, tel, fax, mail];
+      const uniqueConfig2 = uniqueConfig.filter((value, index, self) => {
         return self.indexOf(value) === index;
       });
       if (Object.keys(config).length !== uniqueConfig2.length) {
@@ -145,7 +145,7 @@ jQuery.noConflict();
     });
 
     // 「キャンセル」ボタン押下時の処理
-    $('#check-plugin-cancel').click(function() {
+    $('#check-plugin-cancel').click(() => {
       history.back();
     });
   });

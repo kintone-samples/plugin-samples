@@ -1,16 +1,16 @@
 {
     "manifest_version": 1,
-    "version": "3.2.4",
+    "version": "3.2.5",
     "type": "APP",
     "name": {
-        "ja": "新条件書式プラグイン",
+        "ja": "条件書式プラグイン",
         "en": "Conditional Format",
-        "zh": "新条件格式插件"
+        "zh": "条件格式插件"
     },
     "description": {
-        "ja": "新デザインに対応した条件により表示するアイテムの色、背景色等を変更するプラグインです。",
+        "ja": "条件により表示するアイテムの色、背景色等を変更するプラグインです。",
         "en": "This plug-in changes colors and styles of fields",
-        "zh": "根据新设计风格的条件，更改字段颜色、背景色的插件。"
+        "zh": "根据条件，更改字段颜色、背景色的插件。"
     },
     "icon": "image/icon.png",
     "homepage_url": {
