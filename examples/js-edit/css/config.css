@@ -57,3 +57,7 @@ cursor: not-allowed;
 #jsedit-config .jsedit-editor.disabled .ace_cursor {
   display: none;
 }
+
+#jsedit-config .ace_gutter {
+  z-index :auto;
+}
