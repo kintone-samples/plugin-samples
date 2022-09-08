@@ -4,12 +4,12 @@
   "type": "APP",
   "name": {
     "ja": "JSEdit for kintone",
-    "en": "JSEdit for kintone",
+    "en": "JSEdit for Kintone",
     "zh": "JSEdit for kintone"
   },
   "description": {
     "ja": "kintoneのJavaScriptカスタマイズをブラウザから行うことができるプラグインです。",
-    "en": "This plugin enables a code editor for kintone.",
+    "en": "This plug-in enables a code editor for Kintone.",
     "zh": "This plugin enables a code editor for kintone."
   },
   "icon": "image/image.png",
