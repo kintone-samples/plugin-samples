@@ -122,7 +122,7 @@ jQuery.noConflict();
 
             // 「保存する」ボタン押下時に入力情報を設定する
             $('#submit').click(function() {
-                var config = [];
+                var config = {};
                 var name;
                 var start_datetime;
                 var end_datetime;
