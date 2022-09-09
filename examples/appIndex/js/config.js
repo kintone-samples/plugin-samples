@@ -76,7 +76,7 @@ jQuery.noConflict();
 
   // 「保存する」ボタン押下時に入力情報を設定する
   $('#submit').click(() => {
-    const config = [];
+    const config = {};
 
     config.folderIcon = $('[name=folder]:checked').val();
     config.appIcon = $('[name=app]:checked').val();
