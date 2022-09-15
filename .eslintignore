@@ -13,5 +13,4 @@ examples/js-edit/**/*.js
 examples/kyotenn/**/*.js
 examples/mandrill/**/*.js
 examples/sansan/**/*.js
-examples/textConnect/**/*.js
 examples/vote/**/*.js
