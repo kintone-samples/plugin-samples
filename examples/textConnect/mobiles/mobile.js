@@ -201,6 +201,4 @@
     }
     return event;
   });
-
-
 })(kintone.$PLUGIN_ID);
