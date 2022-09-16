@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "1.4.1",
+    "version": "1.4.2",
     "type": "APP",
     "name": {
         "ja": "kintone イベントカレンダープラグイン",

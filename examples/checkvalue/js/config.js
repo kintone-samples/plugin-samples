@@ -112,7 +112,7 @@ jQuery.noConflict();
 
     // 「保存する」ボタン押下時に入力情報を設定する
     $('#check-plugin-submit').click(() => {
-      const config = [];
+      const config = {};
       const zip = $('#select_checkvalue_field_zip').val();
       const tel = $('#select_checkvalue_field_tel').val();
       const fax = $('#select_checkvalue_field_fax').val();
