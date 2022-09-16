@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": 1,
+    "version": "1.3.5",
     "type": "APP",
     "name": {
         "ja": "文字結合プラグイン",
