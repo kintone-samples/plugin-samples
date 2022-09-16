@@ -6,11 +6,8 @@ jquery.ui.datepicker-ja.min.js
 # plugins
 examples/appIndex/**/*.js
 examples/colorcell/**/*.js
-examples/colorful-report/**/*.js
 examples/conditionformat/**/*.js
-examples/js-edit/**/*.js
 examples/kyotenn/**/*.js
 examples/mandrill/**/*.js
 examples/sansan/**/*.js
-examples/textConnect/**/*.js
 examples/vote/**/*.js
