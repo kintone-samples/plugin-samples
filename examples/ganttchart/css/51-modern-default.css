@@ -49,29 +49,29 @@
   margin-bottom: 24px;
 }
 
-/* Heading for each settings*/
-/* Heading */
+/* Title for settings*/
+/* Labels */
 /*
-<div class="kintoneplugin-label">Heading for the setting</div>
+<div class="kintoneplugin-label">Title</div>
 */
 .kintoneplugin-label {
   margin-bottom: 8px;
   font-weight: bold;
 }
 
-/* Title for each settings */
-/* Title */
+/* 設定項目の見出し */
+/* 項目 */
 /*
-<div class="kintoneplugin-title">Title of the setting</div>
+<div class="kintoneplugin-label">設定項目の見出し</div>
 */
 .kintoneplugin-title {
   margin-bottom: 8px;
 }
 
-/* Description for each settings */
-/* Description */
+/* 設定項目の説明 */
+/* 説明 */
 /*
-<div class="kintoneplugin-desc">Description of the setting</div>
+<div class="kintoneplugin-desc">設定項目の説明</div>
 */
 .kintoneplugin-desc {
   margin-bottom: 8px;
@@ -538,118 +538,4 @@
   background-color: #c8d6dd;
   box-shadow: none;
   cursor: pointer;
-}
-
-
-/* Table */
-/*
-<table class="kintoneplugin-table">
-  <thead>
-    <tr>
-      <th class="kintoneplugin-table-th"><span class="title">Title1</span></th>
-      <th class="kintoneplugin-table-th-blankspace"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <div class="kintoneplugin-table-td-control">
-          <div class="kintoneplugin-table-td-control-value">
-            <div class="kintoneplugin-input-outer">
-              <input class="kintoneplugin-input-text" type="text">
-            </div>
-          </div>
-        </div>
-      </td>
-      <td class="kintoneplugin-table-td-operation">
-        <button type="button" class="kintoneplugin-button-add-row-image" title="Add row"></button>
-        <button type="button" class="kintoneplugin-button-remove-row-image" title="Delete this row"></button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-*/
-.kintoneplugin-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin-left: 18px;
-  margin-bottom: 16px;
-}
-
-.kintoneplugin-table-th {
-  border-color: #3498db;
-  height: 40px;
-  color: #fff;
-  box-sizing: border-box;
-  text-align: left;
-  font-weight: 400;
-  font-size: 12px;
-  white-space: nowrap;
-  border-width: 2px;
-  background-color: #3498db;
-}
-
-.kintoneplugin-table-th .title {
-  display: inline-block;
-  padding: 4px 8px;
-  box-sizing: border-box;
-  min-width: 204px;
-}
-
-.kintoneplugin-table-th-blankspace {
-  background-color: transparent;
-}
-
-.kintoneplugin-table td {
-  border-color: #e3e7e8;
-  border-style: solid;
-  border-width: 0 1px 1px 0;
-  vertical-align: top;
-  padding: 4px 0;
-}
-
-.kintoneplugin-table td:first-child {
-    border-left-width: 1px;
-}
-
-.kintoneplugin-table td.kintoneplugin-table-td-operation {
-  border-right: 0;
-  border-bottom: 0;
-}
-
-.kintoneplugin-table-td-control {
-  padding: 0 8px;
-}
-
-.kintoneplugin-table-td-control-value {
-  overflow: hidden;
-  padding: 4px 0;
-  min-height: 21px;
-  color: #333;
-  background-color: transparent;
-}
-
-.kintoneplugin-table-td-operation .kintoneplugin-button-add-row-image, .kintoneplugin-table-td-operation .kintoneplugin-button-remove-row-image {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-}
-
-.kintoneplugin-table-td-operation .kintoneplugin-button-add-row-image {
-  margin-left: 12px;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAABG0lEQVQ4ja2UMWrDUAyG31TIAUIO0cVbCMToHa0nyF4HqbtPkBPkAqEe/KQ4bclkCB06FDqoQ7Cb5j2/l1L/oMFY/pB+SzImoZzc1BZ1lpObpnKDsihLICkBubIohy4AuQKS0qIsk5DFajsBdAQo+0vIdQBJA+hosdpOgqD7h+c7S7yJQbwg3gSBgPz4J1DfuqNrkyHR2vswTPY5Ofip6mzqQDIfVVUTHpaXLVb/giFXxhhj5uvdLJGYhFmUw3y9mxlb1Jn/kj81Ikvy4X1T1FmwMkB+A+QWkFsgOamq9s/ILRC/Bisb1bPR/2ZszoDkBZC/bp6zc6uORtmAbslH281fV4OkSXjUAPLTIMjb1cg98zy6Vd2l7ecoom+t8LKwzLF7UgAAAABJRU5ErkJggg==) center center no-repeat;
-  border: 1px solid transparent;
-}
-.kintoneplugin-table-td-operation .kintoneplugin-button-add-row-image:hover {
-  cursor: pointer;
-}
-.kintoneplugin-table-td-operation .kintoneplugin-button-remove-row-image {
-  margin-left: 4px;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAABPUlEQVQ4ja2UvW6DMBDHUTMkK0vyQJXoxoaUB2nWxEorMcNgD/gOWbIii7GSJx6Bmdegq1lKF6CUAqYSJ/2HE8dP5/tyHIvFcbynlLpxHO9tsZPGGDsCgI+IrwBAOrW+zxg7WiFBEOwAwEPE6xAyVpqmNwDwgiDYTYIIIU+c8/MSZCzO+XkSyDl//g9oIO8XKEmSk+1pc0LEa5Ikpx4GAP5csFIqVEqFFqjfw8ZdGyrLsjDLMhvs0hX+sBS4EkYIIQeHUuqOP5Rl+WGMqYwxVV3Xn03TfHW+MaYqiuIx/odS6k5mJqV811pHWusoz3OW5znrfK11JKV8m8xs05rZurkS9tPNpTkTQtyFEPfVc9Zm522yAd2Sb7abw6vRXoVZSJqmN0R8mQWNdxUm7hkAXADA/1OjtdZd2n6OFuwblG9sdxWO0ggAAAAASUVORK5CYII=) center center no-repeat;
-  border: 1px solid transparent;
-}
-
-.kintoneplugin-table-td-operation .kintoneplugin-button-remove-row-image:hover {
-  cursor: pointer;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAACi0lEQVQ4jZ2UT0hUQRzHp0uHDtFVk0QqTGtdddXVN/Pe7ubuuu3Me7sY2s1jRZcOQX+kQC+dkrr15xAIElhIEBSZloKHPHTMIlHS9r2ZNdvUNK1Evh3S1WVdNX/wuf1+H+bHzHcIyVET4ZoiJViLjLKrjmBtUtBrdpSetwVzE0L25JrLKBlkh6RgHZJTWwmGLDidk5x2qYhWvaXIidKQ5Gx0U8kGkoJBCfpTcXZpU5HNNS45+7WdaKNwJmZgJORtz1wtqhVKQSd3Klpj2tSRMg28NtzhdZlgHf8rUoJBCoZZy8B4Q+27+578fWQiXFMkOfu6W5kSFL8bA3hQUWwRJVhLdqMOZW7Daq/NKVaa6tFdV9ZJJKetGRLLgBOogENL4bAc0FI4QQ+UZUByipSpIylYP3EEa0vLIrWQfjcWeh5hOTGBP2OfshkfxfLkZ8zduw1HOwZlGZgSOuZjvgGiOL2Rlp2qg6yvxNzdDiwNvsJi3/Ns+l9gaaAX329eh2OcgDR1TJs6Zi3jDVFcuyA3rhnzwa4tRsKVj4S7IJuyAiRcB+Hox6HifticYrHRj7eBqh6SiHjLFGcLGRdgGVAxP1TMlwP/vx7BYEcpcCaEO+6j59Zi1L2bp5HgFPNxH2Ysw24tKcwjhBDyJaJVJ9OZ2xkOp1CCAc1BdFaXXMyI1CTXrkybOr6ZOuQOTpRcFY2E6540EbI3K+zvQ972pGBIWQaSpg6bU0i+/todTmFzioW4D2iux8eG2p6n5eUHcn5Dw4Gq6FhEG0qZOlZOBzAb8yG5GuqlRj/QHMSU0Me7akoub/mfpYXeI/uHfJXmM8318EPY2/sj7h+ctfS+4ZOex7dch8++9JTkbTb3FyHXv8RgEtykAAAAAElFTkSuQmCC) center center no-repeat;
 }
