@@ -285,9 +285,15 @@ jQuery.noConflict();
         }
         $(this.settings.element.gantt + ' .submit-bottom').hide();
 
-        let parentHeight = $(this.settings.element.gantt).parents('td').offset().top;
-        parentHeight += this.settings.CONST.BOX_CONFIRM_HEIGHT_PX;
-        $(this.settings.element.ganttForm).css('max-height', $(window).height() - parentHeight);
+        // 新デザイン対応
+        try {
+          let parentHeight = $(this.settings.element.gantt).parents('td').offset().top;
+          parentHeight += this.settings.CONST.BOX_CONFIRM_HEIGHT_PX;
+          $(this.settings.element.ganttForm).css('max-height', $(window).height() - parentHeight);
+        } catch (error) {
+          console.log('新デザイン対応');
+        }
+
       },
       listenAction: function() {
         const self = this;
