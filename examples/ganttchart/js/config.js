@@ -260,40 +260,12 @@ jQuery.noConflict();
         $('#ganttchart-plugin-to').val(this.escapeHtml(this.settings.config.ganttchartTo));
         $('#ganttchart-plugin-color').val(this.escapeHtml(this.settings.config.ganttchartColor));
         $(this.settings.element.ganttchartScall).val([self.settings.config.ganttchartScall || 'days']);
-        // Fixed header
-        this.uiSetFormSubmitIsFixed();
-        let timeoutResize;
-        $(window).resize(() => {
-          clearTimeout(timeoutResize);
-          timeoutResize = setTimeout(() => {
-            self.uiSetFormSubmitIsFixed();
-          }, 150);
-        });
         // Set color setting
         this.settingColorsSet();
         // Show form setting
         $(this.settings.element.gantt).css('display', 'block');
         // Listen action
         this.listenAction();
-      },
-      uiSetFormSubmitIsFixed: function() {
-        const CLIENT_MIN_HEIGHT_PX = 750;
-        if ($(window).height() < CLIENT_MIN_HEIGHT_PX) {
-          $(this.settings.element.gantt + ' .submit-bottom').show();
-          $(this.settings.element.ganttForm).css('max-height', 'none');
-          return;
-        }
-        $(this.settings.element.gantt + ' .submit-bottom').hide();
-
-        try {
-          let parentHeight = $(this.settings.element.gantt).parents('td').offset().top;
-          parentHeight += this.settings.CONST.BOX_CONFIRM_HEIGHT_PX;
-          $(this.settings.element.ganttForm).css('max-height', $(window).height() - parentHeight);
-        } catch (e) {
-          // 新デザイン対応
-          console.log('新デザイン対応');
-        }
-
       },
       listenAction: function() {
         const self = this;
