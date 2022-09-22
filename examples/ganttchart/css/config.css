@@ -104,25 +104,6 @@
   margin-top: 10px;
 }
 
-#ganttchart-plugin table thead {
-  line-height: 2.5;
-  border: 2px solid #3498db;
-  background: #3498db;
-}
-
-#ganttchart-plugin table thead th {
-  padding-left: 10px;
-}
-
-#ganttchart-plugin table thead th > label {
-  color: white;
-}
-
-#ganttchart-plugin table tbody {
-  border: 1px solid #e3e7e8;
-  box-shadow: 1px 1px 1px #fff inset;
-}
-
 #ganttchart-plugin table td.column-add-more > a {
   cursor: pointer;
 }
