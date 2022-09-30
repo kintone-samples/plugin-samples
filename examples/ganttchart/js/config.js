@@ -260,34 +260,12 @@ jQuery.noConflict();
         $('#ganttchart-plugin-to').val(this.escapeHtml(this.settings.config.ganttchartTo));
         $('#ganttchart-plugin-color').val(this.escapeHtml(this.settings.config.ganttchartColor));
         $(this.settings.element.ganttchartScall).val([self.settings.config.ganttchartScall || 'days']);
-        // Fixed header
-        this.uiSetFormSubmitIsFixed();
-        let timeoutResize;
-        $(window).resize(() => {
-          clearTimeout(timeoutResize);
-          timeoutResize = setTimeout(() => {
-            self.uiSetFormSubmitIsFixed();
-          }, 150);
-        });
         // Set color setting
         this.settingColorsSet();
         // Show form setting
         $(this.settings.element.gantt).css('display', 'block');
         // Listen action
         this.listenAction();
-      },
-      uiSetFormSubmitIsFixed: function() {
-        const CLIENT_MIN_HEIGHT_PX = 750;
-        if ($(window).height() < CLIENT_MIN_HEIGHT_PX) {
-          $(this.settings.element.gantt + ' .submit-bottom').show();
-          $(this.settings.element.ganttForm).css('max-height', 'none');
-          return;
-        }
-        $(this.settings.element.gantt + ' .submit-bottom').hide();
-
-        let parentHeight = $(this.settings.element.gantt).parents('td').offset().top;
-        parentHeight += this.settings.CONST.BOX_CONFIRM_HEIGHT_PX;
-        $(this.settings.element.ganttForm).css('max-height', $(window).height() - parentHeight);
       },
       listenAction: function() {
         const self = this;
@@ -395,8 +373,8 @@ jQuery.noConflict();
         const settingColors = {};
         $(this.settings.element.gantt + ' table > tbody > tr').each(function() {
           const elementValue = $(this).find('td');
-          const fieldValue = elementValue[0].children[0].value;
-          const fieldColor = elementValue[1].children[0].value;
+          const fieldValue = $(elementValue[0]).find('input')[0].value;
+          const fieldColor = $(elementValue[1]).find('input')[0].value;
           if (fieldValue && fieldColor) {
             settingColors[fieldValue] = fieldColor;
           }
@@ -415,9 +393,9 @@ jQuery.noConflict();
           }
           const settingColorRowClone = settingColorRow.clone();
           const elementValue = settingColorRowClone.find('td');
-          elementValue[0].children[0].value = valueColor;
-          elementValue[1].children[0].value = this.settings.config.settingColors[valueColor];
-          elementValue[1].children[0].style.backgroundColor = this.settings.config.settingColors[valueColor];
+          $(elementValue[0]).find('input')[0].value = valueColor;
+          $(elementValue[1]).find('input')[0].value = this.settings.config.settingColors[valueColor];
+          $(elementValue[1]).find('input')[0].style.backgroundColor = this.settings.config.settingColors[valueColor];
           tableColor.append(settingColorRowClone);
         }
         // Add more setting
