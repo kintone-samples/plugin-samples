@@ -225,13 +225,19 @@ jQuery.noConflict();
     }
 
     function VoteView(model) {
-        var $element = $('<span class="vote-plugin-show">');
+        var $element = $('<button type="button" class="vote-plugin-show">');
         var clickable = true;
 
         function updateImg(voted) {
             $element.find('.vote-plugin-img').toggleClass('vote-plugin-voted', voted);
         }
 
+        function updateButtonLabel(usercount, voted){
+            var countText = usercount + '人のいいね。';
+            var votedText = voted ? 'いいねしました' : 'いいねする';
+            $element.attr('aria-label', countText + votedText);
+
+        }
         function updateCounterEl(usercount) {
             $element.find('.vote-plugin-count').remove();
             if (usercount !== 0) {
@@ -246,6 +252,7 @@ jQuery.noConflict();
             clickable = false;
             model.toggleLoginUser().then(function() {
                 updateImg(model.isLoginUserVoted());
+                updateButtonLabel(model.countVoteUsers(), model.isLoginUserVoted());
                 updateCounterEl(model.countVoteUsers());
                 clickable = true;
             });
@@ -258,6 +265,7 @@ jQuery.noConflict();
             updateImg(model.isLoginUserVoted());
 
             // createCounter
+            updateButtonLabel(model.countVoteUsers(), model.isLoginUserVoted());
             updateCounterEl(model.countVoteUsers());
 
             $element.click(handleClick);
