@@ -283,6 +283,7 @@
     }
 
     function isValidLibVersion(libUrl) {
+        var libKey = libUrl.split('/')[3];
         var libVersion = libUrl.split('/')[4];
 
         var infos = getLibsInfo();
@@ -298,7 +299,7 @@
         }
 
         return libs.some(function (lib) {
-            return lib.version === libVersion;
+            return lib.key === libKey && lib.version === libVersion;
         });
     }
 
