@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": 1,
+    "version": "1.7.1",
     "type": "APP",
     "name": {
         "ja": "いいねプラグイン",

@@ -9,6 +9,8 @@
     padding: 2px 4px;
     position: relative;
     cursor: pointer;
+    border: 0;
+    background: transparent;
 }
 
 .vote-plugin-count {
