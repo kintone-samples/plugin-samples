@@ -283,6 +283,7 @@
   };
 
   const isValidLibVersion = (libUrl) => {
+    const libKey = libUrl.split('/')[3];
     const libVersion = libUrl.split('/')[4];
 
     const infos = getLibsInfo();
@@ -298,7 +299,7 @@
     }
 
     return libs.some((lib) => {
-      return lib.version === libVersion;
+      return lib.key === libKey && lib.version === libVersion;
     });
   };
 
