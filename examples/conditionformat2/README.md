@@ -2,7 +2,7 @@
 
 ## License
 
-* Moment.js - https://momentjs.com/  
+* Luxon - https://moment.github.io/luxon/
   MIT License https://opensource.org/licenses/MIT
 * jQuery - https://jquery.com/  
   MIT License https://opensource.org/licenses/MIT
