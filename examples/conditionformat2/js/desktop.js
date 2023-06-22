@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /*
  * New Condition Format plug-in
  * Copyright (c) 2016 Cybozu
@@ -233,9 +234,9 @@ jQuery.noConflict();
       num = -num;
     }
 
-    const field_value = moment(field).format('YYYY-MM-DD 00:00');
-    const condition_value = moment().add(num, 'days').format('YYYY-MM-DD 00:00');
-    const diff = moment(field_value).diff(moment(condition_value), 'days');
+    const field_value = luxon.DateTime.fromISO(field);
+    const condition_value = luxon.DateTime.now().plus({days: num}).startOf('day');
+    const diff = field_value.diff(condition_value, 'days').days;
 
     switch (condition_type) {
       case '==':
