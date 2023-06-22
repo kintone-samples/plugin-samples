@@ -379,7 +379,7 @@ jQuery.noConflict();
     RECORDS = RECORDS.filter((record) => {
       return record.$id.value !== event.recordId;
     });
-
+    return event;
   });
 
   kintone.events.on('app.record.detail.show', (event) => {
