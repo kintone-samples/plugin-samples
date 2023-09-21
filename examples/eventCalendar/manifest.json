@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "1.4.2",
+    "version": "1.4.3",
     "type": "APP",
     "name": {
         "ja": "kintone イベントカレンダープラグイン",
@@ -13,6 +13,11 @@
         "zh": "这个插件整合了kintone和FullCalendar"
     },
     "icon": "image/icon.png",
+    "homepage_url": {
+        "ja": "https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/eventcalendar-plugin/",
+        "en": "https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/eventcalendar-plugin/",
+        "zh": "https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/eventcalendar-plugin/"
+    },
     "desktop": {
         "js": [
             "https://js.cybozu.com/jquery/2.2.4/jquery.min.js",
