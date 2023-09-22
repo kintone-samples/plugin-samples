@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "version": "4.5.2",
+  "version": "4.5.3",
   "type": "APP",
   "name": {
     "ja": "JSEdit for kintone",
@@ -14,6 +14,9 @@
   },
   "icon": "image/image.png",
   "homepage_url": {
+    "ja":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/jsedit-for-kintone-plugin/",
+    "en":"https://kintone.dev/en/plugins/advanced-samples/js-edit-plug-in/",
+    "zh":"https://cybozudev.kf5.com/hc/kb/article/1010754/"
   },
   "desktop": {
   },

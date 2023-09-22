@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "2.3.2",
+    "version": "2.3.3",
     "type": "APP",
     "name": {
         "ja": "入力値チェックプラグイン",
@@ -14,9 +14,9 @@
     },
     "icon": "image/check.png",
     "homepage_url": {
-        "ja": "https://developer.cybozu.io/hc/ja/articles/203501094",
-        "en": "https://developer.cybozu.io/hc/ja/articles/203501094",
-        "zh": "https://developer.cybozu.io/hc/ja/articles/203501094"
+        "ja": "https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/checkvalue-plugin/",
+        "en": "https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/checkvalue-plugin/",
+        "zh": "https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/checkvalue-plugin/"
     },
     "desktop": {
         "js": [

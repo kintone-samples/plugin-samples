@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "version": "1.5.1",
+  "version": "1.5.2",
   "type": "APP",
   "name": {
     "ja": "MTG効率化プラグイン",
@@ -14,9 +14,9 @@
   },
   "icon": "img/colorful-weekly.png",
   "homepage_url": {
-    "ja": "https://kintone.cybozu.com/jp/",
-    "en": "https://kintone.cybozu.com/jp/",
-    "zh": "https://kintone.cybozu.com/jp/"
+    "ja": "https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/colorful-report-plugin/",
+    "en": "https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/colorful-report-plugin/",
+    "zh": "https://cybozudev.kf5.com/hc/kb/article/1013120/"
   },
   "desktop": {
     "js": [

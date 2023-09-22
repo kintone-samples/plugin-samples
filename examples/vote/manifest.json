@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "1.7.1",
+    "version": "1.7.2",
     "type": "APP",
     "name": {
         "ja": "いいねプラグイン",
@@ -13,6 +13,11 @@
         "zh": "Adds a Like feature to each record of the App."
     },
     "icon": "image/icon.png",
+    "homepage_url": {
+      "ja":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/like-plugin/",
+      "en":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/like-plugin/",
+      "zh":"https://cybozudev.kf5.com/hc/kb/article/1007993/"
+    },
     "desktop": {
         "js": [
             "https://js.cybozu.com/jquery/jquery-1.11.0.min.js",

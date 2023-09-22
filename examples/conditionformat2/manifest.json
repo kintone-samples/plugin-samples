@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "3.2.6",
+    "version": "3.2.7",
     "type": "APP",
     "name": {
         "ja": "条件書式プラグイン",
@@ -14,8 +14,8 @@
     },
     "icon": "image/icon.png",
     "homepage_url": {
-        "ja": "https://developer.cybozu.io/hc/ja/articles/208236353",
-        "en": "https://developer.kintone.io/hc/en-us/articles/115009635868",
+        "ja": "https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/conditionformat-v2-plugin/",
+        "en": "https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/conditionformat-v2-plugin/",
         "zh": "https://cybozudev.kf5.com/hc/kb/article/1011206/"
     },
     "desktop": {

@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "1.3.5",
+    "version": "1.3.6",
     "type": "APP",
     "name": {
         "ja": "文字結合プラグイン",
@@ -13,6 +13,11 @@
         "zh": "此插件可将多个字段的字符结合在一起显示到其他指定的字段中。"
     },
     "icon": "contents/icon.png",
+    "homepage_url": {
+      "ja":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/textconnect-plugin/",
+      "en":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/textconnect-plugin/",
+      "zh":"https://cybozudev.kf5.com/hc/kb/article/1399262/"
+    },
     "desktop": {
         "js": [
             "desktops/desktop.js"

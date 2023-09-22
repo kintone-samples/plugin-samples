@@ -1,6 +1,6 @@
 {
    "manifest_version":1,
-   "version":"2.2.3",
+   "version":"2.2.4",
    "type":"APP",
    "name":{
       "ja":"ガントチャートプラグイン",
@@ -14,9 +14,9 @@
    },
    "icon":"img/icon.png",
    "homepage_url":{
-      "ja":"https://developer.cybozu.io/hc/ja/articles/203716110",
-      "en":"https://developer.cybozu.io/hc/ja/articles/203716110",
-      "zh":"https://developer.cybozu.io/hc/ja/articles/203716110"
+      "ja":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/ganttchart-plugin/",
+      "en":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/ganttchart-plugin/",
+      "zh":"https://cybozudev.kf5.com/hc/kb/article/1007997/"
    },
    "desktop":{
       "js":[
