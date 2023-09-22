@@ -15,8 +15,8 @@
   "icon": "image/image.png",
   "homepage_url": {
     "ja":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/jsedit-for-kintone-plugin/",
-    "en":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/jsedit-for-kintone-plugin/",
-    "zh":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/jsedit-for-kintone-plugin/"
+    "en":"https://kintone.dev/en/plugins/advanced-samples/js-edit-plug-in/",
+    "zh":"https://cybozudev.kf5.com/hc/kb/article/1010754/"
   },
   "desktop": {
   },
