@@ -4,7 +4,7 @@
 
 * jQuery - https://jquery.com/
   * Author: jQuery Foundation, Inc.
-  * License: [MIT License](https://github.com/jquery/jquery/blob/3.3.1/MIT-LICENSE.txt)
+  * License: [MIT License](https://github.com/jquery/jquery/blob/3.3.1/LICENSE.txt)
 * JsRender - https://www.jsviews.com/
   * Author: Boris Moore
   * License: [MIT License](https://github.com/BorisMoore/jsrender/blob/v0.9.86/MIT-LICENSE.txt)

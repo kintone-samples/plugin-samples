@@ -13,7 +13,7 @@
   * License: [MIT License](https://github.com/moment/moment/blob/2.14.1/LICENSE)
 * jQuery - https://jquery.com/
   * Author: jQuery Foundation, Inc.
-  * License: [MIT License](https://github.com/jquery/jquery/blob/2.1.3/LICENSE.txt)
+  * License: [MIT License](https://github.com/jquery/jquery/blob/2.1.3/MIT-LICENSE.txt)
 * JsRender - https://www.jsviews.com/
   * Author: Boris Moore
   * License: [MIT License](https://github.com/BorisMoore/jsrender/blob/v0.9.80/MIT-LICENSE.txt)

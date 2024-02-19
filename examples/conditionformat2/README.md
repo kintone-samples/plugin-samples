@@ -7,7 +7,7 @@
   * Lisense: [MIT License](https://github.com/moment/luxon/blob/3.4.4/LICENSE.md)
 * jQuery - https://jquery.com/
   * Author: jQuery Foundation, Inc.
-  * License: [MIT License](https://github.com/jquery/jquery/blob/2.1.4/LICENSE.txt)
+  * License: [MIT License](https://github.com/jquery/jquery/blob/2.1.4/MIT-LICENSE.txt)
 * JsRender - https://www.jsviews.com/
   * Author: Boris Moore
   * License: [MIT License](https://github.com/BorisMoore/jsrender/blob/v0.9.83/MIT-LICENSE.txt)
