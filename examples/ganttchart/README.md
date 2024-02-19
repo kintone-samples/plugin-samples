@@ -1,16 +1,22 @@
 # GanttChart Plug-in
 
-## License
+## OSS License
 
-* jQuery UI - https://jqueryui.com/  
-  MIT License https://opensource.org/licenses/MIT
-* tinyColorPicker and colors - https://github.com/PitPik/tinyColorPicker  
-  MIT License https://opensource.org/licenses/MIT
-* Moment.js - https://momentjs.com/  
-  MIT License https://opensource.org/licenses/MIT
-* jQuery - https://jquery.com/  
-  MIT License https://opensource.org/licenses/MIT
-* JsRender - https://www.jsviews.com/  
-  MIT License https://opensource.org/licenses/MIT
-* 51-modern-default - https://developer.cybozu.io/hc/ja/articles/203302214  
-  MIT License https://opensource.org/licenses/MIT
+* jQuery UI - https://jqueryui.com/
+  * Author: jQuery Foundation and other contributors
+  * License: [See License](https://github.com/jquery/jquery-ui/blob/1.12.1/LICENSE.txt)
+* jQuery.Gantt - http://taitems.github.io/jQuery.Gantt/
+  * Author: Marek Bielańczuk, Tait Brown, Leo Pfeifenberger, Grzegorz Russek and Contributors
+  * License: [MIT License](https://github.com/taitems/jQuery.Gantt/blob/master/LICENSE)
+* Moment.js - https://momentjs.com/
+  * Author: Tim Wood, Iskren Chernev, Moment.js contributors
+  * License: [MIT License](https://github.com/moment/moment/blob/2.14.1/LICENSE)
+* jQuery - https://jquery.com/
+  * Author: jQuery Foundation, Inc.
+  * License: [MIT License](https://github.com/jquery/jquery/blob/2.1.3/LICENSE.txt)
+* JsRender - https://www.jsviews.com/
+  * Author: Boris Moore
+  * License: [MIT License](https://github.com/BorisMoore/jsrender/blob/v0.9.80/MIT-LICENSE.txt)
+* 51-modern-default - https://cybozu.dev/ja/kintone/sdk/library/plugin-stylesheet-guide/
+  * Author: Cybozu, Inc.
+  * License: [MIT License](https://github.com/kintone-samples/plugin-samples#licence)
