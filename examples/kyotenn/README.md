@@ -1,6 +1,7 @@
 # Map Plug-in
 
-## License
+## OSS License
 
 * jQuery - https://jquery.com/  
-  MIT License https://opensource.org/licenses/MIT
+  * Author: jQuery Foundation, Inc.
+  * License: [MIT License](https://github.com/jquery/jquery/blob/2.1.3/MIT-LICENSE.txt)

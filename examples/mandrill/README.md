@@ -24,3 +24,15 @@ Kyohei Kitagawa
 ## Copyright
 
 Copyright(c) Cybozu, Inc.
+
+## OSS License
+
+* jQuery - https://jquery.com/
+  * Author: jQuery Foundation, Inc.
+  * License: [MIT License](https://github.com/jquery/jquery/blob/1.11.1/MIT-LICENSE.txt)
+* SweetAlert - https://t4t5.github.io/sweetalert/
+  * Author: Tristan Edwards
+  * License: [MIT License](https://github.com/t4t5/sweetalert/blob/v0.5.0/LICENSE)
+* 51-modern-default - https://cybozu.dev/ja/kintone/sdk/library/plugin-stylesheet-guide/
+  * Author: Cybozu, Inc.
+  * License: [MIT License](https://github.com/kintone-samples/plugin-samples#licence)
