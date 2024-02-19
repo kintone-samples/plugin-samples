@@ -4,7 +4,7 @@
 
 * jQuery - https://jquery.com/
   * Author: jQuery Foundation, Inc.
-  * License: [MIT License](https://github.com/jquery/jquery/blob/2.2.4/MIT-LICENSE.txt)
+  * License: [MIT License](https://github.com/jquery/jquery/blob/2.2.4/LICENSE.txt)
 * jQuery UI - https://jqueryui.com/
   * Author: jQuery Foundation and other contributors
   * License: [See License](https://github.com/jquery/jquery-ui/blob/1.12.1/LICENSE.txt)
