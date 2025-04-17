@@ -53,31 +53,45 @@ jQuery.noConflict();
   const MODE_OFF = '0'; // 変更後チェック未実施
   const escapeHtml = (htmlstr) => {
     return htmlstr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      .replace(/'/g, '&quot;').replace(/'/g, '&#39;');
   };
 
   const setDropdown = () => {
     // フィールド型が「文字列（１行）」「数値」のフィールド情報を取得し、選択ボックスに代入する
-    KintoneConfigHelper.getFields(['SINGLE_LINE_TEXT', 'NUMBER']).then((resp) => {
-      for (let i = 0; i < resp.length; i++) {
-        const prop = resp[i];
-        const $option = $('<option>');
-
-        $option.attr('value', escapeHtml(prop.code));
-        $option.text(escapeHtml(prop.label));
-        $('#select_checkvalue_field_zip').append($option.clone());
-        $('#select_checkvalue_field_tel').append($option.clone());
-        $('#select_checkvalue_field_fax').append($option.clone());
-        $('#select_checkvalue_field_mail').append($option.clone());
+    const client = new KintoneRestAPIClient();
+    const appId = kintone.app.getId();
+    const getFiled = async () => {
+      try {
+        const { properties } = await client.app.getFormFields({ app: appId });
+        console.log(properties);
+        // propertiesオブジェクト中のフィールドのタイプが「文字列（１行）」「数値」のフィールド情報を取得する。
+        const fields = Object.keys(properties).filter((key) => {
+          return (
+            properties[key].type === 'SINGLE_LINE_TEXT' ||
+            properties[key].type === 'NUMBER'
+          );
+        });
+        // 取得したフィールドのフィールド名をプルダウンメニューのラベル、フィールドコードをプルダウンメニューの値に設定する。
+        for (let i = 0; i < fields.length; i++) {
+          const prop = properties[fields[i]];
+          const $option = $('<option>');
+          $option.attr('value', escapeHtml(prop.code));
+          $option.text(escapeHtml(prop.label));
+          $('#select_checkvalue_field_zip').append($option.clone());
+          $('#select_checkvalue_field_tel').append($option.clone());
+          $('#select_checkvalue_field_fax').append($option.clone());
+          $('#select_checkvalue_field_mail').append($option.clone());
+        }
+        // 初期値を設定する
+        $('#select_checkvalue_field_zip').val(CONF.zip);
+        $('#select_checkvalue_field_tel').val(CONF.tel);
+        $('#select_checkvalue_field_fax').val(CONF.fax);
+        $('#select_checkvalue_field_mail').val(CONF.mail);
+      } catch (e) {
+        alert(err.message);
       }
-      // 初期値を設定する
-      $('#select_checkvalue_field_zip').val(CONF.zip);
-      $('#select_checkvalue_field_tel').val(CONF.tel);
-      $('#select_checkvalue_field_fax').val(CONF.fax);
-      $('#select_checkvalue_field_mail').val(CONF.mail);
-    }).catch((err) => {
-      alert(err.message);
-    });
+    };
+    getFiled();
   };
 
   const createErrorMessage = (num) => {

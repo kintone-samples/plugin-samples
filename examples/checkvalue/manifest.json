@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "2.3.3",
+    "version": "2.3.4",
     "type": "APP",
     "name": {
         "ja": "入力値チェックプラグイン",
@@ -27,14 +27,20 @@
         "html": "html/check_config.html",
         "js": [
             "https://js.cybozu.com/jquery/1.11.1/jquery.min.js",
-            "js/kintone-config-helper.js",
+            "https://js.cybozu.com/kintone-rest-api-client/5.7.1/KintoneRestAPIClient.min.js",
             "https://js.cybozu.com/jsrender/1.0.6/jsrender.min.js",
             "js/config.js"
         ],
         "css": [
-                "css/check_config.css",
-                "css/51-modern-default.css"
+            "css/check_config.css",
+            "css/51-modern-default.css"
         ],
-        "required_params": ["zip", "tel", "fax", "mail", "mode"]
+        "required_params": [
+            "zip",
+            "tel",
+            "fax",
+            "mail",
+            "mode"
+        ]
     }
 }
