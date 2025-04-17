@@ -63,7 +63,6 @@ jQuery.noConflict();
     const getFiled = async () => {
       try {
         const { properties } = await client.app.getFormFields({ app: appId });
-        console.log(properties);
         // propertiesオブジェクト中のフィールドのタイプが「文字列（１行）」「数値」のフィールド情報を取得する。
         const fields = Object.keys(properties).filter((key) => {
           return (
