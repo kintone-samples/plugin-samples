@@ -144,8 +144,10 @@ jQuery.noConflict();
             arrItem.push($(item));
           }
         });
-        this.data.value = data;
-        this.data.name = arrItem[0].text();
+        if (arrItem.length) {
+          this.data.value = data;
+          this.data.name = arrItem[0].text();
+        }
       }
       const itemSelected = this.$el.find('.kintoneplugin-dropdown-list-item-selected');
       itemSelected.removeClass('kintoneplugin-dropdown-list-item-selected');
