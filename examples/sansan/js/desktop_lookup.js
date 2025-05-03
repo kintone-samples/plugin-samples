@@ -92,12 +92,12 @@ jQuery.noConflict();
                 return false;
             });
         },
-        searchSansanData: function(type, value, opt_offset, opt_records) {
+        searchSansanData: function(type, value, opt_nptoken, opt_records) {
             // Sansanよりデータ取得
             var limit = 300;
-            var offset = opt_offset || 0;
+            var nptoken = opt_nptoken || 0;
             var allrecords = opt_records || [];
-            var url = window.sansanLib.createSansanURL(type, value, limit, offset);
+            var url = window.sansanLib.createSansanURL(type, value, limit, nptoken);
             return kintone.plugin.app.proxy(PLUGIN_ID, url, 'GET', {}, {}).then(function(body) {
                 allrecords = allrecords.concat(JSON.parse(body[0]).data);
                 if (JSON.parse(body[1]) !== 200) {
@@ -113,7 +113,8 @@ jQuery.noConflict();
                     return allrecords;
                 }
                 if (JSON.parse(body[0]).hasMore === true) {
-                    return Sansanlookup.searchSansanData(type, value, offset + limit, allrecords);
+                    nptoken = JSON.parse(body[0]).nextPageToken;
+                    return Sansanlookup.searchSansanData(type, value, nptoken, allrecords);
                 }
                 return allrecords;
             }, function(error) {
