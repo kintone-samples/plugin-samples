@@ -4,8 +4,7 @@
  *
  * Licensed under the MIT License
  // */
-jQuery.noConflict();
-(($, PLUGIN_ID) => {
+((PLUGIN_ID) => {
   'use strict';
 
   // To switch the language used for instructions based on the user's launguage setting
@@ -62,40 +61,49 @@ jQuery.noConflict();
 
   const setDefault = () => {
     if (Object.keys(CONF).length > 0) {
-      for (let i = 1; i < 16; i++) {
-        $('#select' + i).val(CONF['select' + i]);
+      for (let i = 1; i <= 15; i++) {
+        const sel = document.getElementById(`select${i}`);
+        sel.value = CONF[`select${i}`];
       }
       // get the previous plugin setting
       if (Object.prototype.hasOwnProperty.call(CONF, 'line_number')) {
-        $('#copyfield1').val(CONF.copyfield);
+        const cf1 = document.getElementById('copyfield1');
+        cf1.value=CONF.copyfield; 
         if (CONF.copyfield !== '') {
-          $('#between1').val(decodeSpace(CONF.between));
+          const bw1 = document.getElementById('between1');
+          bw1.value = decodeSpace(CONF.between);
         } else {
-          $('#between1').val(CONF.between);
+          const bw1 = document.getElementById('between1');
+          bw1.value = CONF.between;
         }
       } else {
         // get the previous plugin setting
-        $('#copyfield1').val(CONF.copyfield1);
-        $('#copyfield2').val(CONF.copyfield2);
-        $('#copyfield3').val(CONF.copyfield3);
-        for (let y = 1; y < 4; y++) {
-          if (CONF['copyfield' + y] !== '') {
-            $('#between' + y).val(decodeSpace(CONF['between' + y]));
+        for (let i = 1; i <= 3; i++) {
+          const cf = document.getElementById(`copyfield${i}`);
+          cf.value = CONF[`copyfield${i}`];
+        }
+        for (let i = 1; i <= 3; i++) {
+          if (CONF[`copyfield${i}`] !== '') {
+            const bw = document.getElementById(`between${i}`);
+            bw.value = decodeSpace(ConF[`between${i}`])
+          
           } else {
-            $('#between' + y).val(CONF['between' + y]);
+            const bw = document.getElementById(`between${i}`);
+            bw.value = (ConF[`between${i}`])
           }
         }
       }
 
       if (Object.prototype.hasOwnProperty.call(CONF, 'checkField') && CONF.checkField === 'uncheck') {
-        $('#checkField').prop('checked', false);
+        const chkf = document.getElementById('checkField');
+        chkf.checked=false;
       }
     }
   };
 
   const escapeHtml = (htmlstr) => {
     return htmlstr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/'/g, '&quot;').replace(/'/g, '&#39;');
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   };
 
   const encodeSpace = (htmlstr1) => {
@@ -197,29 +205,32 @@ jQuery.noConflict();
 
   const appendEvents = () => {
     // When hitting the save button, save inputs in the Config
-    $('#submit').click(() => {
+    const btnSubmit = document.getElementById('submit');
+    btnSubmit.addEventListener('click',()=>{
       const config = {};
-      for (let i = 1; i < 16; i++) {
-        config['select' + i] = $('#select' + i).val();
+      for (let i = 1; i <= 15; i++) {
+        const sel = document.getElementById(`select${i}`);
+        config[`select${i}`] = sel.value;
       }
-      config.copyfield1 = $('#copyfield1').val();
-      config.copyfield2 = $('#copyfield2').val();
-      config.copyfield3 = $('#copyfield3').val();
-      config.between1 = encodeSpace($('#between1').val());
-      config.between2 = encodeSpace($('#between2').val());
-      config.between3 = encodeSpace($('#between3').val());
-      config.checkField = $('#checkField').prop('checked') ? 'check' : 'uncheck';
+      for (let i = 1; i <= 3; i++) {
+        const cf = document.getElementById(`copyfield${i}`);
+        config[`copyfield${i}`] = cf.value;
+        const bt = document.getElementById(`between${i}`);
+        config[`between${i}`] = encodeSpace(bt.value);
+      }
+      const chkf = document.getElementById('checkField');
+      config.checkField = chkf.checked;
 
       if (checkValues()) {
         kintone.plugin.app.setConfig(config);
       }
     });
-
     // When hitting the cancel button
-    $('#cancel').click(() => {
+    const btnCancel = document.getElementById('cancel');
+    btnCancel.addEventListener('click', ()=>{
       window.history.back();
     });
   };
 
   setDropdown();
-})(jQuery, kintone.$PLUGIN_ID);
+})(kintone.$PLUGIN_ID);
