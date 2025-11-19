@@ -195,7 +195,9 @@
     // Check the required values
     for (let i = 1; i < 16; i++) {
       const group = Math.ceil(i / 5);
-      if ($('#select' + i).val() !== '' && $('#copyfield' + group).val() === '') {
+      const sel = document.getElementById(`select${i}`);
+      const out = document.getElementById(`copyfield${group}`);
+      if (sel && out && sel.value !== '' && out.value === '') {
         showError();
         return false;
       }
