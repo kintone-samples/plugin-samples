@@ -110,78 +110,88 @@
     return htmlstr1.replace(/\u0020/g, '&nbsp;').replace(/\u3000/g, '&emsp;');
   };
 
+const setDropdown = () => {
+  const url = kintone.api.url('/k/v1/preview/app/form/fields', true);
+  kintone.api(url, 'GET', { app: kintone.app.getId() }, (resp) => {
+    // 1) テンプレ挿入（{{terms.xxx}} を i18n で置換）
+    const root = document.getElementById('cf-plugin');
+    if (!root) return;
 
-  const setDropdown = () => {
-    // get the form fields info and put them in the selection boxes
-    const url = kintone.api.url('/k/v1/preview/app/form/fields', true);
-    kintone.api(url, 'GET', {'app': kintone.app.getId()}, (resp) => {
+    const tmplEl = document.getElementById('cf-plugin'); // そのまま内側を書き換える前提
+    const raw = tmplEl.innerHTML; // もとの HTML をテンプレとして使う
+    const html = raw.replace(/\{\{\s*html:terms\.(\w+)\s*\}\}/g, (_, key) => (i18n[key] ?? ''));
+    root.innerHTML = html;
 
-      const configHTML = $('#cf-plugin').html();
-      const template = $.templates(configHTML);
-      $('div#cf-plugin').html(template.render({'terms': i18n}));
+    // 2) <option> を追加
+    // 共通の append 関数
+    const appendOption = (selectEl, code, label) => {
+      if (!selectEl) return;
+      const opt = document.createElement('option');
+      opt.value = escapeHtml(code);
+      opt.textContent = escapeHtml(label);
+      selectEl.appendChild(opt);
+    };
 
-      appendEvents();
-
-      const $option = $('<option>');
-
-      for (const key in resp.properties) {
-        if (!Object.prototype.hasOwnProperty.call(resp.properties, key)) {
-          continue;
-        }
-        const prop = resp.properties[key];
-
-        switch (prop.type) {
-          // Display Text and Text Area fields in the "Fields to connect" and "Fields to display the connected result" drop-down lists
-          case 'SINGLE_LINE_TEXT':
-          case 'MULTI_LINE_TEXT':
-            for (let m = 1; m < 16; m++) {
-              $option.attr('value', escapeHtml(prop.code));
-              $option.text(escapeHtml(prop.label));
-              $('#select' + m).append($option.clone());
-            }
-            $('#copyfield1').append($option.clone());
-            $('#copyfield2').append($option.clone());
-            $('#copyfield3').append($option.clone());
-
-            break;
-            // Display the Rich Text fields in the "Fields to display the connected result" drop-down list
-          case 'RICH_TEXT':
-            for (let l = 1; l < 16; l++) {
-              $option.attr('value', escapeHtml(prop.code));
-              $option.text(escapeHtml(prop.label));
-            }
-            $('#copyfield1').append($option.clone());
-            $('#copyfield2').append($option.clone());
-            $('#copyfield3').append($option.clone());
-            break;
-
-            // Display these types of fields in the "Fields to connect" drop-down list
-          case 'DATETIME':
-          case 'NUMBER':
-          case 'RADIO_BUTTON':
-          case 'CHECK_BOX':
-          case 'MULTI_SELECT':
-          case 'DROP_DOWN':
-          case 'DATE':
-          case 'TIME':
-          case 'LINK':
-          case 'USER_SELECT':
-          case 'ORGANIZATION_SELECT':
-          case 'GROUP_SELECT':
-            for (let n = 1; n < 16; n++) {
-              $option.attr('value', escapeHtml(prop.code));
-              $option.text(escapeHtml(prop.label));
-              $('#select' + n).append($option.clone());
-            }
-            break;
-
-          default:
-            break;
-        }
+    // 文字列系: select1..15 と copyfield1..3 に追加
+    const addToAllTextish = (prop) => {
+      for (let i = 1; i <= 15; i++) {
+        appendOption(document.getElementById(`select${i}`), prop.code, prop.label);
       }
-      setDefault();
-    });
-  };
+      for (let i =1; i <=3; i++) {
+        appendOption(document.getElementById(`copyfield${i}`), prop.code, prop.label);
+      }
+    };
+
+    // リッチテキストは copyfield 側のみ
+    const addToCopyOnly = (prop) => {
+      for (let i =1; i <=3; i++) {
+        appendOption(document.getElementById(`copyfield${i}`), prop.code, prop.label);
+      }
+    };
+
+    // 文字列以外の “結合元” 候補: select1..15 のみ
+    const addToSelectOnly = (prop) => {
+      for (let i = 1; i <= 15; i++) {
+        appendOption(document.getElementById(`select${i}`), prop.code, prop.label);
+      }
+    };
+
+    // ループ
+    for (const key in resp.properties) {
+      if (!Object.prototype.hasOwnProperty.call(resp.properties, key)) continue;
+      const prop = resp.properties[key];
+      switch (prop.type) {
+        case 'SINGLE_LINE_TEXT':
+        case 'MULTI_LINE_TEXT':
+          addToAllTextish(prop);
+          break;
+        case 'RICH_TEXT':
+          addToCopyOnly(prop);
+          break;
+        case 'DATETIME':
+        case 'NUMBER':
+        case 'RADIO_BUTTON':
+        case 'CHECK_BOX':
+        case 'MULTI_SELECT':
+        case 'DROP_DOWN':
+        case 'DATE':
+        case 'TIME':
+        case 'LINK':
+        case 'USER_SELECT':
+        case 'ORGANIZATION_SELECT':
+        case 'GROUP_SELECT':
+          addToSelectOnly(prop);
+          break;
+        default:
+          break;
+      }
+    }
+
+    // 3) イベントと既存値の復元
+    appendEvents();
+    setDefault();
+  });
+};
 
   const showError = () => {
     return Swal.fire({
@@ -221,7 +231,7 @@
         config[`between${i}`] = encodeSpace(bt.value);
       }
       const chkf = document.getElementById('checkField');
-      config.checkField = chkf.checked;
+      config.checkField = (chkf && chkf.checked) ? 'check' : 'uncheck';
 
       if (checkValues()) {
         kintone.plugin.app.setConfig(config);
