@@ -1,11 +1,10 @@
 /*
  * textConnect Plug-in
- * Copyright (c) 2016 Cybozu
+ * Copyright (c) 2025 Cybozu
  *
  * Licensed under the MIT License
  // */
-jQuery.noConflict();
-(($, PLUGIN_ID) => {
+((PLUGIN_ID) => {
   'use strict';
 
   // To switch the language used for instructions based on the user's launguage setting
@@ -62,136 +61,154 @@ jQuery.noConflict();
 
   const setDefault = () => {
     if (Object.keys(CONF).length > 0) {
-      for (let i = 1; i < 16; i++) {
-        $('#select' + i).val(CONF['select' + i]);
+      for (let i = 1; i <= 15; i++) {
+        const sel = document.getElementById(`select${i}`);
+        sel.value = CONF[`select${i}`];
       }
       // get the previous plugin setting
       if (Object.prototype.hasOwnProperty.call(CONF, 'line_number')) {
-        $('#copyfield1').val(CONF.copyfield);
+        const cf1 = document.getElementById('copyfield1');
+        cf1.value=CONF.copyfield; 
         if (CONF.copyfield !== '') {
-          $('#between1').val(decodeSpace(CONF.between));
+          const bw1 = document.getElementById('between1');
+          bw1.value = decodeSpace(CONF.between);
         } else {
-          $('#between1').val(CONF.between);
+          const bw1 = document.getElementById('between1');
+          bw1.value = CONF.between;
         }
       } else {
         // get the previous plugin setting
-        $('#copyfield1').val(CONF.copyfield1);
-        $('#copyfield2').val(CONF.copyfield2);
-        $('#copyfield3').val(CONF.copyfield3);
-        for (let y = 1; y < 4; y++) {
-          if (CONF['copyfield' + y] !== '') {
-            $('#between' + y).val(decodeSpace(CONF['between' + y]));
+        for (let i = 1; i <= 3; i++) {
+          const cf = document.getElementById(`copyfield${i}`);
+          cf.value = CONF[`copyfield${i}`];
+        }
+        for (let i = 1; i <= 3; i++) {
+          if (CONF[`copyfield${i}`] !== '') {
+            const bw = document.getElementById(`between${i}`);
+            bw.value = decodeSpace(ConF[`between${i}`])
+          
           } else {
-            $('#between' + y).val(CONF['between' + y]);
+            const bw = document.getElementById(`between${i}`);
+            bw.value = (ConF[`between${i}`])
           }
         }
       }
 
       if (Object.prototype.hasOwnProperty.call(CONF, 'checkField') && CONF.checkField === 'uncheck') {
-        $('#checkField').prop('checked', false);
+        const chkf = document.getElementById('checkField');
+        chkf.checked=false;
       }
     }
   };
 
   const escapeHtml = (htmlstr) => {
     return htmlstr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/'/g, '&quot;').replace(/'/g, '&#39;');
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   };
 
   const encodeSpace = (htmlstr1) => {
     return htmlstr1.replace(/\u0020/g, '&nbsp;').replace(/\u3000/g, '&emsp;');
   };
 
+const setDropdown = () => {
+  const url = kintone.api.url('/k/v1/preview/app/form/fields', true);
+  kintone.api(url, 'GET', { app: kintone.app.getId() }, (resp) => {
+    // 1) テンプレ挿入（{{terms.xxx}} を i18n で置換）
+    const root = document.getElementById('cf-plugin');
+    if (!root) return;
 
-  const setDropdown = () => {
-    // get the form fields info and put them in the selection boxes
-    const url = kintone.api.url('/k/v1/preview/app/form/fields', true);
-    kintone.api(url, 'GET', {'app': kintone.app.getId()}, (resp) => {
+    const tmplEl = document.getElementById('cf-plugin'); // そのまま内側を書き換える前提
+    const raw = tmplEl.innerHTML; // もとの HTML をテンプレとして使う
+    const html = raw.replace(/\{\{\s*html:terms\.(\w+)\s*\}\}/g, (_, key) => (i18n[key] ?? ''));
+    root.innerHTML = html;
 
-      const configHTML = $('#cf-plugin').html();
-      const template = $.templates(configHTML);
-      $('div#cf-plugin').html(template.render({'terms': i18n}));
+    // 2) <option> を追加
+    // 共通の append 関数
+    const appendOption = (selectEl, code, label) => {
+      if (!selectEl) return;
+      const opt = document.createElement('option');
+      opt.value = escapeHtml(code);
+      opt.textContent = escapeHtml(label);
+      selectEl.appendChild(opt);
+    };
 
-      appendEvents();
-
-      const $option = $('<option>');
-
-      for (const key in resp.properties) {
-        if (!Object.prototype.hasOwnProperty.call(resp.properties, key)) {
-          continue;
-        }
-        const prop = resp.properties[key];
-
-        switch (prop.type) {
-          // Display Text and Text Area fields in the "Fields to connect" and "Fields to display the connected result" drop-down lists
-          case 'SINGLE_LINE_TEXT':
-          case 'MULTI_LINE_TEXT':
-            for (let m = 1; m < 16; m++) {
-              $option.attr('value', escapeHtml(prop.code));
-              $option.text(escapeHtml(prop.label));
-              $('#select' + m).append($option.clone());
-            }
-            $('#copyfield1').append($option.clone());
-            $('#copyfield2').append($option.clone());
-            $('#copyfield3').append($option.clone());
-
-            break;
-            // Display the Rich Text fields in the "Fields to display the connected result" drop-down list
-          case 'RICH_TEXT':
-            for (let l = 1; l < 16; l++) {
-              $option.attr('value', escapeHtml(prop.code));
-              $option.text(escapeHtml(prop.label));
-            }
-            $('#copyfield1').append($option.clone());
-            $('#copyfield2').append($option.clone());
-            $('#copyfield3').append($option.clone());
-            break;
-
-            // Display these types of fields in the "Fields to connect" drop-down list
-          case 'DATETIME':
-          case 'NUMBER':
-          case 'RADIO_BUTTON':
-          case 'CHECK_BOX':
-          case 'MULTI_SELECT':
-          case 'DROP_DOWN':
-          case 'DATE':
-          case 'TIME':
-          case 'LINK':
-          case 'USER_SELECT':
-          case 'ORGANIZATION_SELECT':
-          case 'GROUP_SELECT':
-            for (let n = 1; n < 16; n++) {
-              $option.attr('value', escapeHtml(prop.code));
-              $option.text(escapeHtml(prop.label));
-              $('#select' + n).append($option.clone());
-            }
-            break;
-
-          default:
-            break;
-        }
+    // 文字列系: select1..15 と copyfield1..3 に追加
+    const addToAllTextish = (prop) => {
+      for (let i = 1; i <= 15; i++) {
+        appendOption(document.getElementById(`select${i}`), prop.code, prop.label);
       }
-      setDefault();
+      for (let i =1; i <=3; i++) {
+        appendOption(document.getElementById(`copyfield${i}`), prop.code, prop.label);
+      }
+    };
+
+    // リッチテキストは copyfield 側のみ
+    const addToCopyOnly = (prop) => {
+      for (let i =1; i <=3; i++) {
+        appendOption(document.getElementById(`copyfield${i}`), prop.code, prop.label);
+      }
+    };
+
+    // 文字列以外の “結合元” 候補: select1..15 のみ
+    const addToSelectOnly = (prop) => {
+      for (let i = 1; i <= 15; i++) {
+        appendOption(document.getElementById(`select${i}`), prop.code, prop.label);
+      }
+    };
+
+    // ループ
+    for (const key in resp.properties) {
+      if (!Object.prototype.hasOwnProperty.call(resp.properties, key)) continue;
+      const prop = resp.properties[key];
+      switch (prop.type) {
+        case 'SINGLE_LINE_TEXT':
+        case 'MULTI_LINE_TEXT':
+          addToAllTextish(prop);
+          break;
+        case 'RICH_TEXT':
+          addToCopyOnly(prop);
+          break;
+        case 'DATETIME':
+        case 'NUMBER':
+        case 'RADIO_BUTTON':
+        case 'CHECK_BOX':
+        case 'MULTI_SELECT':
+        case 'DROP_DOWN':
+        case 'DATE':
+        case 'TIME':
+        case 'LINK':
+        case 'USER_SELECT':
+        case 'ORGANIZATION_SELECT':
+        case 'GROUP_SELECT':
+          addToSelectOnly(prop);
+          break;
+        default:
+          break;
+      }
+    }
+
+    // 3) イベントと既存値の復元
+    appendEvents();
+    setDefault();
+  });
+};
+
+  const showError = () => {
+    return Swal.fire({
+      title: 'Error!',
+      text: i18n.errorMessage,
+      icon: 'error',
     });
   };
 
   const checkValues = () => {
     // Check the required values
-    for (let b = 1; b < 6; b++) {
-      if ($('#select' + b).val() !== '' && $('#copyfield1').val() === '') {
-        swal('Error!', i18n.errorMessage, 'error');
-        return false;
-      }
-    }
-    for (let c = 6; c < 11; c++) {
-      if ($('#select' + c).val() !== '' && $('#copyfield2').val() === '') {
-        swal('Error!', i18n.errorMessage, 'error');
-        return false;
-      }
-    }
-    for (let d = 11; d < 16; d++) {
-      if ($('#select' + d).val() !== '' && $('#copyfield3').val() === '') {
-        swal('Error!', i18n.errorMessage, 'error');
+    for (let i = 1; i < 16; i++) {
+      const group = Math.ceil(i / 5);
+      const sel = document.getElementById(`select${i}`);
+      const out = document.getElementById(`copyfield${group}`);
+      if (sel && out && sel.value !== '' && out.value === '') {
+        showError();
         return false;
       }
     }
@@ -200,29 +217,32 @@ jQuery.noConflict();
 
   const appendEvents = () => {
     // When hitting the save button, save inputs in the Config
-    $('#submit').click(() => {
+    const btnSubmit = document.getElementById('submit');
+    btnSubmit.addEventListener('click',()=>{
       const config = {};
-      for (let i = 1; i < 16; i++) {
-        config['select' + i] = $('#select' + i).val();
+      for (let i = 1; i <= 15; i++) {
+        const sel = document.getElementById(`select${i}`);
+        config[`select${i}`] = sel.value;
       }
-      config.copyfield1 = $('#copyfield1').val();
-      config.copyfield2 = $('#copyfield2').val();
-      config.copyfield3 = $('#copyfield3').val();
-      config.between1 = encodeSpace($('#between1').val());
-      config.between2 = encodeSpace($('#between2').val());
-      config.between3 = encodeSpace($('#between3').val());
-      config.checkField = $('#checkField').prop('checked') ? 'check' : 'uncheck';
+      for (let i = 1; i <= 3; i++) {
+        const cf = document.getElementById(`copyfield${i}`);
+        config[`copyfield${i}`] = cf.value;
+        const bt = document.getElementById(`between${i}`);
+        config[`between${i}`] = encodeSpace(bt.value);
+      }
+      const chkf = document.getElementById('checkField');
+      config.checkField = (chkf && chkf.checked) ? 'check' : 'uncheck';
 
       if (checkValues()) {
         kintone.plugin.app.setConfig(config);
       }
     });
-
     // When hitting the cancel button
-    $('#cancel').click(() => {
+    const btnCancel = document.getElementById('cancel');
+    btnCancel.addEventListener('click', ()=>{
       window.history.back();
     });
   };
 
   setDropdown();
-})(jQuery, kintone.$PLUGIN_ID);
+})(kintone.$PLUGIN_ID);
