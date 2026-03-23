@@ -4,41 +4,39 @@
  *
  * Licensed under the MIT License
  */
-jQuery.noConflict();
-(($, PLUGIN_ID) => {
+((PLUGIN_ID) => {
   'use strict';
   const i18n = window.jsEditKintonePlugin.i18n;
   const service = {
     uploadFile: (fileName, fileValue) => {
-      return new kintone.Promise((resolve, reject) => {
-        const blob = new Blob([fileValue], {type: 'text/javascript'});
-        const formData = new FormData();
-        formData.append('__REQUEST_TOKEN__', kintone.getRequestToken());
-        formData.append('file', blob, fileName);
-        $.ajax(kintone.api.url('/k/v1/file', true), {
-          type: 'POST',
-          data: formData,
-          processData: false,
-          contentType: false
-        }).done((data) => {
-          resolve(data);
-        }).fail((err) => {
-          reject(err);
-        });
+      const blob = new Blob([fileValue], {type: 'text/javascript'});
+      const formData = new FormData();
+      formData.append('__REQUEST_TOKEN__', kintone.getRequestToken());
+      formData.append('file', blob, fileName);
+      return fetch(kintone.api.url('/k/v1/file', true), {
+        method: 'POST',
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        body: formData
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
       });
     },
     getFile: (fileKey) => {
-      return new kintone.Promise((resolve, reject) => {
-        $.ajax(kintone.api.url('/k/v1/file', true), {
-          type: 'GET',
-          dataType: 'text',
-          data: {'fileKey': fileKey}
-        }).done((data, status, xhr) => {
-          resolve(data);
-        }).fail((xhr, status, error) => {
-          alert(i18n.msg_failed_to_get_file);
-          reject();
-        });
+      const url = kintone.api.url('/k/v1/file', true) + '?fileKey=' + encodeURIComponent(fileKey);
+      return fetch(url, {
+        method: 'GET',
+        headers: {'X-Requested-With': 'XMLHttpRequest'}
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.text();
+      }).catch(() => {
+        alert(i18n.msg_failed_to_get_file);
+        return kintone.Promise.reject();
       });
     },
     getCustomization: () => {
@@ -60,4 +58,4 @@ jQuery.noConflict();
   };
 
   window.jsEditKintonePlugin.service = service;
-})(jQuery, kintone.$PLUGIN_ID);
+})(kintone.$PLUGIN_ID);
