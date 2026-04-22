@@ -5,7 +5,7 @@
  * Licensed under the MIT License
  */
 jQuery.noConflict();
-document.write('<script type="text/javascript" src="https://js.cybozu.com/jquery/2.1.3/jquery.min.js"></script>');
+document.write('<script type="text/javascript" src="https://js.cybozu.com/jquery/3.6.4/jquery.min.js"></script>');
 
 // ローディング画面を出す関数
 const setLoading = () => {
