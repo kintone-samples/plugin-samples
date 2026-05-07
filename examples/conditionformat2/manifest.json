@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "3.2.7",
+    "version": "3.2.8",
     "type": "APP",
     "name": {
         "ja": "条件書式プラグイン",
