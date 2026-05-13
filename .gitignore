@@ -3,3 +3,6 @@ plugin.zip
 *.zip
 
 node_modules/
+
+# macOS system files
+.DS_Store
