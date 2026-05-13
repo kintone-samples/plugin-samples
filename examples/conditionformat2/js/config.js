@@ -554,7 +554,7 @@ jQuery.noConflict();
       return true;
     });
 
-    $('.cf-plugin-column5, .cf-plugin-column6').bind('paste', function(event) {
+    $('.cf-plugin-column5, .cf-plugin-column6').on('paste', function(event) {
       const $el = $(this);
       $el.attr('maxLength', '50');
       setTimeout(() => {
