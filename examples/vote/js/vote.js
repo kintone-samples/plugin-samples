@@ -4,9 +4,7 @@
  *
  * Licensed under the MIT License
  */
-jQuery.noConflict();
-
-(function(pluginId, $) {
+(function(pluginId) {
   'use strict';
 
   const APPID = kintone.app.getId();
@@ -51,27 +49,30 @@ jQuery.noConflict();
                   + '    </div>'
                   + '</div>',
     createPopup: function(e) {
-      this.control.popup = $(this.template);
-      $('body').append(this.control.popup[0]);
+      const tpl = document.createElement('template');
+      tpl.innerHTML = this.template;
+      this.control.popup = tpl.content.firstElementChild;
+      document.body.appendChild(this.control.popup);
 
       this.bindEvent();
 
       return this.control.popup;
     },
     showPopup: function(message) {
-      this.control.popup.find('.notify-title').text(message);
+      this.control.popup.querySelector('.notify-title').textContent = message;
 
-      const popupWidth = this.control.popup.width();
-      this.control.popup.css({left: '-' + popupWidth / 2 + 'px'});
+      const popupWidth = this.control.popup.offsetWidth;
+      this.control.popup.style.left = '-' + popupWidth / 2 + 'px';
 
-      this.control.popup.addClass('notify-slidedown');
+      this.control.popup.classList.add('notify-slidedown');
     },
     hidePopup: function() {
-      this.control.popup.removeClass('notify-slidedown');
+      this.control.popup.classList.remove('notify-slidedown');
     },
     bindEvent: function() {
-      this.control.popup.click(() => {
-        this.hidePopup();
+      const self = this;
+      this.control.popup.addEventListener('click', function() {
+        self.hidePopup();
       });
     }
   };
@@ -91,13 +92,12 @@ jQuery.noConflict();
 
   function getRecordNumberFieldCode(fields) {
     let code = '';
-    $.each(fields, (fieldCode, value) => {
+    for (const [fieldCode, value] of Object.entries(fields)) {
       if (value.type === 'RECORD_NUMBER') {
         code = fieldCode;
-        return false;
+        break;
       }
-      return true;
-    });
+    }
     return code;
   }
 
@@ -137,7 +137,7 @@ jQuery.noConflict();
         return voteUsers.length;
       },
       isLoginUserVoted: function() {
-        return $.grep(voteUsers, (user) => {
+        return voteUsers.filter((user) => {
           return user.code === kintone.getLoginUser().code;
         }).length !== 0;
       },
@@ -145,7 +145,7 @@ jQuery.noConflict();
         const that = this;
         const promise = this.fetch().then(() => {
           if (that.isLoginUserVoted()) {
-            voteUsers = $.grep(voteUsers, (user) => {
+            voteUsers = voteUsers.filter((user) => {
               return user.code !== kintone.getLoginUser().code;
             });
           } else {
@@ -159,90 +159,94 @@ jQuery.noConflict();
         return promise;
       },
       fetch: function() {
-        const d = new $.Deferred();
-        kintone.api(kintone.api.url('/k/v1/record', true), 'GET', {
-          'app': APPID,
-          'id': recordId
-        }, (evt) => {
-          voteUsers = evt.record[VOTE_FIELD].value;
-          revision = evt.record.$revision.value;
-          d.resolve();
+        return new Promise((resolve) => {
+          kintone.api(kintone.api.url('/k/v1/record', true), 'GET', {
+            'app': APPID,
+            'id': recordId
+          }, (evt) => {
+            voteUsers = evt.record[VOTE_FIELD].value;
+            revision = evt.record.$revision.value;
+            resolve();
+          });
         });
-        return d.promise();
       },
       update: function() {
-        const d = new $.Deferred();
-        const newRecord = {};
-        newRecord[VOTE_FIELD] = {'value': voteUsers};
-        newRecord[VOTE_COUNT_FIELD] = {'value': voteUsers.length};
-        kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', {
-          'app': APPID,
-          'id': recordId,
-          'record': newRecord,
-          'revision': revision
-        }, d.resolve, (e) => {
-          NotifyPopup.showPopup(createErrorMessage(e));
+        return new Promise((resolve) => {
+          const newRecord = {};
+          newRecord[VOTE_FIELD] = {'value': voteUsers};
+          newRecord[VOTE_COUNT_FIELD] = {'value': voteUsers.length};
+          kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', {
+            'app': APPID,
+            'id': recordId,
+            'record': newRecord,
+            'revision': revision
+          }, resolve, (e) => {
+            NotifyPopup.showPopup(createErrorMessage(e));
+          });
         });
-        return d.promise();
       }
     };
   }
 
   function fetchVoteModel(language) {
-    const d = new $.Deferred();
     const id = kintone.app.record.getId();
-    kintone.api(kintone.api.url('/k/v1/record', true), 'GET', {
-      'app': APPID,
-      'id': id
-    }, (evt) => {
-      const record = {
-        '$id': {'value': id},
-        '$revision': evt.record.$revision
-      };
-      record[VOTE_FIELD] = evt.record[VOTE_FIELD];
-      d.resolve(new VoteModel(record, language));
+    return new Promise((resolve) => {
+      kintone.api(kintone.api.url('/k/v1/record', true), 'GET', {
+        'app': APPID,
+        'id': id
+      }, (evt) => {
+        const record = {
+          '$id': {'value': id},
+          '$revision': evt.record.$revision
+        };
+        record[VOTE_FIELD] = evt.record[VOTE_FIELD];
+        resolve(new VoteModel(record, language));
+      });
     });
-    return d.promise();
   }
 
   function fetchVoteModels(language) {
-    const d = new $.Deferred();
-
     const query = kintone.app.getQuery();
 
-    kintone.api(kintone.api.url('/k/v1/records', true), 'GET', {
-      'app': APPID,
-      'query': query,
-      'fields': ['$id', VOTE_FIELD, '$revision']
-    }, (evt) => {
-      const models = [];
-      $.each(evt.records, (i, record) => {
-        const model = new VoteModel(record, language);
-        models.push(model);
+    return new Promise((resolve) => {
+      kintone.api(kintone.api.url('/k/v1/records', true), 'GET', {
+        'app': APPID,
+        'query': query,
+        'fields': ['$id', VOTE_FIELD, '$revision']
+      }, (evt) => {
+        const models = [];
+        for (let i = 0; i < evt.records.length; i++) {
+          const model = new VoteModel(evt.records[i], language);
+          models.push(model);
+        }
+        resolve(models);
       });
-      d.resolve(models);
     });
-    return d.promise();
   }
 
   function VoteView(model) {
-    const $element = $('<button type="button" class="vote-plugin-show">');
+    const $element = document.createElement('button');
+    $element.type = 'button';
+    $element.className = 'vote-plugin-show';
     let clickable = true;
 
     function updateImg(voted) {
-      $element.find('.vote-plugin-img').toggleClass('vote-plugin-voted', voted);
+      $element.querySelector('.vote-plugin-img').classList.toggle('vote-plugin-voted', voted);
     }
 
     function updateButtonLabel(usercount, voted) {
       const countText = usercount + '人のいいね。';
       const votedText = voted ? 'いいねしました' : 'いいねする';
-      $element.attr('aria-label', countText + votedText);
+      $element.setAttribute('aria-label', countText + votedText);
 
     }
     function updateCounterEl(usercount) {
-      $element.find('.vote-plugin-count').remove();
+      $element.querySelector('.vote-plugin-count')?.remove();
       if (usercount !== 0) {
-        $element.append($('<span>').addClass('vote-plugin-count').text(usercount));
+        const span = document.createElement('span');
+        span.className = 'vote-plugin-count';
+        span.textContent = String(usercount);
+        $element.appendChild(span);
       }
     }
 
@@ -261,20 +265,21 @@ jQuery.noConflict();
 
     function renderImgAndCounter() {
       // createImg
-      const $imgEl = $('<span class="vote-plugin-img">');
-      $element.append($imgEl);
+      const $imgEl = document.createElement('span');
+      $imgEl.className = 'vote-plugin-img';
+      $element.appendChild($imgEl);
       updateImg(model.isLoginUserVoted());
 
       // createCounter
       updateButtonLabel(model.countVoteUsers(), model.isLoginUserVoted());
       updateCounterEl(model.countVoteUsers());
 
-      $element.click(handleClick);
+      $element.addEventListener('click', handleClick);
     }
 
     return {
       append: function($parentEl) {
-        $parentEl.append($element);
+        $parentEl.appendChild($element);
         renderImgAndCounter();
       },
 
@@ -312,18 +317,29 @@ jQuery.noConflict();
 
     const RECORD_FIELD = getRecordNumberFieldCode(event.records[0]);
     fetchVoteModels().then((voteModels) => {
-      const cellEls = $(kintone.app.getFieldElements(RECORD_FIELD));
-      cellEls.each((idx, val) => {
-        const recordId = Number($(val).text().split('-').pop());
-        const voteModel = $.grep(voteModels, (elem) => {
+      const cellEls = kintone.app.getFieldElements(RECORD_FIELD) || [];
+      cellEls.forEach((val) => {
+        const recordId = Number(val.textContent.split('-').pop());
+        const voteModel = voteModels.filter((elem) => {
           return elem.getRecordId() === recordId;
         })[0];
         if (voteModel !== null) {
-          const $parentEl = $(val).find('*').contents().filter((i, v) => v.nodeType === 3).parent();
+          let $parentEl = val;
+          const descendants = val.querySelectorAll('*');
+          outer: for (let i = 0; i < descendants.length; i++) {
+            const el = descendants[i];
+            for (let j = 0; j < el.childNodes.length; j++) {
+              const v = el.childNodes[j];
+              if (v.nodeType === 3) {
+                $parentEl = v.parentElement;
+                break outer;
+              }
+            }
+          }
           new VoteView(voteModel).append($parentEl);
         }
       });
-    }).fail((mess) => {
+    }).catch((mess) => {
       const error = mess.error;
       NotifyPopup.showPopup(Msg[lang][error]);
     });
@@ -337,9 +353,9 @@ jQuery.noConflict();
     NotifyPopup.createPopup();
 
     fetchVoteModel(lang).then((voteModel) => {
-      const $labelEl = $(kintone.app.record.getFieldElement(VOTE_FIELD));
+      const $labelEl = kintone.app.record.getFieldElement(VOTE_FIELD);
       new VoteView(voteModel).prepend($labelEl);
     });
   });
 
-})(kintone.$PLUGIN_ID, jQuery);
+})(kintone.$PLUGIN_ID);
