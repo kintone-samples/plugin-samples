@@ -6,7 +6,7 @@
  */
 (function(pluginId) {
   'use strict';
-
+  console.log(document.readyState);
   const Msg = {
     en: {
       description1: 'This Plug-in uses the User selection field '
@@ -299,7 +299,7 @@
     $Container.appendChild(createVoteSaveBtn(language));
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  // document.addEventListener('DOMContentLoaded', () => {
     const loginInfo = kintone.getLoginUser();
     const lang = getLanguage(loginInfo.language);
     renderConfigUI(lang);
@@ -313,7 +313,7 @@
     }, (resp) => {
       const settingVoteField = {itemList: []};
       const settingCountField = {itemList: []};
-      for (const property of Object.entries(resp.properties)) {
+      for (const property of Object.values(resp.properties)) {
         const data = {
           name: property.label,
           value: property.code
@@ -338,6 +338,9 @@
       }
 
       Loading.hide();
+    }, (error) => {
+      console.error(error);
+      Loading.hide();
     });
 
     document.getElementById('setting_submit').addEventListener('click', () => {
@@ -350,5 +353,5 @@
 
       kintone.plugin.app.setConfig(config);
     });
-  });
+  // });
 })(kintone.$PLUGIN_ID);

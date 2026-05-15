@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "1.7.2",
+    "version": "1.7.3",
     "type": "APP",
     "name": {
         "ja": "いいねプラグイン",
@@ -20,7 +20,6 @@
     },
     "desktop": {
         "js": [
-            "https://js.cybozu.com/jquery/jquery-1.11.0.min.js",
             "js/vote.js"
         ],
         "css": [
@@ -29,7 +28,6 @@
     },
     "mobile": {
         "js": [
-            "https://js.cybozu.com/jquery/jquery-1.11.0.min.js",
             "js/mobile-vote.js"
         ],
         "css": [
@@ -39,7 +37,6 @@
     "config": {
         "html": "html/config.html",
         "js": [
-            "https://js.cybozu.com/jquery/jquery-1.11.0.min.js",
             "js/config.js"
         ],
         "css": [

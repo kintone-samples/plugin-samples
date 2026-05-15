@@ -92,7 +92,7 @@
 
   function getRecordNumberFieldCode(fields) {
     let code = '';
-    for (const [fieldCode, value] of Object.entries(fields)) {
+    for (const [fieldCode, value] of Object.values(fields)) {
       if (value.type === 'RECORD_NUMBER') {
         code = fieldCode;
         break;
