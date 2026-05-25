@@ -5,7 +5,7 @@
  * Licensed under the MIT License
  */
 
-((PLUGIN_ID, $) => {
+((PLUGIN_ID) => {
   'use strict';
   const kintonePluginConfigAutonum = {
     lang: {
@@ -225,32 +225,34 @@
 
             const prop = respone.properties[key];
             if (prop.type === 'SINGLE_LINE_TEXT') {
-              const option = $('<option/>');
-              option.attr('value', self.escapeHtml(prop.code))
-                .text(self.escapeHtml(prop.label));
+              const option = document.createElement('option');
+              option.value = self.escapeHtml(prop.code);
+              option.textContent = self.escapeHtml(prop.label);
 
-              $(self.settings.element.input.fieldCode).append(option);
+              document.querySelector(self.settings.element.input.fieldCode).appendChild(option);
             }
           }
-          $(self.settings.element.form).removeClass('loading');
+          document.querySelector(self.settings.element.form).classList.remove('loading');
           self.templateRender();
         });
 
     },
     templateRender: function() {
       const self = this;
-      const configHtml = $(this.settings.element.form).html();
+      const formEl = document.querySelector(this.settings.element.form);
+      const configHtml = formEl.innerHTML;
       const tmpl = $.templates(configHtml);
-      $(this.settings.element.form).html(tmpl.render({
+      formEl.innerHTML = tmpl.render({
         lang: this.settings.i18n
-      })).show();
+      });
+      formEl.style.display = '';
 
       self.setDefault();
       self.listenAction();
 
       self.uiSetFormSubmitIsFixed();
       let timeoutResize;
-      $(window).resize(() => {
+      window.addEventListener('resize', () => {
         clearTimeout(timeoutResize);
         timeoutResize = setTimeout(() => {
           self.uiSetFormSubmitIsFixed();
@@ -263,51 +265,56 @@
       if (Object.keys(conf).length === 0) {
         return false;
       }
-      $(this.settings.element.input.fieldCode).val(conf.autoNumberingFieldcode);
-      $(this.settings.element.input.textFormatSelect).val(conf.format);
-      $(this.settings.element.input.dateFormatSelect).val(conf.dateFormat);
-      $(this.settings.element.input.connectiveSelect).val(conf.connective);
-      $(this.settings.element.input.prefix).val(conf.text);
-      $(this.settings.element.input.preview).text(conf.preview);
-      $(this.settings.element.input.timing).val([conf.timing]);
-      $(this.settings.element.input.apiToken).val(apiToken);
-      $(this.settings.element.input.numberOfDigit).val(conf.numOfDigit);
+      document.querySelector(this.settings.element.input.fieldCode).value = conf.autoNumberingFieldcode;
+      document.querySelector(this.settings.element.input.textFormatSelect).value = conf.format;
+      document.querySelector(this.settings.element.input.dateFormatSelect).value = conf.dateFormat;
+      document.querySelector(this.settings.element.input.connectiveSelect).value = conf.connective;
+      document.querySelector(this.settings.element.input.prefix).value = conf.text;
+      document.querySelector(this.settings.element.input.preview).textContent = conf.preview;
+      document.querySelectorAll(this.settings.element.input.timing).forEach((radio) => {
+        radio.checked = (radio.value === conf.timing);
+      });
+      document.querySelector(this.settings.element.input.apiToken).value = apiToken;
+      document.querySelector(this.settings.element.input.numberOfDigit).value = conf.numOfDigit;
       this.checkAutonumFormat();
     },
     listenAction: function() {
       const self = this;
-      $(this.settings.element.input.fieldCode + ', ' +
+      document.querySelectorAll(
+        this.settings.element.input.fieldCode + ', ' +
                 this.settings.element.input.prefix + ', ' +
                 this.settings.element.input.numberOfDigit + ', ' +
                 this.settings.element.input.textFormatSelect + ', ' +
                 this.settings.element.input.dateFormatSelect + ', ' +
-                this.settings.element.input.connectiveSelect)
-        .change(() => {
-          const format = self.createPreview($(self.settings.element.input.textFormatSelect).val());
-          $(self.settings.element.input.preview).html(self.escapeHtml(format || ''));
+                this.settings.element.input.connectiveSelect
+      ).forEach((el) => {
+        el.addEventListener('change', () => {
+          const format = self.createPreview(document.querySelector(self.settings.element.input.textFormatSelect).value);
+          document.querySelector(self.settings.element.input.preview).innerHTML = self.escapeHtml(format || '');
         });
-      $(this.settings.element.input.textFormatSelect).change(() => {
+      });
+      document.querySelector(this.settings.element.input.textFormatSelect).addEventListener('change', () => {
         self.checkAutonumFormat();
       });
-      $(this.settings.element.input.dateFormatSelect).change(() => {
+      document.querySelector(this.settings.element.input.dateFormatSelect).addEventListener('change', () => {
         self.propRadioTiming();
       });
-      $('button.plugin_submit').click(() => {
+      document.querySelector('button.plugin_submit').addEventListener('click', () => {
         self.settingSave();
       });
-      $('button.plugin_cancel').click(() => {
+      document.querySelector('button.plugin_cancel').addEventListener('click', () => {
         history.back();
       });
     },
     createPreview: function(selectFormat) {
-      const text = $(this.settings.element.input.prefix).val();
+      const text = document.querySelector(this.settings.element.input.prefix).value;
       if (!this.validateFormValue()) {
         return;
       }
-      const numOfDigit = parseInt($(this.settings.element.input.numberOfDigit).val(), 10);
+      const numOfDigit = parseInt(document.querySelector(this.settings.element.input.numberOfDigit).value, 10);
       const number = new Array(numOfDigit).join('0') + '1';
-      const dateVal = $(this.settings.element.input.dateFormatSelect).val() || 'null';
-      const connective = $(this.settings.element.input.connectiveSelect).val() || '';
+      const dateVal = document.querySelector(this.settings.element.input.dateFormatSelect).value || 'null';
+      const connective = document.querySelector(this.settings.element.input.connectiveSelect).value || '';
       const date = dateVal !== 'null' ? moment().format(dateVal) : '';
 
       switch (selectFormat) {
@@ -344,8 +351,8 @@
       kintone.plugin.app.setConfig(config);
     },
     settingSaveProxy: function(callback) {
-      const apiToken = $(this.settings.element.input.apiToken).val();
-      const numberingFieldcode = $(this.settings.element.input.fieldCode).val();
+      const apiToken = document.querySelector(this.settings.element.input.apiToken).value;
+      const numberingFieldcode = document.querySelector(this.settings.element.input.fieldCode).value;
 
       const params = {
         app: kintone.app.getId(),
@@ -382,18 +389,20 @@
       this.checkAutonumFormat();
       this.propRadioTiming();
       const config = {};
-      const autoNumberingFieldcode = $(this.settings.element.input.fieldCode).val();
-      const format = this.formatType($(this.settings.element.input.textFormatSelect).val());
-      const preview = $(this.settings.element.input.preview).text();
-      const prefix = $(this.settings.element.input.prefix).val();
-      const dateformat = $(this.settings.element.input.dateFormatSelect).val();
+      const autoNumberingFieldcode = document.querySelector(this.settings.element.input.fieldCode).value;
+      const format = this.formatType(document.querySelector(this.settings.element.input.textFormatSelect).value);
+      const preview = document.querySelector(this.settings.element.input.preview).textContent;
+      const prefix = document.querySelector(this.settings.element.input.prefix).value;
+      const dateformat = document.querySelector(this.settings.element.input.dateFormatSelect).value;
 
-      const timing = $(this.settings.element.input.timing + ':checked').val() || 'none';
+      const timing = document.querySelector(this.settings.element.input.timing + ':checked')?.value || 'none';
 
-      const connective = $(this.settings.element.input.connectiveSelect).val();
-      let numOfDigit = $(this.settings.element.input.numberOfDigit).val();
+      const connective = document.querySelector(this.settings.element.input.connectiveSelect).value;
+      let numOfDigit = document.querySelector(this.settings.element.input.numberOfDigit).value;
       let validateResult = true;
-      $('.kintoneplugin-alert').remove();
+      document.querySelectorAll('.kintoneplugin-alert').forEach((el) => {
+        el.remove();
+      });
 
       if (autoNumberingFieldcode === 'null') {
         this.alert(this.settings.element.input.fieldCode,
@@ -406,7 +415,7 @@
         validateResult = false;
       } else {
         numOfDigit = parseInt(numOfDigit, 10);
-        $(this.settings.element.input.numberOfDigit).val(numOfDigit);
+        document.querySelector(this.settings.element.input.numberOfDigit).value = numOfDigit;
       }
       // 採番書籍選択未選択チェック
       if (format[0] === 'null') {
@@ -448,7 +457,7 @@
 
       // 設定文書の値を返す
       config.autoNumberingFieldcode = autoNumberingFieldcode;
-      config.format = $(this.settings.element.input.textFormatSelect).val();
+      config.format = document.querySelector(this.settings.element.input.textFormatSelect).value;
       config.format1 = format[0]; // date
       config.format2 = format[1]; // number
       config.format3 = format[2]; // textの何れかが入る。
@@ -457,17 +466,19 @@
       config.preview = preview;
       config.timing = timing;
       config.connective = connective;
-      config.useProxy = $(this.settings.element.input.apiToken).val() !== '' ? '1' : '0';
+      config.useProxy = document.querySelector(this.settings.element.input.apiToken).value !== '' ? '1' : '0';
       config.numOfDigit = numOfDigit.toString();
       return config;
     },
     alert: function(element, mess) {
-      const elementParrent = $(element).parent();
-      elementParrent.parent().find('.kintoneplugin-alert').remove();
-      if ($('.kintoneplugin-alert').length === 0) {
-        $(element).focus();
+      const elementParrent = element.parentElement;
+      elementParrent.parentElement.querySelectorAll('.kintoneplugin-alert').forEach((el) => {
+        el.remove();
+      });
+      if (document.querySelectorAll('.kintoneplugin-alert').length === 0) {
+        element.focus();
       }
-      elementParrent.after('<div class=\'kintoneplugin-alert\'><p>' + mess + '</p></div>');
+      elementParrent.insertAdjacentHTML('afterend', '<div class=\'kintoneplugin-alert\'><p>' + mess + '</p></div>');
     },
     formatType: function(selectformat) {
 
@@ -493,18 +504,18 @@
     },
     checkAutonumFormat: function() {
       this.propRadioTiming();
-      const autonumFormat = $(this.settings.element.input.textFormatSelect).val();
+      const autonumFormat = document.querySelector(this.settings.element.input.textFormatSelect).value;
       switch (autonumFormat) {
 
         case 'numbering':
-          $(this.settings.element.input.dateFormatSelect).val(['null']);
-          $(this.settings.element.input.prefix).val('');
+          document.querySelector(this.settings.element.input.dateFormatSelect).value = 'null';
+          document.querySelector(this.settings.element.input.prefix).value = '';
           this.propElement(this.settings.element.input.dateFormatSelect, true);
           this.propElement(this.settings.element.input.prefix, true);
           break;
 
         case 'dateNumbering':
-          $(this.settings.element.input.prefix).val('');
+          document.querySelector(this.settings.element.input.prefix).value = '';
           this.propElement(this.settings.element.input.dateFormatSelect, false);
           this.propElement(this.settings.element.input.prefix, true);
           break;
@@ -515,7 +526,7 @@
           break;
 
         case 'textNumbering':
-          $(this.settings.element.input.dateFormatSelect).val(['null']);
+          document.querySelector(this.settings.element.input.dateFormatSelect).value = 'null';
           this.propElement(this.settings.element.input.dateFormatSelect, true);
           this.propElement(this.settings.element.input.prefix, false);
           break;
@@ -526,15 +537,15 @@
           break;
 
         default:
-          $(this.settings.element.input.dateFormatSelect).val(['null']);
-          $(this.settings.element.input.prefix).val('');
+          document.querySelector(this.settings.element.input.dateFormatSelect).value = 'null';
+          document.querySelector(this.settings.element.input.prefix).value = '';
           this.propElement(this.settings.element.input.dateFormatSelect, true);
           this.propElement(this.settings.element.input.prefix, true);
       }
     },
     propRadioTiming: function() {
-      const dateformat = $(this.settings.element.input.dateFormatSelect).val();
-      const timing = $(this.settings.element.input.timing + ':checked').val() || 'none';
+      const dateformat = document.querySelector(this.settings.element.input.dateFormatSelect).value;
+      const timing = document.querySelector(this.settings.element.input.timing + ':checked')?.value || 'none';
       switch (dateformat) {
         case 'MMDDYYYY':
         case 'MMDDYY':
@@ -550,14 +561,18 @@
           this.propElement('#autonum-resetTiming-monthly', false);
           this.propElement('#autonum-resetTiming-daily', true);
           if (timing === 'daily') {
-            $(this.settings.element.input.timing).val(['none']);
+            document.querySelectorAll(this.settings.element.input.timing).forEach((radio) => {
+              radio.checked = (radio.value === 'none');
+            });
           }
           break;
 
         case 'MMDD':
           this.propElement('#autonum-resetTiming-yearly', true);
           if (timing === 'yearly') {
-            $(this.settings.element.input.timing).val(['none']);
+            document.querySelectorAll(this.settings.element.input.timing).forEach((radio) => {
+              radio.checked = (radio.value === 'none');
+            });
           }
 
           this.propElement('#autonum-resetTiming-monthly', false);
@@ -571,31 +586,35 @@
           this.propElement('#autonum-resetTiming-monthly', true);
           this.propElement('#autonum-resetTiming-daily', true);
           if (timing !== 'yearly') {
-            $(this.settings.element.input.timing).val(['none']);
+            document.querySelectorAll(this.settings.element.input.timing).forEach((radio) => {
+              radio.checked = (radio.value === 'none');
+            });
           }
           break;
         default:
           this.propElement('#autonum-resetTiming-yearly', true);
           this.propElement('#autonum-resetTiming-monthly', true);
           this.propElement('#autonum-resetTiming-daily', true);
-          $(this.settings.element.input.timing).val(['none']);
+          document.querySelectorAll(this.settings.element.input.timing).forEach((radio) => {
+            radio.checked = (radio.value === 'none');
+          });
           break;
       }
     },
     propElement: function(element, isDisabled) {
-      $(element).prop('disabled', isDisabled);
+      document.querySelector(element).disabled = isDisabled;
     },
     uiSetFormSubmitIsFixed: function() {
-      if ($(window).height() < this.settings.CONST.CLIENT_MIN_HEIGHT_PX) {
-        $(this.settings.element.form + ' .submit-bottom').show();
-        $(this.settings.element.formSetting).css('max-height', 'none');
+      if (window.innerHeight < this.settings.CONST.CLIENT_MIN_HEIGHT_PX) {
+        document.querySelector(this.settings.element.form + ' .submit-bottom').style.display = '';
+        document.querySelector(this.settings.element.formSetting).style.maxHeight = 'none';
         return;
       }
-      $(this.settings.element.form + ' .submit-bottom').hide();
+      document.querySelector(this.settings.element.form + ' .submit-bottom').style.display = 'none';
 
-      let parentHeight = $(this.settings.element.form).parents('td').offset().top;
+      let parentHeight = document.querySelector(this.settings.element.form).closest('td').getBoundingClientRect().top + window.scrollY;
       parentHeight += this.settings.CONST.BOX_CONFIRM_HEIGHT_PX;
-      $(this.settings.element.formSetting).css('max-height', $(window).height() - parentHeight);
+      document.querySelector(this.settings.element.formSetting).style.maxHeight = (window.innerHeight - parentHeight) + 'px';
     },
     escapeHtml: function(htmlstr) {
       return htmlstr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -607,4 +626,4 @@
     }
   };
   kintonePluginConfigAutonum.init();
-})(kintone.$PLUGIN_ID, jQuery);
+})(kintone.$PLUGIN_ID);

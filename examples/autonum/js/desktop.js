@@ -5,7 +5,7 @@
  * Licensed under the MIT License
  */
 
-((PLUGIN_ID, $) => {
+((PLUGIN_ID) => {
   'use strict';
 
   const kintonePluginAutonum = {
@@ -454,15 +454,21 @@
       return stringDate.substr(position.start, position.end);
     },
     alertMessage: function(message) {
-      const alertButtonClose = $('<span class="close"></span>'),
-        alertMessage = $('<div class="kintoneplugin-alert popup"><span>' + message + '</span></div>');
-      alertButtonClose.click(function() {
-        $(this).parents('.kintoneplugin-alert-popup').remove();
+      const alertButtonClose = document.createElement('span');
+      alertButtonClose.className = 'close';
+      const alertMessage = document.createElement('div');
+      alertMessage.className = 'kintoneplugin-alert popup';
+      alertMessage.innerHTML = '<span>' + message + '</span>';
+      alertButtonClose.addEventListener('click', function() {
+        this.closest('.kintoneplugin-alert-popup').remove();
       });
-      alertMessage.append(alertButtonClose);
-      $('body').append($('<div class="kintoneplugin-alert-popup"></div>').append(alertMessage));
+      alertMessage.appendChild(alertButtonClose);
+      const alertPopup = document.createElement('div');
+      alertPopup.className = 'kintoneplugin-alert-popup';
+      alertPopup.appendChild(alertMessage);
+      document.body.appendChild(alertPopup);
     }
 
   };
   kintonePluginAutonum.init();
-})(kintone.$PLUGIN_ID, jQuery);
+})(kintone.$PLUGIN_ID);
