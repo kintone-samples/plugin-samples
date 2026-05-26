@@ -17,6 +17,12 @@
 * jQuery - https://jquery.com/
   * Author: jQuery Foundation, Inc.
   * License: [MIT License](https://github.com/jquery/jquery/blob/3.6.4/MIT-LICENSE.txt)
+* jQuery UI Datepicker 日本語ローカライゼーション - https://jqueryui.com/
+  * Author: jQuery Foundation and other contributors
+  * License: [See License](https://github.com/jquery/jquery-ui/blob/1.14.2/LICENSE.txt)
+* tinyColorPicker and colors - https://github.com/PitPik/tinyColorPicker
+  * Author: Peter Dematté
+  * License: [MIT License](https://github.com/PitPik/tinyColorPicker/blob/master/LICENSE)
 * JsRender - https://www.jsviews.com/
   * Author: Boris Moore
   * License: [MIT License](https://github.com/BorisMoore/jsrender/blob/v0.9.80/MIT-LICENSE.txt)
