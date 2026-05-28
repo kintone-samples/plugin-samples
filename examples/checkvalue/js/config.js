@@ -4,9 +4,8 @@
  *
  * Licensed under the MIT License
  */
-jQuery.noConflict();
 
-(($, PLUGIN_ID) => {
+((PLUGIN_ID) => {
   'use strict';
 
   const terms = {
@@ -41,9 +40,10 @@ jQuery.noConflict();
   };
   let lang = kintone.getLoginUser().language;
   const i18n = (lang in terms) ? terms[lang] : terms.ja;
-  const configHtml = $('#checkValue_plugin').html();
-  const tmpl = $.templates(configHtml);
-  $('#checkValue_plugin').html(tmpl.render({'terms': i18n}));
+  const checkValuePlugin = document.getElementById('checkValue_plugin');
+  const configHtml = checkValuePlugin.innerHTML;
+  const tmpl = jsrender.templates(configHtml);
+  checkValuePlugin.innerHTML = tmpl.render({'terms': i18n});
 
   // プラグインIDの設定
   const KEY = PLUGIN_ID;
@@ -73,19 +73,19 @@ jQuery.noConflict();
         // 取得したフィールドのフィールド名をプルダウンメニューのラベル、フィールドコードをプルダウンメニューの値に設定する。
         for (let i = 0; i < fields.length; i++) {
           const prop = properties[fields[i]];
-          const $option = $('<option>');
-          $option.attr('value', escapeHtml(prop.code));
-          $option.text(escapeHtml(prop.label));
-          $('#select_checkvalue_field_zip').append($option.clone());
-          $('#select_checkvalue_field_tel').append($option.clone());
-          $('#select_checkvalue_field_fax').append($option.clone());
-          $('#select_checkvalue_field_mail').append($option.clone());
+          const option = document.createElement('option');
+          option.value = escapeHtml(prop.code);
+          option.textContent = escapeHtml(prop.label);
+          document.getElementById('select_checkvalue_field_zip').appendChild(option.cloneNode(true));
+          document.getElementById('select_checkvalue_field_tel').appendChild(option.cloneNode(true));
+          document.getElementById('select_checkvalue_field_fax').appendChild(option.cloneNode(true));
+          document.getElementById('select_checkvalue_field_mail').appendChild(option.cloneNode(true));
         }
         // 初期値を設定する
-        $('#select_checkvalue_field_zip').val(CONF.zip);
-        $('#select_checkvalue_field_tel').val(CONF.tel);
-        $('#select_checkvalue_field_fax').val(CONF.fax);
-        $('#select_checkvalue_field_mail').val(CONF.mail);
+        document.getElementById('select_checkvalue_field_zip').value = CONF.zip;
+        document.getElementById('select_checkvalue_field_tel').value = CONF.tel;
+        document.getElementById('select_checkvalue_field_fax').value = CONF.fax;
+        document.getElementById('select_checkvalue_field_mail').value = CONF.mail;
       } catch (e) {
         alert(err.message);
       }
@@ -110,27 +110,27 @@ jQuery.noConflict();
     return message[lang][num];
   };
 
-  $(document).ready(() => {
+  const initCheckValue =  () => {
 
     // 既に値が設定されている場合はフィールドに値を設定する
     if (CONF) {
       // ドロップダウンリストを作成する
       setDropdown();
-      $('#check-plugin-change_mode').prop('checked', false);
+      document.getElementById('check-plugin-change_mode').checked = false;
       // changeイベント有り
       if (CONF.mode === MODE_ON) {
-        $('#check-plugin-change_mode').prop('checked', true);
+        document.getElementById('check-plugin-change_mode').checked = true;
       }
     }
 
     // 「保存する」ボタン押下時に入力情報を設定する
-    $('#check-plugin-submit').click(() => {
+    document.getElementById('check-plugin-submit').addEventListener('click', () => {
       const config = {};
-      const zip = $('#select_checkvalue_field_zip').val();
-      const tel = $('#select_checkvalue_field_tel').val();
-      const fax = $('#select_checkvalue_field_fax').val();
-      const mail = $('#select_checkvalue_field_mail').val();
-      const mode = $('#check-plugin-change_mode').prop('checked');
+      const zip = document.getElementById('select_checkvalue_field_zip').value;
+      const tel = document.getElementById('select_checkvalue_field_tel').value;
+      const fax = document.getElementById('select_checkvalue_field_fax').value;
+      const mail = document.getElementById('select_checkvalue_field_mail').value;
+      const mode = document.getElementById('check-plugin-change_mode').checked;
       // 必須チェック
       if (zip === '' || tel === '' || fax === '' || mail === '') {
         alert(createErrorMessage(1));
@@ -158,9 +158,15 @@ jQuery.noConflict();
     });
 
     // 「キャンセル」ボタン押下時の処理
-    $('#check-plugin-cancel').click(() => {
+    document.getElementById('check-plugin-cancel').addEventListener('click', () => {
       history.back();
     });
-  });
+  };
 
-})(jQuery, kintone.$PLUGIN_ID);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCheckValue);
+  } else {
+    initCheckValue();
+  }
+
+})(kintone.$PLUGIN_ID);
