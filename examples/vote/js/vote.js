@@ -92,7 +92,7 @@
 
   function getRecordNumberFieldCode(fields) {
     let code = '';
-    for (const [fieldCode, value] of Object.values(fields)) {
+    for (const [fieldCode, value] of Object.entries(fields)) {
       if (value.type === 'RECORD_NUMBER') {
         code = fieldCode;
         break;
@@ -171,7 +171,7 @@
         });
       },
       update: function() {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
           const newRecord = {};
           newRecord[VOTE_FIELD] = {'value': voteUsers};
           newRecord[VOTE_COUNT_FIELD] = {'value': voteUsers.length};
@@ -182,6 +182,7 @@
             'revision': revision
           }, resolve, (e) => {
             NotifyPopup.showPopup(createErrorMessage(e));
+            reject(e);
           });
         });
       }
@@ -260,6 +261,8 @@
         updateButtonLabel(model.countVoteUsers(), model.isLoginUserVoted());
         updateCounterEl(model.countVoteUsers());
         clickable = true;
+      }).catch(() => {
+        clickable = true;
       });
     }
 
@@ -316,14 +319,14 @@
     NotifyPopup.createPopup();
 
     const RECORD_FIELD = getRecordNumberFieldCode(event.records[0]);
-    fetchVoteModels().then((voteModels) => {
+    fetchVoteModels(lang).then((voteModels) => {
       const cellEls = kintone.app.getFieldElements(RECORD_FIELD) || [];
       cellEls.forEach((val) => {
         const recordId = Number(val.textContent.split('-').pop());
         const voteModel = voteModels.filter((elem) => {
           return elem.getRecordId() === recordId;
         })[0];
-        if (voteModel !== null) {
+        if (voteModel) {
           let $parentEl = val;
           const descendants = val.querySelectorAll('*');
           outer: for (let i = 0; i < descendants.length; i++) {

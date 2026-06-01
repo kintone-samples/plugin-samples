@@ -15,8 +15,7 @@
     "icon": "image/icon.png",
     "homepage_url": {
       "ja":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/like-plugin/",
-      "en":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/like-plugin/",
-      "zh":"https://cybozudev.kf5.com/hc/kb/article/1007993/"
+      "en":"https://cybozu.dev/ja/kintone/tips/development/plugins/sample-plugin/like-plugin/"
     },
     "desktop": {
         "js": [

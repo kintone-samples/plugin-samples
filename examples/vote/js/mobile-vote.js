@@ -183,7 +183,7 @@
         });
       },
       update: function() {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
           const newRecord = {};
           newRecord[VOTE_FIELD] = {'value': voteUsers};
           newRecord[VOTE_COUNT_FIELD] = {'value': voteUsers.length};
@@ -194,6 +194,7 @@
             'revision': revision
           }, resolve, (e) => {
             NotifyPopup.showPopup(createErrorMessage(e));
+            reject(e);
           });
         });
       }
@@ -245,6 +246,8 @@
       model.toggleLoginUser().then(() => {
         updateImg(model.isLoginUserVoted());
         updateCounterEl(model.countVoteUsers());
+        clickable = true;
+      }).catch(() => {
         clickable = true;
       });
     }

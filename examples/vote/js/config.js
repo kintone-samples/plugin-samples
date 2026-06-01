@@ -6,7 +6,7 @@
  */
 (function(pluginId) {
   'use strict';
-  console.log(document.readyState);
+
   const Msg = {
     en: {
       description1: 'This Plug-in uses the User selection field '
@@ -145,7 +145,9 @@
           }
         });
         this.data.value = data;
-        this.data.name = arrItem[0].textContent;
+        if (arrItem[0]) {
+          this.data.name = arrItem[0].textContent;
+        }
       }
       const itemSelected = this.$el.querySelector('.kintoneplugin-dropdown-list-item-selected');
       if (itemSelected) {
@@ -156,7 +158,7 @@
         if (firstItem) {
           firstItem.classList.add('kintoneplugin-dropdown-list-item-selected');
         }
-      } else {
+      } else if (arrItem[0]) {
         arrItem[0].classList.add('kintoneplugin-dropdown-list-item-selected');
       }
       this.$select.textContent = this.data.name;
@@ -299,7 +301,7 @@
     $Container.appendChild(createVoteSaveBtn(language));
   }
 
-  // document.addEventListener('DOMContentLoaded', () => {
+  function initConfigPage() {
     const loginInfo = kintone.getLoginUser();
     const lang = getLanguage(loginInfo.language);
     renderConfigUI(lang);
@@ -353,5 +355,11 @@
 
       kintone.plugin.app.setConfig(config);
     });
-  // });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initConfigPage);
+  } else {
+    initConfigPage();
+  }
 })(kintone.$PLUGIN_ID);
