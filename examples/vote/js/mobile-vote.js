@@ -153,69 +153,70 @@
           return user.code === kintone.getLoginUser().code;
         }).length !== 0;
       },
-      toggleLoginUser: function() {
-        const that = this;
-        const promise = this.fetch().then(() => {
-          if (that.isLoginUserVoted()) {
-            voteUsers = voteUsers.filter((user) => {
-              return user.code !== kintone.getLoginUser().code;
-            });
-          } else {
-            voteUsers.push({
-              'code': kintone.getLoginUser().code
-            });
-          }
-        }).then(() => {
-          return that.update();
-        });
-        return promise;
+      toggleLoginUser: async function() {
+        await this.fetch();
+        if (this.isLoginUserVoted()) {
+          voteUsers = voteUsers.filter((user) => {
+            return user.code !== kintone.getLoginUser().code;
+          });
+        } else {
+          voteUsers.push({
+            'code': kintone.getLoginUser().code
+          });
+        }
+        await this.update();
       },
-      fetch: function() {
-        return new Promise((resolve) => {
-          kintone.api(kintone.api.url('/k/v1/record', true), 'GET', {
+      fetch: async function() {
+        const evt = await kintone.api(
+          kintone.api.url('/k/v1/record', true),
+          'GET',
+          {
             'app': APPID,
             'id': recordId
-          }, (evt) => {
-            voteUsers = evt.record[VOTE_FIELD].value;
-            revision = evt.record.$revision.value;
-            resolve();
-          });
-        });
+          }
+        );
+        voteUsers = evt.record[VOTE_FIELD].value;
+        revision = evt.record.$revision.value;
       },
-      update: function() {
-        return new Promise((resolve, reject) => {
-          const newRecord = {};
-          newRecord[VOTE_FIELD] = {'value': voteUsers};
-          newRecord[VOTE_COUNT_FIELD] = {'value': voteUsers.length};
-          kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', {
-            'app': APPID,
-            'id': recordId,
-            'record': newRecord,
-            'revision': revision
-          }, resolve, (e) => {
-            NotifyPopup.showPopup(createErrorMessage(e));
-            reject(e);
-          });
-        });
+      update: async function() {
+        const newRecord = {};
+        newRecord[VOTE_FIELD] = {'value': voteUsers};
+        newRecord[VOTE_COUNT_FIELD] = {'value': voteUsers.length};
+        try {
+          await kintone.api(
+            kintone.api.url('/k/v1/record', true),
+            'PUT',
+            {
+              'app': APPID,
+              'id': recordId,
+              'record': newRecord,
+              'revision': revision
+            }
+          );
+        } catch (e) {
+          NotifyPopup.showPopup(createErrorMessage(e));
+          throw e;
+        }
       }
     };
   }
 
-  function fetchVoteModel(language) {
-    return new Promise((resolve) => {
-      const id = kintone.mobile.app.record.getId();
-      kintone.api(kintone.api.url('/k/v1/record', true), 'GET', {
+  async function fetchVoteModel(language) {
+    const id = kintone.mobile.app.record.getId();
+    const evt = await kintone.api(
+      kintone.api.url('/k/v1/record', true),
+      'GET',
+      {
         'app': APPID,
         'id': id
-      }, (evt) => {
-        const record = {
-          '$id': {'value': id},
-          '$revision': evt.record.$revision
-        };
-        record[VOTE_FIELD] = evt.record[VOTE_FIELD];
-        resolve(new VoteModel(record, language));
-      });
-    });
+      }
+    );
+    const record = {
+      '$id': {'value': id},
+      '$revision': evt.record.$revision
+    };
+    record[VOTE_FIELD] = evt.record[VOTE_FIELD];
+    return new VoteModel(record, language);
   }
 
 
@@ -238,18 +239,18 @@
       }
     }
 
-    function handleClick() {
+    async function handleClick() {
       if (!clickable) {
         return;
       }
       clickable = false;
-      model.toggleLoginUser().then(() => {
+      try {
+        await model.toggleLoginUser();
         updateImg(model.isLoginUserVoted());
         updateCounterEl(model.countVoteUsers());
+      } finally {
         clickable = true;
-      }).catch(() => {
-        clickable = true;
-      });
+      }
     }
 
     function renderImgAndCounter() {
@@ -293,16 +294,16 @@
     return evt;
   });
 
-  kintone.events.on('mobile.app.record.detail.show', (appId, record, recordId) => {
+  kintone.events.on('mobile.app.record.detail.show', async (event) => {
     const loginInfo = kintone.getLoginUser();
     const lang = getLanguage(loginInfo.language);
 
     NotifyPopup.createPopup();
 
-    fetchVoteModel(lang).then((voteModel) => {
-      const $labelEl = kintone.mobile.app.getHeaderSpaceElement();
-      new VoteView(voteModel).prepend($labelEl);
-    });
+    const voteModel = await fetchVoteModel(lang);
+    const $labelEl = kintone.mobile.app.getHeaderSpaceElement();
+    new VoteView(voteModel).prepend($labelEl);
+    return event;
   });
 
 })(kintone.$PLUGIN_ID);

@@ -301,7 +301,7 @@
     $Container.appendChild(createVoteSaveBtn(language));
   }
 
-  function initConfigPage() {
+  async function initConfigPage() {
     const loginInfo = kintone.getLoginUser();
     const lang = getLanguage(loginInfo.language);
     renderConfigUI(lang);
@@ -310,9 +310,14 @@
     let countDropdown;
     Loading.addStyleOnHead(Loading.setting.style.spinner);
     Loading.show();
-    kintone.api(kintone.api.url('/k/v1/preview/app/form/fields', true), 'GET', {
-      'app': kintone.app.getId()
-    }, (resp) => {
+    try {
+      const resp = await kintone.api(
+        kintone.api.url('/k/v1/preview/app/form/fields', true),
+        'GET',
+        {
+          'app': kintone.app.getId()
+        }
+      );
       const settingVoteField = {itemList: []};
       const settingCountField = {itemList: []};
       for (const property of Object.values(resp.properties)) {
@@ -338,12 +343,11 @@
         voteDropdown.setSelectedValue(config.vote_field);
         countDropdown.setSelectedValue(config.vote_count_field);
       }
-
-      Loading.hide();
-    }, (error) => {
+    } catch (error) {
       console.error(error);
+    } finally {
       Loading.hide();
-    });
+    }
 
     document.getElementById('setting_submit').addEventListener('click', () => {
       const config = {};
