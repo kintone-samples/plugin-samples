@@ -471,14 +471,23 @@
       return config;
     },
     alert: function(element, mess) {
-      const elementParrent = element.parentElement;
-      elementParrent.parentElement.querySelectorAll('.kintoneplugin-alert').forEach((el) => {
-        el.remove();
+      const el = typeof element === 'string' ? document.querySelector(element) : element;
+      if (!el || !el.parentElement) {
+        return;
+      }
+      const elementParrent = el.parentElement;
+      elementParrent.parentElement.querySelectorAll('.kintoneplugin-alert').forEach((alertEl) => {
+        alertEl.remove();
       });
       if (document.querySelectorAll('.kintoneplugin-alert').length === 0) {
-        element.focus();
+        el.focus();
       }
-      elementParrent.insertAdjacentHTML('afterend', '<div class=\'kintoneplugin-alert\'><p>' + mess + '</p></div>');
+      const alertBox = document.createElement('div');
+      alertBox.className = 'kintoneplugin-alert';
+      const alertParagraph = document.createElement('p');
+      alertParagraph.textContent = mess;
+      alertBox.appendChild(alertParagraph);
+      elementParrent.insertAdjacentElement('afterend', alertBox);
     },
     formatType: function(selectformat) {
 

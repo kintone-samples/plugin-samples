@@ -458,7 +458,9 @@
       alertButtonClose.className = 'close';
       const alertMessage = document.createElement('div');
       alertMessage.className = 'kintoneplugin-alert popup';
-      alertMessage.innerHTML = '<span>' + message + '</span>';
+      const alertMessageText = document.createElement('span');
+      alertMessageText.textContent = message;
+      alertMessage.appendChild(alertMessageText);
       alertButtonClose.addEventListener('click', function() {
         this.closest('.kintoneplugin-alert-popup').remove();
       });
