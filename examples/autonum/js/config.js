@@ -241,7 +241,7 @@
       const self = this;
       const formEl = document.querySelector(this.settings.element.form);
       const configHtml = formEl.innerHTML;
-      const tmpl = $.templates(configHtml);
+      const tmpl = jsrender.templates(configHtml);
       formEl.innerHTML = tmpl.render({
         lang: this.settings.i18n
       });

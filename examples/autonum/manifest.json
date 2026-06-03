@@ -20,7 +20,6 @@
     },
     "desktop": {
         "js": [
-            "thirdparties/jquery.min.js",
             "thirdparties/moment-with-locales.min.js",
             "js/desktop.js"
         ],
@@ -32,9 +31,8 @@
     "config": {
         "html": "html/config.html",
         "js": [
-            "thirdparties/jquery.min.js",
             "thirdparties/moment-with-locales.min.js",
-            "thirdparties/jsrender.min.js",
+            "https://js.cybozu.com/jsrender/1.0.6/jsrender.min.js",
             "js/config.js"
         ],
         "css": [
