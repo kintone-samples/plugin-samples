@@ -1,12 +1,25 @@
 /*
  * Auto Number plug-in
- * Copyright (c) 2016 Cybozu
+ * Copyright (c) 2026 Cybozu
  *
  * Licensed under the MIT License
  */
 
 ((PLUGIN_ID) => {
   'use strict';
+
+  const PLUGIN_DATE_TO_LUXON = {
+    YYYYMMDD: 'yyyyMMdd',
+    YYYYMM: 'yyyyMM',
+    MMDD: 'MMdd',
+    MMDDYYYY: 'MMddyyyy',
+    MMDDYY: 'MMddyy',
+    MMYYYY: 'MMyyyy',
+    MMYY: 'MMyy',
+    YYYY: 'yyyy',
+    YY: 'yy'
+  };
+
   const kintonePluginConfigAutonum = {
     lang: {
       ja: {
@@ -306,6 +319,13 @@
         history.back();
       });
     },
+    formatPluginDate: function(formatCode) {
+      const pattern = PLUGIN_DATE_TO_LUXON[formatCode];
+      if (!pattern) {
+        return '';
+      }
+      return luxon.DateTime.local().toFormat(pattern);
+    },
     createPreview: function(selectFormat) {
       const text = document.querySelector(this.settings.element.input.prefix).value;
       if (!this.validateFormValue()) {
@@ -315,7 +335,7 @@
       const number = new Array(numOfDigit).join('0') + '1';
       const dateVal = document.querySelector(this.settings.element.input.dateFormatSelect).value || 'null';
       const connective = document.querySelector(this.settings.element.input.connectiveSelect).value || '';
-      const date = dateVal !== 'null' ? moment().format(dateVal) : '';
+      const date = dateVal !== 'null' ? this.formatPluginDate(dateVal) : '';
 
       switch (selectFormat) {
         case 'numbering':

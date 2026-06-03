@@ -20,7 +20,7 @@
     },
     "desktop": {
         "js": [
-            "thirdparties/moment-with-locales.min.js",
+            "https://js.cybozu.com/luxon/3.7.2/luxon.min.js",
             "js/desktop.js"
         ],
         "css": [
@@ -31,7 +31,7 @@
     "config": {
         "html": "html/config.html",
         "js": [
-            "thirdparties/moment-with-locales.min.js",
+            "https://js.cybozu.com/luxon/3.7.2/luxon.min.js",
             "https://js.cybozu.com/jsrender/1.0.6/jsrender.min.js",
             "js/config.js"
         ],
