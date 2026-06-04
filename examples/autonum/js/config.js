@@ -312,11 +312,15 @@
       document.querySelector(this.settings.element.input.dateFormatSelect).addEventListener('change', () => {
         self.propRadioTiming();
       });
-      document.querySelector('button.plugin_submit').addEventListener('click', () => {
-        self.settingSave();
+      document.querySelectorAll('button.plugin_submit').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          self.settingSave();
+        });
       });
-      document.querySelector('button.plugin_cancel').addEventListener('click', () => {
-        history.back();
+      document.querySelectorAll('button.plugin_cancel').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          history.back();
+        });
       });
     },
     formatPluginDate: function(formatCode) {
