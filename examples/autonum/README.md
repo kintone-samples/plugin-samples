@@ -10,9 +10,6 @@
   * Distribution: https://js.cybozu.com/jsrender/1.0.6/jsrender.min.js (plugin config screen only)
   * Author: Boris Moore
   * License: [MIT License](https://github.com/BorisMoore/jsrender/blob/v1.0.6/MIT-LICENSE.txt)
-* SweetAlert - https://t4t5.github.io/sweetalert/
-  * Author: Tristan Edwards
-  * License: [MIT License](https://github.com/t4t5/sweetalert/blob/v1.1.3/LICENSE)
 * 51-modern-default - https://cybozu.dev/ja/kintone/sdk/library/plugin-stylesheet-guide/
   * Author: Cybozu, Inc.
   * License: [MIT License](https://github.com/kintone-samples/plugin-samples#licence)
