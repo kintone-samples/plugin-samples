@@ -1,12 +1,24 @@
 /*
  * Auto Number plug-in
- * Copyright (c) 2016 Cybozu
+ * Copyright (c) 2026 Cybozu
  *
  * Licensed under the MIT License
  */
 
-((PLUGIN_ID, $) => {
+((PLUGIN_ID) => {
   'use strict';
+
+  const PLUGIN_DATE_TO_LUXON = {
+    YYYYMMDD: 'yyyyMMdd',
+    YYYYMM: 'yyyyMM',
+    MMDD: 'MMdd',
+    MMDDYYYY: 'MMddyyyy',
+    MMDDYY: 'MMddyy',
+    MMYYYY: 'MMyyyy',
+    MMYY: 'MMyy',
+    YYYY: 'yyyy',
+    YY: 'yy'
+  };
 
   const kintonePluginAutonum = {
     lang: {
@@ -203,12 +215,17 @@
       const result = formatWithNumber.substr(index + 1);
       return parseInt(result, 10);
     },
+    formatPluginDate: function(formatCode) {
+      const pattern = PLUGIN_DATE_TO_LUXON[formatCode];
+      if (!pattern) {
+        return '';
+      }
+      return luxon.DateTime.local().toFormat(pattern);
+    },
     getFormatWithOutNumber: function() {
       let date = '';
       if (this.settings.config.DATE_SELECT_FORMAT !== 'null') {
-        date = moment(new Date()).format(
-          this.settings.config.DATE_SELECT_FORMAT
-        );
+        date = this.formatPluginDate(this.settings.config.DATE_SELECT_FORMAT);
       }
       switch (this.settings.config.SELECT_FORMAT) {
         case 'dateNumbering':
@@ -383,7 +400,7 @@
         .slice(-1 * this.settings.config.NUM_OF_DIGIT);
     },
     checkDateFormat: function(dateFormatOfLastRecordAutonum) {
-      const currentDateFormat = moment().format(
+      const currentDateFormat = this.formatPluginDate(
         this.settings.config.DATE_SELECT_FORMAT
       );
       // 頭1文字で比較(桁数が同じ場合の制御で「西暦(4桁)」「月日(4桁)」、「テキスト設定」「日付」の比較用)
@@ -454,15 +471,23 @@
       return stringDate.substr(position.start, position.end);
     },
     alertMessage: function(message) {
-      const alertButtonClose = $('<span class="close"></span>'),
-        alertMessage = $('<div class="kintoneplugin-alert popup"><span>' + message + '</span></div>');
-      alertButtonClose.click(function() {
-        $(this).parents('.kintoneplugin-alert-popup').remove();
+      const alertButtonClose = document.createElement('span');
+      alertButtonClose.className = 'close';
+      const alertMessage = document.createElement('div');
+      alertMessage.className = 'kintoneplugin-alert popup';
+      const alertMessageText = document.createElement('span');
+      alertMessageText.textContent = message;
+      alertMessage.appendChild(alertMessageText);
+      alertButtonClose.addEventListener('click', function() {
+        this.closest('.kintoneplugin-alert-popup').remove();
       });
-      alertMessage.append(alertButtonClose);
-      $('body').append($('<div class="kintoneplugin-alert-popup"></div>').append(alertMessage));
+      alertMessage.appendChild(alertButtonClose);
+      const alertPopup = document.createElement('div');
+      alertPopup.className = 'kintoneplugin-alert-popup';
+      alertPopup.appendChild(alertMessage);
+      document.body.appendChild(alertPopup);
     }
 
   };
   kintonePluginAutonum.init();
-})(kintone.$PLUGIN_ID, jQuery);
+})(kintone.$PLUGIN_ID);

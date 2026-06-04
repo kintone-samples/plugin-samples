@@ -2,15 +2,14 @@
 
 ## OSS License
 
-* Moment.js - https://momentjs.com/
-  * Author: Tim Wood, Iskren Chernev, Moment.js contributors
-  * License: [MIT License](https://github.com/moment/moment/blob/2.14.1/LICENSE)
-* jQuery - https://jquery.com/
-  * Author: jQuery Foundation, Inc.
-  * License: [MIT License](https://github.com/jquery/jquery/blob/2.1.3/MIT-LICENSE.txt)
-* JsRender - https://www.jsviews.com/
+* Luxon 3.7.2 - https://moment.github.io/luxon/
+  * Distribution: https://js.cybozu.com/luxon/3.7.2/luxon.min.js
+  * Author: Isaac Cambron, Moment.js contributors
+  * License: [MIT License](https://github.com/moment/luxon/blob/master/LICENSE.md)
+* JsRender 1.0.6 - https://www.jsviews.com/
+  * Distribution: https://js.cybozu.com/jsrender/1.0.6/jsrender.min.js (plugin config screen only)
   * Author: Boris Moore
-  * License: [MIT License](https://github.com/BorisMoore/jsrender/blob/v0.9.80/MIT-LICENSE.txt)
+  * License: [MIT License](https://github.com/BorisMoore/jsrender/blob/v1.0.6/MIT-LICENSE.txt)
 * SweetAlert - https://t4t5.github.io/sweetalert/
   * Author: Tristan Edwards
   * License: [MIT License](https://github.com/t4t5/sweetalert/blob/v1.1.3/LICENSE)

@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "2.4.4",
+    "version": "2.4.5",
     "type": "APP",
     "name": {
         "ja": "自動採番プラグイン",
@@ -20,8 +20,7 @@
     },
     "desktop": {
         "js": [
-            "thirdparties/jquery.min.js",
-            "thirdparties/moment-with-locales.min.js",
+            "https://js.cybozu.com/luxon/3.7.2/luxon.min.js",
             "js/desktop.js"
         ],
         "css": [
@@ -32,9 +31,8 @@
     "config": {
         "html": "html/config.html",
         "js": [
-            "thirdparties/jquery.min.js",
-            "thirdparties/moment-with-locales.min.js",
-            "thirdparties/jsrender.min.js",
+            "https://js.cybozu.com/luxon/3.7.2/luxon.min.js",
+            "https://js.cybozu.com/jsrender/1.0.6/jsrender.min.js",
             "js/config.js"
         ],
         "css": [
