@@ -320,9 +320,18 @@
     NotifyPopup.createPopup();
 
     const RECORD_FIELD = getRecordNumberFieldCode(event.records[0]);
+    if (!RECORD_FIELD) {
+      NotifyPopup.showPopup(Msg[lang].recordNumFieldNotFound);
+      return event;
+    }
+
     try {
       const voteModels = await fetchVoteModels(lang);
       const cellEls = kintone.app.getFieldElements(RECORD_FIELD) || [];
+      if (cellEls.length === 0) {
+        NotifyPopup.showPopup(Msg[lang].recordNumFieldNotFound);
+        return event;
+      }
       cellEls.forEach((val) => {
         const recordId = Number(val.textContent.split('-').pop());
         const voteModel = voteModels.filter((elem) => {
@@ -344,9 +353,21 @@
           new VoteView(voteModel).append($parentEl);
         }
       });
-    } catch (mess) {
-      const error = mess.error;
-      NotifyPopup.showPopup(Msg[lang][error]);
+    } catch (e) {
+      let message;
+      switch (e.code) {
+        case 'GAIA_CO02':
+          message = Msg[lang].updatedWhileClicking;
+          break;
+        case 'CB_NO02':
+          message = Msg[lang].notHavePermissionToEdit;
+          break;
+        default:
+          message = Msg[lang].errorOccurred;
+          break;
+      }
+      message += '(id:' + e.id + ', code:' + e.code + ')';
+      NotifyPopup.showPopup(message);
     }
     return event;
   });
