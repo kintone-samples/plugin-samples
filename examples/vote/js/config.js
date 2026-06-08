@@ -4,9 +4,7 @@
  *
  * Licensed under the MIT License
  */
-jQuery.noConflict();
-
-(function(pluginId, $) {
+(function(pluginId) {
   'use strict';
 
   const Msg = {
@@ -125,7 +123,9 @@ jQuery.noConflict();
       item: '<div class="kintoneplugin-dropdown-list-item"></div>'
     },
     render: function() {
-      this.$el = $(this.template.container);
+      const wrap = document.createElement('div');
+      wrap.innerHTML = this.template.container.trim();
+      this.$el = wrap.firstElementChild;
       this.catchElement();
       this.renderItemList(this.settings.itemList);
       this.setSelectedValue();
@@ -139,42 +139,49 @@ jQuery.noConflict();
     setSelectedValue: function(data) {
       const arrItem = [];
       if (data) {
-        this.$listOption.find('.kintoneplugin-dropdown-list-item').each((index, item) => {
-          if (data === $(item).data('value')) {
-            arrItem.push($(item));
+        this.$listOption.querySelectorAll('.kintoneplugin-dropdown-list-item').forEach((item) => {
+          if (data === item.dataset.value) {
+            arrItem.push(item);
           }
         });
         this.data.value = data;
-        this.data.name = arrItem[0].text();
+        if (arrItem[0]) {
+          this.data.name = arrItem[0].textContent;
+        }
       }
-      const itemSelected = this.$el.find('.kintoneplugin-dropdown-list-item-selected');
-      itemSelected.removeClass('kintoneplugin-dropdown-list-item-selected');
+      const itemSelected = this.$el.querySelector('.kintoneplugin-dropdown-list-item-selected');
+      if (itemSelected) {
+        itemSelected.classList.remove('kintoneplugin-dropdown-list-item-selected');
+      }
       if (!this.data.value) {
-        const $selected = $(this.$el.find('.kintoneplugin-dropdown-list-item')[0]);
-        $selected.addClass('kintoneplugin-dropdown-list-item-selected');
-      } else {
-        arrItem[0].addClass('kintoneplugin-dropdown-list-item-selected');
+        const firstItem = this.$el.querySelector('.kintoneplugin-dropdown-list-item');
+        if (firstItem) {
+          firstItem.classList.add('kintoneplugin-dropdown-list-item-selected');
+        }
+      } else if (arrItem[0]) {
+        arrItem[0].classList.add('kintoneplugin-dropdown-list-item-selected');
       }
-      this.$select.text(this.data.name);
+      this.$select.textContent = this.data.name;
     },
     renderItemList: function() {
-      const self = this;
-      const $itemList = this.$el.find('.kintoneplugin-dropdown-list');
-      let $item = $(this.template.item);
-      $item.text(this.data.name);
-      $itemList.append($item);
+      const $itemList = this.$el.querySelector('.kintoneplugin-dropdown-list');
+      let $item = document.createElement('div');
+      $item.className = 'kintoneplugin-dropdown-list-item';
+      $item.textContent = this.data.name;
+      $itemList.appendChild($item);
 
-      $.each(this.settings.itemList, (index, item) => {
-        $item = $(self.template.item);
-        $item.text(item.name);
-        $item.data('value', item.value);
-        $itemList.append($item);
-      });
+      for (const item of this.settings.itemList) {
+        $item = document.createElement('div');
+        $item.className = 'kintoneplugin-dropdown-list-item';
+        $item.textContent = item.name;
+        $item.dataset.value = item.value;
+        $itemList.appendChild($item);
+      }
 
     },
     catchElement: function() {
-      this.$select = this.$el.find('.kintoneplugin-dropdown-selected-name');
-      this.$listOption = this.$el.find('.kintoneplugin-dropdown-list');
+      this.$select = this.$el.querySelector('.kintoneplugin-dropdown-selected-name');
+      this.$listOption = this.$el.querySelector('.kintoneplugin-dropdown-list');
     },
     bindEvent: function() {
       this.handleDropdownOuterClick();
@@ -183,25 +190,39 @@ jQuery.noConflict();
     },
     handleDropdownOuterClick: function() {
       const self = this;
-      this.$el.find('.kintoneplugin-dropdown-outer').click(() => {
-        self.$listOption.toggle();
+      this.$el.querySelector('.kintoneplugin-dropdown-outer').addEventListener('click', () => {
+        const list = self.$listOption;
+        if (list.style.display === 'none' || getComputedStyle(list).display === 'none') {
+          list.style.display = 'block';
+        } else {
+          list.style.display = 'none';
+        }
       });
     },
     handleDropdownListClick: function() {
       const self = this;
-      this.$listOption.on('click', '.kintoneplugin-dropdown-list-item', (e) => {
-        self.data.name = $(e.target).text();
-        self.data.value = $(e.target).data('value');
+      this.$listOption.addEventListener('click', (e) => {
+        const row = e.target.closest('.kintoneplugin-dropdown-list-item');
+        if (!row || !self.$listOption.contains(row)) {
+          return;
+        }
+        self.data.name = row.textContent;
+        self.data.value = row.dataset.value;
         self.setSelectedValue(self.data.value);
-        self.$listOption.toggle();
+        const list = self.$listOption;
+        if (list.style.display === 'none' || getComputedStyle(list).display === 'none') {
+          list.style.display = 'block';
+        } else {
+          list.style.display = 'none';
+        }
       });
     },
     handleOutsideDropdownListClick: function() {
       const self = this;
-      $('body').on('click', (event) => {
-        const isClickOnDropdown = $(event.target).closest(self.$el).length > 0;
+      document.body.addEventListener('click', (event) => {
+        const isClickOnDropdown = self.$el.contains(event.target);
         if (!isClickOnDropdown) {
-          self.$listOption.hide();
+          self.$listOption.style.display = 'none';
         }
       });
     }
@@ -221,50 +242,66 @@ jQuery.noConflict();
   }
 
   function createVoteDescription(text) {
-    return $('<p> ' + text + '</p>');
+    const p = document.createElement('p');
+    p.appendChild(document.createTextNode(' ' + text));
+    return p;
   }
   function createVoteLabel(text) {
-    return $('<div class="kintoneplugin-label">' + text + '</div>');
+    const div = document.createElement('div');
+    div.className = 'kintoneplugin-label';
+    div.textContent = text;
+    return div;
   }
   function createVoteField(language) {
-    const $container = $('<div class="kintoneplugin-row"></div>');
-    $container.append(createVoteLabel(Msg[language].labelOfVoteField));
-    $container.append(createVoteDescription(Msg[language].descriptionOfVoteField1));
-    $container.append(createVoteDescription(Msg[language].descriptionOfVoteField2));
-    $container.append('</br>');
-    $container.append($('<div class="vote-dropdown"></div>'));
+    const $container = document.createElement('div');
+    $container.className = 'kintoneplugin-row';
+    $container.appendChild(createVoteLabel(Msg[language].labelOfVoteField));
+    $container.appendChild(createVoteDescription(Msg[language].descriptionOfVoteField1));
+    $container.appendChild(createVoteDescription(Msg[language].descriptionOfVoteField2));
+    $container.appendChild(document.createElement('br'));
+    const slot = document.createElement('div');
+    slot.className = 'vote-dropdown';
+    $container.appendChild(slot);
     return $container;
   }
   function createCountfield(language) {
-    const $container = $('<div class="kintoneplugin-row"></div>');
-    $container.append(createVoteLabel(Msg[language].labelOfCountfield));
-    $container.append(createVoteDescription(Msg[language].descriptionOfCountField1));
-    $container.append(createVoteDescription(Msg[language].descriptionOfCountField2));
-    $container.append('</br>');
-    $container.append($('<div class="count-dropdown"></div>'));
+    const $container = document.createElement('div');
+    $container.className = 'kintoneplugin-row';
+    $container.appendChild(createVoteLabel(Msg[language].labelOfCountfield));
+    $container.appendChild(createVoteDescription(Msg[language].descriptionOfCountField1));
+    $container.appendChild(createVoteDescription(Msg[language].descriptionOfCountField2));
+    $container.appendChild(document.createElement('br'));
+    const slot = document.createElement('div');
+    slot.className = 'count-dropdown';
+    $container.appendChild(slot);
     return $container;
   }
   function createForm(name, language) {
-    const $form = $('<form name = "' + name + '"></form>');
-    $form.append(createVoteField(language));
-    $form.append(createCountfield(language));
+    const $form = document.createElement('form');
+    $form.setAttribute('name', name);
+    $form.appendChild(createVoteField(language));
+    $form.appendChild(createCountfield(language));
     return $form;
   }
   function createVoteSaveBtn(language) {
-    return $('<button class="kintoneplugin-button-dialog-ok" type="button" id="setting_submit">'
-         + Msg[language].btnSave + '</button>');
+    const btn = document.createElement('button');
+    btn.className = 'kintoneplugin-button-dialog-ok';
+    btn.type = 'button';
+    btn.id = 'setting_submit';
+    btn.appendChild(document.createTextNode(Msg[language].btnSave));
+    return btn;
   }
   function renderConfigUI(language) {
-    const $Container = $('#vote-plugin-container');
-    $Container.append(createVoteDescription(Msg[language].description1));
-    $Container.append(createVoteDescription(Msg[language].description2));
-    $Container.append(createVoteDescription(Msg[language].description3));
-    $Container.append('</br>');
-    $Container.append(createForm('setting', language));
-    $Container.append(createVoteSaveBtn(language));
+    const $Container = document.getElementById('vote-plugin-container');
+    $Container.appendChild(createVoteDescription(Msg[language].description1));
+    $Container.appendChild(createVoteDescription(Msg[language].description2));
+    $Container.appendChild(createVoteDescription(Msg[language].description3));
+    $Container.appendChild(document.createElement('br'));
+    $Container.appendChild(createForm('setting', language));
+    $Container.appendChild(createVoteSaveBtn(language));
   }
 
-  $(document).ready(() => {
+  async function initConfigPage() {
     const loginInfo = kintone.getLoginUser();
     const lang = getLanguage(loginInfo.language);
     renderConfigUI(lang);
@@ -273,12 +310,17 @@ jQuery.noConflict();
     let countDropdown;
     Loading.addStyleOnHead(Loading.setting.style.spinner);
     Loading.show();
-    kintone.api(kintone.api.url('/k/v1/preview/app/form/fields', true), 'GET', {
-      'app': kintone.app.getId()
-    }, (resp) => {
+    try {
+      const resp = await kintone.api(
+        kintone.api.url('/k/v1/preview/app/form/fields', true),
+        'GET',
+        {
+          'app': kintone.app.getId()
+        }
+      );
       const settingVoteField = {itemList: []};
       const settingCountField = {itemList: []};
-      $.each(resp.properties, (index, property) => {
+      for (const property of Object.values(resp.properties)) {
         const data = {
           name: property.label,
           value: property.code
@@ -288,24 +330,26 @@ jQuery.noConflict();
         } else if (property.type === 'USER_SELECT') {
           settingVoteField.itemList.push(data);
         }
-      });
+      }
 
       voteDropdown = new Dropdown(settingVoteField);
-      $('.vote-dropdown').append(voteDropdown.render());
+      document.querySelector('.vote-dropdown').appendChild(voteDropdown.render());
 
       countDropdown = new Dropdown(settingCountField);
-      $('.count-dropdown').append(countDropdown.render());
+      document.querySelector('.count-dropdown').appendChild(countDropdown.render());
 
       const config = kintone.plugin.app.getConfig(pluginId);
       if (config.vote_field && config.vote_count_field) {
         voteDropdown.setSelectedValue(config.vote_field);
         countDropdown.setSelectedValue(config.vote_count_field);
       }
-
+    } catch (error) {
+      console.error(error);
+    } finally {
       Loading.hide();
-    });
+    }
 
-    $('#setting_submit').click(() => {
+    document.getElementById('setting_submit').addEventListener('click', () => {
       const config = {};
       const voteValue = voteDropdown.getSelectedData().value;
       config.vote_field = !voteValue ? '' : voteValue;
@@ -315,5 +359,11 @@ jQuery.noConflict();
 
       kintone.plugin.app.setConfig(config);
     });
-  });
-})(kintone.$PLUGIN_ID, jQuery);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initConfigPage);
+  } else {
+    initConfigPage();
+  }
+})(kintone.$PLUGIN_ID);

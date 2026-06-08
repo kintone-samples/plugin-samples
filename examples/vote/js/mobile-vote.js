@@ -4,9 +4,8 @@
  *
  * Licensed under the MIT License
  */
-jQuery.noConflict();
 
-(function(pluginId, $) {
+(function(pluginId) {
   'use strict';
 
   const APPID = kintone.mobile.app.getId();
@@ -17,7 +16,8 @@ jQuery.noConflict();
 
   const Msg = {
     en: {
-      recordNumFieldNotFound: 'To use the Like Plug-in, the Record number field must be set in the Form edit settings.',
+      recordNumFieldNotFound: 'To use the Like Plug-in on the record list,'
+                                    + ' the Record number field must be included in the list view display fields.',
       updatedWhileClicking: 'Someone updated the record while you were clicking "Like".'
                                     + ' Please click the "Like" button again.',
       notHavePermissionToEdit: 'Users who do not have permission to edit the record'
@@ -26,13 +26,13 @@ jQuery.noConflict();
       errorOccurred: 'An error occurred. Please contact the Administrator of this App to resolve this issue.'
     },
     ja: {
-      recordNumFieldNotFound: 'いいねプラグインを使うためには、フォーム編集画面でレコード番号フィールドを配置する必要があります。',
+      recordNumFieldNotFound: 'いいねプラグインを一覧で使うためには、一覧の表示フィールドにレコード番号を含める必要があります。',
       updatedWhileClicking: 'いいね中に誰かがレコードを更新しました。もう一度いいねしてください。',
       notHavePermissionToEdit: 'レコード編集権限がないユーザはいいねできません。アプリ管理者にお問い合わせ下さい。',
       errorOccurred: 'エラーが発生しました。アプリ管理者にお問い合わせ下さい。'
     },
     zh: {
-      recordNumFieldNotFound: '未找到记录编号字段。需要在表单中设置记录编号字段才可使用顶！插件。',
+      recordNumFieldNotFound: '要在记录列表中使用顶！插件，需在列表的显示字段中包含记录编号字段。',
       updatedWhileClicking: '在点顶的同时有其他人更新了记录，请再点一次。',
       notHavePermissionToEdit: '无记录编辑权限的用户不可以点顶。详情请咨询应用管理员。',
       errorOccurred: '出错了！详情请咨询应用管理员。'
@@ -52,26 +52,50 @@ jQuery.noConflict();
                   + '    </div>'
                   + '</div>',
     createPopup: function() {
-      this.control.popup = $(this.template);
-      $('body').append(this.control.popup[0]);
+      const popup = document.createElement('div');
+      popup.className = 'customization-notify error';
+
+      const notifyTitle = document.createElement('div');
+      notifyTitle.className = 'notify-title';
+
+      const closeButton = document.createElement('div');
+      closeButton.className = 'close-button';
+
+      const closeButtonIcon = document.createElement('div');
+      closeButtonIcon.className = 'close-button-icon';
+
+      const icon1 = document.createElement('div');
+      icon1.className = 'icon-1';
+
+      const icon2 = document.createElement('div');
+      icon2.className = 'icon-2';
+
+      icon1.appendChild(icon2);
+      closeButtonIcon.appendChild(icon1);
+      closeButton.appendChild(closeButtonIcon);
+      popup.appendChild(notifyTitle);
+      popup.appendChild(closeButton);
+
+      this.control.popup = popup;
+      document.body.appendChild(this.control.popup);
 
       this.bindEvent();
 
       return this.control.popup;
     },
     showPopup: function(message) {
-      this.control.popup.find('.notify-title').text(message);
+      this.control.popup.querySelector('.notify-title').textContent = message;
 
-      const popupWidth = this.control.popup.width();
-      this.control.popup.css({left: '-' + popupWidth / 2 + 'px'});
+      const popupWidth = this.control.popup.offsetWidth;
+      this.control.popup.style.left = '-' + popupWidth / 2 + 'px';
 
-      this.control.popup.addClass('notify-slidedown');
+      this.control.popup.classList.add('notify-slidedown');
     },
     hidePopup: function() {
-      this.control.popup.removeClass('notify-slidedown');
+      this.control.popup.classList.remove('notify-slidedown');
     },
     bindEvent: function() {
-      this.control.popup.click(() => {
+      this.control.popup.addEventListener('click', () => {
         this.hidePopup();
       });
     }
@@ -126,117 +150,126 @@ jQuery.noConflict();
         return voteUsers.length;
       },
       isLoginUserVoted: function() {
-        return $.grep(voteUsers, (user) => {
+        return voteUsers.filter((user) => {
           return user.code === kintone.getLoginUser().code;
         }).length !== 0;
       },
-      toggleLoginUser: function() {
-        const that = this;
-        const promise = this.fetch().then(() => {
-          if (that.isLoginUserVoted()) {
-            voteUsers = $.grep(voteUsers, (user) => {
-              return user.code !== kintone.getLoginUser().code;
-            });
-          } else {
-            voteUsers.push({
-              'code': kintone.getLoginUser().code
-            });
+      toggleLoginUser: async function() {
+        await this.fetch();
+        if (this.isLoginUserVoted()) {
+          voteUsers = voteUsers.filter((user) => {
+            return user.code !== kintone.getLoginUser().code;
+          });
+        } else {
+          voteUsers.push({
+            'code': kintone.getLoginUser().code
+          });
+        }
+        await this.update();
+      },
+      fetch: async function() {
+        const evt = await kintone.api(
+          kintone.api.url('/k/v1/record', true),
+          'GET',
+          {
+            'app': APPID,
+            'id': recordId
           }
-        }).then(() => {
-          return that.update();
-        });
-        return promise;
+        );
+        voteUsers = evt.record[VOTE_FIELD].value;
+        revision = evt.record.$revision.value;
       },
-      fetch: function() {
-        const d = new $.Deferred();
-        kintone.api(kintone.api.url('/k/v1/record', true), 'GET', {
-          'app': APPID,
-          'id': recordId
-        }, (evt) => {
-          voteUsers = evt.record[VOTE_FIELD].value;
-          revision = evt.record.$revision.value;
-          d.resolve();
-        });
-        return d.promise();
-      },
-      update: function() {
-        const d = new $.Deferred();
+      update: async function() {
         const newRecord = {};
         newRecord[VOTE_FIELD] = {'value': voteUsers};
         newRecord[VOTE_COUNT_FIELD] = {'value': voteUsers.length};
-        kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', {
-          'app': APPID,
-          'id': recordId,
-          'record': newRecord,
-          'revision': revision
-        }, d.resolve, (e) => {
+        try {
+          await kintone.api(
+            kintone.api.url('/k/v1/record', true),
+            'PUT',
+            {
+              'app': APPID,
+              'id': recordId,
+              'record': newRecord,
+              'revision': revision
+            }
+          );
+        } catch (e) {
           NotifyPopup.showPopup(createErrorMessage(e));
-        });
-        return d.promise();
+          throw e;
+        }
       }
     };
   }
 
-  function fetchVoteModel(language) {
-    const d = new $.Deferred();
+  async function fetchVoteModel(language) {
     const id = kintone.mobile.app.record.getId();
-    kintone.api(kintone.api.url('/k/v1/record', true), 'GET', {
-      'app': APPID,
-      'id': id
-    }, (evt) => {
-      const record = {
-        '$id': {'value': id},
-        '$revision': evt.record.$revision
-      };
-      record[VOTE_FIELD] = evt.record[VOTE_FIELD];
-      d.resolve(new VoteModel(record, language));
-    });
-    return d.promise();
+    const evt = await kintone.api(
+      kintone.api.url('/k/v1/record', true),
+      'GET',
+      {
+        'app': APPID,
+        'id': id
+      }
+    );
+    const record = {
+      '$id': {'value': id},
+      '$revision': evt.record.$revision
+    };
+    record[VOTE_FIELD] = evt.record[VOTE_FIELD];
+    return new VoteModel(record, language);
   }
 
 
   function VoteView(model) {
-    const $element = $('<span class="vote-plugin-show">');
+    const $element = document.createElement('span');
+    $element.className = 'vote-plugin-show';
     let clickable = true;
 
     function updateImg(voted) {
-      $element.find('.vote-plugin-img').toggleClass('vote-plugin-voted', voted);
+      $element.querySelector('.vote-plugin-img').classList.toggle('vote-plugin-voted', voted);
     }
 
     function updateCounterEl(usercount) {
-      $element.find('.vote-plugin-count').remove();
+      $element.querySelector('.vote-plugin-count')?.remove();
       if (usercount !== 0) {
-        $element.append($('<span>').addClass('vote-plugin-count').text(usercount));
+        const span = document.createElement('span');
+        span.classList.add('vote-plugin-count');
+        span.textContent = usercount;
+        $element.appendChild(span);
       }
     }
 
-    function handleClick() {
+    async function handleClick() {
       if (!clickable) {
         return;
       }
       clickable = false;
-      model.toggleLoginUser().then(() => {
+      try {
+        await model.toggleLoginUser();
         updateImg(model.isLoginUserVoted());
         updateCounterEl(model.countVoteUsers());
+      } finally {
         clickable = true;
-      });
+      }
     }
 
     function renderImgAndCounter() {
       // createImg
-      const $imgEl = $('<span class="vote-plugin-img">');
-      $element.append($imgEl);
+      const $imgEl = document.createElement('span');
+      $imgEl.className = 'vote-plugin-img';
+      $element.appendChild($imgEl);
       updateImg(model.isLoginUserVoted());
 
       // createCounter
       updateCounterEl(model.countVoteUsers());
 
-      $element.click(handleClick);
+      $element.addEventListener('click', handleClick);
     }
 
     return {
       append: function($parentEl) {
-        $parentEl.append($element);
+        $parentEl.appendChild($element);
         renderImgAndCounter();
       },
 
@@ -262,16 +295,16 @@ jQuery.noConflict();
     return evt;
   });
 
-  kintone.events.on('mobile.app.record.detail.show', (appId, record, recordId) => {
+  kintone.events.on('mobile.app.record.detail.show', async (event) => {
     const loginInfo = kintone.getLoginUser();
     const lang = getLanguage(loginInfo.language);
 
     NotifyPopup.createPopup();
 
-    fetchVoteModel(lang).then((voteModel) => {
-      const $labelEl = $(kintone.mobile.app.getHeaderSpaceElement());
-      new VoteView(voteModel).prepend($labelEl);
-    });
+    const voteModel = await fetchVoteModel(lang);
+    const $labelEl = kintone.mobile.app.getHeaderSpaceElement();
+    new VoteView(voteModel).prepend($labelEl);
+    return event;
   });
 
-})(kintone.$PLUGIN_ID, jQuery);
+})(kintone.$PLUGIN_ID);
