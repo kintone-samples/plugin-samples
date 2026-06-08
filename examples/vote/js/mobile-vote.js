@@ -16,7 +16,8 @@
 
   const Msg = {
     en: {
-      recordNumFieldNotFound: 'To use the Like Plug-in, the Record number field must be set in the Form edit settings.',
+      recordNumFieldNotFound: 'To use the Like Plug-in on the record list,'
+                                    + ' the Record number field must be included in the list view display fields.',
       updatedWhileClicking: 'Someone updated the record while you were clicking "Like".'
                                     + ' Please click the "Like" button again.',
       notHavePermissionToEdit: 'Users who do not have permission to edit the record'
@@ -25,13 +26,13 @@
       errorOccurred: 'An error occurred. Please contact the Administrator of this App to resolve this issue.'
     },
     ja: {
-      recordNumFieldNotFound: 'いいねプラグインを使うためには、フォーム編集画面でレコード番号フィールドを配置する必要があります。',
+      recordNumFieldNotFound: 'いいねプラグインを一覧で使うためには、一覧の表示フィールドにレコード番号を含める必要があります。',
       updatedWhileClicking: 'いいね中に誰かがレコードを更新しました。もう一度いいねしてください。',
       notHavePermissionToEdit: 'レコード編集権限がないユーザはいいねできません。アプリ管理者にお問い合わせ下さい。',
       errorOccurred: 'エラーが発生しました。アプリ管理者にお問い合わせ下さい。'
     },
     zh: {
-      recordNumFieldNotFound: '未找到记录编号字段。需要在表单中设置记录编号字段才可使用顶！插件。',
+      recordNumFieldNotFound: '要在记录列表中使用顶！插件，需在列表的显示字段中包含记录编号字段。',
       updatedWhileClicking: '在点顶的同时有其他人更新了记录，请再点一次。',
       notHavePermissionToEdit: '无记录编辑权限的用户不可以点顶。详情请咨询应用管理员。',
       errorOccurred: '出错了！详情请咨询应用管理员。'
