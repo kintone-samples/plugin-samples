@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "3.2.8",
+    "version": "3.2.9",
     "type": "APP",
     "name": {
         "ja": "条件書式プラグイン",
@@ -20,7 +20,7 @@
     },
     "desktop": {
         "js": [
-            "https://js.cybozu.com/luxon/3.3.0/luxon.min.js",
+            "thirdparties/luxon.min.js",
             "thirdparties/jquery.min.js",
             "js/desktop.js"
         ],
