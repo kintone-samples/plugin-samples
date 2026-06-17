@@ -1,6 +1,6 @@
 {
    "manifest_version":1,
-   "version":"2.2.5",
+   "version":"2.2.6",
    "type":"APP",
    "name":{
       "ja":"ガントチャートプラグイン",
@@ -20,30 +20,30 @@
    },
    "desktop":{
       "js":[
-         "https://js.cybozu.com/jquery/3.6.4/jquery.min.js",
-         "https://js.cybozu.com/jquerygantt/20210106/jquery.fn.gantt.min.js",
-         "https://js.kintone.com/momentjs/2.30.1/moment.min.js",
-         "https://js.cybozu.com/moment-timezone/0.6.0/moment-timezone-with-data.min.js",
-         "https://js.cybozu.com/jquery-ui/1.14.2/jquery-ui.min.js",
+         "thirdparties/jquery.min.js",
+         "thirdparties/jquery.fn.gantt.min.js",
+         "thirdparties/moment.min.js",
+         "thirdparties/moment-timezone-with-data.min.js",
+         "thirdparties/jquery-ui.min.js",
          "js/jquery.ui.datepicker-ja.min.js",
          "js/desktop-ganttchart.js"
       ],
       "css":[
-         "https://js.cybozu.com/jquerygantt/20210106/css/style.css",
-         "https://js.cybozu.com/jquery-ui/1.14.2/themes/smoothness/jquery-ui.css",
+         "thirdparties/jquerygantt/style.css",
+         "thirdparties/jquery-ui/jquery-ui.css",
          "css/addin-style.css"
       ]
    },
    "mobile":{
       "js":[
-         "https://js.cybozu.com/jquery/3.6.4/jquery.min.js"
+         "thirdparties/jquery.min.js"
       ]
    },
    "config":{
       "html":"html/config.html",
       "js":[
-         "https://js.cybozu.com/jquery/3.6.4/jquery.min.js",
-         "https://js.kintone.com/jsrender/0.9.80/jsrender.min.js",
+         "thirdparties/jquery.min.js",
+         "thirdparties/jsrender.min.js",
          "thirdparties/jqColorPicker.min.js",
          "js/config.js"
       ],
