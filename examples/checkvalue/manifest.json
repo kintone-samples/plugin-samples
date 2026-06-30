@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": "2.3.5",
+    "version": "2.3.6",
     "type": "APP",
     "name": {
         "ja": "入力値チェックプラグイン",
@@ -26,8 +26,8 @@
     "config": {
         "html": "html/check_config.html",
         "js": [
-            "https://js.cybozu.com/kintone-rest-api-client/6.2.0/KintoneRestAPIClient.min.js",
-            "https://js.cybozu.com/jsrender/1.0.16/jsrender.min.js",
+            "thirdparties/KintoneRestAPIClient.min.js",
+            "thirdparties/jsrender.min.js",
             "js/config.js"
         ],
         "css": [
