@@ -2,15 +2,14 @@
 
 ## OSS License
 
-* jQuery - https://jquery.com/
-  * Author: jQuery Foundation, Inc.
-  * License: [MIT License](https://github.com/jquery/jquery/blob/3.3.1/LICENSE.txt)
-* JsRender - https://www.jsviews.com/
+* SweetAlert2 11.23.0 - https://github.com/sweetalert2/sweetalert2
+  * Distribution: thirdparties/sweetalert2.min.js, thirdparties/sweetalert2.min.css (bundled in plugin; config screen only)
+  * Author: Tristan Edwards, Limon Monte
+  * License: [MIT License](https://github.com/sweetalert2/sweetalert2/blob/v11.23.0/LICENSE)
+* JsRender 0.9.86 - https://www.jsviews.com/
+  * Distribution: thirdparties/jsrender.min.js (bundled in plugin; config screen only)
   * Author: Boris Moore
   * License: [MIT License](https://github.com/BorisMoore/jsrender/blob/v0.9.86/MIT-LICENSE.txt)
-* SweetAlert - https://t4t5.github.io/sweetalert/
-  * Author: Tristan Edwards
-  * License: [MIT License](https://github.com/t4t5/sweetalert/blob/v1.1.3/LICENSE)
 * 51-modern-default - https://cybozu.dev/ja/kintone/sdk/library/plugin-stylesheet-guide/
   * Author: Cybozu, Inc.
   * License: [MIT License](https://github.com/kintone-samples/plugin-samples#licence)
