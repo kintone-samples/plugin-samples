@@ -83,13 +83,11 @@
           cf.value = CONF[`copyfield${i}`];
         }
         for (let i = 1; i <= 3; i++) {
-          if (CONF[`copyfield${i}`] !== '') {
-            const bw = document.getElementById(`between${i}`);
-            bw.value = decodeSpace(ConF[`between${i}`])
-          
+          const bw = document.getElementById(`between${i}`);
+          if (CONF[`between${i}`]) {
+            bw.value = decodeSpace(CONF[`between${i}`]);
           } else {
-            const bw = document.getElementById(`between${i}`);
-            bw.value = (ConF[`between${i}`])
+            bw.value = CONF[`between${i}`] || '';
           }
         }
       }
