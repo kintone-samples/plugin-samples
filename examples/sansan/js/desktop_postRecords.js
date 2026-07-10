@@ -80,12 +80,12 @@ jQuery.noConflict();
                 return false;
             });
         },
-        searchSansanData: function(type, value, opt_offset, opt_records) {
+        searchSansanData: function(type, value, opt_nptoken, opt_records) {
             // Sansanよりデータ取得
             var limit = 300;
-            var offset = opt_offset || 0;
+            var nptoken = opt_nptoken || 0;
             var allrecords = opt_records || [];
-            var url = window.sansanLib.createSansanURL(type, value, limit, offset);
+            var url = window.sansanLib.createSansanURL(type, value, limit, nptoken);
             return kintone.plugin.app.proxy(PLUGIN_ID, url, 'GET', {}, {}).then(function(body) {
                 allrecords = allrecords.concat(JSON.parse(body[0]).data);
                 if (JSON.parse(body[1]) !== 200) {
@@ -100,7 +100,8 @@ jQuery.noConflict();
                     return allrecords;
                 }
                 if (JSON.parse(body[0]).hasMore === true) {
-                    return SansanPostRecords.searchSansanData(type, value, offset + limit, allrecords);
+                    nptoken = JSON.parse(body[0]).nextPageToken;
+                    return SansanPostRecords.searchSansanData(type, value, nptoken, allrecords);
                 }
                 if (JSON.parse(body[0]).hasMore === false && allrecords[0] === null || allrecords.length === 0) {
                     return kintone.Promise.reject(new Error('検索条件に一致する名刺データが見つかりませんでした。\n検索条件を変更してください。'));
@@ -260,13 +261,17 @@ jQuery.noConflict();
             SansanPostRecords.postRecordsMessage('post_success', msg);
         },
         // タグ検索処理
-        getSansanTag: function(opt_offset, opt_tags) {
+        getSansanTag: function(opt_nptoken, opt_tags) {
             // Sansanよりタグデータ取得
             var limit = 300;
-            var offset = opt_offset || 0;
+            var nptoken = opt_nptoken || 0;
             var alltags = opt_tags || [];
-            var url = 'https://api.sansan.com/v1.1/tags?range=all' + '&type=shared';// 共有タグのみを取得
-            url += '&offset=' + offset;
+            var url = 'https://api.sansan.com/v2.3/tags?range=all';
+            if (nptoken == 0) {
+                url += '&type=shared';// 共有タグのみを取得
+            } else { // nextPageTokenが渡された場合
+                url += '&nextPageToken=' + nptoken;
+            }
             url += '&limit=' + limit;
             return kintone.plugin.app.proxy(PLUGIN_ID, url, 'GET', {}, {}).then(function(body) {
                 alltags = alltags.concat(JSON.parse(body[0]).data);
@@ -282,7 +287,8 @@ jQuery.noConflict();
                     return alltags;
                 }
                 if (JSON.parse(body[0]).hasMore === true) {
-                    return SansanPostRecords.getSansanTag(offset + limit, alltags);
+                    nptoken = JSON.parse(body[0]).nextPageToken;
+                    return SansanPostRecords.getSansanTag(nptoken, alltags);
                 }
                 return alltags;
             }, function(error) {
