@@ -127,9 +127,12 @@
             }
 
             // カレンダーの設定
+            // ログインユーザーの言語に合わせてカレンダーUIを切り替える（旧版の ja/zh 対応を踏襲）
+            // kintoneの「中国語」は簡体字なので FullCalendar のロケールコードは zh-cn を使用（それ以外は ja）
+            const userLang = kintone.getLoginUser().language;
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {
-                locale: 'ja',
+                locale: userLang === 'zh' ? 'zh-cn' : 'ja',
                 // 上部のボタンやタイトル
                 headerToolbar: {
                     left: 'prev,next today',
