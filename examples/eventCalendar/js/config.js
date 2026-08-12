@@ -4,14 +4,14 @@
  *
  * Licensed under the MIT License
  */
-jQuery.noConflict();
-(function($, PLUGIN_ID) {
+/* global jsrender */
+((PLUGIN_ID) => {
   'use strict';
 
   // プラグインIDの設定
   const conf = kintone.plugin.app.getConfig(PLUGIN_ID);
 
-  $(document).ready(() => {
+  const init = () => {
     const terms = {
       'ja': {
         'event_title': 'イベント名フィールド',
@@ -48,23 +48,34 @@ jQuery.noConflict();
     // ログインユーザーの設定言語によって表示言語を切り替える
     const lang = kintone.getLoginUser().language;
     const i18n = (lang in terms) ? terms[lang] : terms.ja;
-    const configHtml = $('#EventCalendarPlugin').html();
-    const tmpl = $.templates(configHtml);
-    $('div#EventCalendarPlugin').html(tmpl.render({'terms': i18n}));
+    const container = document.getElementById('EventCalendarPlugin');
+    // jsrender をスタンドアロン（jQuery非依存）で使用
+    const tmpl = jsrender.templates(container.innerHTML);
+    container.innerHTML = tmpl.render({'terms': i18n});
 
     // 既に値が設定されている場合はフィールドに値を設定する
-    if (typeof (conf.name) !== 'undefined') {
-      $('#status1').val(conf.status1);
-      $('#color1').val(conf.color1);
-      $('#status2').val(conf.status2);
-      $('#color2').val(conf.color2);
-      $('#status3').val(conf.status3);
-      $('#color3').val(conf.color3);
-      $('#status4').val(conf.status4);
-      $('#color4').val(conf.color4);
-      $('#status5').val(conf.status5);
-      $('#color5').val(conf.color5);
+    if (typeof conf.name !== 'undefined') {
+      for (let i = 1; i < 6; i++) {
+        document.getElementById('status' + i).value = conf['status' + i] || '';
+        document.getElementById('color' + i).value = conf['color' + i] || '';
+      }
     }
+
+    const nameSelect = document.getElementById('name_code');
+    const startSelect = document.getElementById('start_datetime_code');
+    const endSelect = document.getElementById('end_datetime_code');
+
+    // option 要素を生成する
+    const createOption = (label, index, selected) => {
+      const opt = document.createElement('option');
+      opt.setAttribute('name', index);
+      opt.textContent = label;
+      if (selected) {
+        opt.selected = true;
+      }
+      return opt;
+    };
+
     // アプリのフォーム情報を取得
     kintone.api('/k/v1/preview/app/form/fields', 'GET', {
       app: kintone.app.getId()
@@ -78,112 +89,97 @@ jQuery.noConflict();
         if (!Object.prototype.hasOwnProperty.call(resp.properties, key)) {
           continue;
         }
-        let confFlg = false;
-        if (resp.properties[key].type === 'SINGLE_LINE_TEXT') {
+        const property = resp.properties[key];
+        if (property.type === 'SINGLE_LINE_TEXT') {
           singleLineText[count] = {
-            'label': resp.properties[key].label,
-            'key': resp.properties[key].code,
+            'label': property.label,
+            'key': property.code,
             'index': String(count)
           };
-          if (typeof (conf.name) !== 'undefined' && resp.properties[key].code === conf.name) {
-            confFlg = true;
-          }
-          if (confFlg) {
-            $('#name_code').prepend('<option name=' + count + ' selected>' + singleLineText[count].label + '</option>');
+          const isSelected = typeof conf.name !== 'undefined' && property.code === conf.name;
+          if (isSelected) {
+            nameSelect.insertBefore(createOption(property.label, count, true), nameSelect.firstChild);
           } else {
-            $('#name_code').append('<option name=' + count + '>' + singleLineText[count].label + '</option>');
+            nameSelect.appendChild(createOption(property.label, count, false));
           }
-        } else if (resp.properties[key].type === 'DATETIME') {
+        } else if (property.type === 'DATETIME') {
           sDatetime[count] = {
-            'label': resp.properties[key].label,
-            'key': resp.properties[key].code,
+            'label': property.label,
+            'key': property.code,
             'index': String(count)
           };
           eDatetime[count] = {
-            'label': resp.properties[key].label,
-            'key': resp.properties[key].code,
+            'label': property.label,
+            'key': property.code,
             'index': String(count)
           };
-          if (typeof (conf.name) !== 'undefined' && resp.properties[key].code === conf.start_datetime) {
-            $('#start_datetime_code').prepend('<option name=' + count + ' selected>' +
-                            sDatetime[count].label + '</option>');
-            $('#end_datetime_code').append('<option name=' + count + '>' + eDatetime[count].label + '</option>');
-          } else if (typeof (conf.name) !== 'undefined' && resp.properties[key].code === conf.end_datetime) {
-            $('#start_datetime_code').append('<option name=' + count + '>' + sDatetime[count].label + '</option>');
-            $('#end_datetime_code').prepend('<option name=' + count + ' selected>' +
-                            eDatetime[count].label + '</option>');
+          if (typeof conf.name !== 'undefined' && property.code === conf.start_datetime) {
+            startSelect.insertBefore(createOption(property.label, count, true), startSelect.firstChild);
+            endSelect.appendChild(createOption(property.label, count, false));
+          } else if (typeof conf.name !== 'undefined' && property.code === conf.end_datetime) {
+            startSelect.appendChild(createOption(property.label, count, false));
+            endSelect.insertBefore(createOption(property.label, count, true), endSelect.firstChild);
           } else {
-            $('#start_datetime_code').append('<option name=' + count + '>' + sDatetime[count].label + '</option>');
-            $('#end_datetime_code').append('<option name=' + count + '>' + eDatetime[count].label + '</option>');
+            startSelect.appendChild(createOption(property.label, count, false));
+            endSelect.appendChild(createOption(property.label, count, false));
           }
-
         }
         count++;
       }
 
-
       // 「保存する」ボタン押下時に入力情報を設定する
-      $('#submit').click(() => {
+      document.getElementById('submit').addEventListener('click', () => {
         const config = {};
         let name;
-        let start_datetime;
-        let end_datetime;
+        let startDatetime;
+        let endDatetime;
+
+        const nameSelected = nameSelect.selectedOptions[0];
         singleLineText.filter((item) => {
-          if (item.label === $('#name_code :selected').text() &&
-                        item.index === $('#name_code :selected').attr('name')) {
+          if (nameSelected && item.label === nameSelected.textContent &&
+                        item.index === nameSelected.getAttribute('name')) {
             name = item.key;
             return true;
           }
+          return false;
         });
+        const startSelected = startSelect.selectedOptions[0];
         sDatetime.filter((item) => {
-          if (item.label === $('#start_datetime_code :selected').text() &&
-                        item.index === $('#start_datetime_code :selected').attr('name')) {
-            start_datetime = item.key;
+          if (startSelected && item.label === startSelected.textContent &&
+                        item.index === startSelected.getAttribute('name')) {
+            startDatetime = item.key;
             return true;
           }
+          return false;
         });
+        const endSelected = endSelect.selectedOptions[0];
         eDatetime.filter((item) => {
-          if (item.label === $('#end_datetime_code :selected').text() &&
-                        item.index === $('#end_datetime_code :selected').attr('name')) {
-            end_datetime = item.key;
+          if (endSelected && item.label === endSelected.textContent &&
+                        item.index === endSelected.getAttribute('name')) {
+            endDatetime = item.key;
             return true;
           }
+          return false;
         });
-        const status1 = $('#status1').val();
-        const color1 = $('#color1').val();
-        const status2 = $('#status2').val();
-        const color2 = $('#color2').val();
-        const status3 = $('#status3').val();
-        const color3 = $('#color3').val();
-        const status4 = $('#status4').val();
-        const color4 = $('#color4').val();
-        const status5 = $('#status5').val();
-        const color5 = $('#color5').val();
 
-        if (name === '' || start_datetime === '' || end_datetime === '') {
+        if (name === '' || startDatetime === '' || endDatetime === '') {
           alert('入力されていない必須項目があります。');
           return;
         }
         config.name = name;
-        config.start_datetime = start_datetime;
-        config.end_datetime = end_datetime;
-        config.status1 = status1;
-        config.color1 = color1;
-        config.status2 = status2;
-        config.color2 = color2;
-        config.status3 = status3;
-        config.color3 = color3;
-        config.status4 = status4;
-        config.color4 = color4;
-        config.status5 = status5;
-        config.color5 = color5;
+        config.start_datetime = startDatetime;
+        config.end_datetime = endDatetime;
+        for (let i = 1; i < 6; i++) {
+          config['status' + i] = document.getElementById('status' + i).value;
+          config['color' + i] = document.getElementById('color' + i).value;
+        }
 
         // カスタマイズビューを追加
         const VIEW_NAME = 'スケジュール';
         kintone.api(kintone.api.url('/k/v1/preview/app/views', true), 'GET', {
           'app': kintone.app.getId()
         }).then((scheResp) => {
-          const req = $.extend(true, {}, scheResp);
+          const req = structuredClone(scheResp);
           req.app = kintone.app.getId();
 
           // 作成したビューが存在するか
@@ -216,8 +212,7 @@ jQuery.noConflict();
 
             kintone.api(kintone.api.url('/k/v1/preview/app/views', true), 'PUT', req).then((putResp) => {
               // 作成したビューIDを保存する
-              const viewId = putResp.views[VIEW_NAME].id;
-              config.viewId = viewId;
+              config.viewId = putResp.views[VIEW_NAME].id;
               kintone.plugin.app.setConfig(config);
             });
 
@@ -230,11 +225,18 @@ jQuery.noConflict();
       });
 
       // 「キャンセル」ボタン押下時の処理
-      $('#cancel').click(() => {
+      document.getElementById('cancel').addEventListener('click', () => {
         history.back();
       });
 
     });
-  });
+  };
 
-})(jQuery, kintone.$PLUGIN_ID);
+  // jQuery の $(document).ready 相当（読み込み済みなら即実行）
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})(kintone.$PLUGIN_ID);
