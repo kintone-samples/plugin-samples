@@ -213,51 +213,59 @@ jQuery.noConflict();
     }
 
     // リクエスト用のURL生成
-    function createSansanURL(type, value, limit, offset) {
-        var sansan_url = 'https://api.sansan.com/v1.1/bizCards';
+    function createSansanURL(type, value, limit, nptoken) {
+        var sansan_url = 'https://api.sansan.com/v2.3/bizCards';
         switch (type) {
             // 一括登録機能の条件指定検索の場合
             case 'Postrecords_Condition':
                 sansan_url += '/search' + '?range=all';
-                if (value && $('#sansan_dropdown_code').val()) {
-                    sansan_url += '&' + encodeURIComponent($('#sansan_dropdown_code').val()) +
-                                    '=' + encodeURIComponent(value);
+                if (nptoken == 0) {
+                    if (value && $('#sansan_dropdown_code').val()) {
+                        sansan_url += '&' + encodeURIComponent($('#sansan_dropdown_code').val()) +
+                                        '=' + encodeURIComponent(value);
+                    }
+                } else { // nextPageTokenが渡された場合
+                    sansan_url += '&nextPageToken=' + encodeURIComponent(nptoken);
                 }
                 break;
 
             // ルックアップ機能の条件指定検索の場合
             case 'Lookup_Condition':
                 sansan_url += '/search' + '?range=all';
-                if (value) {
-                    sansan_url += '&' + encodeURIComponent(C_ORIGINALFIELD) + '=' + encodeURIComponent(value);
+                if (nptoken == 0) {
+                    if (value) {
+                        sansan_url += '&' + encodeURIComponent(C_ORIGINALFIELD) + '=' + encodeURIComponent(value);
+                    }
+                } else { // nextPageTokenが渡された場合
+                    sansan_url += '&nextPageToken=' + encodeURIComponent(nptoken);
                 }
                 break;
 
             // タグ指定の場合
             case 'Tag':
                 sansan_url += '/search' + '?range=all';
-                sansan_url += '&tagId=' + encodeURIComponent(value);
-                break;
-
-            // 名刺登録日の期間指定の場合
-            case 'Registered_Date':
-                sansan_url += '?range=all' + '&registeredFrom' + '=' + encodeURIComponent(value[0]) +
-                                             '&registeredTo' + '=' + encodeURIComponent(value[1]);
+                if (nptoken == 0) {
+                    sansan_url += '&tagId=' + encodeURIComponent(value);
+                } else { // nextPageTokenが渡された場合
+                    sansan_url += '&nextPageToken=' + encodeURIComponent(nptoken);
+                }
                 break;
 
             // 名刺更新日の期間指定の場合
             case 'Updated_Date':
-                sansan_url += '?range=all' + '&registeredFrom' + '=' + encodeURIComponent('1900-01-01T00:00:00+09:00') +
-                                             '&registeredTo' + '=' + encodeURIComponent('3000-01-01T00:00:00+09:00');
-                sansan_url += '&updatedFrom' + '=' + encodeURIComponent(value[0]) +
-                              '&updatedTo' + '=' + encodeURIComponent(value[1]);
+                sansan_url += '?range=all';
+                if (nptoken == 0) {
+                    sansan_url += '&updatedFrom' + '=' + encodeURIComponent(value[0]) +
+                                  '&updatedTo' + '=' + encodeURIComponent(value[1]);
+                } else { // nextPageTokenが渡された場合
+                    sansan_url += '&nextPageToken=' + encodeURIComponent(nptoken);
+                }
                 break;
             default:
                 sansan_url += '/search' + '?range=all';
                 break;
         }
         sansan_url += '&limit=' + encodeURIComponent(limit);
-        sansan_url += '&offset=' + encodeURIComponent(offset);
         return sansan_url;
     }
     // ダイアログのHTML生成
@@ -389,10 +397,7 @@ jQuery.noConflict();
             '<th>' + '<div><span class="recordlist-header-label-kintone">' +
             '<div class="sansan-input-radio">' +
             '<span class="sansan-input-radio-item">' +
-            '<input type="radio" name="sansan-date-radio" value="Registered_Date" id="radio-0" checked="">' +
-            '<label for="radio-0">名刺登録日付</label></span>' +
-            '<span class="sansan-input-radio-item">' +
-            '<input type="radio" name="sansan-date-radio" value="Updated_Date" id="radio-1">' +
+            '<input type="radio" name="sansan-date-radio" value="Updated_Date" id="radio-1" checked="">' +
             '<label for="radio-1">名刺更新日付</label></span></div>' +
             '</span></div>' + '</th>' +
             '</tr>' + '</thead>' + '<tbody>' +
